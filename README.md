@@ -15,7 +15,7 @@
 -----------------------------------------------
 # Dự án
 
-## Mạng xã hội multi aura
+## <h2>Mạng xã hội multi aura</h2>
 
 <h5>Mô tả dự án: </h5>
 <p>multi aura là một hệ thống ứng dụng mạng xã hội đa nền tảng cho phép người dùng có thể đăng bài viết, bình luận bằng text sử dụng api để chuyển thành sound giúp cho người dùng có thể hiểu được nội dung mà không cần phải đọc chữ, tương tác, nhắn tin, kết bạn,...</p>
