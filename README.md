@@ -29,6 +29,7 @@
 <p>Ngôn ngữ: Java, PHP, Javascript</p>
 <p>Framework: Bootstrap,  PHP laravel, Java spring boot</p>
 -----------------------------------------------
+
 | Số thứ tự | Nghiệp vụ  | Phân công  | Tiến độ |
 |:---------:|:------------:|:---------------:|:-----:|
 | 1 | Login/Logout  |  | |
@@ -46,6 +47,7 @@
 <p>Winform</p>
 <p>Ngôn ngữ: C#, Javascript</p>
 <p>Framework: ADO.NET</p>
+
 | Số thứ tự | Nghiệp vụ  | Phân công  | Tiến độ |
 |:---------:|:------------:|:---------------:|:-----:|
 | 1 | Login/Logout  |  |   |
