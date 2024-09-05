@@ -14,7 +14,6 @@
 -----------------------------------------------
 -----------------------------------------------
 # Dự án
-
 ## <h2>Mạng xã hội multi aura</h2>
 
 <h5>Mô tả dự án: </h5>
@@ -22,10 +21,36 @@
 
 <p>Người dùng khi sử dụng ứng dụng sẽ được trải nghiệm không gian mạng 4.0 một nơi mà tất cả mọi người có thể cùng nhau chia sẽ cac khoảnh khắc tuyệt vời và trò chuyện cùng nhau nhận thấy hiện nay một số người khi vừa mới tiếp cận với công nghệ thì sẽ có thể gặp một số khăn về vấn đề giao tiếp chẳng hạn như họ không nhìn được mặt chữ hay là những người mà có vấn đề về thị giác họ muốn đọc báo tin tức giao tiếp cùng những người thân quen của họ chẳng hạn. Nắm được nhu cầu ấy chúng em một bộ phận nhỏ muốn hiện thực hóa ý tưởng của chúng em là mang đến một không gian cho tất cả mọi người đều có thể giao tiếp với nhau không có bất kì sự ràng buộc nào cả. Đó là mục đích và là sứ mệnh của multi aura</p>
 
+-----------------------------------------------
 
 ### Yêu cầu 
-<p>AI: Gợi ý loại sách theo nội dung  </p>
+<p>AI: api text to sound</p>
+<p>Web</p>
+<p>Ngôn ngữ: Java, PHP, Javascript</p>
+<p>Framework: Bootstrap,  PHP laravel, Java spring boot</p>
+-----------------------------------------------
+| Số thứ tự | Nghiệp vụ  | Phân công  | Tiến độ |
+|:---------:|:------------:|:---------------:|:-----:|
+| 1 | Login/Logout  |  | |
+| 2 | Register  | | |
+| 3 | CRUD Post  | |  |
+| 6 | Share Post  || |
+| 4 | Comment Post  | |  |
+| 5 | Post Reaction | | |
+| 6 | Chat (CRUD Message)  ||  |
+| 7 | Chat (Message Reaction)  ||  |
+| 8 | Add/Delete Friend  ||  |
 
-<p>Web: PHP laravel, .NET Winform, Javasp ring boot</p>
-<p>Ngôn ngữ: Java, PHP, Javascript, C# </p>
-<p>Framework: Bootstrap,  PHP laravel, .NET Winform, Java spring boot</p>
+
+-----------------------------------------------
+<p>Winform</p>
+<p>Ngôn ngữ: C#, Javascript</p>
+<p>Framework: ADO.NET</p>
+| Số thứ tự | Nghiệp vụ  | Phân công  | Tiến độ |
+|:---------:|:------------:|:---------------:|:-----:|
+| 1 | Login/Logout  |  |   |
+| 2 | Register  | | |
+| 6 | Chat (CRUD Message)  ||  |
+| 7 | Chat (Message Reaction) || |
+
+
