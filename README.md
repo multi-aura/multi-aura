@@ -4,8 +4,8 @@
 | Số thứ tự | Mã số sinh viên  | Họ và tên  | Chức vụ |
 |:---------:|:------------:|:---------------:|:-----:|
 | 1 | 2001216199  | Nguyễn Minh Thư | Trưởng nhóm  |
-| 1 | 2001215790  | Nguyễn Huy Hoàng | Thành viên  |
-| 1 | 2001216158  | Hà Trọng Thắng | Thành viên  |
+| 2 | 2001215790  | Nguyễn Huy Hoàng | Thành viên  |
+| 3 | 2001216158  | Hà Trọng Thắng | Thành viên  |
 
 -----------------------------------------------
 ### Sử dụng 
@@ -34,10 +34,10 @@
 | 1 | Login/Logout  |  | |
 | 2 | Register  | | |
 | 3 | CRUD Post  | |  |
-| 6 | Share Post  || |
+| 6 | Share Post  | | |
 | 4 | Comment Post  | |  |
 | 5 | Post Reaction | | |
-| 6 | Chat (CRUD Message)  ||  |
+| 6 | Chat (CRUD Message) | |  |
 | 7 | Chat (Message Reaction)  ||  |
 | 8 | Add/Delete Friend  ||  |
 
