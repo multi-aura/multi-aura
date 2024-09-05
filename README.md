@@ -1,5 +1,8 @@
-<h4>Tên nhóm:  </h4>
-<h2 style="text-align:center">Social media</h2>
+<h2>Tên nhóm: Multi Gudboy</h2>
+<h3 style="text-align:center">Social media</h3>
+-----------------------------------------------
+-----------------------------------------------
+
 
 | Số thứ tự | Mã số sinh viên  | Họ và tên  | Chức vụ |
 |:---------:|:------------:|:---------------:|:-----:|
@@ -11,7 +14,6 @@
 ### Sử dụng 
  - .Net Framework version 4.7.2
  - Visual studio 2019
------------------------------------------------
 -----------------------------------------------
 # Dự án
 ## <h2>Mạng xã hội multi aura</h2>
