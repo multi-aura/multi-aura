@@ -8,8 +8,8 @@
 
 | Số thứ tự | Mã số sinh viên  | Họ và tên  | Chức vụ |
 |:---------:|:------------:|:---------------:|:-----:|
-| 1 | 2001216199  | Nguyễn Minh Thư | Trưởng nhóm  |
-| 2 | 2001215790  | Nguyễn Huy Hoàng | Thành viên  |
+| 1 | 2001215790  | Nguyễn Huy Hoàng | Trưởng nhóm  |
+| 2 | 2001216199  | Nguyễn Minh Thư | Thành viên  |
 | 3 | 2001216158  | Hà Trọng Thắng | Thành viên  |
 
 -----------------------------------------------
