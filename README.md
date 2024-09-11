@@ -107,7 +107,9 @@
 - Quy trình:
   
   1 Người dùng nhập thông tin đăng nhập.
+  
   2 Hệ thống kiểm tra thông tin người dùng nhập.
+  
   3 Sau khi kiểm tra nếu:
     - Thành công: người dùng sẽ được chuyển đến trang chủ.
     - Thất bại: người dùng sẽ nhận được thông báo kiểm tra lại thông tin.
