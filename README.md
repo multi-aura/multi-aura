@@ -18,7 +18,7 @@
  - Visual studio 2019
 -----------------------------------------------
 -----------------------------------------------
-
+<h1>Giới thiệu đồ án</h1>
 # Dự án
 ## <h2>Mạng xã hội multi aura</h2>
 
@@ -26,6 +26,14 @@
 <p>multi aura là một hệ thống ứng dụng mạng xã hội đa nền tảng cho phép người dùng có thể đăng bài viết, bình luận bằng text sử dụng api để chuyển thành sound giúp cho người dùng có thể hiểu được nội dung mà không cần phải đọc chữ, tương tác, nhắn tin, kết bạn,...</p>
 
 <p>Người dùng khi sử dụng ứng dụng sẽ được trải nghiệm không gian mạng 4.0 một nơi mà tất cả mọi người có thể cùng nhau chia sẽ cac khoảnh khắc tuyệt vời và trò chuyện cùng nhau nhận thấy hiện nay một số người khi vừa mới tiếp cận với công nghệ thì sẽ có thể gặp một số khăn về vấn đề giao tiếp chẳng hạn như họ không nhìn được mặt chữ hay là những người mà có vấn đề về thị giác họ muốn đọc báo tin tức giao tiếp cùng những người thân quen của họ chẳng hạn. Nắm được nhu cầu ấy chúng em một bộ phận nhỏ muốn hiện thực hóa ý tưởng của chúng em là mang đến một không gian cho tất cả mọi người đều có thể giao tiếp với nhau không có bất kì sự ràng buộc nào cả. Đó là mục đích và là sứ mệnh của multi aura</p>
+
+<h3>Phạm vi của đồ án:</h3>
+<p>Dự án "Mạng xã hội Multi Aura" sẽ tập trung vào việc phát triển một hệ thống mạng xã hội hỗ trợ:</p>
+
+- Chuyển đổi văn bản thành âm thanh qua API giúp người dùng dễ dàng tiếp cận nội dung mà không cần đọc.
+- Hỗ trợ người dùng tương tác, nhắn tin, kết bạn và chia sẻ khoảnh khắc với nhau thông qua các bài viết, bình luận.
+- Ứng dụng được phát triển trên đa nền tảng (web, mobile), đảm bảo người dùng có thể trải nghiệm từ nhiều thiết bị khác nhau.
+- Đảm bảo hỗ trợ tốt cho những người gặp khó khăn về thị giác hoặc người thích nghe nội dung thay vì đọc.
 
 -----------------------------------------------
 
