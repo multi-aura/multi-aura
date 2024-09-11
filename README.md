@@ -44,6 +44,7 @@
 <p>Sự cần thiết:</p>
 - Hiện tại, các mạng xã hội chủ yếu tập trung vào việc cung cấp nội dung bằng văn bản, hình ảnh và video, mà chưa hỗ trợ tốt cho người dùng muốn tiếp cận thông tin bằng âm thanh. Điều này khiến cho người dùng gặp khó khăn, đặc biệt là những người khiếm thị hoặc người lớn tuổi.
 - Multi Aura ra đời để giải quyết vấn đề này, bằng cách cung cấp giải pháp chuyển đổi văn bản thành âm thanh. Điều này giúp mọi người, bất kể khả năng đọc, đều có thể tham gia và chia sẻ nội dung một cách dễ dàng và dễ dàng hòa nhập vào một môi trường mà tại đó không có bất kì rào cản về ngôn ngữ.
+
 -----------------------------------------------
 
 ### Yêu cầu 
@@ -65,6 +66,9 @@
 | 8 | Chat (CRUD Message) | |  |
 | 9 | Chat (Message Reaction)  ||  |
 | 10 | Add/Delete Friend  ||  |
+| 11 | Manager Profile  ||  |
+| 12 | Search  ||  |
+
 
 
 -----------------------------------------------
@@ -79,4 +83,25 @@
 | 6 | Chat (CRUD Message)  ||  |
 | 7 | Chat (Message Reaction) || |
 
+
+-------------------------------------------------
+
+<h2>Các quy trình nghiệp vụ</h2>
+
+<p>Quy trình đăng ký và xác thực người dùng:</p>
+- Mô tả: Người dùng mới cần phải đăng ký tài khoản bằng email hoặc thông tin mạng xã hội, sau đó hệ thống sẽ gửi email xác nhận để kích hoạt tài khoản.
+- Quy trình:
+  1 Người dùng nhập thông tin đăng ký.
+  2 Hệ thống kiểm tra thông tin người dùng nhập.
+  3 Hệ thống gửi email xác thực.
+  4 Sau khi xác thực, người dùng có thể đăng nhập vào hệ thống.
+
+<p>Quy trình đăng nhập:</p>
+- Mô tả: Người dùng sau khi đăng kí tài khoản có thể đăng nhập.
+- Quy trình:
+  1 Người dùng nhập thông tin đăng nhập.
+  2 Hệ thống kiểm tra thông tin người dùng nhập.
+  3 Sau khi kiểm tra nếu:
+    - Thành công: người dùng sẽ được chuyển đến trang chủ.
+    - Thất bại: người dùng sẽ nhận được thông báo kiểm tra lại thông tin.
 
