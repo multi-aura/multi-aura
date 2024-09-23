@@ -1,0 +1,36 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Livonir\\Learning\\frontend-desktop\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{8EC23B12-0C7B-40C6-B67A-E03199995A89}|multi-aura\\multi-aura.csproj|c:\\livonir\\learning\\frontend-desktop\\multi-aura\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{8EC23B12-0C7B-40C6-B67A-E03199995A89}|multi-aura\\multi-aura.csproj|solutionrelative:multi-aura\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 267,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Form1.cs [Design]",
+              "DocumentMoniker": "C:\\Livonir\\Learning\\frontend-desktop\\multi-aura\\Form1.cs",
+              "RelativeDocumentMoniker": "multi-aura\\Form1.cs",
+              "ToolTip": "C:\\Livonir\\Learning\\frontend-desktop\\multi-aura\\Form1.cs [Design]",
+              "RelativeToolTip": "multi-aura\\Form1.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-23T15:17:38.808Z",
+              "EditorCaption": " [Design]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
