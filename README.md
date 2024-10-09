@@ -87,9 +87,9 @@
 
 -------------------------------------------------
 
-<h2>+ Các quy trình nghiệp vụ</h2>
+<h2>Các quy trình nghiệp vụ</h2>
 
-<p>Quy trình đăng ký và xác thực người dùng:</p>
+<p>+Quy trình đăng ký và xác thực người dùng:</p>
 
 - Mô tả: Người dùng mới cần phải đăng ký tài khoản bằng email hoặc thông tin mạng xã hội, sau đó hệ thống sẽ gửi email xác nhận để kích hoạt tài khoản.
 - Quy trình:
@@ -136,4 +136,18 @@
 
    - Người dùng có thể cài đặt quyền riêng tư cho hồ sơ (Công khai, Bạn bè, Cá nhân) để quyết định ai có thể xem thông tin của họ.
 
+<p>+ Tìm kiếm bạn bè:</p>
+- Mô tả: Người dùng có thể tìm kiếm bạn bè qua tên, email hoặc username.
+
+- Quy trình:
+
+  1 Người dùng nhập từ khóa tìm kiếm:
+
+    - Người dùng nhập tên, email hoặc username vào thanh tìm kiếm.
+  2 Hệ thống tìm kiếm và hiển thị kết quả:
+
+    - Hệ thống truy vấn cơ sở dữ liệu và trả về danh sách người dùng phù hợp với từ khóa.
+  3 Người dùng có thể gửi lời mời kết bạn:
+
+    - Người dùng có thể chọn từ danh sách kết quả và gửi lời mời kết bạn.
 
