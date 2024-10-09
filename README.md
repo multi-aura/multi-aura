@@ -87,9 +87,9 @@
 
 -------------------------------------------------
 
-<h2>Các quy trình nghiệp vụ</h2>
+<h2>+ Các quy trình nghiệp vụ</h2>
 
--<p>Quy trình đăng ký và xác thực người dùng:</p>
+<p>Quy trình đăng ký và xác thực người dùng:</p>
 
 - Mô tả: Người dùng mới cần phải đăng ký tài khoản bằng email hoặc thông tin mạng xã hội, sau đó hệ thống sẽ gửi email xác nhận để kích hoạt tài khoản.
 - Quy trình:
@@ -102,7 +102,7 @@
   
   4 Sau khi xác thực, người dùng có thể đăng nhập vào hệ thống.
 
--<p>Quy trình đăng nhập:</p>
+<p>+ Quy trình đăng nhập:</p>
 
 - Mô tả: Người dùng sau khi đăng kí tài khoản có thể đăng nhập.
 - Quy trình:
@@ -115,7 +115,7 @@
     - Thành công: người dùng sẽ được chuyển đến trang chủ.
     - Thất bại: người dùng sẽ nhận được thông báo kiểm tra lại thông tin.
 
--<p>Quy trình quản lý hồ sơ cá nhân (Profile Management):</p>
+<p>+ Quy trình quản lý hồ sơ cá nhân (Profile Management):</p>
 - Mô tả: Người dùng có thể cập nhật thông tin cá nhân và quản lý quyền riêng tư của hồ sơ.
 
 - Quy trình:
