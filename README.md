@@ -141,13 +141,13 @@
 
 - Quy trình:
 
-  1 Người dùng nhập từ khóa tìm kiếm:
+   1 Người dùng nhập từ khóa tìm kiếm:
 
     - Người dùng nhập tên, email hoặc username vào thanh tìm kiếm.
-  2 Hệ thống tìm kiếm và hiển thị kết quả:
+   2 Hệ thống tìm kiếm và hiển thị kết quả:
 
     - Hệ thống truy vấn cơ sở dữ liệu và trả về danh sách người dùng phù hợp với từ khóa.
-  3 Người dùng có thể gửi lời mời kết bạn:
+   3 Người dùng có thể gửi lời mời kết bạn:
 
     - Người dùng có thể chọn từ danh sách kết quả và gửi lời mời kết bạn.
 
