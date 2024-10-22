@@ -147,6 +147,10 @@ namespace GUI.Extensions
                     isResizingBottom = false;
                 }
             };
+            form.MouseLeave += (sender, e) =>
+            {
+                form.Cursor = Cursors.Default;
+            };
         }
 
         public static void EnableWindowControlButtons(this Form form, Button minimizeButton, Button maximizeButton, Button closeButton)

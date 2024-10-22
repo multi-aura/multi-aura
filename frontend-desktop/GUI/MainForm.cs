@@ -1,5 +1,6 @@
 ﻿using GUI.Extensions;
 using GUI.Forms;
+using GUI.AuthenticationForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BLL;
 
 namespace GUI
 {
@@ -16,19 +18,40 @@ namespace GUI
     {
         private Button currentButton;
         private Form activeForm;
+        private AppDataProvider appDataProvider = AppDataProvider.Instance;
         public MainForm()
         {
             InitializeComponent();
-            this.EnableWindowDrag(panelWindownControlTaskBar);
-            this.EnableWindowResize();
-            this.EnableWindowControlButtons(
-                this.MinimizeWindowControlButton,
-                this.MaximizeWindowControlButton,
-                this.CloseWindowControlButton
-                );
-            SetUPNavigators();
+
+            if (!appDataProvider.HasUser)
+            {
+                this.Hide();
+
+                AuthenticationForm authenticationForm = new AuthenticationForm();
+                authenticationForm.FormClosed += (s, args) =>
+                {
+                    if (appDataProvider.HasUser)
+                    {
+                        this.EnableWindowResize();
+                        this.EnableWindowDrag(panelWindownControlTaskBar);
+                        this.EnableWindowControlButtons(
+                            this.MinimizeWindowControlButton,
+                            this.MaximizeWindowControlButton,
+                            this.CloseWindowControlButton
+                            );
+                        SetUpNavigators();
+
+                        this.Show();
+                    }
+                    else
+                    {
+                        Application.Exit();                        
+                    }
+                };
+                authenticationForm.ShowDialog();
+            }
         }
-        private void SetUPNavigators()
+        private void SetUpNavigators()
         {
             this.taskBarHome.Click += (sender, e) => OpenChildForm(new HomeForm(), sender);
             this.taskBarExplore.Click += (sender, e) => OpenChildForm(new ExploreForm(), sender);
@@ -47,7 +70,6 @@ namespace GUI
                     DisableButton();
                     currentButton = (Button)btnSender;
                     currentButton.BackColor = Color.FromArgb(48, 48, 48);
-
                 }
             }
         }
@@ -57,7 +79,7 @@ namespace GUI
             {
                 if (previousBtn.GetType() == typeof(Button))
                 {
-                    previousBtn.BackColor = Color.FromArgb(12, 12, 12);
+                    previousBtn.BackColor = Color.Transparent;
                 }
             }
         }
