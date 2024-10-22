@@ -14,7 +14,7 @@ namespace GUI.Forms
     {
         public HomeForm()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
     }
 }
