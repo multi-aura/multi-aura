@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace multi_aura
+namespace GUI.Forms
 {
-    public partial class Form1 : Form
+    public partial class MessagesForm : Form
     {
-        public Form1()
+        public MessagesForm()
         {
             InitializeComponent();
         }

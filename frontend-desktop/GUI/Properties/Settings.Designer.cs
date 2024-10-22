@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace multi_aura.Properties
+namespace GUI.Properties
 {
 
 
