@@ -56,19 +56,19 @@
             // 
             // panelSideBar
             // 
-            this.panelSideBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
+            this.panelSideBar.BackColor = System.Drawing.Color.Transparent;
             this.panelSideBar.Controls.Add(this.panelSideBarItems);
             this.panelSideBar.Controls.Add(this.panel3);
             this.panelSideBar.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panelSideBar.Location = new System.Drawing.Point(0, 0);
+            this.panelSideBar.Location = new System.Drawing.Point(4, 4);
             this.panelSideBar.Margin = new System.Windows.Forms.Padding(0);
             this.panelSideBar.Name = "panelSideBar";
-            this.panelSideBar.Size = new System.Drawing.Size(220, 800);
+            this.panelSideBar.Size = new System.Drawing.Size(220, 792);
             this.panelSideBar.TabIndex = 0;
             // 
             // panelSideBarItems
             // 
-            this.panelSideBarItems.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
+            this.panelSideBarItems.BackColor = System.Drawing.Color.Transparent;
             this.panelSideBarItems.Controls.Add(this.taskBarMore);
             this.panelSideBarItems.Controls.Add(this.taskBarProfile);
             this.panelSideBarItems.Controls.Add(this.taskBarNotifications);
@@ -79,12 +79,12 @@
             this.panelSideBarItems.Location = new System.Drawing.Point(0, 58);
             this.panelSideBarItems.Margin = new System.Windows.Forms.Padding(0);
             this.panelSideBarItems.Name = "panelSideBarItems";
-            this.panelSideBarItems.Size = new System.Drawing.Size(220, 742);
+            this.panelSideBarItems.Size = new System.Drawing.Size(220, 734);
             this.panelSideBarItems.TabIndex = 3;
             // 
             // taskBarMore
             // 
-            this.taskBarMore.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
+            this.taskBarMore.BackColor = System.Drawing.Color.Transparent;
             this.taskBarMore.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.taskBarMore.FlatAppearance.BorderSize = 0;
             this.taskBarMore.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
@@ -93,7 +93,7 @@
             this.taskBarMore.ForeColor = System.Drawing.Color.White;
             this.taskBarMore.Image = ((System.Drawing.Image)(resources.GetObject("taskBarMore.Image")));
             this.taskBarMore.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.taskBarMore.Location = new System.Drawing.Point(0, 682);
+            this.taskBarMore.Location = new System.Drawing.Point(0, 674);
             this.taskBarMore.Margin = new System.Windows.Forms.Padding(0);
             this.taskBarMore.Name = "taskBarMore";
             this.taskBarMore.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
@@ -105,7 +105,7 @@
             // 
             // taskBarProfile
             // 
-            this.taskBarProfile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
+            this.taskBarProfile.BackColor = System.Drawing.Color.Transparent;
             this.taskBarProfile.Cursor = System.Windows.Forms.Cursors.Hand;
             this.taskBarProfile.Dock = System.Windows.Forms.DockStyle.Top;
             this.taskBarProfile.FlatAppearance.BorderSize = 0;
@@ -127,7 +127,7 @@
             // 
             // taskBarNotifications
             // 
-            this.taskBarNotifications.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
+            this.taskBarNotifications.BackColor = System.Drawing.Color.Transparent;
             this.taskBarNotifications.Cursor = System.Windows.Forms.Cursors.Hand;
             this.taskBarNotifications.Dock = System.Windows.Forms.DockStyle.Top;
             this.taskBarNotifications.FlatAppearance.BorderSize = 0;
@@ -149,7 +149,7 @@
             // 
             // taskBarMessages
             // 
-            this.taskBarMessages.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
+            this.taskBarMessages.BackColor = System.Drawing.Color.Transparent;
             this.taskBarMessages.Cursor = System.Windows.Forms.Cursors.Hand;
             this.taskBarMessages.Dock = System.Windows.Forms.DockStyle.Top;
             this.taskBarMessages.FlatAppearance.BorderSize = 0;
@@ -171,7 +171,7 @@
             // 
             // taskBarExplore
             // 
-            this.taskBarExplore.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
+            this.taskBarExplore.BackColor = System.Drawing.Color.Transparent;
             this.taskBarExplore.Cursor = System.Windows.Forms.Cursors.Hand;
             this.taskBarExplore.Dock = System.Windows.Forms.DockStyle.Top;
             this.taskBarExplore.FlatAppearance.BorderSize = 0;
@@ -193,7 +193,7 @@
             // 
             // taskBarHome
             // 
-            this.taskBarHome.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
+            this.taskBarHome.BackColor = System.Drawing.Color.Transparent;
             this.taskBarHome.Cursor = System.Windows.Forms.Cursors.Hand;
             this.taskBarHome.Dock = System.Windows.Forms.DockStyle.Top;
             this.taskBarHome.FlatAppearance.BorderSize = 0;
@@ -215,7 +215,7 @@
             // 
             // panel3
             // 
-            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
+            this.panel3.BackColor = System.Drawing.Color.Transparent;
             this.panel3.Controls.Add(this.tableLayoutPanel1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
@@ -226,7 +226,7 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.labelAppName, 0, 0);
@@ -242,7 +242,7 @@
             // labelAppName
             // 
             this.labelAppName.AutoSize = true;
-            this.labelAppName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
+            this.labelAppName.BackColor = System.Drawing.Color.Transparent;
             this.labelAppName.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelAppName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelAppName.Font = new System.Drawing.Font("iCiel Cadena", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -258,17 +258,18 @@
             // 
             // panelWindownControlTaskBar
             // 
-            this.panelWindownControlTaskBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
+            this.panelWindownControlTaskBar.BackColor = System.Drawing.Color.Transparent;
             this.panelWindownControlTaskBar.Controls.Add(this.tableLayoutPanel2);
             this.panelWindownControlTaskBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelWindownControlTaskBar.Location = new System.Drawing.Point(220, 0);
+            this.panelWindownControlTaskBar.Location = new System.Drawing.Point(224, 4);
             this.panelWindownControlTaskBar.Margin = new System.Windows.Forms.Padding(0);
             this.panelWindownControlTaskBar.Name = "panelWindownControlTaskBar";
-            this.panelWindownControlTaskBar.Size = new System.Drawing.Size(1180, 35);
+            this.panelWindownControlTaskBar.Size = new System.Drawing.Size(1172, 35);
             this.panelWindownControlTaskBar.TabIndex = 1;
             // 
             // tableLayoutPanel2
             // 
+            this.tableLayoutPanel2.BackColor = System.Drawing.Color.Transparent;
             this.tableLayoutPanel2.ColumnCount = 3;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
@@ -277,7 +278,7 @@
             this.tableLayoutPanel2.Controls.Add(this.MinimizeWindowControlButton, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.CloseWindowControlButton, 2, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(1080, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(1072, 0);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
@@ -287,7 +288,7 @@
             // 
             // MaximizeWindowControlButton
             // 
-            this.MaximizeWindowControlButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
+            this.MaximizeWindowControlButton.BackColor = System.Drawing.Color.Transparent;
             this.MaximizeWindowControlButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MaximizeWindowControlButton.FlatAppearance.BorderSize = 0;
             this.MaximizeWindowControlButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
@@ -302,7 +303,7 @@
             // 
             // MinimizeWindowControlButton
             // 
-            this.MinimizeWindowControlButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
+            this.MinimizeWindowControlButton.BackColor = System.Drawing.Color.Transparent;
             this.MinimizeWindowControlButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MinimizeWindowControlButton.FlatAppearance.BorderSize = 0;
             this.MinimizeWindowControlButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
@@ -317,7 +318,7 @@
             // 
             // CloseWindowControlButton
             // 
-            this.CloseWindowControlButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
+            this.CloseWindowControlButton.BackColor = System.Drawing.Color.Transparent;
             this.CloseWindowControlButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CloseWindowControlButton.FlatAppearance.BorderSize = 0;
             this.CloseWindowControlButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
@@ -332,11 +333,12 @@
             // 
             // panelDesktop
             // 
+            this.panelDesktop.BackColor = System.Drawing.Color.Transparent;
             this.panelDesktop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDesktop.Location = new System.Drawing.Point(220, 35);
-            this.panelDesktop.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
+            this.panelDesktop.Location = new System.Drawing.Point(224, 39);
+            this.panelDesktop.Margin = new System.Windows.Forms.Padding(0);
             this.panelDesktop.Name = "panelDesktop";
-            this.panelDesktop.Size = new System.Drawing.Size(1180, 765);
+            this.panelDesktop.Size = new System.Drawing.Size(1172, 757);
             this.panelDesktop.TabIndex = 2;
             // 
             // MainForm
@@ -351,6 +353,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MinimumSize = new System.Drawing.Size(1400, 800);
             this.Name = "MainForm";
+            this.Padding = new System.Windows.Forms.Padding(4);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainForm";
             this.panelSideBar.ResumeLayout(false);
