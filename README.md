@@ -51,8 +51,8 @@
 ### Yêu cầu 
 <p>AI: api text to sound</p>
 <p>Web</p>
-<p>Ngôn ngữ: Java, PHP, Javascript</p>
-<p>Framework: Bootstrap,  PHP laravel, Java spring boot</p>
+<p>Ngôn ngữ: Go, Javascript</p>
+<p>Framework: Bootstrap,  Golang , Reactjs </p>
 -----------------------------------------------
 
 | Số thứ tự | Nghiệp vụ  | Phân công  | Tiến độ |
