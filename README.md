@@ -79,11 +79,18 @@
 
 | Số thứ tự | Nghiệp vụ  | Phân công  | Tiến độ |
 |:---------:|:------------:|:---------------:|:-----:|
-| 1 | Login/Logout  |  |   |
+| 1 | Login/Logout  |  | |
 | 2 | Register  | | |
-| 6 | Chat (CRUD Message)  ||  |
-| 7 | Chat (Message Reaction) || |
-
+| 3 | CRUD Post  | |  |
+| 4 | Share Post  | | |
+| 5 | Save Post  | | |
+| 6 | Comment Post  | |  |
+| 7 | Post Reaction | | |
+| 8 | Chat (CRUD Message) | |  |
+| 9 | Chat (Message Reaction)  ||  |
+| 10 | Add/Delete Friend  ||  |
+| 11 | Manager Profile  ||  |
+| 12 | Search  ||  |
 
 -------------------------------------------------
 
