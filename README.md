@@ -122,7 +122,7 @@
     - Thành công: người dùng sẽ được chuyển đến trang chủ.
     - Thất bại: người dùng sẽ nhận được thông báo kiểm tra lại thông tin.
 
-<p>+ Quy trình quản lý hồ sơ cá nhân (Profile Management):</p>
+<p>Quy trình quản lý hồ sơ cá nhân (Profile Management):</p>
 - Mô tả: Người dùng có thể cập nhật thông tin cá nhân và quản lý quyền riêng tư của hồ sơ.
 
 - Quy trình:
@@ -144,7 +144,7 @@
    - Người dùng có thể cài đặt quyền riêng tư cho hồ sơ (Công khai, Bạn bè, Cá nhân) để quyết định ai có thể xem thông tin của họ.
 
 
-<p>+ Tìm kiếm bạn bè:</p>
+<p>Tìm kiếm bạn bè:</p>
 - Mô tả: Người dùng có thể tìm kiếm bạn bè qua tên, email hoặc username.
 
 - Quy trình:
@@ -162,7 +162,7 @@
     - Người dùng có thể chọn từ danh sách kết quả và gửi lời mời kết bạn.
 
 
-<p>+ Quy trình tạo bài viết:</p>
+<p>Quy trình tạo bài viết:</p>
 - Mô tả: Người dùng có thể tạo, đọc, cập nhật và xóa bài viết của mình.
 
 - Quy trình:
