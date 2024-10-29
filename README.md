@@ -195,7 +195,37 @@
    
 
 <h3>Quy trình bình luận:</h3>
-- Mô tả: Người dùng có thể tạo, đọc, cập nhật và xóa bài viết của mình.
+- Mô tả: Người dùng có thể bình luận về các bài viết.
+
+- Quy trình:
+
+   1 Người dùng cần đăng nhập tài khoản của mình:
+
+    - Người dùng cần hoàn tất quy trình đăng nhập tài khoản cá nhân.
+    - Sau khi hoàn tất đăng nhập hệ thống sẽ chuyển hướng người dùng đến trang 
+      
+   2 Người dùng chọn bài viết muốn bình luận.
+  
+    - Người dùng khi đang xem danh sách bài viết mới hay của bạn bè.
+    - Muốn dể lại bình luận cho bài viết
+    - Chọn vào bài viết đấy.
+    - Chọn chức năng bình luận ở bên phải của bài viết.
+      
+   3 Nhập nội dung bình luận..
+
+    - Người dùng có thể nhập nội dung bình luận về bài viết
+    - Có thẻ Đính kèm với hình ảnh hoặc không đều được
+  
+   4 Hệ thống lưu bình luận và hiển thị dưới bài viết.
+  
+   5 Người dùng có thể chỉnh sửa hoặc xóa bình luận của mình.
+  
+    - Người dùng có thể xem lại thông tin bình luận của mình khi chọn vào bài viết ấy
+    - Hoặc có thể xem lại các bài viết đã bình luận ở chức năng quản lí hoạt dộng.
+    - Có thể chỉnh sửa hoặc xóa bình luận của bản thân.
+      
+<h3>Quy trình chia sẻ bài viết</h3>
+- Mô tả: Người dùng có thể chia sẻ bài viết của mình hoặc của người khác lên dòng thời gian cá nhân hoặc các nhóm.
 
 - Quy trình:
 
