@@ -1,5 +1,5 @@
 <h2>Tên nhóm: Workajolibee</h2>
-<h3 style="text-align:center">Social media</h3>
+<h3 style="text-align:center">Social Network</h3>
 
 -----------------------------------------------
 -----------------------------------------------
