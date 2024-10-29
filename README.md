@@ -96,7 +96,7 @@
 
 <h2>Các quy trình nghiệp vụ</h2>
 
-<p>Quy trình đăng ký và xác thực người dùng:</p>
+<h3>Quy trình đăng ký và xác thực người dùng:</h3>
 
 - Mô tả: Người dùng mới cần phải đăng ký tài khoản bằng email hoặc thông tin mạng xã hội, sau đó hệ thống sẽ gửi email xác nhận để kích hoạt tài khoản.
 - Quy trình:
@@ -109,7 +109,7 @@
   
   4 Sau khi xác thực, người dùng có thể đăng nhập vào hệ thống.
 
-<p>Quy trình đăng nhập:</p>
+<h3>Quy trình đăng nhập:</h3>
 
 - Mô tả: Người dùng sau khi đăng kí tài khoản có thể đăng nhập.
 - Quy trình:
@@ -122,7 +122,7 @@
     - Thành công: người dùng sẽ được chuyển đến trang chủ.
     - Thất bại: người dùng sẽ nhận được thông báo kiểm tra lại thông tin.
 
-<p>Quy trình quản lý hồ sơ cá nhân (Profile Management):</p>
+<h3>Quy trình quản lý hồ sơ cá nhân (Profile Management):</h3>
 - Mô tả: Người dùng có thể cập nhật thông tin cá nhân và quản lý quyền riêng tư của hồ sơ.
 
 - Quy trình:
@@ -144,7 +144,7 @@
    - Người dùng có thể cài đặt quyền riêng tư cho hồ sơ (Công khai, Bạn bè, Cá nhân) để quyết định ai có thể xem thông tin của họ.
 
 
-<p>Tìm kiếm bạn bè:</p>
+<h3>Tìm kiếm bạn bè:</h3>
 - Mô tả: Người dùng có thể tìm kiếm bạn bè qua tên, email hoặc username.
 
 - Quy trình:
@@ -162,7 +162,7 @@
     - Người dùng có thể chọn từ danh sách kết quả và gửi lời mời kết bạn.
 
 
-<p>Quy trình tạo bài viết:</p>
+<h3>Quy trình tạo bài viết:</h3>
 - Mô tả: Người dùng có thể tạo, đọc, cập nhật và xóa bài viết của mình.
 
 - Quy trình:
