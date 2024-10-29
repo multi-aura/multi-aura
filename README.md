@@ -225,7 +225,7 @@
     - Có thể chỉnh sửa hoặc xóa bình luận của bản thân.
       
 <h3>Quy trình chia sẻ bài viết</h3>
-- Mô tả: Người dùng có thể chia sẻ bài viết của mình hoặc của người khác lên dòng thời gian cá nhân hoặc các nhóm.
+- Mô tả: Người dùng có thể chia sẻ bài viết của mình hoặc của người khác lên dòng thời gian cá nhân.
 
 - Quy trình:
 
@@ -234,24 +234,29 @@
     - Người dùng cần hoàn tất quy trình đăng nhập tài khoản cá nhân.
     - Sau khi hoàn tất đăng nhập hệ thống sẽ chuyển hướng người dùng đến trang 
       
-   2 Người dùng chọn bài viết muốn bình luận.
+   2 Người dùng chọn bài viết muốn chia sẻ.
   
     - Người dùng khi đang xem danh sách bài viết mới hay của bạn bè.
-    - Muốn dể lại bình luận cho bài viết
+    - Muốn chia sẽ bài viết dể bạn bè của mình được thấy.
     - Chọn vào bài viết đấy.
-    - Chọn chức năng bình luận ở bên phải của bài viết.
+    - Chọn chức năng chia  ở bên phải của bài viết.
       
-   3 Nhập nội dung bình luận..
+   3 Nhập nội dung status khi chia sẽ.
 
-    - Người dùng có thể nhập nội dung bình luận về bài viết
-    - Có thẻ Đính kèm với hình ảnh hoặc không đều được
+    - Người dùng có thể nhập nội dung giới thiệu về bài viết
   
-   4 Hệ thống lưu bình luận và hiển thị dưới bài viết.
-  
-   5 Người dùng có thể chỉnh sửa hoặc xóa bình luận của mình.
-  
-    - Người dùng có thể xem lại thông tin bình luận của mình khi chọn vào bài viết ấy
-    - Hoặc có thể xem lại các bài viết đã bình luận ở chức năng quản lí hoạt dộng.
+   4 Chọn phương thức chia sẻ
 
+    - Chia sẽ về trang cá nhân của mình
+    - Hay gửi cho bạn bè thông qua tin
+
+   5 Hệ thống Lưu trạng thái chia sẽ bài viết.
+  
+   6 Hệ thống hiển thị bài viết đã được chia sẻ trên nền tảng.
+  
+    - Người dùng có thể xem lại các bài viết mình đã chia sẽ ở trang cá nhân bản thân.
+    - Hoặc có thể xem lại các bài viết đã chia sẽ ở chức năng quản lí hoạt dộng.
+  
+   7 Người dùng có thể thay đổi status bài đăng hoặc xóa đi.
 
    
