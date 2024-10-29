@@ -159,7 +159,7 @@
       
    3 Người dùng có thể follow người đã chọn
 
-    - Người dùng có thể chọn từ danh sách kết quả và follow họhọ.
+    - Người dùng có thể chọn từ danh sách kết quả và follow họ.
 
 
 <h3>Quy trình tạo bài viết:</h3>
