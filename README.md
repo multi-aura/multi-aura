@@ -184,11 +184,11 @@
   
    4 Nhấn chọn xác nhận đăng bài viết.
   
-   4 Hệ thống lưu bài viết vào cơ sở dữ liệu.
+   5 Hệ thống lưu bài viết vào cơ sở dữ liệu.
 
-   5 Sau khi hoàn tất đăng bài. bài viết sẽ được hiển thị lên trang new Feed.
+   6 Sau khi hoàn tất đăng bài. bài viết sẽ được hiển thị lên trang new Feed.
 
-   6 Người dùng có thể chỉnh sửa hoặc xóa bài viết đã tạo.
+   7 Người dùng có thể chỉnh sửa hoặc xóa bài viết đã tạo.
   
      - Người dùng có thể xem lại thông tin bài viết của mình ở trang cá nhân
      - Chọn vào bài viết và có thể sửa nội dung bài viết hoặc xóa bài viết 
