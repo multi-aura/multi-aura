@@ -13,6 +13,7 @@ frontend-desktop/CustomControl/bin/
 frontend-desktop/CustomControl/obj/
 frontend-desktop/BLL/bin/
 frontend-desktop/BLL/obj/
+frontend-desktop/.vs/
 # Tệp cấu hình nhạy cảm
 *.user
 *.suo
