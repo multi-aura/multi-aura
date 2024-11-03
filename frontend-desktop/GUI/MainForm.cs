@@ -35,9 +35,9 @@ namespace GUI
                         this.EnableWindowResize();
                         this.EnableWindowDrag(panelWindownControlTaskBar);
                         this.EnableWindowControlButtons(
-                            this.MinimizeWindowControlButton,
-                            this.MaximizeWindowControlButton,
-                            this.CloseWindowControlButton
+                            minimizeButton: this.MinimizeWindowControlButton,
+                            maximizeButton: this.MaximizeWindowControlButton,
+                            closeButton: this.CloseWindowControlButton
                             );
                         SetUpNavigators();
 
