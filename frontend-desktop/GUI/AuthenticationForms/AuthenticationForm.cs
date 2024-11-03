@@ -21,13 +21,9 @@ namespace GUI.AuthenticationForms
         public AuthenticationForm()
         {
             InitializeComponent();
-            this.EnableWindowDrag(panelWindownControlTaskBar);
-            this.EnableWindowResize();
             this.EnableWindowControlButtons(
-                this.MinimizeWindowControlButton,
-                this.MaximizeWindowControlButton,
-                this.CloseWindowControlButton
-                );
+                minimizeButton: this.MinimizeWindowControlButton, 
+                closeButton: this.CloseWindowControlButton);
             appDataProvider.HasUser = false;
             this.FormClosed += AuthenticationForm_FormClosed;
             SetUpNavigators();
@@ -51,6 +47,16 @@ namespace GUI.AuthenticationForms
             if (activeForm != null)
             {
                 activeForm.Close();
+            }
+            if(childForm is LoginForm)
+            {
+                this.labelFormName.Text = "Login";
+                this.labelShortDescription.Text = "Đăng nhập tài khoản của bạn";
+            }
+            else if (childForm is RegisterForm)
+            {
+                this.labelFormName.Text = "Register";
+                this.labelShortDescription.Text = "Tạo tài khoản của ban";
             }
             activeForm = childForm;
             //childForm.Tag = this.Tag;

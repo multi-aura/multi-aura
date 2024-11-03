@@ -57,11 +57,17 @@ func (uc *UserController) Login(c *fiber.Ctx) error {
 	// Call the Login service method
 	existingUser, err := uc.service.Login(req.Username, req.Password)
 	if err != nil {
-		if err.Error() == "invalid email" {
+		if err.Error() == "user not found with this email" {
 			return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
-				Status:  fiber.StatusUnauthorized,
-				Message: "Invalid email",
-				Error:   "StatusUnauthorized",
+				Status:  fiber.StatusNotFound,
+				Message: "User not found with this email",
+				Error:   "StatusNotFound",
+			})
+		} else if err.Error() == "user not found with this username" {
+			return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
+				Status:  fiber.StatusNotFound,
+				Message: "User not found with this username",
+				Error:   "StatusNotFound",
 			})
 		} else if err.Error() == "invalid password" {
 			return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
@@ -73,7 +79,7 @@ func (uc *UserController) Login(c *fiber.Ctx) error {
 		// Handle other unexpected errors
 		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusInternalServerError,
-			Message: "Internal Server Error",
+			Message: err.Error(),
 			Error:   "StatusInternalServerError",
 		})
 	}

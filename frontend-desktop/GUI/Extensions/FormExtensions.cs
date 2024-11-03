@@ -153,11 +153,26 @@ namespace GUI.Extensions
             };
         }
 
-        public static void EnableWindowControlButtons(this Form form, Button minimizeButton, Button maximizeButton, Button closeButton)
+        public static void EnableWindowControlButtons(
+            this Form form,
+            Button minimizeButton = null,
+            Button maximizeButton = null,
+            Button closeButton = null)
         {
-            minimizeButton.Click += async (sender, e) => await MinimizeWindowAsync(form);
-            maximizeButton.Click += async (sender, e) => await MaximizeOrRestoreWindowAsync(form);
-            closeButton.Click += (sender, e) => form.Close();
+            if (minimizeButton != null)
+            {
+                minimizeButton.Click += async (sender, e) => await MinimizeWindowAsync(form);
+            }
+
+            if (maximizeButton != null)
+            {
+                maximizeButton.Click += async (sender, e) => await MaximizeOrRestoreWindowAsync(form);
+            }
+
+            if (closeButton != null)
+            {
+                closeButton.Click += (sender, e) => form.Close();
+            }
         }
 
         // Private helper methods for window control actions
