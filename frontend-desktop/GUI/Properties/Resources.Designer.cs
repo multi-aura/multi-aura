@@ -59,5 +59,15 @@ namespace GUI.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap _006833d62de3321b980cb2b6a46088a5 {
+            get {
+                object obj = ResourceManager.GetObject("006833d62de3321b980cb2b6a46088a5", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

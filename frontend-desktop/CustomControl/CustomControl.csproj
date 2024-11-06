@@ -48,11 +48,50 @@
     <Compile Include="AuthenticationComponents\IntroComponent.Designer.cs">
       <DependentUpon>IntroComponent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Commons\AvatarCommon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Commons\CommentCommon.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Commons\CommentCommon.Designer.cs">
+      <DependentUpon>CommentCommon.cs</DependentUpon>
+    </Compile>
     <Compile Include="Commons\LanguageCombobox.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Commons\LanguageCombobox.Designer.cs">
       <DependentUpon>LanguageCombobox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commons\PostCommon.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Commons\PostCommon.Designer.cs">
+      <DependentUpon>PostCommon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commons\SearchBarCommon.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Commons\SearchBarCommon.Designer.cs">
+      <DependentUpon>SearchBarCommon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commons\SuggestForYouCommon.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Commons\SuggestForYouCommon.Designer.cs">
+      <DependentUpon>SuggestForYouCommon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commons\UserSummaryCommon.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Commons\UserSummaryCommon.Designer.cs">
+      <DependentUpon>UserSummaryCommon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commons\VoicePlayerCommon.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Commons\VoicePlayerCommon.Designer.cs">
+      <DependentUpon>VoicePlayerCommon.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -66,17 +105,95 @@
     <EmbeddedResource Include="AuthenticationComponents\IntroComponent.resx">
       <DependentUpon>IntroComponent.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Commons\CommentCommon.resx">
+      <DependentUpon>CommentCommon.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Commons\LanguageCombobox.resx">
       <DependentUpon>LanguageCombobox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Commons\PostCommon.resx">
+      <DependentUpon>PostCommon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Commons\SearchBarCommon.resx">
+      <DependentUpon>SearchBarCommon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Commons\SuggestForYouCommon.resx">
+      <DependentUpon>SuggestForYouCommon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Commons\UserSummaryCommon.resx">
+      <DependentUpon>UserSummaryCommon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Commons\VoicePlayerCommon.resx">
+      <DependentUpon>VoicePlayerCommon.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\multi_aura.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\006833d62de3321b980cb2b6a46088a5.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\more.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\e689c6e22850ab91c9236b413cbaf32e.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\chevron_left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\chevron_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\heart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\comment.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\share.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\heart16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\2773d8b41134ee880c2f2ba46fe02303.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\equalizer.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sound_wave.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\search.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\search24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\clear24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\clear16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\clear24_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\search24_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\clear16_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\search16_white.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

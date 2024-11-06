@@ -24,14 +24,13 @@ namespace GUI.AuthenticationForms
             this.EnableWindowControlButtons(
                 minimizeButton: this.MinimizeWindowControlButton, 
                 closeButton: this.CloseWindowControlButton);
-            appDataProvider.HasUser = false;
             this.FormClosed += AuthenticationForm_FormClosed;
             SetUpNavigators();
         }
 
         private void AuthenticationForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (!appDataProvider.HasUser)
+            if (!appDataProvider.HasUser())
             {
                 this.Hide();
                 WelcomeForm welcomeForm = new WelcomeForm();

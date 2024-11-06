@@ -29,6 +29,7 @@ packages/
 
 # Thư mục .vs
 .vs/
+**/.vs/
 
 # Thư mục cho công cụ mã hóa
 *.ide
