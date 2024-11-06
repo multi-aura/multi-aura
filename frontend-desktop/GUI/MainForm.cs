@@ -19,38 +19,59 @@ namespace GUI
         private Button currentButton;
         private Form activeForm;
         private AppDataProvider appDataProvider = AppDataProvider.Instance;
+        private bool isListeningForMouseDown = false;
+
         public MainForm()
         {
             InitializeComponent();
-
-            if (!appDataProvider.HasUser)
+            this.KeyPreview = true;
+            if (!appDataProvider.HasUser())
             {
                 this.Hide();
 
                 AuthenticationForm authenticationForm = new AuthenticationForm();
                 authenticationForm.FormClosed += (s, args) =>
                 {
-                    if (appDataProvider.HasUser)
+                    if (appDataProvider.HasUser())
                     {
-                        this.EnableWindowResize();
-                        this.EnableWindowDrag(panelWindownControlTaskBar);
-                        this.EnableWindowControlButtons(
-                            minimizeButton: this.MinimizeWindowControlButton,
-                            maximizeButton: this.MaximizeWindowControlButton,
-                            closeButton: this.CloseWindowControlButton
-                            );
-                        SetUpNavigators();
+                        SetUpDefaultActions();
 
                         this.Show();
                     }
                     else
                     {
-                        Application.Exit();                        
+                        Application.Exit();
                     }
                 };
                 authenticationForm.ShowDialog();
             }
+            else
+            {
+                SetUpDefaultActions();
+            }
         }
+        private void SetUpDefaultActions()
+        {
+            this.KeyPress += MainForm_KeyPress;
+            this.EnableWindowResize();
+            this.EnableWindowDrag(panelWindownControlTaskBar);
+            this.EnableWindowControlButtons(
+                minimizeButton: this.MinimizeWindowControlButton,
+                maximizeButton: this.MaximizeWindowControlButton,
+                closeButton: this.CloseWindowControlButton
+                );
+            SetUpNavigators();
+        }
+
+        private void MainForm_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)27)  // Mã ASCII của phím ESC là 27
+            {
+                this.ActiveControl = null;  // Clear focus
+                this.Focus();               // Đặt lại focus vào form (nếu cần)
+            }
+        }
+
         private void SetUpNavigators()
         {
             this.taskBarHome.Click += (sender, e) => OpenChildForm(new HomeForm(), sender);
@@ -60,7 +81,7 @@ namespace GUI
             this.taskBarProfile.Click += (sender, e) => OpenChildForm(new ProfileForm(), sender);
             this.labelAppName.Click += (sender, e) => OpenChildForm(new HomeForm(), this.taskBarHome);
             this.Load += (sender, e) => OpenChildForm(new HomeForm(), this.taskBarHome);
-        }        
+        }
         private void ActivateButton(object btnSender)
         {
             if (btnSender != null)
@@ -91,6 +112,16 @@ namespace GUI
             }
             ActivateButton(btnSender);
             activeForm = childForm;
+
+            if (childForm is ExploreForm)
+            {
+                ToggleMouseDownListener(true);
+            }
+            else
+            {
+                ToggleMouseDownListener(false);
+            }
+
             //childForm.Tag = this.Tag;
             childForm.TopLevel = false;
             childForm.FormBorderStyle = FormBorderStyle.None;
@@ -99,6 +130,38 @@ namespace GUI
             this.panelDesktop.Tag = childForm;
             childForm.BringToFront();
             childForm.Show();
+        }
+
+        public void ToggleMouseDownListener(bool enable)
+        {
+            isListeningForMouseDown = enable;
+            if (isListeningForMouseDown)
+            {
+                panelSideBar.MouseDown += MainForm_MouseDown;
+                panelSideBarItems.MouseDown += MainForm_MouseDown;
+                panelDesktop.MouseDown += MainForm_MouseDown;
+                panelWindownControlTaskBar.MouseDown += MainForm_MouseDown;
+            }
+            else
+            {
+                panelSideBar.MouseDown -= MainForm_MouseDown;
+                panelSideBarItems.MouseDown -= MainForm_MouseDown;
+                panelDesktop.MouseDown -= MainForm_MouseDown;
+                panelWindownControlTaskBar.MouseDown -= MainForm_MouseDown;
+            }
+        }
+
+        // Phương thức xử lý sự kiện MouseDown để clear focus
+        private void MainForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (activeForm is ExploreForm exploreForm)
+            {
+                if (!exploreForm.SearchBar().Bounds.Contains(e.Location))
+                {
+                    this.ActiveControl = null;
+                    this.Focus();
+                }
+            }
         }
     }
 }

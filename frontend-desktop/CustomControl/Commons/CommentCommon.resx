@@ -117,68 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="equalizer" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\equalizer.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="chevron_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\chevron_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="clear24_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\clear24_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="clear16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\clear16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="chevron_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\chevron_left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="e689c6e22850ab91c9236b413cbaf32e" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\e689c6e22850ab91c9236b413cbaf32e.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="clear16_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\clear16_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="comment" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\comment.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="multi_aura" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\multi_aura.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="clear24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\clear24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="2773d8b41134ee880c2f2ba46fe02303" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\2773d8b41134ee880c2f2ba46fe02303.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="more" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\more.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="share" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\share.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="search24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\search24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="search" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\search.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="sound_wave" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\sound_wave.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="search24_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\search24_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="heart16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\heart16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="heart" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\heart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="006833d62de3321b980cb2b6a46088a5" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\006833d62de3321b980cb2b6a46088a5.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="search16_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\search16_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="labelComment.Text" xml:space="preserve">
+    <value>Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@Username123@hehe</value>
   </data>
 </root>

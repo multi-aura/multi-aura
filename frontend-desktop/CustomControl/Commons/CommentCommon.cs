@@ -8,13 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GUI.Forms
+namespace CustomControl.Commons
 {
-    public partial class HomeForm : Form
+    public partial class CommentCommon : UserControl
     {
-        public HomeForm()
+        public CommentCommon()
         {
             InitializeComponent();
-        }
+        }        
     }
 }
