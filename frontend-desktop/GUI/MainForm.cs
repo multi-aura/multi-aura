@@ -2,15 +2,11 @@
 using GUI.Forms;
 using GUI.AuthenticationForms;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using BLL;
+using CustomControl.Commons;
+using CustomControl.Modals;
 
 namespace GUI
 {
@@ -21,10 +17,38 @@ namespace GUI
         private AppDataProvider appDataProvider = AppDataProvider.Instance;
         private bool isListeningForMouseDown = false;
 
+        private Form homeForm;
+        private Form exploreForm;
+        private Form messagesForm;
+        private Form notificationsForm;
+        private Form profileForm;
+
+        
         public MainForm()
         {
             InitializeComponent();
+
+            appDataProvider.MainForm = this;
+            // Lấy kích thước màn hình của PC
+            var screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
+            var screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
+
+            // Thiết lập kích thước form là 80% chiều rộng và 80% chiều cao của màn hình
+            this.Width = (int)(screenWidth * 0.8);
+            this.Height = (int)(screenHeight * 0.8);
+
+            appDataProvider.ScreenWidth = this.Width;
+            appDataProvider.ScreenHeight = this.Height;
+
+            homeForm = new HomeForm(new EventHandler<Form>(ShowModalRequest));
+            exploreForm = new ExploreForm();
+            messagesForm = new MessagesForm();
+            notificationsForm = new NotificationsForm();
+            profileForm = new ProfileForm();
+
+            this.taskBarNotifications.Visible = false;
             this.KeyPreview = true;
+
             if (!appDataProvider.HasUser())
             {
                 this.Hide();
@@ -61,6 +85,140 @@ namespace GUI
                 closeButton: this.CloseWindowControlButton
                 );
             SetUpNavigators();
+
+            this.taskBarMore.Click += TaskBarMore_Click;
+        }
+
+        private void TaskBarMore_Click(object sender, EventArgs e)
+        {
+            ShowModalRequest(this, modal = new PostDetails
+            {
+                Width = this.Width - 400,
+                Height = this.Height - 200,
+                StartPosition = FormStartPosition.CenterScreen,
+                ShowInTaskbar = false,
+                TopMost = true
+            });
+        }
+
+        public void ShowModalRequest(object sender, Form modal)
+        {
+            //ShowModal(modal = new PostDetails
+            //{
+            //    Width = this.Width - 400,
+            //    Height = this.Height - 200,
+            //    StartPosition = FormStartPosition.CenterScreen,
+            //    ShowInTaskbar = false,
+            //    TopMost = true
+            //});
+            this.modal = modal;
+            ShowModal(modal);
+        }
+
+        private TransparentOverlayForm overlayForm;
+        private Form modal;
+        private void ShowModal(Form modal)
+        {
+            if (modal == null || modal.IsDisposed)
+            {
+                return;
+            }
+
+            ShowOverlayForm();
+
+            //modal = new PostDetails
+            //{
+            //    Width = this.Width - 400,
+            //    Height = this.Height - 200,
+            //    StartPosition = FormStartPosition.CenterScreen,
+            //    ShowInTaskbar = false,
+            //    TopMost = true
+            //};
+
+            modal.FormClosed += (s, args) =>
+            {
+                this.Focus();
+                this.TopMost = true;
+                //overlayPanel.Visible = false;
+                this.TopMost = false;
+
+                HideOverlayForm();
+
+                if (modal != null && !modal.IsDisposed)
+                {
+                    modal.Dispose();
+                }
+
+            };
+            overlayForm.TopMost = false;
+            modal.TopMost = false;
+            modal.Show();
+        }
+
+        private void ShowOverlayForm()
+        {
+            if (overlayForm == null)
+            {
+                overlayForm = new TransparentOverlayForm();
+                overlayForm.Size = this.ClientSize;
+                overlayForm.Location = this.PointToScreen(Point.Empty);
+                overlayForm.Click += OverlayForm_Click;
+                overlayForm.Show();
+            }
+            else
+            {
+                overlayForm.Show();
+            }
+        }
+
+        private void OverlayForm_Click(object sender, EventArgs e)
+        {
+            if (modal != null)
+            {
+                modal.Close();
+                modal.Dispose();
+            }
+            HideOverlayForm();
+        }
+
+        private void HideOverlayForm()
+        {
+            if (overlayForm != null && !overlayForm.IsDisposed)
+            {
+                overlayForm.Close();
+                overlayForm.Dispose();
+                overlayForm = null;
+            }
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+
+            if (overlayForm != null && !overlayForm.IsDisposed)
+            {
+                overlayForm.TopMost = true;
+                overlayForm.TopMost = false;
+            }
+
+            if (modal != null && !modal.IsDisposed)
+            {
+                modal.TopMost = true;
+                modal.TopMost = false;
+            }
+        }
+
+        private Panel overlayPanel;
+        private void CreateOverlayPanel()
+        {
+            overlayPanel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                BackColor = Color.FromArgb(128, 0, 0, 0),
+                Visible = false
+            };
+            this.Controls.Add(overlayPanel);
+            overlayPanel.BringToFront();
         }
 
         private void MainForm_KeyPress(object sender, KeyPressEventArgs e)
@@ -74,13 +232,21 @@ namespace GUI
 
         private void SetUpNavigators()
         {
-            this.taskBarHome.Click += (sender, e) => OpenChildForm(new HomeForm(), sender);
-            this.taskBarExplore.Click += (sender, e) => OpenChildForm(new ExploreForm(), sender);
-            this.taskBarMessages.Click += (sender, e) => OpenChildForm(new MessagesForm(), sender);
-            this.taskBarNotifications.Click += (sender, e) => OpenChildForm(new NotificationsForm(), sender);
-            this.taskBarProfile.Click += (sender, e) => OpenChildForm(new ProfileForm(), sender);
-            this.labelAppName.Click += (sender, e) => OpenChildForm(new HomeForm(), this.taskBarHome);
-            this.Load += (sender, e) => OpenChildForm(new HomeForm(), this.taskBarHome);
+            //this.taskBarHome.Click += (sender, e) => OpenChildForm(new HomeForm(), sender);
+            //this.taskBarExplore.Click += (sender, e) => OpenChildForm(new ExploreForm(), sender);
+            //this.taskBarMessages.Click += (sender, e) => OpenChildForm(new MessagesForm(), sender);
+            //this.taskBarNotifications.Click += (sender, e) => OpenChildForm(new NotificationsForm(), sender);
+            //this.taskBarProfile.Click += (sender, e) => OpenChildForm(new ProfileForm(), sender);
+            //this.labelAppName.Click += (sender, e) => OpenChildForm(new HomeForm(), this.taskBarHome);
+            //this.Load += (sender, e) => OpenChildForm(new HomeForm(), this.taskBarHome);
+
+            this.taskBarHome.Click += (sender, e) => OpenChildForm(homeForm, sender);
+            this.taskBarExplore.Click += (sender, e) => OpenChildForm(exploreForm, sender);
+            this.taskBarMessages.Click += (sender, e) => OpenChildForm(messagesForm, sender);
+            this.taskBarNotifications.Click += (sender, e) => OpenChildForm(notificationsForm, sender);
+            this.taskBarProfile.Click += (sender, e) => OpenChildForm(profileForm, sender);
+            this.labelAppName.Click += (sender, e) => OpenChildForm(homeForm, this.taskBarHome);
+            this.Load += (sender, e) => OpenChildForm(homeForm, this.taskBarHome);
         }
         private void ActivateButton(object btnSender)
         {
@@ -106,10 +272,10 @@ namespace GUI
         }
         private void OpenChildForm(Form childForm, object btnSender)
         {
-            if (activeForm != null)
-            {
-                activeForm.Close();
-            }
+            //if (activeForm != null)
+            //{
+            //    activeForm.Close();
+            //}
             ActivateButton(btnSender);
             activeForm = childForm;
 

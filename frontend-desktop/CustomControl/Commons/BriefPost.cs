@@ -1,5 +1,4 @@
-﻿using CustomControl.Commons;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GUI.Forms
+namespace CustomControl.Commons
 {
-    public partial class NotificationsForm : Form
+    public partial class BriefPost : UserControl
     {
-        public NotificationsForm()
+        public BriefPost()
         {
             InitializeComponent();
         }

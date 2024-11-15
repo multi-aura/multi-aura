@@ -59,13 +59,13 @@
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelLike = new System.Windows.Forms.Label();
+            this.labelReply = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.labelFullName = new System.Windows.Forms.Label();
+            this.voicePlayerCommon1 = new CustomControl.Commons.VoicePlayerCommon();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.avatarUser = new CustomControl.Commons.AvatarCommon();
-            this.voicePlayerCommon1 = new CustomControl.Commons.VoicePlayerCommon();
             this.tableLayoutPanel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarCommon2)).BeginInit();
             this.tableLayoutPanel8.SuspendLayout();
@@ -125,6 +125,7 @@
             // 
             // avatarCommon2
             // 
+            this.avatarCommon2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.avatarCommon2.Image = global::CustomControl.Properties.Resources._006833d62de3321b980cb2b6a46088a5;
             this.avatarCommon2.Location = new System.Drawing.Point(60, 0);
             this.avatarCommon2.Margin = new System.Windows.Forms.Padding(0);
@@ -233,6 +234,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
+            this.label9.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label9.ForeColor = System.Drawing.Color.White;
             this.label9.Image = global::CustomControl.Properties.Resources.heart16;
@@ -246,9 +248,10 @@
             // label10
             // 
             this.label10.AutoSize = true;
+            this.label10.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label10.Font = new System.Drawing.Font("Montserrat SemiBold", 7.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.ForeColor = System.Drawing.Color.White;
+            this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(222)))), ((int)(((byte)(222)))));
             this.label10.Location = new System.Drawing.Point(48, 0);
             this.label10.Margin = new System.Windows.Forms.Padding(0);
             this.label10.Name = "label10";
@@ -274,13 +277,14 @@
             // 
             this.label12.AutoEllipsis = true;
             this.label12.AutoSize = true;
-            this.label12.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label12.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label12.Dock = System.Windows.Forms.DockStyle.Left;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.ForeColor = System.Drawing.Color.White;
             this.label12.Location = new System.Drawing.Point(10, 0);
             this.label12.Margin = new System.Windows.Forms.Padding(0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(570, 22);
+            this.label12.Size = new System.Drawing.Size(126, 22);
             this.label12.TabIndex = 0;
             this.label12.Text = "Nguyễn Minh Thư";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -505,8 +509,8 @@
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 48F));
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 48F));
-            this.tableLayoutPanel12.Controls.Add(this.label2, 4, 0);
-            this.tableLayoutPanel12.Controls.Add(this.label3, 1, 0);
+            this.tableLayoutPanel12.Controls.Add(this.labelLike, 4, 0);
+            this.tableLayoutPanel12.Controls.Add(this.labelReply, 1, 0);
             this.tableLayoutPanel12.Controls.Add(this.label4, 0, 0);
             this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel12.Location = new System.Drawing.Point(0, 0);
@@ -517,32 +521,34 @@
             this.tableLayoutPanel12.Size = new System.Drawing.Size(630, 22);
             this.tableLayoutPanel12.TabIndex = 0;
             // 
-            // label2
+            // labelLike
             // 
-            this.label2.AutoSize = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Image = global::CustomControl.Properties.Resources.heart16;
-            this.label2.Location = new System.Drawing.Point(582, 0);
-            this.label2.Margin = new System.Windows.Forms.Padding(0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(48, 22);
-            this.label2.TabIndex = 4;
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelLike.AutoSize = true;
+            this.labelLike.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.labelLike.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelLike.ForeColor = System.Drawing.Color.White;
+            this.labelLike.Image = global::CustomControl.Properties.Resources.heart16;
+            this.labelLike.Location = new System.Drawing.Point(582, 0);
+            this.labelLike.Margin = new System.Windows.Forms.Padding(0);
+            this.labelLike.Name = "labelLike";
+            this.labelLike.Size = new System.Drawing.Size(48, 22);
+            this.labelLike.TabIndex = 4;
+            this.labelLike.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label3
+            // labelReply
             // 
-            this.label3.AutoSize = true;
-            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Font = new System.Drawing.Font("Montserrat SemiBold", 7.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(48, 0);
-            this.label3.Margin = new System.Windows.Forms.Padding(0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(48, 22);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Reply";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelReply.AutoSize = true;
+            this.labelReply.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.labelReply.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelReply.Font = new System.Drawing.Font("Montserrat SemiBold", 7.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelReply.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(222)))), ((int)(((byte)(222)))));
+            this.labelReply.Location = new System.Drawing.Point(48, 0);
+            this.labelReply.Margin = new System.Windows.Forms.Padding(0);
+            this.labelReply.Name = "labelReply";
+            this.labelReply.Size = new System.Drawing.Size(48, 22);
+            this.labelReply.TabIndex = 1;
+            this.labelReply.Text = "Reply";
+            this.labelReply.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label4
             // 
@@ -561,16 +567,28 @@
             // 
             this.labelFullName.AutoEllipsis = true;
             this.labelFullName.AutoSize = true;
-            this.labelFullName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelFullName.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.labelFullName.Dock = System.Windows.Forms.DockStyle.Left;
             this.labelFullName.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelFullName.ForeColor = System.Drawing.Color.White;
             this.labelFullName.Location = new System.Drawing.Point(10, 0);
             this.labelFullName.Margin = new System.Windows.Forms.Padding(0);
             this.labelFullName.Name = "labelFullName";
-            this.labelFullName.Size = new System.Drawing.Size(630, 22);
+            this.labelFullName.Size = new System.Drawing.Size(126, 22);
             this.labelFullName.TabIndex = 0;
             this.labelFullName.Text = "Nguyễn Minh Thư";
             this.labelFullName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // voicePlayerCommon1
+            // 
+            this.voicePlayerCommon1.BackColor = System.Drawing.Color.Transparent;
+            this.voicePlayerCommon1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.voicePlayerCommon1.Location = new System.Drawing.Point(10, 97);
+            this.voicePlayerCommon1.Margin = new System.Windows.Forms.Padding(0);
+            this.voicePlayerCommon1.Name = "voicePlayerCommon1";
+            this.voicePlayerCommon1.Padding = new System.Windows.Forms.Padding(6, 10, 6, 10);
+            this.voicePlayerCommon1.Size = new System.Drawing.Size(630, 60);
+            this.voicePlayerCommon1.TabIndex = 14;
             // 
             // tableLayoutPanel2
             // 
@@ -593,6 +611,7 @@
             // 
             // avatarUser
             // 
+            this.avatarUser.Cursor = System.Windows.Forms.Cursors.Hand;
             this.avatarUser.Image = global::CustomControl.Properties.Resources._006833d62de3321b980cb2b6a46088a5;
             this.avatarUser.Location = new System.Drawing.Point(0, 0);
             this.avatarUser.Margin = new System.Windows.Forms.Padding(0);
@@ -603,16 +622,6 @@
             this.avatarUser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.avatarUser.TabIndex = 1;
             this.avatarUser.TabStop = false;
-            // 
-            // voicePlayerCommon1
-            // 
-            this.voicePlayerCommon1.BackColor = System.Drawing.Color.Transparent;
-            this.voicePlayerCommon1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.voicePlayerCommon1.Location = new System.Drawing.Point(10, 97);
-            this.voicePlayerCommon1.Margin = new System.Windows.Forms.Padding(0);
-            this.voicePlayerCommon1.Name = "voicePlayerCommon1";
-            this.voicePlayerCommon1.Size = new System.Drawing.Size(630, 60);
-            this.voicePlayerCommon1.TabIndex = 14;
             // 
             // CommentCommon
             // 
@@ -686,8 +695,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelLike;
+        private System.Windows.Forms.Label labelReply;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelUsers;
         private System.Windows.Forms.PictureBox pictureBox1;

@@ -32,8 +32,6 @@
             this.suggestForYouCommon1 = new CustomControl.Commons.SuggestForYouCommon();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panelPosts = new System.Windows.Forms.Panel();
-            this.postCommon4 = new CustomControl.Commons.PostCommon();
-            this.postCommon3 = new CustomControl.Commons.PostCommon();
             this.flowLayoutPanelUsers = new System.Windows.Forms.FlowLayoutPanel();
             this.avatarCommon20 = new CustomControl.Commons.AvatarCommon();
             this.avatarCommon1 = new CustomControl.Commons.AvatarCommon();
@@ -53,7 +51,6 @@
             this.avatarCommon15 = new CustomControl.Commons.AvatarCommon();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.panelPosts.SuspendLayout();
             this.flowLayoutPanelUsers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarCommon20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.avatarCommon1)).BeginInit();
@@ -111,8 +108,6 @@
             // panelPosts
             // 
             this.panelPosts.AutoScroll = true;
-            this.panelPosts.Controls.Add(this.postCommon4);
-            this.panelPosts.Controls.Add(this.postCommon3);
             this.panelPosts.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelPosts.Location = new System.Drawing.Point(0, 88);
             this.panelPosts.Margin = new System.Windows.Forms.Padding(0);
@@ -120,30 +115,6 @@
             this.panelPosts.Padding = new System.Windows.Forms.Padding(20, 20, 40, 20);
             this.panelPosts.Size = new System.Drawing.Size(563, 423);
             this.panelPosts.TabIndex = 1;
-            // 
-            // postCommon4
-            // 
-            this.postCommon4.AutoSize = true;
-            this.postCommon4.BackColor = System.Drawing.Color.Transparent;
-            this.postCommon4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.postCommon4.Location = new System.Drawing.Point(20, 1215);
-            this.postCommon4.Margin = new System.Windows.Forms.Padding(0);
-            this.postCommon4.MinimumSize = new System.Drawing.Size(520, 720);
-            this.postCommon4.Name = "postCommon4";
-            this.postCommon4.Size = new System.Drawing.Size(520, 1195);
-            this.postCommon4.TabIndex = 1;
-            // 
-            // postCommon3
-            // 
-            this.postCommon3.AutoSize = true;
-            this.postCommon3.BackColor = System.Drawing.Color.Transparent;
-            this.postCommon3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.postCommon3.Location = new System.Drawing.Point(20, 20);
-            this.postCommon3.Margin = new System.Windows.Forms.Padding(0);
-            this.postCommon3.MinimumSize = new System.Drawing.Size(520, 720);
-            this.postCommon3.Name = "postCommon3";
-            this.postCommon3.Size = new System.Drawing.Size(520, 1195);
-            this.postCommon3.TabIndex = 0;
             // 
             // flowLayoutPanelUsers
             // 
@@ -378,8 +349,6 @@
             this.Text = "HomeForm";
             this.panel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.panelPosts.ResumeLayout(false);
-            this.panelPosts.PerformLayout();
             this.flowLayoutPanelUsers.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.avatarCommon20)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.avatarCommon1)).EndInit();
@@ -426,7 +395,5 @@
         private System.Windows.Forms.Panel panelPosts;
         private CustomControl.Commons.PostCommon postCommon2;
         private CustomControl.Commons.PostCommon postCommon1;
-        private CustomControl.Commons.PostCommon postCommon3;
-        private CustomControl.Commons.PostCommon postCommon4;
     }
 }
