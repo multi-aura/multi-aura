@@ -1,5 +1,5 @@
 ﻿using BLL;
-using CustomControl.Modals;
+using CustomControl.Commons;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,19 +11,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CustomControl.Commons
+namespace CustomControl.Modals
 {
-    public partial class PostCommon : UserControl
+    public partial class PostDetails : Form
     {
         private AppDataProvider _appDataProvider;
-        public event EventHandler<Form> ShowModalRequested;
 
         private List<string> imageUrls;
         private int currentImageIndex;
 
-        public PostCommon()
+        public PostDetails()
         {
             InitializeComponent();
+            this.CloseWindowControlButton.Click += CloseWindowControlButton_Click;
 
             _appDataProvider = AppDataProvider.Instance;
 
@@ -45,21 +45,24 @@ namespace CustomControl.Commons
             this.preImage.Click += PreImage_Click; // Thêm sự kiện cho nút trước
             this.nextImage.Click += NextImage_Click; // Thêm sự kiện cho nút tiếp theo
 
-            this.labelComment.Click += LabelComment_Click;
+            LoadData();
+
         }
 
-        private void LabelComment_Click(object sender, EventArgs e)
+        private void LoadData()
         {
-            Form modal = new PostDetails
+            for (int i = 0; i < 3; i++)
             {
-                Width = _appDataProvider.ScreenWidth - 400,
-                Height = _appDataProvider.ScreenHeight - 100,
-                StartPosition = FormStartPosition.CenterScreen,
-                ShowInTaskbar = false,
-                TopMost = true
-            };
+                CommentCommon commentCommon = new CommentCommon();
+                commentCommon.Dock = DockStyle.Top;
 
-            ShowModalRequested?.Invoke(this, modal);
+                panelComments.Controls.Add(commentCommon);
+            }
+        }
+
+        private void CloseWindowControlButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         private void PreImage_Click(object sender, EventArgs e)

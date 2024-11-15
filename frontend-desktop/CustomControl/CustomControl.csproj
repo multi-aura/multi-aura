@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BLL">
+      <HintPath>..\BLL\bin\Debug\BLL.dll</HintPath>
+    </Reference>
+    <Reference Include="DTO">
+      <HintPath>..\DTO\bin\Debug\DTO.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,8 +54,17 @@
     <Compile Include="AuthenticationComponents\IntroComponent.Designer.cs">
       <DependentUpon>IntroComponent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Commons\AutoSizeTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Commons\AvatarCommon.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Commons\BriefPost.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Commons\BriefPost.Designer.cs">
+      <DependentUpon>BriefPost.cs</DependentUpon>
     </Compile>
     <Compile Include="Commons\CommentCommon.cs">
       <SubType>UserControl</SubType>
@@ -57,11 +72,32 @@
     <Compile Include="Commons\CommentCommon.Designer.cs">
       <DependentUpon>CommentCommon.cs</DependentUpon>
     </Compile>
+    <Compile Include="Commons\ContainerCommon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Commons\ConversationCommon.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Commons\ConversationCommon.Designer.cs">
+      <DependentUpon>ConversationCommon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commons\IncomingMessage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Commons\IncomingMessage.Designer.cs">
+      <DependentUpon>IncomingMessage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Commons\LanguageCombobox.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Commons\LanguageCombobox.Designer.cs">
       <DependentUpon>LanguageCombobox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commons\OutgoingMessage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Commons\OutgoingMessage.Designer.cs">
+      <DependentUpon>OutgoingMessage.cs</DependentUpon>
     </Compile>
     <Compile Include="Commons\PostCommon.cs">
       <SubType>UserControl</SubType>
@@ -81,6 +117,9 @@
     <Compile Include="Commons\SuggestForYouCommon.Designer.cs">
       <DependentUpon>SuggestForYouCommon.cs</DependentUpon>
     </Compile>
+    <Compile Include="Commons\TransparentOverlayForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Commons\UserSummaryCommon.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -92,6 +131,12 @@
     </Compile>
     <Compile Include="Commons\VoicePlayerCommon.Designer.cs">
       <DependentUpon>VoicePlayerCommon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modals\PostDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modals\PostDetails.Designer.cs">
+      <DependentUpon>PostDetails.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -105,11 +150,23 @@
     <EmbeddedResource Include="AuthenticationComponents\IntroComponent.resx">
       <DependentUpon>IntroComponent.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Commons\BriefPost.resx">
+      <DependentUpon>BriefPost.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Commons\CommentCommon.resx">
       <DependentUpon>CommentCommon.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Commons\ConversationCommon.resx">
+      <DependentUpon>ConversationCommon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Commons\IncomingMessage.resx">
+      <DependentUpon>IncomingMessage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Commons\LanguageCombobox.resx">
       <DependentUpon>LanguageCombobox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Commons\OutgoingMessage.resx">
+      <DependentUpon>OutgoingMessage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Commons\PostCommon.resx">
       <DependentUpon>PostCommon.cs</DependentUpon>
@@ -125,6 +182,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Commons\VoicePlayerCommon.resx">
       <DependentUpon>VoicePlayerCommon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modals\PostDetails.resx">
+      <DependentUpon>PostDetails.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -194,6 +254,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\search16_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\layers.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sending.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

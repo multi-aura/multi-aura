@@ -225,6 +225,7 @@
             // 
             this.searchBarCommon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
             this.searchBarCommon.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.searchBarCommon.Hint = "Search...";
             this.searchBarCommon.Location = new System.Drawing.Point(0, 0);
             this.searchBarCommon.Margin = new System.Windows.Forms.Padding(0);
             this.searchBarCommon.MinimumSize = new System.Drawing.Size(320, 32);

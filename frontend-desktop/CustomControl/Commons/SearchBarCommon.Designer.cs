@@ -30,9 +30,9 @@
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.labelClear = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.textBoxSearch = new System.Windows.Forms.TextBox();
-            this.labelClear = new System.Windows.Forms.Label();
             this.labelSearch = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -46,7 +46,7 @@
             this.panel1.Location = new System.Drawing.Point(10, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(300, 32);
+            this.panel1.Size = new System.Drawing.Size(200, 32);
             this.panel1.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -65,8 +65,21 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(300, 32);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 32);
             this.tableLayoutPanel1.TabIndex = 1;
+            // 
+            // labelClear
+            // 
+            this.labelClear.AutoSize = true;
+            this.labelClear.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.labelClear.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelClear.Image = global::CustomControl.Properties.Resources.clear16;
+            this.labelClear.Location = new System.Drawing.Point(172, 0);
+            this.labelClear.Margin = new System.Windows.Forms.Padding(0);
+            this.labelClear.Name = "labelClear";
+            this.labelClear.Size = new System.Drawing.Size(28, 32);
+            this.labelClear.TabIndex = 4;
+            this.labelClear.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel2
             // 
@@ -76,7 +89,7 @@
             this.panel2.Margin = new System.Windows.Forms.Padding(0);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(0, 6, 0, 6);
-            this.panel2.Size = new System.Drawing.Size(244, 32);
+            this.panel2.Size = new System.Drawing.Size(144, 32);
             this.panel2.TabIndex = 2;
             // 
             // textBoxSearch
@@ -89,21 +102,8 @@
             this.textBoxSearch.Location = new System.Drawing.Point(0, 6);
             this.textBoxSearch.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.textBoxSearch.Name = "textBoxSearch";
-            this.textBoxSearch.Size = new System.Drawing.Size(244, 21);
+            this.textBoxSearch.Size = new System.Drawing.Size(144, 21);
             this.textBoxSearch.TabIndex = 6;
-            // 
-            // labelClear
-            // 
-            this.labelClear.AutoSize = true;
-            this.labelClear.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.labelClear.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelClear.Image = global::CustomControl.Properties.Resources.clear16;
-            this.labelClear.Location = new System.Drawing.Point(272, 0);
-            this.labelClear.Margin = new System.Windows.Forms.Padding(0);
-            this.labelClear.Name = "labelClear";
-            this.labelClear.Size = new System.Drawing.Size(28, 32);
-            this.labelClear.TabIndex = 4;
-            this.labelClear.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelSearch
             // 
@@ -125,10 +125,10 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
             this.Controls.Add(this.panel1);
             this.Margin = new System.Windows.Forms.Padding(0);
-            this.MinimumSize = new System.Drawing.Size(320, 32);
+            this.MinimumSize = new System.Drawing.Size(220, 32);
             this.Name = "SearchBarCommon";
             this.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.Size = new System.Drawing.Size(320, 32);
+            this.Size = new System.Drawing.Size(220, 32);
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();

@@ -12,11 +12,30 @@ namespace CustomControl.Commons
 {
     public partial class UserSummaryCommon : UserControl
     {
+        private bool isFollowing;
         public UserSummaryCommon()
         {
             InitializeComponent();
+            isFollowing = true;
             this.actionButton.MouseHover += ActionButton_MouseHover;
             this.actionButton.MouseLeave += ActionButton_MouseLeave;
+            this.actionButton.Click += ActionButton_Click;
+
+            this.Click += UserSummaryCommon_Click;
+            this.userAvatar.Click += UserSummaryCommon_Click;
+            this.labelFullName.Click += UserSummaryCommon_Click;
+            this.labelUsername.Click += UserSummaryCommon_Click;
+        }
+
+        private void UserSummaryCommon_Click(object sender, EventArgs e)
+        {
+            //TODO: handle open user profile
+        }
+
+        private void ActionButton_Click(object sender, EventArgs e)
+        {
+            isFollowing = !isFollowing;
+            this.actionButton.Text = isFollowing ? "Following" : "Follow";
         }
 
         private void ActionButton_MouseHover(object sender, EventArgs e)

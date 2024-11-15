@@ -15,14 +15,21 @@ namespace CustomControl.Commons
 {
     public partial class SearchBarCommon : UserControl
     {
+        public string Hint { get; set; }
         public SearchBarCommon()
         {
             InitializeComponent();
             SetUpUI();
             SetUpActions();
         }
-        private void SetUpUI()
+
+        public void SetUpUI()
         {
+            if (Hint == null)
+            {
+                Hint = "Search...";
+            }
+
             SetUpUISearch();
         }
         private void SetUpActions()
@@ -32,7 +39,7 @@ namespace CustomControl.Commons
 
         private void LabelClear_Click(object sender, EventArgs e)
         {
-            if (textBoxSearch.Text != "Search...")
+            if (textBoxSearch.Text != Hint)
             {
                 textBoxSearch.Text = string.Empty;
             }
@@ -40,7 +47,7 @@ namespace CustomControl.Commons
 
         private void SetUpUISearch()
         {
-            textBoxSearch.Text = "Search...";
+            textBoxSearch.Text = Hint;
             textBoxSearch.ForeColor = Color.FromArgb(79, 79, 79);
             textBoxSearch.Enter += TextBoxSearch_Enter;
             textBoxSearch.Leave += TextBoxSearch_Leave;
@@ -71,9 +78,9 @@ namespace CustomControl.Commons
 
         private void TextBoxSearch_Enter(object sender, EventArgs e)
         {
-            if (textBoxSearch.Text == "Search...")
+            if (textBoxSearch.Text == Hint)
             {
-                textBoxSearch.Text = "";
+                textBoxSearch.Text = string.Empty;
                 textBoxSearch.ForeColor = Color.FromArgb(220, 220, 220);
             }
         }
@@ -81,7 +88,7 @@ namespace CustomControl.Commons
         {
             if (string.IsNullOrWhiteSpace(textBoxSearch.Text))
             {
-                textBoxSearch.Text = "Search...";
+                textBoxSearch.Text = Hint;
                 textBoxSearch.ForeColor = Color.FromArgb(79, 79, 79);
             }
         }

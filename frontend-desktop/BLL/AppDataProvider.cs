@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using DTO;
 
 namespace BLL
@@ -13,7 +14,9 @@ namespace BLL
         private static readonly object padlock = new object();
 
         private User user = null;
-
+        public Form MainForm { get; set; }
+        public int ScreenWidth { get; set; }
+        public int ScreenHeight { get; set; }
         private AppDataProvider()
         {
             user = new User

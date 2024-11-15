@@ -264,7 +264,7 @@
             this.panelWindownControlTaskBar.Location = new System.Drawing.Point(224, 4);
             this.panelWindownControlTaskBar.Margin = new System.Windows.Forms.Padding(0);
             this.panelWindownControlTaskBar.Name = "panelWindownControlTaskBar";
-            this.panelWindownControlTaskBar.Size = new System.Drawing.Size(1172, 35);
+            this.panelWindownControlTaskBar.Size = new System.Drawing.Size(1232, 35);
             this.panelWindownControlTaskBar.TabIndex = 1;
             // 
             // tableLayoutPanel2
@@ -278,7 +278,7 @@
             this.tableLayoutPanel2.Controls.Add(this.MinimizeWindowControlButton, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.CloseWindowControlButton, 2, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(1072, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(1132, 0);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
@@ -338,7 +338,7 @@
             this.panelDesktop.Location = new System.Drawing.Point(224, 39);
             this.panelDesktop.Margin = new System.Windows.Forms.Padding(0);
             this.panelDesktop.Name = "panelDesktop";
-            this.panelDesktop.Size = new System.Drawing.Size(1172, 757);
+            this.panelDesktop.Size = new System.Drawing.Size(1232, 757);
             this.panelDesktop.TabIndex = 2;
             // 
             // MainForm
@@ -346,12 +346,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
-            this.ClientSize = new System.Drawing.Size(1400, 800);
+            this.ClientSize = new System.Drawing.Size(1460, 800);
             this.Controls.Add(this.panelDesktop);
             this.Controls.Add(this.panelWindownControlTaskBar);
             this.Controls.Add(this.panelSideBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MinimumSize = new System.Drawing.Size(1400, 800);
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(4);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
