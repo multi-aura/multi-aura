@@ -36,20 +36,21 @@
             this.labelBackToLogin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.labelBackToLogin.AutoSize = true;
             this.labelBackToLogin.ForeColor = System.Drawing.Color.White;
-            this.labelBackToLogin.Location = new System.Drawing.Point(664, 388);
+            this.labelBackToLogin.Location = new System.Drawing.Point(778, 518);
             this.labelBackToLogin.Name = "labelBackToLogin";
-            this.labelBackToLogin.Size = new System.Drawing.Size(84, 16);
+            this.labelBackToLogin.Size = new System.Drawing.Size(100, 20);
             this.labelBackToLogin.TabIndex = 1;
             this.labelBackToLogin.Text = "Back to login";
             // 
             // RegisterForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(900, 562);
             this.Controls.Add(this.labelBackToLogin);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "RegisterForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "RegisterForm";
