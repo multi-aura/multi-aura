@@ -1,20 +1,24 @@
 ﻿using CustomControl.Properties;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CustomControl.Commons
 {
     public partial class SearchBarCommon : UserControl
     {
+        public string Query
+        {
+            get => textBoxSearch.Text != Hint? (textBoxSearch.Text ?? "") : "";
+            set
+            {
+                if (textBoxSearch.Text != value)
+                {
+                    textBoxSearch.Text = value;
+                }
+            }
+        }
         public string Hint { get; set; }
         public SearchBarCommon()
         {

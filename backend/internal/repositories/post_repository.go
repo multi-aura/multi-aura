@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"context"
-	"log"
 	"math/rand"
 	"multiaura/internal/databases"
 	"multiaura/internal/models"
@@ -112,6 +111,9 @@ func (repo *postRepository) GetRecentPosts(userIDs []string, limit, page int64) 
 	findOptions.SetSort(sort)
 	findOptions.SetLimit(limit)
 	findOptions.SetSkip(skip)
+	findOptions.SetProjection(bson.M{
+		"comments": bson.M{"$slice": 2}, // Chỉ lấy 2 comment đầu tiên
+	})
 
 	filter := bson.M{"createdBy.userID": bson.M{"$in": userIDs}}
 
@@ -194,6 +196,22 @@ func (repo *postRepository) SearchTrendingPosts(query string, limit, page int64)
 		pipeline = append(pipeline, bson.D{{Key: "$skip", Value: skip}})
 	}
 
+	// Lấy 2 comment đầu tiên
+	pipeline = append(pipeline, bson.D{
+		{Key: "$project", Value: bson.M{
+			"comments":    bson.M{"$slice": []interface{}{"$comments", 2}},
+			"totalLikes":  1,
+			"totalShares": 1,
+			"score":       1,
+			"description": 1,
+			"createdAt":   1,
+			"createdBy":   1,
+			"likedBy":     1,
+			"sharedBy":    1,
+			"images":      1,
+		}},
+	})
+
 	cursor, err := repo.collection.Aggregate(context.Background(), pipeline)
 	if err != nil {
 		return nil, err
@@ -234,7 +252,9 @@ func (repo *postRepository) SearchNewsMixedPosts(query string, userIDs []string,
 		friendFilter["description"] = bson.M{"$regex": query, "$options": "i"} // "i" để tìm kiếm không phân biệt hoa thường
 	}
 	friendOptions := options.Find().SetSort(sort).SetLimit(limit).SetSkip(skip)
-
+	friendOptions.SetProjection(bson.M{
+		"comments": bson.M{"$slice": 2}, // Chỉ lấy 2 comment đầu tiên
+	})
 	friendCursor, err := repo.collection.Find(context.Background(), friendFilter, friendOptions)
 	if err != nil {
 		return nil, err
@@ -346,7 +366,9 @@ func (repo *postRepository) SearchPostsForYou(query, userID string, limit, page 
 	findOptions.SetSort(friendSort) // Sắp xếp theo lượt thích
 	findOptions.SetLimit(limit)
 	findOptions.SetSkip(skip) // Bỏ qua số bài viết đã tính toán
-
+	findOptions.SetProjection(bson.M{
+		"comments": bson.M{"$slice": 2}, // Chỉ lấy 2 comment đầu tiên
+	})
 	// Lấy bài viết từ bạn bè
 	cursor, err := repo.collection.Find(context.Background(), friendFilter, findOptions)
 	if err != nil {
@@ -413,8 +435,10 @@ func (repo *postRepository) Search(query string, blockedUserIDs []string, limit 
 	findOptions.SetSort(sort)
 	findOptions.SetLimit(limit)
 	findOptions.SetSkip(skip)
-
-	log.Println(blockedUserIDs)
+	findOptions.SetProjection(bson.M{
+		"comments": bson.M{"$slice": 2}, // Chỉ lấy 2 comment đầu tiên
+	})
+	// log.Println(blockedUserIDs)
 
 	// Tạo bộ lọc cho truy vấn
 	filter := bson.M{

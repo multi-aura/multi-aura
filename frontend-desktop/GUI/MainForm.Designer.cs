@@ -31,8 +31,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.panelSideBar = new System.Windows.Forms.Panel();
             this.panelSideBarItems = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panelAvatar = new System.Windows.Forms.Panel();
+            this.userAvatar = new CustomControl.Commons.AvatarCommon();
             this.taskBarMore = new System.Windows.Forms.Button();
-            this.taskBarProfile = new System.Windows.Forms.Button();
             this.taskBarNotifications = new System.Windows.Forms.Button();
             this.taskBarMessages = new System.Windows.Forms.Button();
             this.taskBarExplore = new System.Windows.Forms.Button();
@@ -46,8 +48,12 @@
             this.MinimizeWindowControlButton = new System.Windows.Forms.Button();
             this.CloseWindowControlButton = new System.Windows.Forms.Button();
             this.panelDesktop = new System.Windows.Forms.Panel();
+            this.taskBarProfile = new System.Windows.Forms.Button();
             this.panelSideBar.SuspendLayout();
             this.panelSideBarItems.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panelAvatar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.userAvatar)).BeginInit();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panelWindownControlTaskBar.SuspendLayout();
@@ -69,7 +75,7 @@
             // panelSideBarItems
             // 
             this.panelSideBarItems.BackColor = System.Drawing.Color.Transparent;
-            this.panelSideBarItems.Controls.Add(this.taskBarMore);
+            this.panelSideBarItems.Controls.Add(this.panel1);
             this.panelSideBarItems.Controls.Add(this.taskBarProfile);
             this.panelSideBarItems.Controls.Add(this.taskBarNotifications);
             this.panelSideBarItems.Controls.Add(this.taskBarMessages);
@@ -82,48 +88,61 @@
             this.panelSideBarItems.Size = new System.Drawing.Size(220, 734);
             this.panelSideBarItems.TabIndex = 3;
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.panelAvatar);
+            this.panel1.Controls.Add(this.taskBarMore);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 674);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(220, 60);
+            this.panel1.TabIndex = 8;
+            // 
+            // panelAvatar
+            // 
+            this.panelAvatar.Controls.Add(this.userAvatar);
+            this.panelAvatar.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panelAvatar.Location = new System.Drawing.Point(0, 0);
+            this.panelAvatar.Margin = new System.Windows.Forms.Padding(0);
+            this.panelAvatar.MaximumSize = new System.Drawing.Size(60, 60);
+            this.panelAvatar.MinimumSize = new System.Drawing.Size(60, 60);
+            this.panelAvatar.Name = "panelAvatar";
+            this.panelAvatar.Padding = new System.Windows.Forms.Padding(10);
+            this.panelAvatar.Size = new System.Drawing.Size(60, 60);
+            this.panelAvatar.TabIndex = 10;
+            // 
+            // userAvatar
+            // 
+            this.userAvatar.CurrentUser = null;
+            this.userAvatar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.userAvatar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.userAvatar.Image = global::GUI.Properties.Resources.person;
+            this.userAvatar.Location = new System.Drawing.Point(10, 10);
+            this.userAvatar.Margin = new System.Windows.Forms.Padding(0);
+            this.userAvatar.Name = "userAvatar";
+            this.userAvatar.Size = new System.Drawing.Size(40, 40);
+            this.userAvatar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.userAvatar.TabIndex = 10;
+            this.userAvatar.TabStop = false;
+            // 
             // taskBarMore
             // 
             this.taskBarMore.BackColor = System.Drawing.Color.Transparent;
-            this.taskBarMore.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.taskBarMore.Dock = System.Windows.Forms.DockStyle.Right;
             this.taskBarMore.FlatAppearance.BorderSize = 0;
             this.taskBarMore.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
             this.taskBarMore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.taskBarMore.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.taskBarMore.ForeColor = System.Drawing.Color.White;
             this.taskBarMore.Image = ((System.Drawing.Image)(resources.GetObject("taskBarMore.Image")));
-            this.taskBarMore.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.taskBarMore.Location = new System.Drawing.Point(0, 674);
+            this.taskBarMore.Location = new System.Drawing.Point(160, 0);
             this.taskBarMore.Margin = new System.Windows.Forms.Padding(0);
             this.taskBarMore.Name = "taskBarMore";
-            this.taskBarMore.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.taskBarMore.Size = new System.Drawing.Size(220, 60);
-            this.taskBarMore.TabIndex = 7;
-            this.taskBarMore.Text = "        More";
+            this.taskBarMore.Size = new System.Drawing.Size(60, 60);
+            this.taskBarMore.TabIndex = 8;
             this.taskBarMore.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.taskBarMore.UseVisualStyleBackColor = false;
-            // 
-            // taskBarProfile
-            // 
-            this.taskBarProfile.BackColor = System.Drawing.Color.Transparent;
-            this.taskBarProfile.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.taskBarProfile.Dock = System.Windows.Forms.DockStyle.Top;
-            this.taskBarProfile.FlatAppearance.BorderSize = 0;
-            this.taskBarProfile.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
-            this.taskBarProfile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.taskBarProfile.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.taskBarProfile.ForeColor = System.Drawing.Color.White;
-            this.taskBarProfile.Image = ((System.Drawing.Image)(resources.GetObject("taskBarProfile.Image")));
-            this.taskBarProfile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.taskBarProfile.Location = new System.Drawing.Point(0, 240);
-            this.taskBarProfile.Margin = new System.Windows.Forms.Padding(0);
-            this.taskBarProfile.Name = "taskBarProfile";
-            this.taskBarProfile.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.taskBarProfile.Size = new System.Drawing.Size(220, 60);
-            this.taskBarProfile.TabIndex = 6;
-            this.taskBarProfile.Text = "        Profile";
-            this.taskBarProfile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.taskBarProfile.UseVisualStyleBackColor = false;
             // 
             // taskBarNotifications
             // 
@@ -341,6 +360,28 @@
             this.panelDesktop.Size = new System.Drawing.Size(1232, 757);
             this.panelDesktop.TabIndex = 2;
             // 
+            // taskBarProfile
+            // 
+            this.taskBarProfile.BackColor = System.Drawing.Color.Transparent;
+            this.taskBarProfile.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.taskBarProfile.Dock = System.Windows.Forms.DockStyle.Top;
+            this.taskBarProfile.FlatAppearance.BorderSize = 0;
+            this.taskBarProfile.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
+            this.taskBarProfile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.taskBarProfile.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.taskBarProfile.ForeColor = System.Drawing.Color.White;
+            this.taskBarProfile.Image = ((System.Drawing.Image)(resources.GetObject("taskBarProfile.Image")));
+            this.taskBarProfile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.taskBarProfile.Location = new System.Drawing.Point(0, 240);
+            this.taskBarProfile.Margin = new System.Windows.Forms.Padding(0);
+            this.taskBarProfile.Name = "taskBarProfile";
+            this.taskBarProfile.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.taskBarProfile.Size = new System.Drawing.Size(220, 60);
+            this.taskBarProfile.TabIndex = 6;
+            this.taskBarProfile.Text = "        Profile";
+            this.taskBarProfile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.taskBarProfile.UseVisualStyleBackColor = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -357,6 +398,9 @@
             this.Text = "MainForm";
             this.panelSideBar.ResumeLayout(false);
             this.panelSideBarItems.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panelAvatar.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.userAvatar)).EndInit();
             this.panel3.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -373,17 +417,20 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button taskBarHome;
         private System.Windows.Forms.Panel panelSideBarItems;
-        private System.Windows.Forms.Button taskBarProfile;
         private System.Windows.Forms.Button taskBarNotifications;
         private System.Windows.Forms.Button taskBarMessages;
         private System.Windows.Forms.Button taskBarExplore;
-        private System.Windows.Forms.Button taskBarMore;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label labelAppName;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Button CloseWindowControlButton;
         private System.Windows.Forms.Button MaximizeWindowControlButton;
         private System.Windows.Forms.Button MinimizeWindowControlButton;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button taskBarMore;
+        private System.Windows.Forms.Panel panelAvatar;
+        private CustomControl.Commons.AvatarCommon userAvatar;
         private System.Windows.Forms.Panel panelDesktop;
+        private System.Windows.Forms.Button taskBarProfile;
     }
 }

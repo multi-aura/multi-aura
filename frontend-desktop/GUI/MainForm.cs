@@ -4,9 +4,10 @@ using GUI.AuthenticationForms;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using BLL;
 using CustomControl.Commons;
 using CustomControl.Modals;
+using System.Net.Http;
+using BLL.DataProviders;
 
 namespace GUI
 {
@@ -15,6 +16,7 @@ namespace GUI
         private Button currentButton;
         private Form activeForm;
         private AppDataProvider appDataProvider = AppDataProvider.Instance;
+        private RelationshipDataProvider relationshipDataProvider = RelationshipDataProvider.Instance;
         private bool isListeningForMouseDown = false;
 
         private Form homeForm;
@@ -22,11 +24,12 @@ namespace GUI
         private Form messagesForm;
         private Form notificationsForm;
         private Form profileForm;
-
         
         public MainForm()
         {
             InitializeComponent();
+            appDataProvider.DataLoaded += SetUpUI;
+            appDataProvider.Initialize();
 
             appDataProvider.MainForm = this;
             // Lấy kích thước màn hình của PC
@@ -40,7 +43,9 @@ namespace GUI
             appDataProvider.ScreenWidth = this.Width;
             appDataProvider.ScreenHeight = this.Height;
 
-            homeForm = new HomeForm(new EventHandler<Form>(ShowModalRequest));
+            appDataProvider.ShowModalRequested += ShowModalRequest;
+
+            homeForm = new HomeForm();
             exploreForm = new ExploreForm();
             messagesForm = new MessagesForm();
             notificationsForm = new NotificationsForm();
@@ -58,8 +63,11 @@ namespace GUI
                 {
                     if (appDataProvider.HasUser())
                     {
-                        SetUpDefaultActions();
+                        relationshipDataProvider.Initialize();
 
+                        SetUpDefaultActions();
+                        //appDataProvider.DataLoaded += SetUpUI;
+                        //SetUpUI();
                         this.Show();
                     }
                     else
@@ -71,9 +79,14 @@ namespace GUI
             }
             else
             {
+                relationshipDataProvider.Initialize();
+
                 SetUpDefaultActions();
+                //appDataProvider.DataLoaded += SetUpUI;
+                //SetUpUI();
             }
         }
+
         private void SetUpDefaultActions()
         {
             this.KeyPress += MainForm_KeyPress;
@@ -87,18 +100,49 @@ namespace GUI
             SetUpNavigators();
 
             this.taskBarMore.Click += TaskBarMore_Click;
+            this.userAvatar.Click += (sender, e) => OpenChildForm(profileForm, this.taskBarProfile);
+        }
+
+        private async void SetUpUI()
+        {
+            if (!string.IsNullOrEmpty(appDataProvider.User.Avatar))
+            {
+                try
+                {
+                    var imageUrl = appDataProvider.User.Avatar;
+                    using (HttpClient httpClient = new HttpClient())
+                    {
+                        var imageBytes = await httpClient.GetByteArrayAsync(imageUrl);
+
+                        using (var ms = new System.IO.MemoryStream(imageBytes))
+                        {
+                            userAvatar.Image = Image.FromStream(ms);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    userAvatar.Image = Properties.Resources.person;
+                }
+            }
+            else
+            {
+                userAvatar.Image = Properties.Resources.person;
+            }
         }
 
         private void TaskBarMore_Click(object sender, EventArgs e)
         {
-            ShowModalRequest(this, modal = new PostDetails
+            Form modal = new PostDetails
             {
                 Width = this.Width - 400,
                 Height = this.Height - 200,
                 StartPosition = FormStartPosition.CenterScreen,
                 ShowInTaskbar = false,
                 TopMost = true
-            });
+            };
+
+            appDataProvider.ShowModal(this, modal);
         }
 
         public void ShowModalRequest(object sender, Form modal)
