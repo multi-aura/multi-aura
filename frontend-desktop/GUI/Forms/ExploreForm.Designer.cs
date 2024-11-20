@@ -84,8 +84,8 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(0, 0, 40, 0);
-            this.panel1.Size = new System.Drawing.Size(601, 580);
+            this.panel1.Padding = new System.Windows.Forms.Padding(0, 0, 45, 0);
+            this.panel1.Size = new System.Drawing.Size(676, 725);
             this.panel1.TabIndex = 7;
             // 
             // panelResults
@@ -103,11 +103,11 @@
             this.panelResults.Controls.Add(this.panelPostsWithQuery);
             this.panelResults.Controls.Add(this.NotFoundContainer);
             this.panelResults.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelResults.Location = new System.Drawing.Point(0, 76);
+            this.panelResults.Location = new System.Drawing.Point(0, 95);
             this.panelResults.Margin = new System.Windows.Forms.Padding(0);
             this.panelResults.Name = "panelResults";
-            this.panelResults.Padding = new System.Windows.Forms.Padding(20, 20, 40, 20);
-            this.panelResults.Size = new System.Drawing.Size(561, 504);
+            this.panelResults.Padding = new System.Windows.Forms.Padding(22, 25, 45, 25);
+            this.panelResults.Size = new System.Drawing.Size(631, 630);
             this.panelResults.TabIndex = 25;
             // 
             // tableLayoutPanelSearchTaskBar
@@ -124,23 +124,23 @@
             this.tableLayoutPanelSearchTaskBar.Controls.Add(this.labelTrending, 1, 0);
             this.tableLayoutPanelSearchTaskBar.Controls.Add(this.labelForYou, 0, 0);
             this.tableLayoutPanelSearchTaskBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanelSearchTaskBar.Location = new System.Drawing.Point(0, 39);
+            this.tableLayoutPanelSearchTaskBar.Location = new System.Drawing.Point(0, 49);
             this.tableLayoutPanelSearchTaskBar.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanelSearchTaskBar.Name = "tableLayoutPanelSearchTaskBar";
             this.tableLayoutPanelSearchTaskBar.RowCount = 1;
             this.tableLayoutPanelSearchTaskBar.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelSearchTaskBar.Size = new System.Drawing.Size(561, 37);
+            this.tableLayoutPanelSearchTaskBar.Size = new System.Drawing.Size(631, 46);
             this.tableLayoutPanelSearchTaskBar.TabIndex = 24;
             // 
             // labelPosts
             // 
             this.labelPosts.AutoSize = true;
             this.labelPosts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelPosts.Font = new System.Drawing.Font("Montserrat", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPosts.Location = new System.Drawing.Point(448, 0);
+            this.labelPosts.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPosts.Location = new System.Drawing.Point(504, 0);
             this.labelPosts.Margin = new System.Windows.Forms.Padding(0);
             this.labelPosts.Name = "labelPosts";
-            this.labelPosts.Size = new System.Drawing.Size(113, 37);
+            this.labelPosts.Size = new System.Drawing.Size(127, 46);
             this.labelPosts.TabIndex = 4;
             this.labelPosts.Text = "Posts";
             this.labelPosts.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -149,11 +149,11 @@
             // 
             this.labelPeople.AutoSize = true;
             this.labelPeople.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelPeople.Font = new System.Drawing.Font("Montserrat", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPeople.Location = new System.Drawing.Point(336, 0);
+            this.labelPeople.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPeople.Location = new System.Drawing.Point(378, 0);
             this.labelPeople.Margin = new System.Windows.Forms.Padding(0);
             this.labelPeople.Name = "labelPeople";
-            this.labelPeople.Size = new System.Drawing.Size(112, 37);
+            this.labelPeople.Size = new System.Drawing.Size(126, 46);
             this.labelPeople.TabIndex = 3;
             this.labelPeople.Text = "People";
             this.labelPeople.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -162,11 +162,11 @@
             // 
             this.labelNews.AutoSize = true;
             this.labelNews.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelNews.Font = new System.Drawing.Font("Montserrat", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelNews.Location = new System.Drawing.Point(224, 0);
+            this.labelNews.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelNews.Location = new System.Drawing.Point(252, 0);
             this.labelNews.Margin = new System.Windows.Forms.Padding(0);
             this.labelNews.Name = "labelNews";
-            this.labelNews.Size = new System.Drawing.Size(112, 37);
+            this.labelNews.Size = new System.Drawing.Size(126, 46);
             this.labelNews.TabIndex = 2;
             this.labelNews.Text = "News";
             this.labelNews.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -175,11 +175,11 @@
             // 
             this.labelTrending.AutoSize = true;
             this.labelTrending.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelTrending.Font = new System.Drawing.Font("Montserrat", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTrending.Location = new System.Drawing.Point(112, 0);
+            this.labelTrending.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTrending.Location = new System.Drawing.Point(126, 0);
             this.labelTrending.Margin = new System.Windows.Forms.Padding(0);
             this.labelTrending.Name = "labelTrending";
-            this.labelTrending.Size = new System.Drawing.Size(112, 37);
+            this.labelTrending.Size = new System.Drawing.Size(126, 46);
             this.labelTrending.TabIndex = 1;
             this.labelTrending.Text = "Trending";
             this.labelTrending.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -188,11 +188,11 @@
             // 
             this.labelForYou.AutoSize = true;
             this.labelForYou.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelForYou.Font = new System.Drawing.Font("Montserrat", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelForYou.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelForYou.Location = new System.Drawing.Point(0, 0);
             this.labelForYou.Margin = new System.Windows.Forms.Padding(0);
             this.labelForYou.Name = "labelForYou";
-            this.labelForYou.Size = new System.Drawing.Size(112, 37);
+            this.labelForYou.Size = new System.Drawing.Size(126, 46);
             this.labelForYou.TabIndex = 0;
             this.labelForYou.Text = "For you";
             this.labelForYou.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -204,7 +204,7 @@
             this.searchBarContainer.Location = new System.Drawing.Point(0, 0);
             this.searchBarContainer.Margin = new System.Windows.Forms.Padding(0);
             this.searchBarContainer.Name = "searchBarContainer";
-            this.searchBarContainer.Size = new System.Drawing.Size(561, 39);
+            this.searchBarContainer.Size = new System.Drawing.Size(631, 49);
             this.searchBarContainer.TabIndex = 23;
             // 
             // panel3
@@ -358,7 +358,7 @@
             this.searchBarCommon.Hint = "Search...";
             this.searchBarCommon.Location = new System.Drawing.Point(0, 0);
             this.searchBarCommon.Margin = new System.Windows.Forms.Padding(0);
-            this.searchBarCommon.MinimumSize = new System.Drawing.Size(320, 32);
+            this.searchBarCommon.MinimumSize = new System.Drawing.Size(360, 40);
             this.searchBarCommon.Name = "searchBarCommon";
             this.searchBarCommon.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.searchBarCommon.Query = "Search...";
@@ -378,14 +378,15 @@
             // 
             // ExploreForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
-            this.ClientSize = new System.Drawing.Size(921, 580);
+            this.ClientSize = new System.Drawing.Size(1036, 725);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelSuggests);
             this.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "ExploreForm";
             this.Text = "ExploreForm";
             this.panelSuggests.ResumeLayout(false);
