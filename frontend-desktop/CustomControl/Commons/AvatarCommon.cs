@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTO;
+using System;
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -10,9 +11,12 @@ namespace CustomControl.Commons
 {
     public class AvatarCommon: PictureBox
     {
-        public AvatarCommon() {
-           this.SizeMode = PictureBoxSizeMode.StretchImage;
+        public UserSummary CurrentUser { get; set; }
+        public AvatarCommon()
+        {
+            this.SizeMode = PictureBoxSizeMode.StretchImage;
         }
+
         protected override void OnPaint(PaintEventArgs pe)
         {
             GraphicsPath grpath = new GraphicsPath();

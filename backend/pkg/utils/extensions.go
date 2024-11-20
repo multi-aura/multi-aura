@@ -76,6 +76,12 @@ func GetTime(data map[string]interface{}, key string) time.Time {
 			if err == nil {
 				return parsedTime
 			}
+		case int64:
+			return time.Unix(v/1000, (v%1000)*1000000)
+		case float64:
+			return time.Unix(int64(v)/1000, (int64(v)%1000)*1000000)
+		case primitive.DateTime:
+			return v.Time()
 		}
 	}
 	return time.Time{}

@@ -21,6 +21,7 @@ type Post struct {
 	LikedBy     []UserSummary      `bson:"likedBy" json:"likedBy" form:"likedBy"`
 	SharedBy    []string           `bson:"sharedBy" json:"sharedBy" form:"sharedBy"`
 	UpdatedAt   time.Time          `bson:"updatedAt" json:"updatedAt" form:"updatedAt"`
+	Comments    []Comment          `bson:"comments,omitempty" json:"comments,omitempty" form:"comments,omitempty"`
 }
 
 type CreatePostRequest struct {
@@ -43,6 +44,11 @@ func (p *Post) ToMap() map[string]interface{} {
 		likedBy[i] = user.ToMap()
 	}
 
+	comments := make([]map[string]interface{}, len(p.Comments))
+	for i, comment := range p.Comments {
+		comments[i] = comment.ToMap()
+	}
+
 	return map[string]interface{}{
 		"_id":         p.ID,
 		"description": p.Description,
@@ -52,6 +58,7 @@ func (p *Post) ToMap() map[string]interface{} {
 		"likedBy":     likedBy,
 		"sharedBy":    p.SharedBy,
 		"updatedAt":   p.UpdatedAt,
+		"comments":    comments,
 	}
 }
 
@@ -84,6 +91,18 @@ func (p *Post) FromMap(data map[string]interface{}) (*Post, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	commentData := utils.GetArrayMap(data, "comments")
+	comments := make([]Comment, len(commentData))
+	for i, comment := range commentData {
+		commentMap := comment
+		comm, err := new(Comment).FromMap(commentMap)
+		if err != nil {
+			return nil, err
+		}
+		comments[i] = *comm
+	}
+
 	return &Post{
 		ID:          utils.GetObjectID(data, "_id"),
 		Description: utils.GetString(data, "description"),
@@ -93,5 +112,6 @@ func (p *Post) FromMap(data map[string]interface{}) (*Post, error) {
 		LikedBy:     likedBy,
 		SharedBy:    utils.GetStringArrayFromPrimitiveAMap(data, "sharedBy"),
 		UpdatedAt:   utils.GetTime(data, "updatedAt"),
+		Comments:    comments,
 	}, nil
 }

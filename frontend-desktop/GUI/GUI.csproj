@@ -103,6 +103,8 @@
     <Compile Include="AuthenticationForms\RegisterForm.Designer.cs">
       <DependentUpon>RegisterForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\DateTimeExtensions .cs" />
+    <Compile Include="Extensions\NumberExtensions .cs" />
     <Compile Include="Extensions\FormExtensions.cs" />
     <Compile Include="Forms\ExploreForm.cs">
       <SubType>Form</SubType>
@@ -249,6 +251,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\setting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\person.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\profile.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

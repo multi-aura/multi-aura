@@ -105,6 +105,12 @@
     <Compile Include="Commons\PostCommon.Designer.cs">
       <DependentUpon>PostCommon.cs</DependentUpon>
     </Compile>
+    <Compile Include="Commons\ReplyComment.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Commons\ReplyComment.Designer.cs">
+      <DependentUpon>ReplyComment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Commons\SearchBarCommon.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -132,6 +138,9 @@
     <Compile Include="Commons\VoicePlayerCommon.Designer.cs">
       <DependentUpon>VoicePlayerCommon.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\DateTimeExtensions .cs" />
+    <Compile Include="Extensions\FormExtensions.cs" />
+    <Compile Include="Extensions\NumberExtensions .cs" />
     <Compile Include="Modals\PostDetails.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -144,6 +153,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utils\NetworkLoader.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +180,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Commons\PostCommon.resx">
       <DependentUpon>PostCommon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Commons\ReplyComment.resx">
+      <DependentUpon>ReplyComment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Commons\SearchBarCommon.resx">
       <DependentUpon>SearchBarCommon.cs</DependentUpon>
@@ -260,6 +273,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\sending.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\person.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\red_heart16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\red_heart.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

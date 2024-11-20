@@ -1,4 +1,4 @@
-﻿using BLL;
+﻿using BLL.DataProviders;
 using GUI.Extensions;
 using GUI.Forms;
 using System;

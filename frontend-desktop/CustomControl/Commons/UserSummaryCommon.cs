@@ -1,9 +1,12 @@
-﻿using System;
+﻿using BLL.DataProviders;
+using DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,11 +15,14 @@ namespace CustomControl.Commons
 {
     public partial class UserSummaryCommon : UserControl
     {
-        private bool isFollowing;
+        public UserSummary CurrentUserSummary = null;
+        public bool IsFollowing = false;
         public UserSummaryCommon()
         {
             InitializeComponent();
-            isFollowing = true;
+
+            this.Load += UserSummaryCommon_Load;
+
             this.actionButton.MouseHover += ActionButton_MouseHover;
             this.actionButton.MouseLeave += ActionButton_MouseLeave;
             this.actionButton.Click += ActionButton_Click;
@@ -27,6 +33,51 @@ namespace CustomControl.Commons
             this.labelUsername.Click += UserSummaryCommon_Click;
         }
 
+        private async void UserSummaryCommon_Load(object sender, EventArgs e)
+        {
+            if(CurrentUserSummary != null)
+            {
+                if (!string.IsNullOrEmpty(CurrentUserSummary.Avatar))
+                {
+                    try
+                    {
+                        // Tải ảnh từ URL
+                        var imageUrl = CurrentUserSummary.Avatar;
+                        using (HttpClient httpClient = new HttpClient())
+                        {
+                            var imageBytes = await httpClient.GetByteArrayAsync(imageUrl);
+
+                            using (var ms = new System.IO.MemoryStream(imageBytes))
+                            {
+                                // Gán ảnh vào PictureBox
+                                userAvatar.Image = Image.FromStream(ms);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        userAvatar.Image = Properties.Resources.person; // ảnh mặc định trong Resources
+                    }
+                }
+                else
+                {
+                    userAvatar.Image = Properties.Resources.person;
+                }
+
+                if (!string.IsNullOrEmpty(CurrentUserSummary.FullName))
+                {
+                    this.labelFullName.Text = CurrentUserSummary.FullName;
+                }
+
+                if (!string.IsNullOrEmpty(CurrentUserSummary.Username))
+                {
+                    this.labelUsername.Text = CurrentUserSummary.Username;
+                }
+            }
+
+            this.actionButton.Text = IsFollowing ? "Following" : "Follow";
+        }
+
         private void UserSummaryCommon_Click(object sender, EventArgs e)
         {
             //TODO: handle open user profile
@@ -34,8 +85,8 @@ namespace CustomControl.Commons
 
         private void ActionButton_Click(object sender, EventArgs e)
         {
-            isFollowing = !isFollowing;
-            this.actionButton.Text = isFollowing ? "Following" : "Follow";
+            IsFollowing = !IsFollowing;
+            this.actionButton.Text = IsFollowing ? "Following" : "Follow";
         }
 
         private void ActionButton_MouseHover(object sender, EventArgs e)

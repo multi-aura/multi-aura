@@ -1,13 +1,9 @@
-﻿using CustomControl.Commons;
+﻿using BLL.DataProviders;
+using CustomControl.Commons;
+using GUI.Extensions;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http;
 using System.Windows.Forms;
 using Label = System.Windows.Forms.Label;
 
@@ -15,13 +11,93 @@ namespace GUI.Forms
 {
     public partial class ProfileForm : Form
     {
+        private AppDataProvider appDataProvider;
+        private RelationshipDataProvider relationshipDataProvider;
+
         private Label selectedLabel;
 
         public ProfileForm()
         {
             InitializeComponent();
+            appDataProvider = AppDataProvider.Instance;
+            appDataProvider.DataLoaded += LoadProfile;
+
+            relationshipDataProvider = RelationshipDataProvider.Instance;
+            relationshipDataProvider.FollowerDataLoaded += LoadFollowerCounter;
+            relationshipDataProvider.FollowingDataLoaded += LoadFollowingCounter;
+            relationshipDataProvider.FriendDataLoaded += LoadFriendCounter;
             RegisterHoverAndClickEventsForLabels();
             LoadData();
+        }
+
+        private async void LoadProfile()
+        {
+            if (appDataProvider.User != null)
+            {
+                LoadProfilePhoto();
+
+                if (!string.IsNullOrEmpty(appDataProvider.User.FullName))
+                {
+                    this.labelFullName.Text = appDataProvider.User.FullName;
+                }
+                if (!string.IsNullOrEmpty(appDataProvider.User.Username))
+                {
+                    this.labelUsername.Text = appDataProvider.User.Username;
+                }
+
+            }
+        }
+
+        private async void LoadProfilePhoto()
+        {
+            if (!string.IsNullOrEmpty(appDataProvider.User.Avatar))
+            {
+                try
+                {
+                    var imageUrl = appDataProvider.User.Avatar;
+                    using (HttpClient httpClient = new HttpClient())
+                    {
+                        var imageBytes = await httpClient.GetByteArrayAsync(imageUrl);
+
+                        using (var ms = new System.IO.MemoryStream(imageBytes))
+                        {
+                            userAvatar.Image = Image.FromStream(ms);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    userAvatar.Image = Properties.Resources.profile;
+                }
+            }
+            else
+            {
+                userAvatar.Image = Properties.Resources.profile;
+            }
+        }
+
+        private void LoadFollowerCounter()
+        {
+            if (relationshipDataProvider.Followers != null)
+            {
+                this.labelFollowerCounter.Text = relationshipDataProvider.Followers.Count.ToShortNumber() + " Followers";
+            }
+        }
+
+        private void LoadFollowingCounter()
+        {
+            if (relationshipDataProvider.Followings != null)
+            {
+                this.labelFollowingCounter.Text = relationshipDataProvider.Followings.Count.ToShortNumber() + " Followings";
+            }
+        }
+
+        private void LoadFriendCounter()
+        {
+            if (relationshipDataProvider.Friends != null)
+            {
+                this.labelFriendCounter.Text = relationshipDataProvider.Friends.Count.ToShortNumber() + " Friends";
+            }
         }
 
         private void LoadData()
@@ -33,18 +109,15 @@ namespace GUI.Forms
             }
         }
 
-        // Đăng ký sự kiện Hover, Leave, và Click cho các Label
         private void RegisterHoverAndClickEventsForLabels()
         {
             foreach (Control control in tableLayoutPanelProfileTaskBar.Controls)
             {
                 if (control is Label label)
                 {
-                    // Gán sự kiện MouseHover và MouseLeave
                     label.MouseHover += Label_MouseHover;
                     label.MouseLeave += Label_MouseLeave;
 
-                    // Gán sự kiện Click
                     label.Click += Label_Click;
                 }
             }
@@ -52,7 +125,6 @@ namespace GUI.Forms
             SetSelectedLabel(labelPosts);
         }
 
-        // Sự kiện Hover: làm cho text của label thành bold
         private void Label_MouseHover(object sender, EventArgs e)
         {
             if (sender is Label label && label != selectedLabel)
@@ -61,7 +133,6 @@ namespace GUI.Forms
             }
         }
 
-        // Sự kiện Leave: làm cho text của label trở về bình thường
         private void Label_MouseLeave(object sender, EventArgs e)
         {
             if (sender is Label label && label != selectedLabel)
@@ -70,7 +141,6 @@ namespace GUI.Forms
             }
         }
 
-        // Sự kiện Click: làm cho text của label được click thành bold, các label khác bình thường
         private void Label_Click(object sender, EventArgs e)
         {
             if (sender is Label clickedLabel)
@@ -82,7 +152,6 @@ namespace GUI.Forms
             }
         }
 
-        // Phương thức đặt kiểu chữ của Label
         private void SetFocusedLabel(Label label, bool isFocused)
         {
             label.Font = new Font(label.Font, isFocused ? FontStyle.Bold : FontStyle.Regular);

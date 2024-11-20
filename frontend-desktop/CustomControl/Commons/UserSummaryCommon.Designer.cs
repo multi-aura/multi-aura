@@ -30,13 +30,13 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.actionButton = new System.Windows.Forms.Label();
+            this.userAvatar = new CustomControl.Commons.AvatarCommon();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.labelUsername = new System.Windows.Forms.Label();
             this.labelFullName = new System.Windows.Forms.Label();
-            this.userAvatar = new CustomControl.Commons.AvatarCommon();
             this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.userAvatar)).BeginInit();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -75,6 +75,21 @@
             this.actionButton.TabIndex = 3;
             this.actionButton.Text = "Following";
             this.actionButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // userAvatar
+            // 
+            this.userAvatar.CurrentUser = null;
+            this.userAvatar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.userAvatar.Image = global::CustomControl.Properties.Resources.person;
+            this.userAvatar.Location = new System.Drawing.Point(0, 0);
+            this.userAvatar.Margin = new System.Windows.Forms.Padding(0);
+            this.userAvatar.MaximumSize = new System.Drawing.Size(40, 40);
+            this.userAvatar.MinimumSize = new System.Drawing.Size(40, 40);
+            this.userAvatar.Name = "userAvatar";
+            this.userAvatar.Size = new System.Drawing.Size(40, 40);
+            this.userAvatar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.userAvatar.TabIndex = 1;
+            this.userAvatar.TabStop = false;
             // 
             // tableLayoutPanel2
             // 
@@ -125,20 +140,6 @@
             this.labelFullName.Text = "Nguyễn Minh Thư";
             this.labelFullName.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
-            // userAvatar
-            // 
-            this.userAvatar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.userAvatar.Image = global::CustomControl.Properties.Resources._006833d62de3321b980cb2b6a46088a5;
-            this.userAvatar.Location = new System.Drawing.Point(0, 0);
-            this.userAvatar.Margin = new System.Windows.Forms.Padding(0);
-            this.userAvatar.MaximumSize = new System.Drawing.Size(40, 40);
-            this.userAvatar.MinimumSize = new System.Drawing.Size(40, 40);
-            this.userAvatar.Name = "userAvatar";
-            this.userAvatar.Size = new System.Drawing.Size(40, 40);
-            this.userAvatar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.userAvatar.TabIndex = 1;
-            this.userAvatar.TabStop = false;
-            // 
             // UserSummaryCommon
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -151,9 +152,9 @@
             this.Size = new System.Drawing.Size(413, 52);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.userAvatar)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.userAvatar)).EndInit();
             this.ResumeLayout(false);
 
         }

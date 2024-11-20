@@ -177,6 +177,10 @@ func (s *relationshipService) GetProfile(userID, username string) (*models.UserP
 		return nil, err
 	}
 
+	if user.ID == userID {
+		return &models.UserProfile{User: user, MutualFollowings: nil, MutualFriends: nil}, nil
+	}
+
 	isBlocked, err := s.repo.IsBlockedBy(userID, user.ID)
 	if err == nil {
 		if isBlocked {
