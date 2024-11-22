@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.containerPostPhotoReresent = new CustomControl.Commons.ContainerCommon();
-            this.labelImageNumbers = new System.Windows.Forms.Label();
+            this.labelHasMoreImages = new System.Windows.Forms.Label();
             this.postPhotoRepresent = new System.Windows.Forms.PictureBox();
             this.containerPostPhotoReresent.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.postPhotoRepresent)).BeginInit();
@@ -37,7 +37,7 @@
             // 
             // containerPostPhotoReresent
             // 
-            this.containerPostPhotoReresent.Controls.Add(this.labelImageNumbers);
+            this.containerPostPhotoReresent.Controls.Add(this.labelHasMoreImages);
             this.containerPostPhotoReresent.Controls.Add(this.postPhotoRepresent);
             this.containerPostPhotoReresent.Location = new System.Drawing.Point(10, 10);
             this.containerPostPhotoReresent.Margin = new System.Windows.Forms.Padding(0);
@@ -48,24 +48,24 @@
             this.containerPostPhotoReresent.Size = new System.Drawing.Size(220, 220);
             this.containerPostPhotoReresent.TabIndex = 0;
             // 
-            // labelImageNumbers
+            // labelHasMoreImages
             // 
-            this.labelImageNumbers.AutoSize = true;
-            this.labelImageNumbers.ForeColor = System.Drawing.Color.White;
-            this.labelImageNumbers.Image = global::CustomControl.Properties.Resources.layers;
-            this.labelImageNumbers.Location = new System.Drawing.Point(196, 0);
-            this.labelImageNumbers.Margin = new System.Windows.Forms.Padding(0);
-            this.labelImageNumbers.MaximumSize = new System.Drawing.Size(24, 24);
-            this.labelImageNumbers.MinimumSize = new System.Drawing.Size(24, 24);
-            this.labelImageNumbers.Name = "labelImageNumbers";
-            this.labelImageNumbers.Size = new System.Drawing.Size(24, 24);
-            this.labelImageNumbers.TabIndex = 1;
+            this.labelHasMoreImages.AutoSize = true;
+            this.labelHasMoreImages.ForeColor = System.Drawing.Color.White;
+            this.labelHasMoreImages.Image = global::CustomControl.Properties.Resources.layers;
+            this.labelHasMoreImages.Location = new System.Drawing.Point(196, 0);
+            this.labelHasMoreImages.Margin = new System.Windows.Forms.Padding(0);
+            this.labelHasMoreImages.MaximumSize = new System.Drawing.Size(24, 24);
+            this.labelHasMoreImages.MinimumSize = new System.Drawing.Size(24, 24);
+            this.labelHasMoreImages.Name = "labelHasMoreImages";
+            this.labelHasMoreImages.Size = new System.Drawing.Size(24, 24);
+            this.labelHasMoreImages.TabIndex = 1;
             // 
             // postPhotoRepresent
             // 
             this.postPhotoRepresent.Cursor = System.Windows.Forms.Cursors.Hand;
             this.postPhotoRepresent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.postPhotoRepresent.Image = global::CustomControl.Properties.Resources._2773d8b41134ee880c2f2ba46fe02303;
+            this.postPhotoRepresent.Image = global::CustomControl.Properties.Resources.error_image;
             this.postPhotoRepresent.Location = new System.Drawing.Point(0, 0);
             this.postPhotoRepresent.Margin = new System.Windows.Forms.Padding(0);
             this.postPhotoRepresent.Name = "postPhotoRepresent";
@@ -96,6 +96,6 @@
 
         private ContainerCommon containerPostPhotoReresent;
         private System.Windows.Forms.PictureBox postPhotoRepresent;
-        private System.Windows.Forms.Label labelImageNumbers;
+        private System.Windows.Forms.Label labelHasMoreImages;
     }
 }

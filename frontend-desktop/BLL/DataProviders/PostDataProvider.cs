@@ -3,9 +3,6 @@ using BLL.Services;
 using DTO;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BLL.DataProviders
@@ -43,17 +40,26 @@ namespace BLL.DataProviders
 
         public event Action RecentPostsDataLoaded;
 
+        private List<Post> currentUserPosts = null;
+        public List<Post> CurrentUserPosts
+        {
+            get => currentUserPosts;
+        }
+
+        public event Action CurrentUserPostsDataLoaded;
+
         private PostDataProvider()
         {
             postRepository = PostRepository.Instance;
             postService = new PostService(postRepository);
 
-            Initialize();
+            appDataProvider.DataLoaded += Initialize;
         }
 
         public void Initialize()
         {
             FetchRecentPosts();
+            FetchCurrentUserPosts();
         }
         
         private async void FetchRecentPosts()
@@ -70,6 +76,26 @@ namespace BLL.DataProviders
                 else
                 {
                     MessageBox.Show("Error fetching recent posts: " + errorMessage);
+                }
+            }
+        }
+
+        private async void FetchCurrentUserPosts()
+        {
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token)
+                && !string.IsNullOrEmpty(appDataProvider.User.UserID)
+                )
+            {
+                var (list, errorMessage) = await postService.GetPostsByUserAsync(appDataProvider.User.UserID);
+
+                if (string.IsNullOrEmpty(errorMessage))
+                {
+                    this.currentUserPosts = list;
+                    CurrentUserPostsDataLoaded?.Invoke();
+                }
+                else
+                {
+                    MessageBox.Show("Error fetching current user posts: " + errorMessage);
                 }
             }
         }

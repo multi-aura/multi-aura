@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.XPath;
 using BLL.Repository;
 using BLL.Services;
 using DTO;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace BLL.DataProviders
 {
@@ -55,13 +46,15 @@ namespace BLL.DataProviders
         {
             user = new User
             {
-                Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imhpa" +
-                "G9uNDU2QGdtYWlsLmNvbSIsImV4cCI6MTczMjQ0NzMzNiwiZnVsbG5hbWUiOiJIa" +
-                "SBIb24iLCJpc0FjdGl2ZSI6dHJ1ZSwiaXNBZG1pbiI6dHJ1ZSwicGhvbmUiOiIwM" +
-                "TIzMjExMjMzMiIsInVzZXJJRCI6ImFlMWE5NjkyLTFlMjEtNGEzYS1hNGZjLTA5MmJmO" +
-                "TMzNDQyNCJ9.Bf1hFF7dsZS2wm8Q6w3hFoDjmUcIOn-0d6uCubJtpHM",
+                //Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imhpa" +
+                //"G9uNDU2QGdtYWlsLmNvbSIsImV4cCI6MTczMjQ0NzMzNiwiZnVsbG5hbWUiOiJIa" +
+                //"SBIb24iLCJpc0FjdGl2ZSI6dHJ1ZSwiaXNBZG1pbiI6dHJ1ZSwicGhvbmUiOiIwM" +
+                //"TIzMjExMjMzMiIsInVzZXJJRCI6ImFlMWE5NjkyLTFlMjEtNGEzYS1hNGZjLTA5MmJmO" +
+                //"TMzNDQyNCJ9.Bf1hFF7dsZS2wm8Q6w3hFoDjmUcIOn-0d6uCubJtpHM",
+                Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im10aHV3MTIzQGdtYWlsLmNvbSIsImV4cCI6MTczMjg2MDI0MSwiZnVsbG5hbWUiOiJNaW5oIFRodXciLCJpc0FjdGl2ZSI6dHJ1ZSwiaXNBZG1pbiI6dHJ1ZSwicGhvbmUiOiIwOTExMjExMjMzMiIsInVzZXJJRCI6IjZkNGYwNjQ0LWMzMGYtNGZjMy1hOGViLTg1ZmM1MWNlYWYzMCJ9.Rb2r9q4PYDEDQE_hsEZNViQ26W1A7rULz45PjRFdHyc",
                 FullName = "Hi Hon",
-                Username = "hihonnguyn123",
+                Username = "minhthu@@",
+                //hihonnguyn123
                 Email = "hihon456@gmail.com",
                 Password = "$2a$12$5uA6u046bYO1ogx6mBqd1OwDe1zLZZWZuK5lX75VGCrSUEbD1tZUG",
                 PhoneNumber = "01232112332",
@@ -125,6 +118,7 @@ namespace BLL.DataProviders
                 if (string.IsNullOrEmpty(errorMessage))
                 {
                     user = User.CopyFrom(profileResult);
+                    user.Token = token;
                     DataLoaded?.Invoke();
                 }
                 else

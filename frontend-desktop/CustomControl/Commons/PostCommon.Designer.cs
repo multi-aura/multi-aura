@@ -339,7 +339,7 @@
             this.nextImage.Cursor = System.Windows.Forms.Cursors.Hand;
             this.nextImage.Image = global::CustomControl.Properties.Resources.chevron_right;
             this.nextImage.Location = new System.Drawing.Point(462, 261);
-            this.nextImage.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
+            this.nextImage.Margin = new System.Windows.Forms.Padding(0);
             this.nextImage.MaximumSize = new System.Drawing.Size(24, 24);
             this.nextImage.MinimumSize = new System.Drawing.Size(24, 24);
             this.nextImage.Name = "nextImage";
@@ -357,7 +357,7 @@
             this.preImage.Cursor = System.Windows.Forms.Cursors.Hand;
             this.preImage.Image = global::CustomControl.Properties.Resources.chevron_left;
             this.preImage.Location = new System.Drawing.Point(34, 261);
-            this.preImage.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
+            this.preImage.Margin = new System.Windows.Forms.Padding(0);
             this.preImage.MaximumSize = new System.Drawing.Size(24, 24);
             this.preImage.MinimumSize = new System.Drawing.Size(24, 24);
             this.preImage.Name = "preImage";
@@ -391,9 +391,9 @@
             this.Controls.Add(this.tableLayoutPanelDescription);
             this.Controls.Add(this.panel1);
             this.Margin = new System.Windows.Forms.Padding(0);
-            this.MinimumSize = new System.Drawing.Size(520, 720);
+            this.MinimumSize = new System.Drawing.Size(520, 40);
             this.Name = "PostCommon";
-            this.Size = new System.Drawing.Size(520, 1255);
+            this.Size = new System.Drawing.Size(520, 757);
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();

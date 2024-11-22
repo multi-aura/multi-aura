@@ -84,12 +84,15 @@ namespace DTO
                 var jsonObject = JsonConvert.DeserializeObject<dynamic>(jsonData);
                 var postList = new List<Post>();
 
-                // Loop through each post item and create Post object
-                foreach (var item in jsonObject.data)
+                if (jsonObject.data != null)
                 {
-                    var postData = item.ToObject<Dictionary<string, object>>();
-                    var post = Post.FromDictionary(postData);
-                    postList.Add(post);
+                    // Loop through each post item and create Post object
+                    foreach (var item in jsonObject.data)
+                    {
+                        var postData = item.ToObject<Dictionary<string, object>>();
+                        var post = Post.FromDictionary(postData);
+                        postList.Add(post);
+                    }
                 }
 
                 return postList;

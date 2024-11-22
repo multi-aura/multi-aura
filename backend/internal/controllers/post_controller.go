@@ -205,3 +205,64 @@ func (pc *PostController) GetRecentPosts(c *fiber.Ctx) error {
 		Data:    posts,
 	})
 }
+
+func (pc *PostController) GetPostsByUser(c *fiber.Ctx) error {
+	// userID := c.Locals("userID").(string)
+	// if userID == "" {
+	// 	return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
+	// 		Status:  fiber.StatusUnauthorized,
+	// 		Message: "Unauthorized access",
+	// 		Error:   "StatusUnauthorized",
+	// 	})
+	// }
+
+	userID := c.Params("userID") // Lấy userID từ URL
+	if userID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "User ID is required",
+			Error:   "StatusBadRequest",
+		})
+	}
+
+	posts, err := pc.service.GetPostsByUser(userID)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusInternalServerError,
+			Message: err.Error(),
+			Error:   "StatusInternalServerError",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
+		Status:  fiber.StatusOK,
+		Message: "Posts retrieved successfully",
+		Data:    posts,
+	})
+}
+
+func (pc *PostController) GetCommentsByPostID(c *fiber.Ctx) error {
+	postID := c.Params("postID")
+	if postID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Post ID is required",
+			Error:   "StatusBadRequest",
+		})
+	}
+
+	comments, err := pc.service.GetCommentsByPostID(postID)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusInternalServerError,
+			Message: err.Error(),
+			Error:   "StatusInternalServerError",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
+		Status:  fiber.StatusOK,
+		Message: "Comments retrieved successfully",
+		Data:    comments,
+	})
+}

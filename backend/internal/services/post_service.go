@@ -16,6 +16,8 @@ type PostService interface {
 	UpdatePost(id string, updates *map[string]interface{}) error
 	DeletePost(id string) error
 	GetRecentPosts(userID string, limit int64, page int64) ([]*models.Post, error)
+	GetPostsByUser(userID string) ([]*models.Post, error)
+	GetCommentsByPostID(postID string) ([]*models.Comment, error)
 }
 
 type postService struct {
@@ -103,4 +105,20 @@ func (s *postService) GetRecentPosts(userID string, limit int64, page int64) ([]
 		return nil, errors.New("failed to get recent posts: " + err.Error())
 	}
 	return posts, nil
+}
+
+func (s *postService) GetPostsByUser(userID string) ([]*models.Post, error) {
+	posts, err := s.repo.GetPostsByUser(userID)
+	if err != nil {
+		return nil, errors.New("failed to fetch posts by user: " + err.Error())
+	}
+	return posts, nil
+}
+
+func (s *postService) GetCommentsByPostID(postID string) ([]*models.Comment, error) {
+	comments, err := s.repo.GetCommentsByPostID(postID)
+	if err != nil {
+		return nil, errors.New("failed to fetch comments by post: " + err.Error())
+	}
+	return comments, nil
 }

@@ -57,5 +57,50 @@ namespace BLL.Repository
 
             return await PostAsync(url, requestBody);
         }
+
+        public async Task<APIResponse<string>> SearchTrendingAsync(string query, int page, int limit)
+        {
+            var requestBody = new
+            {
+                limit = limit,
+                page = page
+            };
+
+            string url = !string.IsNullOrWhiteSpace(query)
+                ? $"{NetworkUrls.Search.SearchTrending}?q={query}"
+                : NetworkUrls.Search.SearchTrending;
+
+            return await PostAsync(url, requestBody);
+        }
+
+        public async Task<APIResponse<string>> SearchNewsAsync(string query, int page, int limit)
+        {
+            var requestBody = new
+            {
+                limit = limit,
+                page = page
+            };
+
+            string url = !string.IsNullOrWhiteSpace(query)
+                ? $"{NetworkUrls.Search.SearchNews}?q={query}"
+                : NetworkUrls.Search.SearchNews;
+
+            return await PostAsync(url, requestBody);
+        }
+
+        public async Task<APIResponse<string>> SearchPostsAsync(string query, int page, int limit)
+        {
+            var requestBody = new
+            {
+                limit = limit,
+                page = page
+            };
+
+            string url = !string.IsNullOrWhiteSpace(query)
+                ? $"{NetworkUrls.Search.SearchPosts}?q={query}"
+                : NetworkUrls.Search.SearchPosts;
+
+            return await PostAsync(url, requestBody);
+        }
     }
 }

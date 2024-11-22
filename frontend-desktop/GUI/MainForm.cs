@@ -43,6 +43,8 @@ namespace GUI
             appDataProvider.ScreenWidth = this.Width;
             appDataProvider.ScreenHeight = this.Height;
 
+            this.SizeChanged += MainForm_SizeChanged;
+
             appDataProvider.ShowModalRequested += ShowModalRequest;
 
             homeForm = new HomeForm();
@@ -85,6 +87,12 @@ namespace GUI
                 //appDataProvider.DataLoaded += SetUpUI;
                 //SetUpUI();
             }
+        }
+
+        private void MainForm_SizeChanged(object sender, EventArgs e)
+        {
+            appDataProvider.ScreenWidth = this.Width;
+            appDataProvider.ScreenHeight = this.Height;
         }
 
         private void SetUpDefaultActions()

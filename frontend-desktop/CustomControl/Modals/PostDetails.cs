@@ -46,6 +46,7 @@ namespace CustomControl.Modals
             this.labelComment.Click += LabelComment_Click;
             this.labelLike.Click += LabelLike_Click;
             this.panelImages.SizeChanged += PanelImages_SizeChanged;
+            UpdateUI();
         }
 
         private void LabelLike_Click(object sender, EventArgs e)
@@ -69,6 +70,10 @@ namespace CustomControl.Modals
 
         private async void UpdateUI()
         {
+            int newWidth = (int)(0.6 * this.Width);
+            this.panelImages.MinimumSize = new Size(newWidth, this.Height);
+            this.panelImages.Width = newWidth;
+
             if (currentPost != null)
             {
                 SetUpPhotos();
@@ -106,6 +111,13 @@ namespace CustomControl.Modals
                     isLiked = false;
                     this.labelLike.Image = Resources.heart;
                 }
+            }
+            else
+            {
+                this.panelImages.MinimumSize = new Size(0, this.Height);
+                this.panelImages.Width = 0;
+                this.nextImage.Visible = false;
+                this.preImage.Visible = false;
             }
         }
 
@@ -161,22 +173,30 @@ namespace CustomControl.Modals
                         count++;
                     }
                 }
-
-                currentImageIndex = 0;
-                LoadImage(currentImageIndex);
-                if (count > 1)
+                if (count != 0)
                 {
-                    this.preImage.Visible = true;
-                    this.nextImage.Visible = true;
-                    this.preImage.MouseHover += PreImage_MouseHover;
-                    this.preImage.MouseLeave += PreImage_MouseLeave;
-                    this.nextImage.MouseHover += NextImage_MouseHover;
-                    this.nextImage.MouseLeave += NextImage_MouseLeave;
-                    this.preImage.Click += PreImage_Click;
-                    this.nextImage.Click += NextImage_Click;
+                    currentImageIndex = 0;
+                    LoadImage(currentImageIndex);
+                    if (count > 1)
+                    {
+                        this.preImage.Visible = true;
+                        this.nextImage.Visible = true;
+                        this.preImage.MouseHover += PreImage_MouseHover;
+                        this.preImage.MouseLeave += PreImage_MouseLeave;
+                        this.nextImage.MouseHover += NextImage_MouseHover;
+                        this.nextImage.MouseLeave += NextImage_MouseLeave;
+                        this.preImage.Click += PreImage_Click;
+                        this.nextImage.Click += NextImage_Click;
+                    }
+                    else
+                    {
+                        this.preImage.Visible = false;
+                        this.nextImage.Visible = false;
+                    }
                 }
                 else
                 {
+                    this.panelImages.Visible = false;
                     this.preImage.Visible = false;
                     this.nextImage.Visible = false;
                 }
@@ -298,12 +318,13 @@ namespace CustomControl.Modals
         {
             // Tính toán vị trí theo chiều dọc (giữa panelImages)
             int centerY = panelImages.Height / 2;
+            int nextImageLocationX = panelImages.Width - 30;
 
             // Cập nhật vị trí cho preImage
-            preImage.Location = new Point(preImage.Location.X, centerY - preImage.Height / 2);
+            preImage.Location = new Point(10, centerY - preImage.Height / 2);
 
             // Cập nhật vị trí cho nextImage
-            nextImage.Location = new Point(nextImage.Location.X, centerY - nextImage.Height / 2);
+            nextImage.Location = new Point(nextImageLocationX, centerY - nextImage.Height / 2);
         }
     }
 }

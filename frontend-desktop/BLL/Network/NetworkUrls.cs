@@ -82,6 +82,8 @@ namespace BLL.Network
             //Get
             public string GetPostByID => $"{_Route}";
             public string GetRecentPosts => $"{_Route}/recents";
+            public string GetPostsByUser => $"{_Route}/user";
+            public string GetCommentsByPostID => $"{_Route}/comments";
         }
 
         public class SearchUrls

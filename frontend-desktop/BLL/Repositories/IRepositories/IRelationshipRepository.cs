@@ -6,6 +6,7 @@ namespace BLL.Repositories.IRepositories
     public interface IRelationshipRepository
     {
         // Get methods
+        //Task<APIResponse<string>> GetProfileAsync();
         Task<APIResponse<string>> GetProfileAsync(string username);
         Task<APIResponse<string>> GetFriendsAsync();
         Task<APIResponse<string>> GetFollowersAsync();

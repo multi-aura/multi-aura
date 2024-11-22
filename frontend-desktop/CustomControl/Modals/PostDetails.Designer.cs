@@ -32,8 +32,8 @@
             this.panelDesktop = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panelImages = new System.Windows.Forms.Panel();
-            this.preImage = new CustomControl.Commons.AvatarCommon();
             this.nextImage = new CustomControl.Commons.AvatarCommon();
+            this.preImage = new CustomControl.Commons.AvatarCommon();
             this.currentPhotoBox = new System.Windows.Forms.PictureBox();
             this.panelDetails = new System.Windows.Forms.Panel();
             this.panelInteractions = new System.Windows.Forms.Panel();
@@ -67,8 +67,8 @@
             this.panelDesktop.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panelImages.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.preImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nextImage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.preImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.currentPhotoBox)).BeginInit();
             this.panelDetails.SuspendLayout();
             this.panelInteractions.SuspendLayout();
@@ -102,8 +102,8 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 600F));
             this.tableLayoutPanel1.Controls.Add(this.panelImages, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panelDetails, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -117,15 +117,34 @@
             // 
             // panelImages
             // 
-            this.panelImages.Controls.Add(this.preImage);
             this.panelImages.Controls.Add(this.nextImage);
+            this.panelImages.Controls.Add(this.preImage);
             this.panelImages.Controls.Add(this.currentPhotoBox);
             this.panelImages.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelImages.Location = new System.Drawing.Point(0, 0);
             this.panelImages.Margin = new System.Windows.Forms.Padding(0);
+            this.panelImages.MinimumSize = new System.Drawing.Size(300, 416);
             this.panelImages.Name = "panelImages";
-            this.panelImages.Size = new System.Drawing.Size(281, 416);
+            this.panelImages.Size = new System.Drawing.Size(300, 416);
             this.panelImages.TabIndex = 11;
+            // 
+            // nextImage
+            // 
+            this.nextImage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.nextImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.nextImage.CurrentUser = null;
+            this.nextImage.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.nextImage.Image = global::CustomControl.Properties.Resources.chevron_right;
+            this.nextImage.Location = new System.Drawing.Point(264, 202);
+            this.nextImage.Margin = new System.Windows.Forms.Padding(0);
+            this.nextImage.MaximumSize = new System.Drawing.Size(24, 24);
+            this.nextImage.MinimumSize = new System.Drawing.Size(24, 24);
+            this.nextImage.Name = "nextImage";
+            this.nextImage.Size = new System.Drawing.Size(24, 24);
+            this.nextImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.nextImage.TabIndex = 2;
+            this.nextImage.TabStop = false;
             // 
             // preImage
             // 
@@ -145,58 +164,43 @@
             this.preImage.TabIndex = 1;
             this.preImage.TabStop = false;
             // 
-            // nextImage
-            // 
-            this.nextImage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.nextImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
-            this.nextImage.CurrentUser = null;
-            this.nextImage.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.nextImage.Image = global::CustomControl.Properties.Resources.chevron_right;
-            this.nextImage.Location = new System.Drawing.Point(245, 202);
-            this.nextImage.Margin = new System.Windows.Forms.Padding(0);
-            this.nextImage.MaximumSize = new System.Drawing.Size(24, 24);
-            this.nextImage.MinimumSize = new System.Drawing.Size(24, 24);
-            this.nextImage.Name = "nextImage";
-            this.nextImage.Size = new System.Drawing.Size(24, 24);
-            this.nextImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.nextImage.TabIndex = 2;
-            this.nextImage.TabStop = false;
-            // 
             // currentPhotoBox
             // 
             this.currentPhotoBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.currentPhotoBox.Location = new System.Drawing.Point(0, 0);
             this.currentPhotoBox.Margin = new System.Windows.Forms.Padding(0);
             this.currentPhotoBox.Name = "currentPhotoBox";
-            this.currentPhotoBox.Size = new System.Drawing.Size(281, 416);
+            this.currentPhotoBox.Size = new System.Drawing.Size(300, 416);
             this.currentPhotoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.currentPhotoBox.TabIndex = 1;
             this.currentPhotoBox.TabStop = false;
             // 
             // panelDetails
             // 
+            this.panelDetails.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
             this.panelDetails.Controls.Add(this.panelInteractions);
             this.panelDetails.Controls.Add(this.panel1);
             this.panelDetails.Controls.Add(this.panelPostTaskBar);
             this.panelDetails.Controls.Add(this.panel2);
             this.panelDetails.Controls.Add(this.panelMessageSending);
             this.panelDetails.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDetails.Location = new System.Drawing.Point(281, 0);
+            this.panelDetails.Location = new System.Drawing.Point(300, 0);
             this.panelDetails.Margin = new System.Windows.Forms.Padding(0);
             this.panelDetails.Name = "panelDetails";
-            this.panelDetails.Size = new System.Drawing.Size(600, 416);
+            this.panelDetails.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.panelDetails.Size = new System.Drawing.Size(581, 416);
             this.panelDetails.TabIndex = 10;
             // 
             // panelInteractions
             // 
             this.panelInteractions.AutoScroll = true;
+            this.panelInteractions.BackColor = System.Drawing.Color.Transparent;
             this.panelInteractions.Controls.Add(this.panelComments);
             this.panelInteractions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelInteractions.Location = new System.Drawing.Point(0, 129);
+            this.panelInteractions.Location = new System.Drawing.Point(0, 139);
             this.panelInteractions.Margin = new System.Windows.Forms.Padding(0);
             this.panelInteractions.Name = "panelInteractions";
-            this.panelInteractions.Size = new System.Drawing.Size(600, 237);
+            this.panelInteractions.Size = new System.Drawing.Size(581, 227);
             this.panelInteractions.TabIndex = 38;
             // 
             // panelComments
@@ -208,29 +212,30 @@
             this.panelComments.MinimumSize = new System.Drawing.Size(0, 40);
             this.panelComments.Name = "panelComments";
             this.panelComments.Padding = new System.Windows.Forms.Padding(10, 10, 0, 0);
-            this.panelComments.Size = new System.Drawing.Size(600, 40);
+            this.panelComments.Size = new System.Drawing.Size(581, 40);
             this.panelComments.TabIndex = 19;
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Silver;
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 128);
+            this.panel1.Location = new System.Drawing.Point(0, 138);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(600, 1);
+            this.panel1.Size = new System.Drawing.Size(581, 1);
             this.panel1.TabIndex = 37;
             // 
             // panelPostTaskBar
             // 
+            this.panelPostTaskBar.BackColor = System.Drawing.Color.Transparent;
             this.panelPostTaskBar.Controls.Add(this.tableLayoutPanel7);
             this.panelPostTaskBar.Controls.Add(this.tableLayoutPanel8);
             this.panelPostTaskBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelPostTaskBar.Location = new System.Drawing.Point(0, 68);
+            this.panelPostTaskBar.Location = new System.Drawing.Point(0, 78);
             this.panelPostTaskBar.Margin = new System.Windows.Forms.Padding(0);
             this.panelPostTaskBar.Name = "panelPostTaskBar";
             this.panelPostTaskBar.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
-            this.panelPostTaskBar.Size = new System.Drawing.Size(600, 60);
+            this.panelPostTaskBar.Size = new System.Drawing.Size(581, 60);
             this.panelPostTaskBar.TabIndex = 31;
             // 
             // tableLayoutPanel7
@@ -246,7 +251,7 @@
             this.tableLayoutPanel7.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.tableLayoutPanel7.RowCount = 1;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(600, 18);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(581, 18);
             this.tableLayoutPanel7.TabIndex = 1;
             // 
             // labelTotalLikes
@@ -283,7 +288,7 @@
             this.tableLayoutPanel8.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.tableLayoutPanel8.RowCount = 1;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(600, 32);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(581, 32);
             this.tableLayoutPanel8.TabIndex = 0;
             // 
             // labelShare
@@ -329,11 +334,11 @@
             this.panel2.Controls.Add(this.panel4);
             this.panel2.Controls.Add(this.tableLayoutPanel3);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Location = new System.Drawing.Point(0, 10);
             this.panel2.Margin = new System.Windows.Forms.Padding(0);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(10, 4, 0, 4);
-            this.panel2.Size = new System.Drawing.Size(600, 68);
+            this.panel2.Size = new System.Drawing.Size(581, 68);
             this.panel2.TabIndex = 30;
             // 
             // panel4
@@ -344,7 +349,7 @@
             this.panel4.Location = new System.Drawing.Point(10, 48);
             this.panel4.Margin = new System.Windows.Forms.Padding(0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(590, 16);
+            this.panel4.Size = new System.Drawing.Size(571, 16);
             this.panel4.TabIndex = 3;
             // 
             // labelDescription
@@ -375,7 +380,7 @@
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(590, 44);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(571, 44);
             this.tableLayoutPanel3.TabIndex = 2;
             // 
             // actionButton
@@ -388,7 +393,7 @@
             this.actionButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.actionButton.ForeColor = System.Drawing.Color.White;
             this.actionButton.Image = global::CustomControl.Properties.Resources.more;
-            this.actionButton.Location = new System.Drawing.Point(540, 14);
+            this.actionButton.Location = new System.Drawing.Point(521, 14);
             this.actionButton.Margin = new System.Windows.Forms.Padding(20, 14, 4, 14);
             this.actionButton.Name = "actionButton";
             this.actionButton.Size = new System.Drawing.Size(46, 16);
@@ -399,7 +404,7 @@
             // 
             this.userAvatar.CurrentUser = null;
             this.userAvatar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.userAvatar.Image = global::CustomControl.Properties.Resources._006833d62de3321b980cb2b6a46088a5;
+            this.userAvatar.Image = global::CustomControl.Properties.Resources.person;
             this.userAvatar.Location = new System.Drawing.Point(0, 0);
             this.userAvatar.Margin = new System.Windows.Forms.Padding(0);
             this.userAvatar.MaximumSize = new System.Drawing.Size(40, 40);
@@ -424,7 +429,7 @@
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(480, 44);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(461, 44);
             this.tableLayoutPanel4.TabIndex = 2;
             // 
             // labelCreateAt
@@ -437,7 +442,7 @@
             this.labelCreateAt.Location = new System.Drawing.Point(10, 22);
             this.labelCreateAt.Margin = new System.Windows.Forms.Padding(0);
             this.labelCreateAt.Name = "labelCreateAt";
-            this.labelCreateAt.Size = new System.Drawing.Size(470, 22);
+            this.labelCreateAt.Size = new System.Drawing.Size(451, 22);
             this.labelCreateAt.TabIndex = 1;
             this.labelCreateAt.Text = "•1w";
             // 
@@ -452,7 +457,7 @@
             this.labelFullName.Location = new System.Drawing.Point(10, 0);
             this.labelFullName.Margin = new System.Windows.Forms.Padding(0);
             this.labelFullName.Name = "labelFullName";
-            this.labelFullName.Size = new System.Drawing.Size(470, 22);
+            this.labelFullName.Size = new System.Drawing.Size(451, 22);
             this.labelFullName.TabIndex = 0;
             this.labelFullName.Text = "Full name";
             this.labelFullName.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -467,7 +472,7 @@
             this.panelMessageSending.Margin = new System.Windows.Forms.Padding(0);
             this.panelMessageSending.Name = "panelMessageSending";
             this.panelMessageSending.Padding = new System.Windows.Forms.Padding(10);
-            this.panelMessageSending.Size = new System.Drawing.Size(600, 50);
+            this.panelMessageSending.Size = new System.Drawing.Size(581, 50);
             this.panelMessageSending.TabIndex = 28;
             // 
             // tableLayoutPanel5
@@ -484,7 +489,7 @@
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(580, 30);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(561, 30);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
             // containerCommon1
@@ -498,7 +503,7 @@
             this.containerCommon1.Name = "containerCommon1";
             this.containerCommon1.Padding = new System.Windows.Forms.Padding(6, 4, 6, 4);
             this.containerCommon1.Radius = 6;
-            this.containerCommon1.Size = new System.Drawing.Size(536, 30);
+            this.containerCommon1.Size = new System.Drawing.Size(517, 30);
             this.containerCommon1.TabIndex = 4;
             // 
             // inputComment
@@ -514,7 +519,7 @@
             this.inputComment.MaxLine = 10;
             this.inputComment.Multiline = true;
             this.inputComment.Name = "inputComment";
-            this.inputComment.Size = new System.Drawing.Size(524, 22);
+            this.inputComment.Size = new System.Drawing.Size(505, 22);
             this.inputComment.TabIndex = 5;
             this.inputComment.Text = "Aa, enter your text";
             // 
@@ -524,7 +529,7 @@
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel6.Controls.Add(this.labelSending, 0, 0);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(548, 6);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(529, 6);
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel6.MinimumSize = new System.Drawing.Size(24, 24);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
@@ -607,8 +612,8 @@
             this.panelDesktop.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panelImages.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.preImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nextImage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.preImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.currentPhotoBox)).EndInit();
             this.panelDetails.ResumeLayout(false);
             this.panelDetails.PerformLayout();
@@ -676,8 +681,8 @@
         private System.Windows.Forms.Panel panelComments;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panelImages;
-        private Commons.AvatarCommon nextImage;
         private Commons.AvatarCommon preImage;
         private System.Windows.Forms.PictureBox currentPhotoBox;
+        private Commons.AvatarCommon nextImage;
     }
 }

@@ -55,5 +55,59 @@ namespace BLL.Services
 
             return (null, "Unknown error");
         }
+
+        public async Task<(List<Post>, string)> SearchTrendingAsync(string query = "", int page = 1, int limit = 10)
+        {
+            var response = await _searchRepository.SearchTrendingAsync(query, page, limit);
+
+            if (response is SuccessResponse<string> successResponse)
+            {
+                var posts = await Post.ParsePostListAsync(successResponse.Data);
+                return (posts, string.Empty);
+            }
+
+            if (response is ErrorResponse<string> errorResponse)
+            {
+                return (null, errorResponse.Message);
+            }
+
+            return (null, "Unknown error");
+        }
+
+        public async Task<(List<Post>, string)> SearchNewsAsync(string query = "", int page = 1, int limit = 10)
+        {
+            var response = await _searchRepository.SearchNewsAsync(query, page, limit);
+
+            if (response is SuccessResponse<string> successResponse)
+            {
+                var posts = await Post.ParsePostListAsync(successResponse.Data);
+                return (posts, string.Empty);
+            }
+
+            if (response is ErrorResponse<string> errorResponse)
+            {
+                return (null, errorResponse.Message);
+            }
+
+            return (null, "Unknown error");
+        }
+
+        public async Task<(List<Post>, string)> SearchPostsAsync(string query = "", int page = 1, int limit = 10)
+        {
+            var response = await _searchRepository.SearchPostsAsync(query, page, limit);
+
+            if (response is SuccessResponse<string> successResponse)
+            {
+                var posts = await Post.ParsePostListAsync(successResponse.Data);
+                return (posts, string.Empty);
+            }
+
+            if (response is ErrorResponse<string> errorResponse)
+            {
+                return (null, errorResponse.Message);
+            }
+
+            return (null, "Unknown error");
+        }
     }
 }
