@@ -47,6 +47,8 @@ namespace CustomControl.Commons
             this.labelLike.Click += LabelLike_Click;
 
             this.panelImages.SizeChanged += PanelImages_SizeChanged;
+            UpdateUI();
+            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
         }
 
         private void LabelLike_Click(object sender, EventArgs e)
@@ -108,6 +110,12 @@ namespace CustomControl.Commons
                     this.labelLike.Image = Resources.heart;
                 }
             }
+            else
+            {
+                this.panelImages.Visible = false;
+                this.preImage.Visible = false;
+                this.nextImage.Visible = false;
+            }
         }
 
         private async void SetUpAuthorInfo()
@@ -119,15 +127,7 @@ namespace CustomControl.Commons
                     try
                     {
                         var imageUrl = currentPost.Author.Avatar;
-                        using (HttpClient httpClient = new HttpClient())
-                        {
-                            var imageBytes = await httpClient.GetByteArrayAsync(imageUrl);
-
-                            using (var ms = new System.IO.MemoryStream(imageBytes))
-                            {
-                                userAvatar.Image = Image.FromStream(ms);
-                            }
-                        }
+                        userAvatar.Image = await NetworkLoader.LoadImageFromUrlAsync(imageUrl);
                     }
                     catch (Exception ex)
                     {
@@ -163,24 +163,34 @@ namespace CustomControl.Commons
                     }
                 }
 
-                currentImageIndex = 0;
-                LoadImage(currentImageIndex);
-                if (count > 1)
+                if (count != 0)
                 {
-                    this.preImage.Visible = true;
-                    this.nextImage.Visible = true;
-                    this.preImage.MouseHover += PreImage_MouseHover;
-                    this.preImage.MouseLeave += PreImage_MouseLeave;
-                    this.nextImage.MouseHover += NextImage_MouseHover;
-                    this.nextImage.MouseLeave += NextImage_MouseLeave;
-                    this.preImage.Click += PreImage_Click;
-                    this.nextImage.Click += NextImage_Click;
+                    this.panelImages.Visible = true;
+                    currentImageIndex = 0;
+                    LoadImage(currentImageIndex);
+                    if (count > 1)
+                    {
+                        this.preImage.Visible = true;
+                        this.nextImage.Visible = true;
+                        this.preImage.MouseHover += PreImage_MouseHover;
+                        this.preImage.MouseLeave += PreImage_MouseLeave;
+                        this.nextImage.MouseHover += NextImage_MouseHover;
+                        this.nextImage.MouseLeave += NextImage_MouseLeave;
+                        this.preImage.Click += PreImage_Click;
+                        this.nextImage.Click += NextImage_Click;
+                    }
+                    else
+                    {
+                        this.preImage.Visible = false;
+                        this.nextImage.Visible = false;
+                    }
                 }
                 else
                 {
+                    this.panelImages.Visible = false;
                     this.preImage.Visible = false;
                     this.nextImage.Visible = false;
-                }
+                }                
             }
             else
             {

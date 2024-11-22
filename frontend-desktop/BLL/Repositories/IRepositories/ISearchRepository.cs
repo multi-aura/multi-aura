@@ -9,5 +9,8 @@ namespace BLL.Repositories.IRepositories
     {
         Task<APIResponse<string>> SearchPeopleAsync(string query, int page, int limit);
         Task<APIResponse<string>> SearchForYouAsync(string query, int page, int limit);
+        Task<APIResponse<string>> SearchTrendingAsync(string query, int page, int limit);
+        Task<APIResponse<string>> SearchNewsAsync(string query, int page, int limit);
+        Task<APIResponse<string>> SearchPostsAsync(string query, int page, int limit);
     }
 }

@@ -8,6 +8,7 @@ namespace CustomControl.Commons
 {
     public partial class SearchBarCommon : UserControl
     {
+        public event EventHandler OnEnter;
         public string Query
         {
             get => textBoxSearch.Text != Hint? (textBoxSearch.Text ?? "") : "";
@@ -19,7 +20,16 @@ namespace CustomControl.Commons
                 }
             }
         }
-        public string Hint { get; set; }
+        private string hint;
+        public string Hint { 
+            get => hint;
+            set
+            {
+                hint = value;
+                SetUpUI();
+            }
+        }
+
         public SearchBarCommon()
         {
             InitializeComponent();
@@ -39,6 +49,16 @@ namespace CustomControl.Commons
         private void SetUpActions()
         {
             labelClear.Click += LabelClear_Click;
+            textBoxSearch.KeyPress += TextBoxSearch_KeyPress;
+        }
+
+        private void TextBoxSearch_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                OnEnter?.Invoke(this, EventArgs.Empty);
+                e.Handled = true;
+            }
         }
 
         private void LabelClear_Click(object sender, EventArgs e)

@@ -17,6 +17,8 @@ func SetupPostRoutes(app *fiber.App) {
 
 	posts := app.Group("/post")
 
+	posts.Post("/user/:userID", middlewares.AuthMiddleware(), controller.GetPostsByUser)
+	posts.Post("/comments/:postID", middlewares.AuthMiddleware(), controller.GetCommentsByPostID)
 	posts.Post("/recents", middlewares.AuthMiddleware(), controller.GetRecentPosts)
 	posts.Post("/create", middlewares.AuthMiddleware(), controller.CreatePost)
 	posts.Get("/:id", controller.GetPostByID)

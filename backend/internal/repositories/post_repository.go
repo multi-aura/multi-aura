@@ -2,6 +2,8 @@ package repositories
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"math/rand"
 	"multiaura/internal/databases"
 	"multiaura/internal/models"
@@ -16,6 +18,8 @@ import (
 type PostRepository interface {
 	Repository[models.Post]
 	GetRecentPosts(userIDs []string, limit, page int64) ([]*models.Post, error)
+	GetPostsByUser(userID string) ([]*models.Post, error)
+	GetCommentsByPostID(postID string) ([]*models.Comment, error)
 	SearchTrendingPosts(query string, limit, page int64) ([]*models.Post, error)
 	SearchNewsMixedPosts(query string, userIDs []string, limit, page int64) ([]*models.Post, error)
 	SearchPostsForYou(query, userID string, limit, page int64) ([]*models.Post, error)
@@ -112,7 +116,7 @@ func (repo *postRepository) GetRecentPosts(userIDs []string, limit, page int64) 
 	findOptions.SetLimit(limit)
 	findOptions.SetSkip(skip)
 	findOptions.SetProjection(bson.M{
-		"comments": bson.M{"$slice": 2}, // Chỉ lấy 2 comment đầu tiên
+		"comments": bson.M{"$slice": 2},
 	})
 
 	filter := bson.M{"createdBy.userID": bson.M{"$in": userIDs}}
@@ -142,6 +146,101 @@ func (repo *postRepository) GetRecentPosts(userIDs []string, limit, page int64) 
 	}
 
 	return posts, nil
+}
+
+func (repo *postRepository) GetPostsByUser(userID string) ([]*models.Post, error) {
+	var posts []*models.Post
+
+	// Tạo filter để tìm bài viết của người dùng
+	filter := bson.M{"createdBy.userID": userID}
+
+	// Cài đặt tùy chọn tìm kiếm
+	findOptions := options.Find()
+	findOptions.SetSort(bson.D{{Key: "createdAt", Value: -1}}) // Sắp xếp bài viết mới nhất
+	findOptions.SetProjection(bson.M{
+		"comments": bson.M{"$slice": 2}, // Chỉ lấy 2 bình luận đầu tiên
+	})
+
+	// Thực hiện truy vấn
+	cursor, err := repo.collection.Find(context.Background(), filter, findOptions)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(context.Background())
+
+	// Lấy dữ liệu từ cursor và decode
+	for cursor.Next(context.Background()) {
+		var data map[string]interface{}
+		if err := cursor.Decode(&data); err != nil {
+			return nil, err
+		}
+
+		// Convert dữ liệu sang struct Post
+		post, err := new(models.Post).FromMap(data)
+		if err != nil {
+			return nil, err
+		}
+
+		posts = append(posts, post)
+	}
+
+	// Kiểm tra lỗi cursor (nếu có)
+	if err := cursor.Err(); err != nil {
+		return nil, err
+	}
+
+	return posts, nil
+}
+
+func (repo *postRepository) GetCommentsByPostID(postID string) ([]*models.Comment, error) {
+	var comments []*models.Comment
+
+	// Chuyển đổi postID từ string sang ObjectID
+	objID, err := primitive.ObjectIDFromHex(postID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid postID: %v", err)
+	}
+
+	// Tạo bộ lọc để tìm post theo ID
+	filter := bson.M{"_id": objID}
+
+	projection := bson.M{"comments": 1, "_id": 0}
+
+	var result map[string]interface{}
+	findOptions := options.FindOne().
+		SetProjection(projection).
+		SetSort(bson.M{"comments.createdAt": -1})
+
+	err = repo.collection.FindOne(context.Background(), filter, findOptions).Decode(&result)
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return nil, fmt.Errorf("post not found")
+		}
+		return nil, fmt.Errorf("failed to query comments: %v", err)
+	}
+
+	commentsData, ok := result["comments"].(primitive.A)
+	if !ok {
+		return nil, fmt.Errorf("comments field is not of type primitive.A")
+	}
+
+	// Chuyển đổi từng comment từ map vào struct Comment
+	for _, commentItem := range commentsData {
+		// Kiểm tra kiểu của commentItem
+		commentMap, ok := commentItem.(map[string]interface{})
+		if !ok {
+			return nil, fmt.Errorf("failed to cast comment item to map[string]interface{}")
+		}
+
+		// Sử dụng FromMap để chuyển đổi từ map sang Comment
+		comment, err := new(models.Comment).FromMap(commentMap)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse comment: %v", err)
+		}
+		comments = append(comments, comment)
+	}
+
+	return comments, nil
 }
 
 func (repo *postRepository) SearchTrendingPosts(query string, limit, page int64) ([]*models.Post, error) {
@@ -253,7 +352,7 @@ func (repo *postRepository) SearchNewsMixedPosts(query string, userIDs []string,
 	}
 	friendOptions := options.Find().SetSort(sort).SetLimit(limit).SetSkip(skip)
 	friendOptions.SetProjection(bson.M{
-		"comments": bson.M{"$slice": 2}, // Chỉ lấy 2 comment đầu tiên
+		"comments": bson.M{"$slice": 2},
 	})
 	friendCursor, err := repo.collection.Find(context.Background(), friendFilter, friendOptions)
 	if err != nil {
@@ -367,7 +466,7 @@ func (repo *postRepository) SearchPostsForYou(query, userID string, limit, page 
 	findOptions.SetLimit(limit)
 	findOptions.SetSkip(skip) // Bỏ qua số bài viết đã tính toán
 	findOptions.SetProjection(bson.M{
-		"comments": bson.M{"$slice": 2}, // Chỉ lấy 2 comment đầu tiên
+		"comments": bson.M{"$slice": 2},
 	})
 	// Lấy bài viết từ bạn bè
 	cursor, err := repo.collection.Find(context.Background(), friendFilter, findOptions)
@@ -436,11 +535,10 @@ func (repo *postRepository) Search(query string, blockedUserIDs []string, limit 
 	findOptions.SetLimit(limit)
 	findOptions.SetSkip(skip)
 	findOptions.SetProjection(bson.M{
-		"comments": bson.M{"$slice": 2}, // Chỉ lấy 2 comment đầu tiên
+		"comments": bson.M{"$slice": 2},
 	})
 	// log.Println(blockedUserIDs)
 
-	// Tạo bộ lọc cho truy vấn
 	filter := bson.M{
 		"$and": []bson.M{
 			{

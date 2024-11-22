@@ -38,5 +38,17 @@ namespace BLL.Repository
 
             return await PostAsync(NetworkUrls.Post.GetRecentPosts, requestBody);
         }
+
+        public async Task<APIResponse<string>> GetPostsByUserAsync(string userId)
+        {
+            string url = $"{NetworkUrls.Post.GetPostsByUser}/{userId}";
+            return await PostAsync(url);
+        }
+
+        public async Task<APIResponse<string>> GetCommentsByPostIDAsync(string postId)
+        {
+            string url = $"{NetworkUrls.Post.GetCommentsByPostID}/{postId}";
+            return await PostAsync(url);
+        }
     }
 }

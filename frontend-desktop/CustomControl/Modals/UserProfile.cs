@@ -1,16 +1,15 @@
 ﻿using BLL.DataProviders;
 using CustomControl.Commons;
+using CustomControl.Extensions;
 using CustomControl.Utils;
 using DTO;
-using GUI.Extensions;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Label = System.Windows.Forms.Label;
 
-namespace GUI.Forms
+namespace CustomControl.Modals
 {
-    public partial class ProfileForm : Form
+    public partial class UserProfile : Form
     {
         private AppDataProvider appDataProvider;
         private RelationshipDataProvider relationshipDataProvider;
@@ -24,9 +23,10 @@ namespace GUI.Forms
         private bool hasFriendsData = false;
         private bool hasMoreData = true;
 
-        public ProfileForm()
+        public UserProfile()
         {
             InitializeComponent();
+
             appDataProvider = AppDataProvider.Instance;
             appDataProvider.DataLoaded += LoadProfile;
 
@@ -51,7 +51,7 @@ namespace GUI.Forms
                 panelPosts.Invoke(new Action(LoadPanelUserPosts));
                 return;
             }
-            
+
             //panelForYouNoQueryPosts.Controls.Clear();
             if (postDataProvider.CurrentUserPosts != null)
             {
@@ -88,7 +88,7 @@ namespace GUI.Forms
                         AddMediasDataItem(item);
                     }
                 }
-                
+
             }
             else
             {
@@ -127,7 +127,7 @@ namespace GUI.Forms
             {
                 panelMedias.Controls.Add(briefPost);
             }
-            
+
 
             if (!hasMediasData)
             {
@@ -148,7 +148,7 @@ namespace GUI.Forms
                 panelFriends.Invoke(new Action(LoadPanelFriends));
                 return;
             }
-            
+
             if (currentTaskBar == labelFriends)
             {
                 ShowLoading();
@@ -285,7 +285,7 @@ namespace GUI.Forms
             {
                 SetSelectedLabel(clickedLabel);
 
-                if(clickedLabel == labelMedias)
+                if (clickedLabel == labelMedias)
                 {
                     LoadPanel(this.panelMedias, hasMediasData);
                 }
