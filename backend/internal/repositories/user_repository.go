@@ -28,7 +28,7 @@ type UserRepository interface {
 	IsFollowing(targetUserID, userID string) (bool, error)
 	IsFollowedBy(targetUserID, userID string) (bool, error)
 	IsFriend(targetUserID, userID string) (bool, error)
-	GetFriends(userID string) ([]*models.User, error)
+	GetFriends(userID string) ([]*models.UserSummary, error)
 	GetFollowers(userID string) ([]*models.UserSummary, error)
 	GetFollowings(userID string) ([]*models.UserSummary, error)
 	GetBlockedList(userID string) ([]string, error)
@@ -694,7 +694,7 @@ func (repo *userRepository) IsFriend(targetUserID, userID string) (bool, error) 
 	return result.(bool), nil
 }
 
-func (repo *userRepository) GetFriends(userID string) ([]*models.User, error) {
+func (repo *userRepository) GetFriends(userID string) ([]*models.UserSummary, error) {
 	ctx := context.Background()
 	session := repo.db.Driver.NewSession(ctx, neo4j.SessionConfig{
 		AccessMode: neo4j.AccessModeRead,
@@ -703,8 +703,8 @@ func (repo *userRepository) GetFriends(userID string) ([]*models.User, error) {
 
 	result, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (interface{}, error) {
 		records, err := tx.Run(ctx, `
-			MATCH (u:User {userID: $userID})-[:FRIEND_WITH]->(friend:User)
-			RETURN friend
+			MATCH (u:User {userID: $userID})-[:FRIEND_WITH]->(f:User)
+			RETURN f.userID AS userID, f.fullname AS fullname, f.username AS username, f.avatar AS avatar
 		`, map[string]interface{}{
 			"userID": userID,
 		})
@@ -713,23 +713,30 @@ func (repo *userRepository) GetFriends(userID string) ([]*models.User, error) {
 		}
 
 		// Collect friend models into a slice
-		var friends []*models.User
+		var friends []*models.UserSummary
 		for records.Next(ctx) {
 			record := records.Record()
-			friendNode, _ := record.Get("friend")
-			friendUser := &models.User{}
+			friendUser := &models.UserSummary{}
 
-			// Convert Neo4j node properties to User model
-			friendNodeProps := friendNode.(neo4j.Node).Props
-			friendUser, err = friendUser.FromMap(friendNodeProps)
-			if err != nil {
-				return nil, errors.New("error converting map to User")
+			if userIDVal, ok := record.Get("userID"); ok {
+				friendUser.ID = userIDVal.(string)
+			}
+			if fullnameVal, ok := record.Get("fullname"); ok {
+				friendUser.FullName = fullnameVal.(string)
+			}
+			if usernameVal, ok := record.Get("username"); ok {
+				friendUser.Username = usernameVal.(string)
+			}
+			if avatarVal, ok := record.Get("avatar"); ok {
+				friendUser.Avatar = avatarVal.(string)
+			}
+			if isActive, ok := record.Get("isActive"); ok {
+				friendUser.IsActive = isActive.(bool)
 			}
 
 			friends = append(friends, friendUser)
 		}
 
-		// Check if there were any errors during the record fetching
 		if err = records.Err(); err != nil {
 			return nil, err
 		}
@@ -740,9 +747,9 @@ func (repo *userRepository) GetFriends(userID string) ([]*models.User, error) {
 		return nil, err
 	}
 
-	friendList, ok := result.([]*models.User)
+	friendList, ok := result.([]*models.UserSummary)
 	if !ok {
-		return nil, errors.New("failed to cast result to []*models.User")
+		return nil, errors.New("failed to cast result to []*models.UserSummary")
 	}
 
 	return friendList, nil
@@ -936,8 +943,9 @@ func (repo *userRepository) GetRelationship(targetUserID, userID string) (models
 
 			var sinceTime *time.Time
 			if since != nil {
-				if sinceTimeValue, ok := since.(time.Time); ok {
-					sinceTime = &sinceTimeValue
+				if v, ok := since.(int64); ok {
+					timeValue := time.Unix(v/1000, (v%1000)*1000000)
+					sinceTime = &timeValue
 				}
 			}
 

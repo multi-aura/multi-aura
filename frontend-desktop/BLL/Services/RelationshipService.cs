@@ -62,6 +62,47 @@ namespace BLL.Services
             return (null, "Unknown error");
         }
 
+        public async Task<(User, string)> GetAuthProfileAsync()
+        {
+            var response = await _relationshipRepository.GetProfileAsync();
+
+            // Kiểm tra nếu response là thành công
+            if (response is SuccessResponse<string> successResponse)
+            {
+                try
+                {
+                    // Parse JSON thành JObject
+                    var jsonData = JsonConvert.DeserializeObject<Newtonsoft.Json.Linq.JObject>(successResponse.Data);
+
+                    // Lấy phần "data" từ JSON response
+                    var data = jsonData["data"] as Newtonsoft.Json.Linq.JObject;
+                    var dataDict = data.ToObject<Dictionary<string, object>>();
+
+                    if (dataDict != null)
+                    {
+                        // Parse thông tin user
+                        var userProfile = User.FromDictionary(dataDict);
+
+                        return (userProfile, string.Empty);
+                    }
+
+                    return (null, "Failed to parse auth profile");
+                }
+                catch (Exception ex)
+                {
+                    return (null, $"Error parsing response: {ex.Message}");
+                }
+            }
+
+            // Nếu là lỗi
+            if (response is ErrorResponse<string> errorResponse)
+            {
+                return (null, errorResponse.Message);
+            }
+
+            return (null, "Unknown error");
+        }
+
         public async Task<(List<UserSummary>, string)> GetFriendsAsync()
         {
             var response = await _relationshipRepository.GetFriendsAsync();
@@ -130,7 +171,7 @@ namespace BLL.Services
             return (null, "Unknown error");
         }
 
-        public async Task<(string, string)> GetRelationshipStatusAsync(string userId)
+        public async Task<(RelationshipStatus, string)> GetRelationshipStatusAsync(string userId)
         {
             //IsValidateUserId(userId);
             var response = await _relationshipRepository.GetRelationshipStatusAsync(userId);
@@ -139,17 +180,16 @@ namespace BLL.Services
             {
                 try
                 {
-                    // Parse JSON response thành Dictionary
+                    // Deserialize JSON response vào đối tượng RelationshipStatus
                     var jsonData = JsonConvert.DeserializeObject<Dictionary<string, object>>(successResponse.Data);
 
-                    // Kiểm tra và lấy phần "data"
-                    var data = jsonData.ContainsKey("data") ? jsonData["data"] as Dictionary<string, object> : null;
-
-                    if (data != null && data.ContainsKey("status"))
+                    if (jsonData != null && jsonData.ContainsKey("data"))
                     {
-                        // Lấy giá trị "status"
-                        var status = data["status"].ToString();
-                        return (status, string.Empty);
+                        var dataJson = JsonConvert.SerializeObject(jsonData["data"]);
+
+                        var relationshipStatus = JsonConvert.DeserializeObject<RelationshipStatus>(dataJson);
+
+                        return (relationshipStatus, string.Empty);
                     }
 
                     return (null, "Failed to parse relationship status");

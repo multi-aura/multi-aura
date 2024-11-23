@@ -11,13 +11,14 @@ type RelationshipService interface {
 	UnFollow(targetUserID, userID string) error
 	Block(targetUserID, userID string) error
 	UnBlock(targetUserID, userID string) error
-	GetFriends(userID string) ([]*models.User, error)
+	GetFriends(userID string) ([]*models.UserSummary, error)
 	GetFollowers(userID string) ([]*models.UserSummary, error)
 	GetFollowings(userID string) ([]*models.UserSummary, error)
-	GetProfile(userID, username string) (*models.UserProfile, error)
+	GetProfile(userID string) (*models.User, error)
+	GetOtherProfile(userID, username string) (*models.UserProfile, error)
 	IsBlockedBy(targetUserID, userID string) (bool, error)
 	GetBlockedUsers(userID string) ([]*models.UserSummary, error)
-	GetRelationship(userID, targetUserID string) (*models.RelationshipStatus, error)
+	GetRelationship(targetUserID, userID string) (*models.RelationshipStatus, error)
 }
 
 type relationshipService struct {
@@ -136,7 +137,7 @@ func (s *relationshipService) UnBlock(targetUserID, userID string) error {
 	return nil
 }
 
-func (s *relationshipService) GetFriends(userID string) ([]*models.User, error) {
+func (s *relationshipService) GetFriends(userID string) ([]*models.UserSummary, error) {
 	friends, err := s.repo.GetFriends(userID)
 	if err != nil {
 		return nil, err
@@ -171,7 +172,16 @@ func (s *relationshipService) GetBlockedUsers(userID string) ([]*models.UserSumm
 	return blockedList, nil
 }
 
-func (s *relationshipService) GetProfile(userID, username string) (*models.UserProfile, error) {
+func (s *relationshipService) GetProfile(userID string) (*models.User, error) {
+	user, err := s.repo.GetByID(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (s *relationshipService) GetOtherProfile(userID, username string) (*models.UserProfile, error) {
 	user, err := s.repo.GetUserByUsername(username)
 	if err != nil {
 		return nil, err
@@ -181,35 +191,68 @@ func (s *relationshipService) GetProfile(userID, username string) (*models.UserP
 		return &models.UserProfile{User: user, MutualFollowings: nil, MutualFriends: nil}, nil
 	}
 
-	isBlocked, err := s.repo.IsBlockedBy(userID, user.ID)
-	if err == nil {
-		if isBlocked {
-			return nil, errors.New("blocked by this user")
-		}
-	}
-
-	isBlocking, err := s.repo.IsBlocking(userID, user.ID)
-	if err == nil {
-		if isBlocking {
-			return nil, errors.New("blocking this user")
-		}
-	}
-
-	// mutualFollowings, err := s.repo.GetMutualFollowings(userID, user.ID)
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	mutualFriends, err := s.repo.GetMutualFriends(userID, user.ID)
+	friends, err := s.repo.GetFriends(user.ID)
 	if err != nil {
 		return nil, err
 	}
 
-	// Tạo một UserProfile mới
+	followings, err := s.repo.GetFollowings(user.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	followers, err := s.repo.GetFollowers(user.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	if userID != "" {
+		isBlocked, err := s.repo.IsBlockedBy(userID, user.ID)
+		if err == nil {
+			if isBlocked {
+				return nil, errors.New("blocked by this user")
+			}
+		}
+
+		isBlocking, err := s.repo.IsBlocking(userID, user.ID)
+		if err == nil {
+			if isBlocking {
+				return nil, errors.New("blocking this user")
+			}
+		}
+
+		// mutualFollowings, err := s.repo.GetMutualFollowings(userID, user.ID)
+		// if err != nil {
+		// 	return nil, err
+		// }
+
+		mutualFriends, err := s.repo.GetMutualFriends(userID, user.ID)
+		if err != nil {
+			return nil, err
+		}
+
+		relationshipStatus, err := s.repo.GetRelationship(userID, user.ID)
+		if err != nil {
+			return nil, err
+		}
+		// Tạo một UserProfile mới
+		userProfile := &models.UserProfile{
+			User:          user,
+			Status:        relationshipStatus,
+			Friends:       friends,
+			Followings:    followings,
+			Followers:     followers,
+			MutualFriends: mutualFriends,
+		}
+
+		return userProfile, nil
+	}
+
 	userProfile := &models.UserProfile{
-		User: user,
-		// MutualFollowings: mutualFollowings,
-		MutualFriends: mutualFriends,
+		User:       user,
+		Friends:    friends,
+		Followings: followings,
+		Followers:  followers,
 	}
 
 	return userProfile, nil
@@ -223,7 +266,7 @@ func (s *relationshipService) IsBlockedBy(targetUserID, userID string) (bool, er
 	return isBlocked, nil
 }
 
-func (s *relationshipService) GetRelationship(userID, targetUserID string) (*models.RelationshipStatus, error) {
+func (s *relationshipService) GetRelationship(targetUserID, userID string) (*models.RelationshipStatus, error) {
 	userExists, err := s.repo.GetByID(userID)
 	if err != nil || userExists == nil {
 		return &models.RelationshipStatus{}, errors.New("user not found")

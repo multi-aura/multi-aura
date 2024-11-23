@@ -3,6 +3,7 @@ using BLL.Repositories.IRepositories;
 using DTO;
 using DTO.Utils;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -55,34 +56,42 @@ namespace BLL.Services
 
         public async Task<(List<Comment>, string)> GetCommentsByPostIDAsync(string postId)
         {
-            var response = await _postRepository.GetCommentsByPostIDAsync(postId);
-
-            if (response is SuccessResponse<string> successResponse)
+            try
             {
-                var jsonObject = JsonConvert.DeserializeObject<dynamic>(successResponse.Data);
-                var list = DictionaryConverter.ParseCommentList(jsonObject, "comments");
-                //var list = new List<Comment>();
+                var response = await _postRepository.GetCommentsByPostIDAsync(postId);
 
-                //if (jsonObject.data != null)
-                //{
-                //    // Loop through each post item and create Post object
-                //    foreach (var item in jsonObject.data)
-                //    {
-                //        var postData = item.ToObject<Dictionary<string, object>>();
-                //        var post = Post.FromDictionary(postData);
-                //        list.Add(post);
-                //    }
-                //}
-                
-                return (list, string.Empty);
+                if (response is SuccessResponse<string> successResponse)
+                {
+                    var jsonObject = JsonConvert.DeserializeObject<dynamic>(successResponse.Data);
+                    var commentsData = jsonObject.ToObject<Dictionary<string, object>>();
+                    var list = DictionaryConverter.ParseCommentList(commentsData, "data");
+                    //var list = new List<Comment>();
+
+                    //if (jsonObject.data != null)
+                    //{
+                    //    // Loop through each post item and create Post object
+                    //    foreach (var item in jsonObject.data)
+                    //    {
+                    //        var postData = item.ToObject<Dictionary<string, object>>();
+                    //        var post = Post.FromDictionary(postData);
+                    //        list.Add(post);
+                    //    }
+                    //}
+
+                    return (list, string.Empty);
+                }
+
+                if (response is ErrorResponse<string> errorResponse)
+                {
+                    return (null, errorResponse.Message);
+                }
+
+                return (null, "Unknown error");
             }
-
-            if (response is ErrorResponse<string> errorResponse)
+            catch (Exception ex)
             {
-                return (null, errorResponse.Message);
+                return (null, ex.Message);
             }
-
-            return (null, "Unknown error");
         }
 
     }

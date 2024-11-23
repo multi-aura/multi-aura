@@ -50,6 +50,7 @@ namespace BLL.Network
 
             //Get
             public string GetProfile => $"{BaseUrl}";
+            public string AuthProfile => $"{BaseUrl}/auth/profile";
             public string GetFriends => $"{_Route}/friends";
             public string GetFollowers => $"{_Route}/followers";
             public string GetFollowing => $"{_Route}/followings";
