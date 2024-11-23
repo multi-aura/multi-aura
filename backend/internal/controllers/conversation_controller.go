@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"multiaura/internal/models"
 	"multiaura/internal/services"
 	APIResponse "multiaura/pkg/api_response"
 
@@ -184,5 +185,134 @@ func (cc *ConversationController) AddMember(c *fiber.Ctx) error {
 		Status:  fiber.StatusOK,
 		Message: "Members added successfully",
 		Data:    addedUsers,
+	})
+}
+func (cc *ConversationController) RemoveMemberConversation(c *fiber.Ctx) error {
+	conversationID := c.Params("ConversationID")
+	userID := c.Params("UserID")
+
+	// Kiểm tra các tham số đầu vào
+	if conversationID == "" || userID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Invalid conversationID or userID",
+			Error:   "BadRequest",
+		})
+	}
+
+	// Gọi service để xóa thành viên
+	err := cc.service.RemoveMemberConversation(conversationID, userID)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusInternalServerError,
+			Message: "Cannot delete member from conversation",
+			Error:   err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
+		Status:  fiber.StatusOK,
+		Message: "Member deleted successfully",
+		Data:    nil,
+	})
+}
+func (cc *ConversationController) SendMessage(c *fiber.Ctx) error {
+	conversationID := c.Params("conversationID")
+
+	if conversationID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Invalid conversationID",
+			Error:   "BadRequest",
+		})
+	}
+
+	var messageData struct {
+		UserID  string             `json:"user_id"`
+		Content models.ChatContent `json:"content"`
+	}
+
+	if err := c.BodyParser(&messageData); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Invalid request body",
+			Error:   err.Error(),
+		})
+	}
+
+	savedMessage, err := cc.service.SendMessage(conversationID, messageData.UserID, messageData.Content)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusInternalServerError,
+			Message: "Failed to send message",
+			Error:   err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
+		Status:  fiber.StatusOK,
+		Message: "Message sent successfully",
+		Data:    savedMessage,
+	})
+}
+func (cc *ConversationController) GetMessages(c *fiber.Ctx) error {
+	conversationID := c.Params("conversationID")
+
+	if conversationID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Conversation ID is required",
+			Error:   "BadRequest",
+		})
+	}
+
+	messages, err := cc.service.GetMessages(conversationID)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusInternalServerError,
+			Message: "Unable to retrieve messages for the conversation",
+			Error:   err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
+		Status:  fiber.StatusOK,
+		Message: "Messages retrieved successfully",
+		Data:    messages,
+	})
+}
+func (cc *ConversationController) MarkMessageAsDeleted(c *fiber.Ctx) error {
+	conversationID := c.Params("conversationID")
+	messageID := c.Params("messageID")
+
+	if conversationID == "" || messageID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "conversationID and messageID are required",
+			Error:   "BadRequest",
+		})
+	}
+
+	err := cc.service.MarkMessageAsDeleted(conversationID, messageID)
+	if err != nil {
+		if err.Error() == "no matching message found to mark as deleted" {
+			return c.Status(fiber.StatusNotFound).JSON(APIResponse.ErrorResponse{
+				Status:  fiber.StatusNotFound,
+				Message: "Message not found or already deleted",
+				Error:   "NotFound",
+			})
+		}
+
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusInternalServerError,
+			Message: "Unable to mark message as deleted",
+			Error:   err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
+		Status:  fiber.StatusOK,
+		Message: "Message marked as deleted successfully",
+		Data:    nil,
 	})
 }

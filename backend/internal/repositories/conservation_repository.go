@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"errors"
 	"log"
 	"multiaura/internal/databases"
 	"multiaura/internal/models"
@@ -19,6 +20,9 @@ type ConversationRepository interface {
 	GetMessagesByConversationID(conversationID string) ([]models.Chat, error)
 	MarkMessagesAsRead(conversationID string, userID string) error
 	FindPrivateConversation(userID1, userID2 string) (*models.Conversation, error)
+	UpdateRemoveUser(conversation *models.Conversation) error
+	AddMessageToConversation(message *models.Chat, conversationID string) error
+	MarkMessageAsDeleted(conversationID string, messageID string) error
 }
 
 type conversationRepository struct {
@@ -144,14 +148,14 @@ func (repo *conversationRepository) GetListConversations(userID string) ([]model
 
 	return conversations, nil
 }
-
 func (repo *conversationRepository) AddMemberToConversation(users []models.OtherUser, conversationID string) error {
 	idConversation, err := primitive.ObjectIDFromHex(conversationID)
 	if err != nil {
-		return err
+		return errors.New("invalid conversation ID format")
 	}
 
 	filter := bson.M{"_id": idConversation}
+
 	update := bson.M{
 		"$push": bson.M{
 			"users": bson.M{
@@ -159,33 +163,17 @@ func (repo *conversationRepository) AddMemberToConversation(users []models.Other
 			},
 		},
 		"$set": bson.M{
-			"updatedat": time.Now().UTC(),
+			"updatedat":         time.Now().UTC(),
+			"conversation_type": "Group",
 		},
 	}
 
 	_, err = repo.collection.UpdateOne(context.Background(), filter, update)
 	if err != nil {
-		return err
+		return errors.New("failed to add members and update conversation type")
 	}
 
 	return nil
-}
-
-func (r *conversationRepository) GetMessagesByConversationID(conversationID string) ([]models.Chat, error) {
-	objectID, err := primitive.ObjectIDFromHex(conversationID)
-	if err != nil {
-		return nil, err
-	}
-
-	filter := bson.M{"_id": objectID}
-	var conversation models.Conversation
-
-	err = r.collection.FindOne(context.Background(), filter).Decode(&conversation)
-	if err != nil {
-		return nil, err
-	}
-
-	return conversation.Chats, nil
 }
 
 func (r *conversationRepository) MarkMessageAsDeleted(conversationID string, messageID string) error {
@@ -237,4 +225,63 @@ func (repo *conversationRepository) MarkMessagesAsRead(conversationID string, us
 	}
 
 	return nil
+}
+func (repo *conversationRepository) UpdateRemoveUser(conversation *models.Conversation) error {
+	filter := bson.M{"_id": conversation.ID}
+
+	update := bson.M{
+		"$set": bson.M{
+			"users":     conversation.Users,
+			"updatedat": conversation.UpdatedAt,
+		},
+	}
+
+	result, err := repo.collection.UpdateOne(context.Background(), filter, update)
+	if err != nil {
+	}
+
+	if result.MatchedCount == 0 {
+		return errors.New("no matching conversation found to update")
+	}
+
+	return nil
+}
+func (repo *conversationRepository) AddMessageToConversation(message *models.Chat, conversationID string) error {
+	conversationObjectID, err := primitive.ObjectIDFromHex(conversationID)
+	if err != nil {
+		return errors.New("invalid conversation ID format")
+	}
+
+	filter := bson.M{"_id": conversationObjectID}
+	update := bson.M{
+		"$push": bson.M{"chats": message},              // Thêm tin nhắn trực tiếp
+		"$set":  bson.M{"updatedat": time.Now().UTC()}, // Cập nhật thời gian
+	}
+
+	_, err = repo.collection.UpdateOne(context.Background(), filter, update)
+	if err != nil {
+		return errors.New("failed to update conversation with new message")
+	}
+
+	return nil
+}
+
+func (r *conversationRepository) GetMessagesByConversationID(conversationID string) ([]models.Chat, error) {
+	objectID, err := primitive.ObjectIDFromHex(conversationID)
+	if err != nil {
+		return nil, errors.New("invalid conversation ID format")
+	}
+
+	filter := bson.M{"_id": objectID}
+	var conversation models.Conversation
+
+	err = r.collection.FindOne(context.Background(), filter).Decode(&conversation)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, errors.New("conversation not found")
+		}
+		return nil, errors.New("error retrieving conversation: " + err.Error())
+	}
+
+	return conversation.Chats, nil
 }
