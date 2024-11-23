@@ -25,7 +25,7 @@ namespace DTO
             switch (Status)
             {
                 case RelationshipStatusType.NoRelationship:
-                    return "No relationship";
+                    return "Follow";
                 case RelationshipStatusType.Following:
                     return "Following";
                 case RelationshipStatusType.Follower:
@@ -37,7 +37,7 @@ namespace DTO
                 case RelationshipStatusType.Friend:
                     return "Friends";
                 default:
-                    return "No relationship";
+                    return "Follow";
             }
         }
 
