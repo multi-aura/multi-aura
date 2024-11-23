@@ -39,23 +39,25 @@ func NewConversationRepository(db *databases.MongoDB) ConversationRepository {
 	}
 }
 
-func (repo *conversationRepository) GetByID(id string) (*models.Conversation, error) {
+func (repo *conversationRepository) GetByID(conversationID string) (*models.Conversation, error) {
 	var conversation models.Conversation
-	objectID, err := primitive.ObjectIDFromHex(id)
+
+	objectID, err := primitive.ObjectIDFromHex(conversationID)
 	if err != nil {
+		log.Printf("Invalid conversationID format: %s", conversationID)
 		return nil, err
 	}
 
-	// Truy vấn MongoDB dựa trên ObjectID
 	filter := bson.M{"_id": objectID}
-	err = repo.collection.FindOne(context.Background(), filter).Decode(&conversation)
 
+	err = repo.collection.FindOne(context.Background(), filter).Decode(&conversation)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return &models.Conversation{}, nil
+			return nil, nil
 		}
 		return nil, err
 	}
+
 	return &conversation, nil
 }
 

@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type ConversationService interface {
@@ -80,17 +79,17 @@ func (c *conversationService) CreateConversation(userIDs []string, name string) 
 	return &newConversation, nil
 }
 
-func (c *conversationService) GetConversationByID(id string) (*models.Conversation, error) {
-	if id == "" {
-		return nil, errors.New("ID not found")
+func (c *conversationService) GetConversationByID(conversationID string) (*models.Conversation, error) {
+	if conversationID == "" {
+		return nil, errors.New("conversationID not found")
 	}
 
-	conversation, err := c.repo.GetByID(id)
+	conversation, err := c.repo.GetByID(conversationID)
 	if err != nil {
-		if err == mongo.ErrNoDocuments {
-			return nil, nil
-		}
 		return nil, err
+	}
+	if conversation == nil {
+		return nil, errors.New("conversation not found")
 	}
 
 	return conversation, nil

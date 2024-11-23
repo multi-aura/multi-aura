@@ -52,10 +52,17 @@ func (cc *ConversationController) GetConversationByID(c *fiber.Ctx) error {
 	conversationID := c.Params("conversationID")
 	userID := c.Params("userID")
 
-	if conversationID == "" || userID == "" {
+	if conversationID == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusBadRequest,
-			Message: "Missing conversationID or userID parameter",
+			Message: "Missing conversationID parameter",
+			Error:   "BadRequest",
+		})
+	}
+	if userID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Missing userID parameter",
 			Error:   "BadRequest",
 		})
 	}
@@ -66,11 +73,10 @@ func (cc *ConversationController) GetConversationByID(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusInternalServerError,
 			Message: "Fail to mark messages as read",
-			Error:   "StatusInternalServerError",
+			Error:   err.Error(),
 		})
 	}
 
-	// Lấy thông tin cuộc trò chuyện sau khi đánh dấu tin nhắn là đã đọc
 	conversation, err := cc.service.GetConversationByID(conversationID)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
