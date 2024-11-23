@@ -240,3 +240,4 @@ func (uc *UserController) ChangePassword(c *fiber.Ctx) error {
 		Data:    nil,
 	})
 }
+

@@ -3,6 +3,7 @@ using BLL.Services;
 using DTO;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BLL.DataProviders
@@ -26,7 +27,6 @@ namespace BLL.DataProviders
             }
         }
 
-
         private AppDataProvider appDataProvider = AppDataProvider.Instance;
 
         private PostRepository postRepository;
@@ -48,6 +48,23 @@ namespace BLL.DataProviders
 
         public event Action CurrentUserPostsDataLoaded;
 
+        //private string curentPostId = null;
+        private List<Comment> commentsOfCurrentPost = null;
+        public List<Comment> CommentsOfCurrentPost
+        {
+            get => commentsOfCurrentPost;
+        }
+
+        public event Action CommentsOfCurrentPostDataLoaded;
+
+        private List<Post> otherUserPosts = null;
+        public List<Post> OtherUserPosts
+        {
+            get => otherUserPosts;
+        }
+
+        public event Action OtherUserPostsDataLoaded;
+
         private PostDataProvider()
         {
             postRepository = PostRepository.Instance;
@@ -61,8 +78,8 @@ namespace BLL.DataProviders
             FetchRecentPosts();
             FetchCurrentUserPosts();
         }
-        
-        private async void FetchRecentPosts()
+
+        public async void FetchRecentPosts()
         {
             if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
             {
@@ -96,6 +113,46 @@ namespace BLL.DataProviders
                 else
                 {
                     MessageBox.Show("Error fetching current user posts: " + errorMessage);
+                }
+            }
+        }
+
+        public async Task<List<Post>> FetchOtherUserPosts(string userId)
+        {
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var (list, errorMessage) = await postService.GetPostsByUserAsync(userId);
+
+                if (string.IsNullOrEmpty(errorMessage))
+                {
+                    //this.otherUserPosts = list;
+                    //OtherUserPostsDataLoaded?.Invoke();
+                    return list;
+                }
+                else
+                {
+                    MessageBox.Show("Error fetching current user posts: " + errorMessage);
+                }
+            }
+            return null;
+        }
+
+        public async void FetchCommentsOfCurrentPost(string postId)
+        {
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token)
+                && !string.IsNullOrEmpty(postId)
+                )
+            {
+                var (list, errorMessage) = await postService.GetCommentsByPostIDAsync(postId);
+
+                if (string.IsNullOrEmpty(errorMessage))
+                {
+                    this.commentsOfCurrentPost = list;
+                    CommentsOfCurrentPostDataLoaded?.Invoke();
+                }
+                else
+                {
+                    MessageBox.Show("Error fetching comments of current post: " + errorMessage);
                 }
             }
         }

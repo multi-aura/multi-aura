@@ -3,8 +3,6 @@ using BLL.Services;
 using DTO;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -28,7 +26,6 @@ namespace BLL.DataProviders
                 }
             }
         }
-
 
         private AppDataProvider appDataProvider = AppDataProvider.Instance;
 
@@ -61,10 +58,21 @@ namespace BLL.DataProviders
             get => friends;
         }
 
+        private UserProfile otherProfile = null;
+        public UserProfile OtherProfile
+        {
+            get => otherProfile;
+        }
+
         public event Action FriendDataLoaded;
         public event Action SuggestDataLoaded;
         public event Action FollowerDataLoaded;
         public event Action FollowingDataLoaded;
+
+        public event Action OnFollowEvent;
+        public event Action OnUnfollowEvent;
+
+        public event Action OnGetOtherProfileSuccess;
 
         private RelationshipDataProvider()
         {
@@ -74,7 +82,7 @@ namespace BLL.DataProviders
             searchRepository = SearchRepository.Instance;
             searchService = new SearchService(searchRepository);
 
-            Initialize();
+            appDataProvider.DataLoaded += Initialize;
         }
 
         public void Initialize()
@@ -85,7 +93,26 @@ namespace BLL.DataProviders
             FetchFollowings();
         }
 
-        private async void FetchUserFriends()
+        public async void GetProfileDetails(string username)
+        {
+            if (!string.IsNullOrEmpty(username))
+            {
+                var (profile, errorMessage) = await GetProfileAsync(username);
+
+                if (string.IsNullOrEmpty(errorMessage))
+                {
+                    otherProfile = profile;
+                    OnGetOtherProfileSuccess?.Invoke();
+                }
+                else
+                {
+                    MessageBox.Show("Error fetching other profile: " + errorMessage);
+                }
+            }
+
+        }
+
+        public async void FetchUserFriends()
         {
             if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
             {
@@ -102,7 +129,7 @@ namespace BLL.DataProviders
                 }
             }
         }
-        private async void FetchSuggestedFriends()
+        public async void FetchSuggestedFriends()
         {
             if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
             {
@@ -155,5 +182,110 @@ namespace BLL.DataProviders
                 }
             }
         }
+
+        public async Task<(UserProfile, string)> GetProfileAsync(string username = "")
+        {
+            try
+            {
+                var result = await relationshipService.GetProfileAsync(username);
+                if (!string.IsNullOrEmpty(result.Item2))
+                {
+                    throw new Exception(result.Item2);  // Lỗi khi lấy profile
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi nếu có
+                Console.WriteLine($"Error fetching profile: {ex.Message}");
+                return (null, ex.Message);
+            }
+        }
+
+        public async Task<(User, string)> GetAuthProfileAsync()
+        {
+            try
+            {
+                var result = await relationshipService.GetAuthProfileAsync();
+                if (!string.IsNullOrEmpty(result.Item2))
+                {
+                    throw new Exception(result.Item2);  // Lỗi khi lấy profile
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi nếu có
+                Console.WriteLine($"Error fetching profile: {ex.Message}");
+                return (null, ex.Message);
+            }
+        }
+
+        public async Task<(bool, RelationshipStatus)> Follow(UserSummary user, RelationshipStatus relationshipStatus = null)
+        {
+            if (user == null && string.IsNullOrEmpty(user.UserID))
+            {
+                return (false, relationshipStatus);
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await relationshipService.FollowUserAsync(user.UserID);
+
+                if (!result)
+                {
+                    MessageBox.Show($"Follow failed: {errorMessage}");
+                }
+                else
+                {
+                    this.followings.Add(user);
+
+                    (relationshipStatus, _) = await relationshipService.GetRelationshipStatusAsync(user.UserID);
+
+                    if (relationshipStatus.Status != null && relationshipStatus.Status == RelationshipStatusType.Follower)
+                    {
+                        this.friends.Add(user);
+                    }
+
+                    OnFollowEvent?.Invoke();
+                }
+                
+                return (result, relationshipStatus);
+            }
+            return (false, relationshipStatus);
+        }
+
+        public async Task<(bool, RelationshipStatus)> Unfollow(UserSummary user, RelationshipStatus relationshipStatus = null)
+        {
+            if (user == null && string.IsNullOrEmpty(user.UserID))
+            {
+                return (false, relationshipStatus);
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await relationshipService.UnfollowUserAsync(user.UserID);
+                
+                if (!result)
+                {
+                    MessageBox.Show($"Unfollow failed: {errorMessage}");
+                }
+                else
+                {
+                    this.followings.Remove(user);
+
+                    (relationshipStatus, _) = await relationshipService.GetRelationshipStatusAsync(user.UserID);
+
+                    if (relationshipStatus.Status != null && relationshipStatus.Status == RelationshipStatusType.Friend)
+                    {
+                        this.friends.Remove(user);
+                    }
+
+                    OnUnfollowEvent?.Invoke();
+                }
+
+                return (result, relationshipStatus);
+            }
+            return (false, relationshipStatus);
+        }
+
     }
 }

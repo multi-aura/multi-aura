@@ -77,28 +77,6 @@ namespace DTO
                 IsPublic = data.ContainsKey("isPublic") && bool.TryParse(data["isPublic"].ToString(), out bool isPublic) ? isPublic : false,
             };
         }
-
-        public static User CopyFrom(UserProfile data)
-        {
-            return new User
-            {
-                UserID = data.UserID,
-                FullName = data.FullName,
-                Username = data.Username,
-                Email = data.Email,
-                Password = data.Password,
-                PhoneNumber = data.PhoneNumber,
-                Birthday = data.Birthday,
-                Gender = data.Gender,
-                Nation = data.Nation,
-                Province = data.Province,
-                Avatar = data.Avatar,
-                IsAdmin = data.IsAdmin,
-                IsActive = data.IsActive,
-                IsPublic = data.IsPublic,
-            };
-        }
-
     }
 
     public class RegisterRequest
@@ -169,6 +147,18 @@ namespace DTO
             };
         }
 
+        public static UserSummary CopyFrom(User data)
+        {
+            return new UserSummary
+            {
+                UserID = data.UserID,
+                FullName = data.FullName,
+                Username = data.Username,
+                Avatar = data.Avatar,
+                IsActive = data.IsActive,
+            };
+        }
+
         public static UserSummary FromJObject(Newtonsoft.Json.Linq.JObject data)
         {
             var userSummary = new UserSummary
@@ -219,63 +209,32 @@ namespace DTO
 
     public class UserProfile
     {
-        public string UserID { get; set; }
-        public string FullName { get; set; }
-        public string Username { get; set; }
+        //public string UserID { get; set; }
+        //public string FullName { get; set; }
+        //public string Username { get; set; }
 
-        [EmailAddress]
-        public string Email { get; set; }
+        //[EmailAddress]
+        //public string Email { get; set; }
 
-        [Phone]
-        public string PhoneNumber { get; set; }
+        //[Phone]
+        //public string PhoneNumber { get; set; }
 
-        public string Password { get; set; }
-        public DateTime Birthday { get; set; }
-        public string Gender { get; set; }
-        public string Nation { get; set; }
-        public string Province { get; set; }
-        public string Avatar { get; set; }
-        public bool IsAdmin { get; set; }
-        public bool IsActive { get; set; }
-        public bool IsPublic { get; set; }
+        //public string Password { get; set; }
+        //public DateTime Birthday { get; set; }
+        //public string Gender { get; set; }
+        //public string Nation { get; set; }
+        //public string Province { get; set; }
+        //public string Avatar { get; set; }
+        //public bool IsAdmin { get; set; }
+        //public bool IsActive { get; set; }
+        //public bool IsPublic { get; set; }
+        public User User { get; set; }
+        public RelationshipStatus RelaStatus { get; set; }
+        public List<UserSummary> Friends { get; set; }
+        public List<UserSummary> Followings { get; set; }
+        public List<UserSummary> Followers { get; set; }
         public List<UserSummary> MutualFollowings { get; set; }
         public List<UserSummary> MutualFriends { get; set; }
-
-        public Dictionary<string, object> ToDictionary()
-        {
-            return new Dictionary<string, object>
-            {
-                {
-                    "user", new Dictionary<string, object>
-                    {
-                        { "userID", UserID },
-                        { "fullname", FullName },
-                        { "username", Username },
-                        { "email", Email },
-                        { "password", Password },
-                        { "phone", PhoneNumber },
-                        { "birthday", Birthday.ToString("yyyy-MM-ddTHH:mm:ssZ") },
-                        { "gender", Gender },
-                        { "nation", Nation },
-                        { "province", Province },
-                        { "avatar", Avatar },
-                        { "isAdmin", IsAdmin },
-                        { "isActive", IsActive },
-                        { "isPublic", IsPublic }
-                    }
-                },
-                {
-                    "mutualFollowings",
-                    MutualFollowings?.Select(item => item.ToDictionary()).ToList()
-                },
-                {
-                    "mutualFriends",
-                    MutualFriends?.Select(item => item.ToDictionary()).ToList()
-                }
-            };
-        }
-
-
         public static UserProfile FromDictionary(Dictionary<string, object> data)
         {
             var userDict = new Dictionary<string, object>();
@@ -298,25 +257,37 @@ namespace DTO
 
             return new UserProfile
             {
-                UserID = DictionaryConverter.GetValueOrDefault(userDict, "userID", string.Empty),
-                FullName = DictionaryConverter.GetValueOrDefault(userDict, "fullname", string.Empty),
-                Username = DictionaryConverter.GetValueOrDefault(userDict, "username", string.Empty),
-                Email = DictionaryConverter.GetValueOrDefault(userDict, "email", string.Empty),
-                Password = DictionaryConverter.GetValueOrDefault(userDict, "password", string.Empty),
-                PhoneNumber = DictionaryConverter.GetValueOrDefault(userDict, "phone", string.Empty),
-                Birthday = DictionaryConverter.ParseDateTime(userDict, "birthday", DateTime.Now),
-                Gender = DictionaryConverter.GetValueOrDefault(userDict, "gender", string.Empty),
-                Nation = DictionaryConverter.GetValueOrDefault(userDict, "nation", string.Empty),
-                Province = DictionaryConverter.GetValueOrDefault(userDict, "province", string.Empty),
-                Avatar = DictionaryConverter.GetValueOrDefault(userDict, "avatar", string.Empty),
-                IsAdmin = DictionaryConverter.GetValueOrDefault(userDict, "isAdmin", false),
-                IsActive = DictionaryConverter.GetValueOrDefault(userDict, "isActive", false),
-                IsPublic = DictionaryConverter.GetValueOrDefault(userDict, "isPublic", false),
+                //UserID = DictionaryConverter.GetValueOrDefault(userDict, "userID", string.Empty),
+                //FullName = DictionaryConverter.GetValueOrDefault(userDict, "fullname", string.Empty),
+                //Username = DictionaryConverter.GetValueOrDefault(userDict, "username", string.Empty),
+                //Email = DictionaryConverter.GetValueOrDefault(userDict, "email", string.Empty),
+                //Password = DictionaryConverter.GetValueOrDefault(userDict, "password", string.Empty),
+                //PhoneNumber = DictionaryConverter.GetValueOrDefault(userDict, "phone", string.Empty),
+                //Birthday = DictionaryConverter.ParseDateTime(userDict, "birthday", DateTime.Now),
+                //Gender = DictionaryConverter.GetValueOrDefault(userDict, "gender", string.Empty),
+                //Nation = DictionaryConverter.GetValueOrDefault(userDict, "nation", string.Empty),
+                //Province = DictionaryConverter.GetValueOrDefault(userDict, "province", string.Empty),
+                //Avatar = DictionaryConverter.GetValueOrDefault(userDict, "avatar", string.Empty),
+                //IsAdmin = DictionaryConverter.GetValueOrDefault(userDict, "isAdmin", false),
+                //IsActive = DictionaryConverter.GetValueOrDefault(userDict, "isActive", false),
+                //IsPublic = DictionaryConverter.GetValueOrDefault(userDict, "isPublic", false),
+                User = User.FromDictionary(userDict),
+                //Parse RelationshipStatus
+                RelaStatus = DictionaryConverter.ParseRelationshipStatus(data, "relationshipStatus"),
 
-                // Parse "mutualFollowings"
+                // Parse Friends
+                Friends = ParseUserSummaryList(data, "friends"),
+
+                // Parse Followings
+                Followings = ParseUserSummaryList(data, "followings"),
+
+                // Parse Followers
+                Followers = ParseUserSummaryList(data, "followers"),
+
+                // Parse MutualFollowings
                 MutualFollowings = ParseUserSummaryList(data, "mutualFollowings"),
 
-                // Parse "mutualFriends"
+                // Parse MutualFriends
                 MutualFriends = ParseUserSummaryList(data, "mutualFriends")
             };
         }

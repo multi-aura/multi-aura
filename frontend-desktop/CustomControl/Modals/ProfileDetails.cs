@@ -4,16 +4,36 @@ using CustomControl.Extensions;
 using CustomControl.Utils;
 using DTO;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CustomControl.Modals
 {
-    public partial class UserProfile : Form
+    public partial class ProfileDetails : Form
     {
-        private AppDataProvider appDataProvider;
-        private RelationshipDataProvider relationshipDataProvider;
         private PostDataProvider postDataProvider;
+        private RelationshipDataProvider relationshipDataProvider;
+
+        private List<Post> currentUserPost;
+
+        private UserProfile currentUserProfile;
+        public UserProfile CurrentUserProfile
+        {
+            get => currentUserProfile;
+            set
+            {
+                currentUserProfile = value;
+                LoadUserPosts();
+                LoadProfile();
+                LoadFollowerCounter();
+                LoadFollowingCounter();
+                OnFriendDataLoaded();
+                LoadFollowerCounter();
+                this.buttonFollow.Text = GetRelationshipText();
+            }
+        }
 
         private Label currentTaskBar;
         private Panel currentPanelResults;
@@ -23,40 +43,102 @@ namespace CustomControl.Modals
         private bool hasFriendsData = false;
         private bool hasMoreData = true;
 
-        public UserProfile()
+        public ProfileDetails()
         {
             InitializeComponent();
-
-            appDataProvider = AppDataProvider.Instance;
-            appDataProvider.DataLoaded += LoadProfile;
-
-            relationshipDataProvider = RelationshipDataProvider.Instance;
-            relationshipDataProvider.FollowerDataLoaded += LoadFollowerCounter;
-            relationshipDataProvider.FollowingDataLoaded += LoadFollowingCounter;
-            relationshipDataProvider.FriendDataLoaded += OnFriendDataLoaded;
+            this.CloseWindowControlButton.Click += CloseWindowControlButton_Click;
 
             postDataProvider = PostDataProvider.Instance;
-            postDataProvider.CurrentUserPostsDataLoaded += LoadPanelUserPosts;
+            relationshipDataProvider = RelationshipDataProvider.Instance;
 
             RegisterHoverAndClickEventsForLabels();
 
             currentPanelResults = panelPosts;
             LoadPanel(currentPanelResults, hasPostsData);
+
+            this.buttonFollow.Text = GetRelationshipText();
+            this.buttonFollow.Click += ButtonFollow_Click;
+
+            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+        }
+
+        private void ButtonFollow_Click(object sender, EventArgs e)
+        {
+            if (currentUserProfile != null && currentUserProfile.User != null && !string.IsNullOrEmpty(currentUserProfile.User.UserID))
+            {
+                this.buttonFollow.Text = "Processing..";
+
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        if (currentUserProfile.RelaStatus.Status == RelationshipStatusType.Following
+                            || currentUserProfile.RelaStatus.Status == RelationshipStatusType.Friend
+                        )
+                        {
+                            var (result, newRelationshipStatus) = await relationshipDataProvider.Unfollow(UserSummary.CopyFrom(CurrentUserProfile.User), CurrentUserProfile.RelaStatus);
+                            currentUserProfile.RelaStatus = newRelationshipStatus;
+                            this.Invoke(new Action(() =>
+                            {
+                                this.buttonFollow.Text = GetRelationshipText();
+                            }));
+                        }
+                        else
+                        {
+                            var (result, newRelationshipStatus) = await relationshipDataProvider.Follow(UserSummary.CopyFrom(CurrentUserProfile.User), CurrentUserProfile.RelaStatus);
+                            currentUserProfile.RelaStatus = newRelationshipStatus;
+                            this.Invoke(new Action(() =>
+                            {
+                                this.buttonFollow.Text = GetRelationshipText();
+                            }));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        this.Invoke(new Action(() =>
+                        {
+                            MessageBox.Show($"Operation failed: {ex.Message}");
+                            this.buttonFollow.Text = GetRelationshipText();
+                        }));
+                    }
+                });
+
+            }
+        }
+
+        private string GetRelationshipText()
+        {
+            if (currentUserProfile != null && currentUserProfile.RelaStatus != null)
+            {
+                return currentUserProfile.RelaStatus.GetRelationshipStatusText();
+            }
+
+            return "Follow";
+        }
+
+        private async void LoadUserPosts()
+        {
+            if(currentUserProfile != null && currentUserProfile.User != null && !string.IsNullOrEmpty(currentUserProfile.User.UserID))
+            {
+                currentUserPost = await postDataProvider.FetchOtherUserPosts(currentUserProfile.User.UserID);
+                LoadPanelUserPosts();
+            }
+
         }
 
         private void LoadPanelUserPosts()
         {
             if (panelPosts.InvokeRequired)
             {
-                panelPosts.Invoke(new Action(LoadPanelUserPosts));
+                panelPosts.Invoke(new Action(LoadUserPosts));
                 return;
             }
 
-            //panelForYouNoQueryPosts.Controls.Clear();
-            if (postDataProvider.CurrentUserPosts != null)
+            if (currentUserPost != null)
             {
                 hasPostsData = false;
-                foreach (var item in postDataProvider.CurrentUserPosts)
+                this.labelPostCounter.Text = currentUserPost.Count.ToShortNumber() + " Posts";
+                foreach (var item in currentUserPost)
                 {
                     PostCommon postCommon = new PostCommon
                     {
@@ -94,8 +176,7 @@ namespace CustomControl.Modals
             {
                 hasPostsData = false;
             }
-
-            hasPostsData = true;
+            
             if (currentTaskBar == labelPosts)
             {
                 HideLoading();
@@ -154,10 +235,10 @@ namespace CustomControl.Modals
                 ShowLoading();
             }
             panelFriends.Controls.Clear();
-            if (relationshipDataProvider.Friends != null)
+            if (currentUserProfile.Friends != null)
             {
                 hasFriendsData = false;
-                foreach (var item in relationshipDataProvider.Friends)
+                foreach (var item in currentUserProfile.Friends)
                 {
                     UserSummaryCommon userSummary = new UserSummaryCommon
                     {
@@ -199,19 +280,21 @@ namespace CustomControl.Modals
 
         private async void LoadProfile()
         {
-            if (appDataProvider.User != null)
+            if (currentUserProfile != null)
             {
                 LoadProfilePhoto();
 
-                if (!string.IsNullOrEmpty(appDataProvider.User.FullName))
+                if(currentUserProfile.User != null)
                 {
-                    this.labelFullName.Text = appDataProvider.User.FullName;
+                    if (!string.IsNullOrEmpty(currentUserProfile.User.FullName))
+                    {
+                        this.labelFullName.Text = currentUserProfile.User.FullName;
+                    }
+                    if (!string.IsNullOrEmpty(currentUserProfile.User.Username))
+                    {
+                        this.labelUsername.Text = currentUserProfile.User.Username;
+                    }
                 }
-                if (!string.IsNullOrEmpty(appDataProvider.User.Username))
-                {
-                    this.labelUsername.Text = appDataProvider.User.Username;
-                }
-
             }
         }
 
@@ -230,11 +313,11 @@ namespace CustomControl.Modals
 
         private async void LoadProfilePhoto()
         {
-            if (!string.IsNullOrEmpty(appDataProvider.User.Avatar))
+            if (currentUserProfile.User != null && !string.IsNullOrEmpty(currentUserProfile.User.Avatar))
             {
                 try
                 {
-                    var imageUrl = appDataProvider.User.Avatar;
+                    var imageUrl = currentUserProfile.User.Avatar;
 
                     userAvatar.Image = await NetworkLoader.LoadImageFromUrlAsync(imageUrl);
                 }
@@ -251,17 +334,17 @@ namespace CustomControl.Modals
 
         private void LoadFollowerCounter()
         {
-            if (relationshipDataProvider.Followers != null)
+            if (currentUserProfile.Followers != null)
             {
-                this.labelFollowerCounter.Text = relationshipDataProvider.Followers.Count.ToShortNumber() + " Followers";
+                this.labelFollowerCounter.Text = currentUserProfile.Followers.Count.ToShortNumber() + " Followers";
             }
         }
 
         private void LoadFollowingCounter()
         {
-            if (relationshipDataProvider.Followings != null)
+            if (currentUserProfile.Followings != null)
             {
-                this.labelFollowingCounter.Text = relationshipDataProvider.Followings.Count.ToShortNumber() + " Followings";
+                this.labelFollowingCounter.Text = currentUserProfile.Followings.Count.ToShortNumber() + " Followings";
             }
         }
 
@@ -273,9 +356,9 @@ namespace CustomControl.Modals
 
         private void LoadFriendCounter()
         {
-            if (relationshipDataProvider.Friends != null)
+            if (currentUserProfile.Friends != null)
             {
-                this.labelFriendCounter.Text = relationshipDataProvider.Friends.Count.ToShortNumber() + " Friends";
+                this.labelFriendCounter.Text = currentUserProfile.Friends.Count.ToShortNumber() + " Friends";
             }
         }
 
@@ -394,6 +477,11 @@ namespace CustomControl.Modals
             {
                 SetFocusedLabel(label, false);
             }
+        }
+
+        private void CloseWindowControlButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

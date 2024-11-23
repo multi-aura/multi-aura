@@ -16,6 +16,7 @@ namespace CustomControl.Modals
     public partial class PostDetails : Form
     {
         private AppDataProvider appDataProvider;
+        private PostDataProvider postDataProvider;
 
         private bool isLiked = false;
         private int likeCounter = 0;
@@ -32,6 +33,7 @@ namespace CustomControl.Modals
                 if (currentPost != value)
                 {
                     currentPost = value;
+                    postDataProvider.FetchCommentsOfCurrentPost(currentPost.Id);
                     UpdateUI();
                 }
             }
@@ -42,6 +44,9 @@ namespace CustomControl.Modals
             this.CloseWindowControlButton.Click += CloseWindowControlButton_Click;
 
             appDataProvider = AppDataProvider.Instance;
+
+            postDataProvider = PostDataProvider.Instance;
+            postDataProvider.CommentsOfCurrentPostDataLoaded += SetUpComments;
 
             this.labelComment.Click += LabelComment_Click;
             this.labelLike.Click += LabelLike_Click;

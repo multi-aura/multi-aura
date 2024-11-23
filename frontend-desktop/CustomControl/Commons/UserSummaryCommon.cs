@@ -1,18 +1,25 @@
-﻿using DTO;
+﻿using BLL.DataProviders;
+using CustomControl.Modals;
+using DTO;
 using System;
 using System.Drawing;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CustomControl.Commons
 {
     public partial class UserSummaryCommon : UserControl
     {
+        public AppDataProvider appDataProvider;
+        public RelationshipDataProvider relationshipDataProvider;
         public UserSummary CurrentUserSummary = null;
         public bool IsFollowing = false;
         public UserSummaryCommon()
         {
             InitializeComponent();
+            appDataProvider = AppDataProvider.Instance;
+            relationshipDataProvider = RelationshipDataProvider.Instance;
 
             this.Load += UserSummaryCommon_Load;
 
@@ -71,15 +78,101 @@ namespace CustomControl.Commons
             this.actionButton.Text = IsFollowing ? "Following" : "Follow";
         }
 
-        private void UserSummaryCommon_Click(object sender, EventArgs e)
+        private async void UserSummaryCommon_Click(object sender, EventArgs e)
         {
-            //TODO: handle open user profile
+            try
+            {
+                string username = CurrentUserSummary.Username;
+                if (!string.IsNullOrEmpty(username))
+                {
+                    var (profile, errorMessage) = await relationshipDataProvider.GetProfileAsync(username);
+
+                    if (string.IsNullOrEmpty(errorMessage))
+                    {
+                        RequestOpenModal(profile);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Can not go to this profile \nError fetching other profile: " + errorMessage);
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("Can not go to this profile");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Something went wrong \nCan not go to this profile!");
+            }
+        }
+
+        private void RequestOpenModal(UserProfile profile)
+        {
+            Form modal = new ProfileDetails
+            {
+                CurrentUserProfile = profile,
+                Width = appDataProvider.ScreenWidth - 100,
+                Height = appDataProvider.ScreenHeight - 100,
+                StartPosition = FormStartPosition.CenterScreen,
+                ShowInTaskbar = false,
+                TopMost = true
+            };
+
+            appDataProvider.ShowModal(this, modal);
         }
 
         private void ActionButton_Click(object sender, EventArgs e)
         {
-            IsFollowing = !IsFollowing;
-            this.actionButton.Text = IsFollowing ? "Following" : "Follow";
+            if(CurrentUserSummary != null && CurrentUserSummary.UserID != null)
+            {
+                this.actionButton.Text = "Processing..";
+
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        if (IsFollowing)
+                        {
+                            var (result,  _) = await relationshipDataProvider.Unfollow(CurrentUserSummary);
+
+                            this.Invoke(new Action(() =>
+                            {
+                                if (result)
+                                {
+                                    IsFollowing = false;
+                                }
+
+                                this.actionButton.Text = IsFollowing ? "Following" : "Follow";
+                            }));
+                        }
+                        else
+                        {
+                            var (result, _) = await relationshipDataProvider.Follow(CurrentUserSummary);
+
+                            this.Invoke(new Action(() =>
+                            {
+                                if (result)
+                                {
+                                    IsFollowing = true;
+                                }
+
+                                this.actionButton.Text = IsFollowing ? "Following" : "Follow";
+                            }));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        this.Invoke(new Action(() =>
+                        {
+                            MessageBox.Show($"Operation failed: {ex.Message}");
+                            this.actionButton.Text = IsFollowing ? "Following" : "Follow";
+                        }));
+                    }
+                });
+
+            }
         }
 
         private void ActionButton_MouseHover(object sender, EventArgs e)

@@ -8,6 +8,8 @@ using CustomControl.Commons;
 using CustomControl.Modals;
 using System.Net.Http;
 using BLL.DataProviders;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GUI
 {
@@ -153,22 +155,14 @@ namespace GUI
             appDataProvider.ShowModal(this, modal);
         }
 
+        private TransparentOverlayForm overlayForm;
+        private Stack<Form> modalStack = new Stack<Form>();
+
         public void ShowModalRequest(object sender, Form modal)
         {
-            //ShowModal(modal = new PostDetails
-            //{
-            //    Width = this.Width - 400,
-            //    Height = this.Height - 200,
-            //    StartPosition = FormStartPosition.CenterScreen,
-            //    ShowInTaskbar = false,
-            //    TopMost = true
-            //});
-            this.modal = modal;
             ShowModal(modal);
         }
 
-        private TransparentOverlayForm overlayForm;
-        private Form modal;
         private void ShowModal(Form modal)
         {
             if (modal == null || modal.IsDisposed)
@@ -176,34 +170,50 @@ namespace GUI
                 return;
             }
 
-            ShowOverlayForm();
+            // Đẩy modal vào stack
+            modalStack.Push(modal);
 
-            //modal = new PostDetails
-            //{
-            //    Width = this.Width - 400,
-            //    Height = this.Height - 200,
-            //    StartPosition = FormStartPosition.CenterScreen,
-            //    ShowInTaskbar = false,
-            //    TopMost = true
-            //};
+            // Hiển thị overlay form (chỉ hiển thị nếu là modal đầu tiên)
+            if (modalStack.Count == 1)
+            {
+                ShowOverlayForm();
+            }
 
+            // Đảm bảo modal hiện tại nằm trên overlayForm
             modal.FormClosed += (s, args) =>
             {
                 this.Focus();
                 this.TopMost = true;
-                //overlayPanel.Visible = false;
                 this.TopMost = false;
 
-                HideOverlayForm();
+                // Loại modal hiện tại khỏi stack
+                if (modalStack.Contains(modal))
+                {
+                    modalStack.Pop();
+                }
+
+                if (modalStack.Count > 0)
+                {
+                    // Hiển thị modal tiếp theo trong stack (nếu có)
+                    var nextModal = modalStack.Peek();
+                    if (nextModal != null && !nextModal.IsDisposed)
+                    {
+                        nextModal.TopMost = true;
+                    }
+                }
+                else
+                {
+                    // Nếu không còn modal nào, ẩn overlay form
+                    HideOverlayForm();
+                }
 
                 if (modal != null && !modal.IsDisposed)
                 {
                     modal.Dispose();
                 }
-
             };
-            overlayForm.TopMost = false;
-            modal.TopMost = false;
+
+            modal.TopMost = true;
             modal.Show();
         }
 
@@ -225,12 +235,17 @@ namespace GUI
 
         private void OverlayForm_Click(object sender, EventArgs e)
         {
-            if (modal != null)
+            if (modalStack.Count > 0)
             {
-                modal.Close();
-                modal.Dispose();
+                var currentModal = modalStack.Pop();
+                currentModal.Close();
+                currentModal.Dispose();
             }
-            HideOverlayForm();
+
+            if (modalStack.Count == 0)
+            {
+                HideOverlayForm();
+            }
         }
 
         private void HideOverlayForm()
@@ -253,10 +268,18 @@ namespace GUI
                 overlayForm.TopMost = false;
             }
 
-            if (modal != null && !modal.IsDisposed)
+            EnsureModalVisibility();
+        }
+
+        private void EnsureModalVisibility()
+        {
+            if (modalStack.Count > 0)
             {
-                modal.TopMost = true;
-                modal.TopMost = false;
+                var topModal = modalStack.Peek();
+                if (topModal != null && !topModal.IsDisposed && topModal.Visible)
+                {
+                    topModal.TopMost = true;
+                }
             }
         }
 
@@ -292,7 +315,7 @@ namespace GUI
             //this.labelAppName.Click += (sender, e) => OpenChildForm(new HomeForm(), this.taskBarHome);
             //this.Load += (sender, e) => OpenChildForm(new HomeForm(), this.taskBarHome);
 
-            this.taskBarHome.Click += (sender, e) => OpenChildForm(homeForm, sender);
+            this.taskBarHome.Click += TaskBarHome_Click;
             this.taskBarExplore.Click += (sender, e) => OpenChildForm(exploreForm, sender);
             this.taskBarMessages.Click += (sender, e) => OpenChildForm(messagesForm, sender);
             this.taskBarNotifications.Click += (sender, e) => OpenChildForm(notificationsForm, sender);
@@ -300,6 +323,19 @@ namespace GUI
             this.labelAppName.Click += (sender, e) => OpenChildForm(homeForm, this.taskBarHome);
             this.Load += (sender, e) => OpenChildForm(homeForm, this.taskBarHome);
         }
+
+        private void TaskBarHome_Click(object sender, EventArgs e)
+        {
+            if(currentButton == (Button)sender)
+            {
+                ((HomeForm)homeForm).IsReload = !((HomeForm)homeForm).IsReload;
+            }
+            else
+            {
+                OpenChildForm(homeForm, sender);
+            }
+        }
+
         private void ActivateButton(object btnSender)
         {
             if (btnSender != null)

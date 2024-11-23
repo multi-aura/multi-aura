@@ -7,7 +7,7 @@ namespace BLL.Repositories.IRepositories
     {
         // Get methods
         //Task<APIResponse<string>> GetProfileAsync();
-        Task<APIResponse<string>> GetProfileAsync(string username);
+        Task<APIResponse<string>> GetProfileAsync(string username = "");
         Task<APIResponse<string>> GetFriendsAsync();
         Task<APIResponse<string>> GetFollowersAsync();
         Task<APIResponse<string>> GetFollowingsAsync();

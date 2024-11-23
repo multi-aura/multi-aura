@@ -29,9 +29,11 @@ namespace BLL.Repository
         }
 
         // Get Methods
-        public async Task<APIResponse<string>> GetProfileAsync(string username)
+        public async Task<APIResponse<string>> GetProfileAsync(string username = "")
         {
-            string url = $"{NetworkUrls.Relationships.GetProfile}/{username}";
+            string url = !string.IsNullOrWhiteSpace(username)
+                ? $"{NetworkUrls.Relationships.GetProfile}/{username}"
+                : NetworkUrls.Relationships.AuthProfile;
             return await GetAsync(url);
         }
 
@@ -71,13 +73,13 @@ namespace BLL.Repository
         public async Task<APIResponse<string>> UnfollowUserAsync(string userId)
         {
             string url = $"{NetworkUrls.Relationships.UnFollow}/{userId}";
-            return await PostAsync(url);
+            return await DeleteAsync(url);
         }
 
         public async Task<APIResponse<string>> BlockUserAsync(string userId)
         {
             string url = $"{NetworkUrls.Relationships.Block}/{userId}";
-            return await DeleteAsync(url);
+            return await PostAsync(url);
         }
 
         public async Task<APIResponse<string>> UnblockUserAsync(string userId)
