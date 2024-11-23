@@ -15,11 +15,8 @@ import (
 type ConversationRepository interface {
 	Repository[models.Conversation]
 	GetListConversations(userID string) ([]models.Conversation, error)
-	UpdateRemoveruser(conversation *models.Conversation) error
 	AddMemberToConversation(user []models.OtherUser, id_conversation string) error
-	AddMessageToConversation(message models.Chat, conversationID string) error
 	GetMessagesByConversationID(conversationID string) ([]models.Chat, error)
-	MarkMessageAsDeleted(conversationID string, messageID string) error
 	MarkMessagesAsRead(conversationID string, userID string) error
 	FindPrivateConversation(userID1, userID2 string) (*models.Conversation, error)
 }
@@ -106,27 +103,7 @@ func (repo *conversationRepository) Update(entityMap *map[string]interface{}) er
 
 	return nil
 }
-func (repo *conversationRepository) UpdateRemoveruser(conversation *models.Conversation) error {
-	filter := bson.M{"_id": conversation.ID}
 
-	update := bson.M{
-		"$set": bson.M{
-			"users":     conversation.Users,
-			"updatedat": conversation.UpdatedAt,
-		},
-	}
-
-	result, err := repo.collection.UpdateOne(context.Background(), filter, update)
-	if err != nil {
-		return err
-	}
-
-	if result.MatchedCount == 0 {
-		return mongo.ErrNoDocuments
-	}
-
-	return nil
-}
 func (repo *conversationRepository) FindPrivateConversation(userID1, userID2 string) (*models.Conversation, error) {
 	var conversation models.Conversation
 
@@ -194,26 +171,6 @@ func (repo *conversationRepository) AddMemberToConversation(users []models.Other
 	return nil
 }
 
-func (repo *conversationRepository) AddMessageToConversation(message models.Chat, conversationID string) error {
-	conversationObjectID, err := primitive.ObjectIDFromHex(conversationID)
-	if err != nil {
-		return err
-	}
-
-	// Thêm tin nhắn vào mảng "chats" trong cuộc trò chuyện
-	filter := bson.M{"_id": conversationObjectID}
-	update := bson.M{
-		"$push": bson.M{"chats": message},
-		"$set":  bson.M{"updatedat": message.UpdatedAt},
-	}
-
-	_, err = repo.collection.UpdateOne(context.Background(), filter, update)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
 func (r *conversationRepository) GetMessagesByConversationID(conversationID string) ([]models.Chat, error) {
 	objectID, err := primitive.ObjectIDFromHex(conversationID)
 	if err != nil {

@@ -14,11 +14,8 @@ type ConversationService interface {
 	CreateConversation(userIDs []string, name string) (*models.Conversation, error)
 	GetConversationByID(id string) (*models.Conversation, error)
 	GetListConversations(id string) ([]models.Conversation, error)
-	RemoveMenberConversation(ConversationID string, UserID string) error
 	AddMembers(conversationID string, userIDs []string) ([]models.OtherUser, error)
-	SendMessage(conversationID, userID string, content models.ChatContent) (*models.Chat, error)
-	GetMessages(conversationID string) ([]models.Chat, error)
-	MarkMessageAsDeleted(conversationID string, messageID string) error
+
 	MarkMessagesAsRead(conversationID string, userID string) error
 	CheckExistingConversation(userIDs []string) (*models.Conversation, error)
 }
@@ -186,77 +183,6 @@ func (c *conversationService) AddMembers(conversationID string, userIDs []string
 	}
 
 	return newUsers, nil
-}
-
-func (c *conversationService) RemoveMenberConversation(ConversationID string, UserID string) error {
-	if ConversationID == "" {
-		return errors.New("no conversation ID specified")
-	}
-	if UserID == "" {
-		return errors.New("no user ID specified")
-	}
-	conversation, err := c.repo.GetByID(ConversationID)
-	if err != nil {
-		return errors.New("No conversation with ID " + ConversationID)
-	}
-	var UsersUpdate []models.OtherUser
-	userFound := false
-	for _, user := range conversation.Users {
-		if user.ID == UserID {
-			userFound = true
-			continue
-		}
-		UsersUpdate = append(UsersUpdate, user)
-
-	}
-	if !userFound {
-		return errors.New("User not found in conversation list.")
-
-	}
-	conversation.Users = UsersUpdate
-	conversation.UpdatedAt = time.Now().UTC()
-	err = c.repo.UpdateRemoveruser(conversation)
-	if err != nil {
-		return errors.New("Failed to update conversation")
-	}
-	return nil
-}
-func (cs *conversationService) SendMessage(conversationID, userID string, content models.ChatContent) (*models.Chat, error) {
-	user, err := cs.userRepo.GetByID(userID)
-	if err != nil {
-		return nil, err
-	}
-
-	newMessage := models.Chat{
-		ID: primitive.NewObjectID(),
-		Sender: models.OtherUser{
-			ID:       user.ID,
-			FullName: user.FullName,
-			Avatar:   user.Avatar,
-		},
-		Content:   content,
-		CreatedAt: time.Now().UTC(),
-		UpdatedAt: time.Now().UTC(),
-		Status:    "sent",
-		Unread:    true,
-	}
-
-	// Lưu tin nhắn vào database
-	err = cs.repo.AddMessageToConversation(newMessage, conversationID)
-	if err != nil {
-		return nil, err
-	}
-
-	// Trả về tin nhắn đã lưu
-	return &newMessage, nil
-}
-
-func (s *conversationService) GetMessages(conversationID string) ([]models.Chat, error) {
-	return s.repo.GetMessagesByConversationID(conversationID)
-}
-
-func (s *conversationService) MarkMessageAsDeleted(conversationID string, messageID string) error {
-	return s.repo.MarkMessageAsDeleted(conversationID, messageID)
 }
 
 func (cs *conversationService) MarkMessagesAsRead(conversationID string, userID string) error {
