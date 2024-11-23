@@ -19,6 +19,7 @@ type ConversationService interface {
 	GetMessages(conversationID string) ([]models.Chat, error)
 	MarkMessageAsDeleted(conversationID string, messageID string) error
 	MarkMessagesAsRead(conversationID string, userID string) error
+	CheckExistingConversation(userIDs []string) (*models.Conversation, error)
 }
 
 type conversationService struct {
@@ -32,51 +33,76 @@ func NewConversationService(repo repositories.ConversationRepository, userRepo r
 		userRepo: userRepo,
 	}
 }
+func removeDuplicateIDs(userIDs []string) []string {
+	idMap := make(map[string]bool)
+	var uniqueIDs []string
 
-// CreateConversation implements ConversationService.
-func (c *conversationService) CreateConversation(userIDs []string, name string) (*models.Conversation, error) {
-	ConversationType := "Private"
-
-	if len(userIDs) < 2 {
-		return nil, errors.New("at least two users are required to create a conversation")
-	} else if len(userIDs) > 2 {
-		ConversationType = "Group"
+	for _, id := range userIDs {
+		if !idMap[id] {
+			idMap[id] = true
+			uniqueIDs = append(uniqueIDs, id)
+		}
 	}
 
+	return uniqueIDs
+}
+
+func (c *conversationService) CreateConversation(userIDs []string, name string) (*models.Conversation, error) {
+	uniqueUserIDs := removeDuplicateIDs(userIDs)
+
+	conversationType := "Private"
+	if len(uniqueUserIDs) > 2 {
+		conversationType = "Group"
+	}
+
+	// Lấy thông tin người dùng và thêm vào danh sách
 	var users []models.OtherUser
-	for _, id := range userIDs {
+	for _, id := range uniqueUserIDs {
 		user, err := c.userRepo.GetByID(id)
 		if err != nil {
-			return nil, err
+			return nil, errors.New("error fetching user information")
 		}
 		if user == nil {
-			return nil, errors.New("user not found")
+			return nil, errors.New("user not found: " + id)
 		}
 
-		users = append(users, models.OtherUser{
-			ID:       user.ID,
-			FullName: user.FullName,
-			Avatar:   user.Avatar,
-			Username: user.Username,
-		})
+		userData := user.ToMap()
+		otherUser, err := (&models.OtherUser{}).FromMap(userData)
+		if err != nil {
+			return nil, errors.New("error processing user data")
+		}
+
+		users = append(users, *otherUser)
 	}
 
+	// Tạo cuộc trò chuyện mới
 	newConversation := models.Conversation{
 		ID:               primitive.NewObjectID(),
 		Name:             name,
-		ConversationType: ConversationType,
+		ConversationType: conversationType,
 		Users:            users,
 		Chats:            []models.Chat{},
 		CreatedAt:        time.Now().UTC(),
 		UpdatedAt:        time.Now().UTC(),
 	}
 
-	err := c.repo.Create(newConversation)
-	if err != nil {
+	if err := c.repo.Create(newConversation); err != nil {
 		return nil, errors.New("failed to create conversation")
 	}
 
 	return &newConversation, nil
+}
+func (c *conversationService) CheckExistingConversation(userIDs []string) (*models.Conversation, error) {
+	if len(userIDs) != 2 {
+		return nil, nil // Không kiểm tra với nhóm
+	}
+
+	existingConversation, err := c.repo.FindPrivateConversation(userIDs[0], userIDs[1])
+	if err != nil {
+		return nil, err
+	}
+
+	return existingConversation, nil
 }
 
 func (c *conversationService) GetConversationByID(conversationID string) (*models.Conversation, error) {

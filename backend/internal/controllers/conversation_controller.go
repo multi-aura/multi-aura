@@ -17,36 +17,66 @@ func NewConversationController(service services.ConversationService) *Conversati
 	return &ConversationController{service}
 }
 
-// CreateConversation xử lý việc tạo một cuộc trò chuyện giữa hai người dùng
 func (cc *ConversationController) CreateConversation(c *fiber.Ctx) error {
-
 	var rep struct {
 		UserIDs []string `json:"user_ids"`
 		Name    string   `json:"name"`
 	}
+
+	// Parse JSON đầu vào
 	if err := c.BodyParser(&rep); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusBadRequest,
 			Message: "Cannot parse JSON",
+			Error:   err.Error(),
+		})
+	}
+
+	// Kiểm tra đầu vào
+	if len(rep.UserIDs) < 2 {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "At least two users are required to create a conversation",
 			Error:   "BadRequest",
 		})
 	}
-	conversation, err := cc.service.CreateConversation(rep.UserIDs, rep.Name)
 
+	// Kiểm tra xem cuộc trò chuyện đã tồn tại hay chưa
+	existingConversation, err := cc.service.CheckExistingConversation(rep.UserIDs)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusInternalServerError,
+			Message: "Failed to check existing conversation",
+			Error:   err.Error(),
+		})
+	}
+
+	// Nếu cuộc trò chuyện đã tồn tại, trả về dữ liệu của nó
+	if existingConversation != nil {
+		return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
+			Status:  fiber.StatusOK,
+			Message: "Conversation already exists",
+			Data:    existingConversation,
+		})
+	}
+
+	// Tạo cuộc trò chuyện mới
+	conversation, err := cc.service.CreateConversation(rep.UserIDs, rep.Name)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusInternalServerError,
 			Message: "Fail to create conversation",
-			Error:   "StatusInternalServerError",
+			Error:   err.Error(),
 		})
 	}
+
 	return c.Status(fiber.StatusCreated).JSON(APIResponse.SuccessResponse{
 		Status:  fiber.StatusCreated,
 		Message: "Create Conversation successfully",
 		Data:    conversation,
 	})
-
 }
+
 func (cc *ConversationController) GetConversationByID(c *fiber.Ctx) error {
 
 	conversationID := c.Params("conversationID")

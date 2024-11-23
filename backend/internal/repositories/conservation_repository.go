@@ -21,6 +21,7 @@ type ConversationRepository interface {
 	GetMessagesByConversationID(conversationID string) ([]models.Chat, error)
 	MarkMessageAsDeleted(conversationID string, messageID string) error
 	MarkMessagesAsRead(conversationID string, userID string) error
+	FindPrivateConversation(userID1, userID2 string) (*models.Conversation, error)
 }
 
 type conversationRepository struct {
@@ -63,7 +64,11 @@ func (repo *conversationRepository) GetByID(conversationID string) (*models.Conv
 
 func (repo *conversationRepository) Create(conversation models.Conversation) error {
 	_, err := repo.collection.InsertOne(context.Background(), conversation)
-	return err
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (repo *conversationRepository) Delete(id string) error {
@@ -121,6 +126,28 @@ func (repo *conversationRepository) UpdateRemoveruser(conversation *models.Conve
 	}
 
 	return nil
+}
+func (repo *conversationRepository) FindPrivateConversation(userID1, userID2 string) (*models.Conversation, error) {
+	var conversation models.Conversation
+
+	// Tìm cuộc trò chuyện có cả hai người dùng
+	filter := bson.M{
+		"conversation_type": "Private",
+		"$and": []bson.M{
+			{"users.userID": userID1},
+			{"users.userID": userID2},
+		},
+	}
+
+	err := repo.collection.FindOne(context.Background(), filter).Decode(&conversation)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, nil // Không tìm thấy cuộc trò chuyện
+		}
+		return nil, err // Lỗi khác
+	}
+
+	return &conversation, nil
 }
 
 func (repo *conversationRepository) GetListConversations(userID string) ([]models.Conversation, error) {
