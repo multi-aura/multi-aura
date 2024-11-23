@@ -23,6 +23,6 @@ func SetupConversationRoutes(app *fiber.App) {
 	conversation.Delete("/remove-member-conversation/:conversationID/:userID", controller.RemoveMemberConversation)
 	conversation.Post("/send-message/:conversationID", controller.SendMessage)
 	conversation.Get("/get-conversation-messages/:conversationID", controller.GetMessages)
-	// conversation.Delete("/delete-message/:conversationID/:messageID", controller.MarkMessageAsDeleted)
+	conversation.Delete("/delete-message/:conversationID/:messageID", controller.MarkMessageAsDeleted)
 
 }

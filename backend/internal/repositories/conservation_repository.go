@@ -21,7 +21,8 @@ type ConversationRepository interface {
 	MarkMessagesAsRead(conversationID string, userID string) error
 	FindPrivateConversation(userID1, userID2 string) (*models.Conversation, error)
 	UpdateRemoveUser(conversation *models.Conversation) error
-	AddMessageToConversation(message map[string]interface{}, conversationID string) error
+	AddMessageToConversation(message *models.Chat, conversationID string) error
+	MarkMessageAsDeleted(conversationID string, messageID string) error
 }
 
 type conversationRepository struct {
@@ -245,7 +246,7 @@ func (repo *conversationRepository) UpdateRemoveUser(conversation *models.Conver
 
 	return nil
 }
-func (repo *conversationRepository) AddMessageToConversation(message map[string]interface{}, conversationID string) error {
+func (repo *conversationRepository) AddMessageToConversation(message *models.Chat, conversationID string) error {
 	conversationObjectID, err := primitive.ObjectIDFromHex(conversationID)
 	if err != nil {
 		return errors.New("invalid conversation ID format")
@@ -253,8 +254,8 @@ func (repo *conversationRepository) AddMessageToConversation(message map[string]
 
 	filter := bson.M{"_id": conversationObjectID}
 	update := bson.M{
-		"$push": bson.M{"chats": message},
-		"$set":  bson.M{"updatedat": time.Now().UTC()},
+		"$push": bson.M{"chats": message},              // Thêm tin nhắn trực tiếp
+		"$set":  bson.M{"updatedat": time.Now().UTC()}, // Cập nhật thời gian
 	}
 
 	_, err = repo.collection.UpdateOne(context.Background(), filter, update)
@@ -264,6 +265,7 @@ func (repo *conversationRepository) AddMessageToConversation(message map[string]
 
 	return nil
 }
+
 func (r *conversationRepository) GetMessagesByConversationID(conversationID string) ([]models.Chat, error) {
 	objectID, err := primitive.ObjectIDFromHex(conversationID)
 	if err != nil {

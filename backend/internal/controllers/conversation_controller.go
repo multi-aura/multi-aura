@@ -281,3 +281,38 @@ func (cc *ConversationController) GetMessages(c *fiber.Ctx) error {
 		Data:    messages,
 	})
 }
+func (cc *ConversationController) MarkMessageAsDeleted(c *fiber.Ctx) error {
+	conversationID := c.Params("conversationID")
+	messageID := c.Params("messageID")
+
+	if conversationID == "" || messageID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "conversationID and messageID are required",
+			Error:   "BadRequest",
+		})
+	}
+
+	err := cc.service.MarkMessageAsDeleted(conversationID, messageID)
+	if err != nil {
+		if err.Error() == "no matching message found to mark as deleted" {
+			return c.Status(fiber.StatusNotFound).JSON(APIResponse.ErrorResponse{
+				Status:  fiber.StatusNotFound,
+				Message: "Message not found or already deleted",
+				Error:   "NotFound",
+			})
+		}
+
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusInternalServerError,
+			Message: "Unable to mark message as deleted",
+			Error:   err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
+		Status:  fiber.StatusOK,
+		Message: "Message marked as deleted successfully",
+		Data:    nil,
+	})
+}
