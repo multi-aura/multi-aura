@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"fmt"
 	"multiaura/internal/models"
 	"multiaura/internal/repositories"
 	"time"
@@ -14,7 +15,7 @@ type ConversationService interface {
 	GetConversationByID(id string) (*models.Conversation, error)
 	GetListConversations(id string) ([]models.Conversation, error)
 	RemoveMenberConversation(ConversationID string, UserID string) error
-	AddMembers(conversationID string, userIDs []string) error
+	AddMembers(conversationID string, userIDs []string) ([]models.OtherUser, error)
 	SendMessage(conversationID, userID string, content models.ChatContent) (*models.Chat, error)
 	GetMessages(conversationID string) ([]models.Chat, error)
 	MarkMessageAsDeleted(conversationID string, messageID string) error
@@ -136,63 +137,57 @@ func (c *conversationService) GetListConversations(id string) ([]models.Conversa
 
 }
 
-func (c *conversationService) AddMembers(conversationID string, userIDs []string) error {
+func (c *conversationService) AddMembers(conversationID string, userIDs []string) ([]models.OtherUser, error) {
 	if conversationID == "" {
-		return errors.New("conversation ID is required")
+		return nil, errors.New("conversation ID is required")
 	}
 
 	conversation, err := c.repo.GetByID(conversationID)
 	if err != nil {
-		return err
+		return nil, fmt.Errorf("failed to get conversation: %w", err)
 	}
 	if conversation == nil {
-		return err
-
+		return nil, errors.New("conversation not found")
 	}
 
-	existingUsers := conversation.Users
 	existingUserMap := make(map[string]bool)
-
-	for _, user := range existingUsers {
+	for _, user := range conversation.Users {
 		existingUserMap[user.ID] = true
 	}
 
 	var newUsers []models.OtherUser
-
 	for _, userID := range userIDs {
 		user, err := c.userRepo.GetByID(userID)
 		if err != nil {
-			return err
-
+			return nil, fmt.Errorf("failed to fetch user: %w", err)
 		}
 		if user == nil {
-			return err
-
+			return nil, fmt.Errorf("user not found: %s", userID)
 		}
 
 		if !existingUserMap[userID] {
-			newUser := models.OtherUser{
-				ID:       user.ID,
-				FullName: user.FullName,
-				Avatar:   user.Avatar,
-				Username: user.Username,
+			userData := user.ToMap()
+			otherUser, err := (&models.OtherUser{}).FromMap(userData)
+			if err != nil {
+				return nil, fmt.Errorf("error processing user data: %w", err)
 			}
-			newUsers = append(newUsers, newUser)
+
+			newUsers = append(newUsers, *otherUser)
 		}
 	}
 
 	if len(newUsers) == 0 {
-		return nil
+		return nil, errors.New("no new users to add")
 	}
 
 	err = c.repo.AddMemberToConversation(newUsers, conversationID)
 	if err != nil {
-		return err
-
+		return nil, fmt.Errorf("failed to add members to conversation: %w", err)
 	}
 
-	return nil
+	return newUsers, nil
 }
+
 func (c *conversationService) RemoveMenberConversation(ConversationID string, UserID string) error {
 	if ConversationID == "" {
 		return errors.New("no conversation ID specified")

@@ -168,22 +168,21 @@ func (repo *conversationRepository) GetListConversations(userID string) ([]model
 	return conversations, nil
 }
 
-func (repo *conversationRepository) AddMemberToConversation(users []models.OtherUser, id_conversation string) error {
-	id_conversationRepository, err := primitive.ObjectIDFromHex(id_conversation)
+func (repo *conversationRepository) AddMemberToConversation(users []models.OtherUser, conversationID string) error {
+	idConversation, err := primitive.ObjectIDFromHex(conversationID)
 	if err != nil {
 		return err
 	}
 
-	filter := bson.M{"_id": id_conversationRepository}
-
+	filter := bson.M{"_id": idConversation}
 	update := bson.M{
 		"$push": bson.M{
 			"users": bson.M{
-				"$each": users, // Thêm từng phần tử trong mảng users
+				"$each": users,
 			},
 		},
 		"$set": bson.M{
-			"updatedat": time.Now().UTC(), // Cập nhật thời gian sửa đổi
+			"updatedat": time.Now().UTC(),
 		},
 	}
 
@@ -194,6 +193,7 @@ func (repo *conversationRepository) AddMemberToConversation(users []models.Other
 
 	return nil
 }
+
 func (repo *conversationRepository) AddMessageToConversation(message models.Chat, conversationID string) error {
 	conversationObjectID, err := primitive.ObjectIDFromHex(conversationID)
 	if err != nil {

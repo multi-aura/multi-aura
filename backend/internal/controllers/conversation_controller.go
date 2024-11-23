@@ -150,43 +150,44 @@ func (cc *ConversationController) GetListConversation(c *fiber.Ctx) error {
 	})
 }
 func (cc *ConversationController) AddMember(c *fiber.Ctx) error {
-	conversationID := c.Params("conversationID")
 	var req struct {
-		UserID []string `json:"user_id" bson:"user_id" form:"user_id"`
+		ConversationID string   `json:"conversation_id" bson:"conversation_id" form:"conversation_id"` 
+		UserIDs        []string `json:"user_ids" bson:"user_ids" form:"user_ids"`                      
 	}
+
 	err := c.BodyParser(&req)
 	if err != nil {
-		return c.Status(fiber.StatusOK).JSON(APIResponse.ErrorResponse{
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusBadRequest,
-			Message: "userID is not required",
+			Message: "Cannot parse request body",
+			Error:   err.Error(),
+		})
+	}
+
+	if req.ConversationID == "" || len(req.UserIDs) == 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Invalid conversation_id or user_ids",
 			Error:   "BadRequest",
 		})
 	}
 
-	if conversationID == "" || len(req.UserID) == 0 {
-		return c.Status(fiber.StatusOK).JSON(APIResponse.ErrorResponse{
-			Status:  fiber.StatusBadRequest,
-			Message: "Invalid conversationID or userID",
-			Error:   "BadRequest",
-		})
-	}
-
-	err = cc.service.AddMembers(conversationID, req.UserID)
+	addedUsers, err := cc.service.AddMembers(req.ConversationID, req.UserIDs)
 	if err != nil {
-
-		return c.Status(fiber.StatusOK).JSON(APIResponse.ErrorResponse{
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusInternalServerError,
-			Message: "No dont add members ",
-			Error:   "StatusInternalServerError",
+			Message: "Failed to add members to the conversation",
+			Error:   err.Error(),
 		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
 		Status:  fiber.StatusOK,
-		Message: "Member added successfully",
-		Data:    nil,
+		Message: "Members added successfully",
+		Data:    addedUsers,
 	})
 }
+
 func (cc *ConversationController) RemoveMemberConversation(c *fiber.Ctx) error {
 	conversationID := c.Params("ConversationID")
 	UserID := c.Params("UserID")
