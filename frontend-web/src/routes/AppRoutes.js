@@ -9,6 +9,7 @@ import Myprofile from '../pages/Myprofile';
 import Explore from '../pages/Explore';
 import Chat from '../pages/ChatPage';
 import UserViewProfile from '../pages/UserViewProfile';
+import NotificationsPage from '../pages/notificationPage';
 function AppRoutes() {
   return (
     <Routes>
@@ -21,6 +22,8 @@ function AppRoutes() {
         <Route path="/profile" element={<Myprofile />} />
         <Route path="/explore" element={<Explore />} />
         <Route path="/chat" element={<Chat />} />
+        <Route path="/notifications" element={<NotificationsPage />} />
+
         <Route path="/profile/:username" element={<UserViewProfile />} />
     </Routes>
   

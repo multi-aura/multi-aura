@@ -1,51 +1,69 @@
 import React from 'react';
 import './MessageItem.css';
 
-const MessageItem = ({ message, onClick }) => {
-  const user = message.users && message.users.length > 0 ? message.users[0] : null;
-  const avatar = user && user.avatar ? user.avatar : 'https://www.w3schools.com/w3images/avatar2.png';
+const MessageItem = ({ message, currentUserID, onClick }) => {
+  // Kiểm tra xem đây là cuộc trò chuyện nhóm hay cá nhân
+  const isGroup = message.conversation_type === 'Group';
+
+  // Xử lý avatar và tên hiển thị
+  let avatar;
+  let nameDisplay;
+
+  if (isGroup) {
+    // Nếu là nhóm, hiển thị tên nhóm và avatar của nhóm
+    avatar = message.avatar || '../static/media/Logo.af2b2f1b32b135402e38.png';
+    nameDisplay = message.name_conversation || 'Unknown Group';
+  } else {
+    // Nếu là cuộc trò chuyện cá nhân, tìm người dùng còn lại (khác với currentUserID)
+    const otherUser = message.users.find((user) => user.userID !== currentUserID);
+    avatar = otherUser ? otherUser.avatar : '../static/media/Logo.af2b2f1b32b135402e38.png';
+    nameDisplay = otherUser ? otherUser.fullname : 'Unknown User';
+  }
 
   // Kiểm tra nội dung tin nhắn cuối cùng
   const lastMessage = message.chats && message.chats.length > 0
     ? (message.chats[message.chats.length - 1].content.text 
       ? message.chats[message.chats.length - 1].content.text 
       : message.chats[message.chats.length - 1].content.image 
-      ? 'Hình ảnh' // Hiển thị chữ 'Hình ảnh' nếu là hình ảnh
+      ? 'Hình ảnh' 
       : message.chats[message.chats.length - 1].content.voice_url
-      ? 'Ghi âm'   // Hiển thị chữ 'Ghi âm' nếu là voice message
-      : 'No recent messages')
-    : 'No recent messages';
+      ? 'Ghi âm' 
+      : 'Bạn bè mới. Hãy gửi lời chào')
+    : 'Bạn bè mới. Hãy gửi lời chào ';
 
   // Lấy thời gian của tin nhắn cuối cùng
   const lastMessageDate = message.chats && message.chats.length > 0
     ? new Date(message.chats[message.chats.length - 1].createdat)
     : null;
 
-  // Tính khoảng cách thời gian hiện tại với tin nhắn cuối
-  const now = new Date();
-  const timeDiff = lastMessageDate ? (now - lastMessageDate) / (1000 * 60 * 60) : null; // Tính số giờ
-
-  // Logic hiển thị thời gian
+  // Hiển thị thời gian nếu tồn tại
   let timeDisplay = '';
-  if (timeDiff) {
-    if (timeDiff < 24) {
-      timeDisplay = `${Math.floor(timeDiff)} hours ago`; // Hiển thị số giờ
+  if (lastMessageDate) {
+    const timeDiff = (new Date() - lastMessageDate) / 1000; // Tính số giây
+    if (timeDiff < 60) {
+      timeDisplay = `${Math.floor(timeDiff)} seconds ago`;
+    } else if (timeDiff < 3600) {
+      const minutes = Math.floor(timeDiff / 60);
+      timeDisplay = `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    } else if (timeDiff < 86400) {
+      const hours = Math.floor(timeDiff / 3600);
+      timeDisplay = `${hours} hour${hours > 1 ? 's' : ''} ago`;
     } else {
-      const days = Math.floor(timeDiff / 24);
-      timeDisplay = `${days} day${days > 1 ? 's' : ''} ago`; // Hiển thị số ngày
+      const days = Math.floor(timeDiff / 86400);
+      timeDisplay = `${days} day${days > 1 ? 's' : ''} ago`;
     }
   }
-
+  
   return (
-    <li className="list-group-item d-flex align-items-center message-item" style={{ borderBottom: "1px solid white" }} onClick={onClick}>
+    <li className="list-group-item d-flex align-items-center message-item" style={{ borderBottom: "1px solid #333" }} onClick={onClick}>
       <img src={avatar} alt="profile" className="avatar rounded-circle me-3" />
 
       <div className="message-info">
-        <strong className="message-name">{message.name_conversation || (user && user.fullname)}</strong>
+        <strong className="message-name">{nameDisplay}</strong>
 
         <div className="last-message-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <p className="small message-last" style={{ color: "#e9edef", marginRight: '10px' }}>
-            {lastMessage} {/* Hiển thị tin nhắn cuối cùng */}
+            {lastMessage}
           </p>
 
           {timeDisplay && (

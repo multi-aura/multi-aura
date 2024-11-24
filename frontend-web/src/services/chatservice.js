@@ -9,7 +9,7 @@ export const getUserConversation = async (userID) => {
         const token = Cookies.get('authToken');
         const response = await axios.get(`${CONVERSATION_URL}/get-user-conversations/${userID}`, {
             headers: {
-                Authorization: `Bearer ${token}` 
+                Authorization: `Bearer ${token}`
             }
         });
         return response.data.data;
@@ -19,3 +19,68 @@ export const getUserConversation = async (userID) => {
         throw error;
     }
 }
+
+export const getConversationDetails = async (conversationID, userID) => {
+    try {
+        const token = Cookies.get('authToken');
+        const response = await axios.get(`${CONVERSATION_URL}/detais-coversation/${conversationID}/${userID}`, {
+
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data.data;
+    } catch (error) {
+        console.log(`Failed to get conversation details for conversation with ID ${conversationID}`, error);
+        throw error;
+    }
+};
+export const sendMessageToConversation = async (conversationID, userID, content) => {
+
+    try {
+        const token = Cookies.get('authToken');
+        const response = await axios.post(`${CONVERSATION_URL}/send-message/${conversationID}`, {
+            user_id: userID,
+            content: content
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+
+        // Kiểm tra nếu response.data.data không tồn tại, bạn có thể log một cảnh báo
+        if (!response.data.data) {
+            console.warn('API response does not contain expected "data" field:', response.data);
+            return null;
+        }
+
+        return response.data.data; // Trả về dữ liệu tin nhắn
+    } catch (error) {
+        console.log(`Failed to send message for conversation with ID ${conversationID}`, error);
+        throw error;
+    }
+};
+export const createConversation = async (userID, name_conversation) => {
+    try {
+        const token = Cookies.get('authToken'); 
+        const response = await axios.post(
+            `${CONVERSATION_URL}/create-conversation`, 
+            {
+                user_ids: userID, 
+                name: name_conversation
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`, 
+                    "Content-Type": "application/json" 
+                }
+            }
+        );
+
+        return response.data; // Trả về dữ liệu nếu thành công
+    } catch (error) {
+        console.error("Error creating conversation:", error.response?.data || error.message);
+        throw error; // Ném lỗi để xử lý ở nơi gọi hàm
+    }
+};

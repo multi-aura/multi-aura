@@ -3,20 +3,31 @@ import { useLocation } from 'react-router-dom';
 import './Sidebar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faThLarge, faCommentDots, faBell, faUser } from '@fortawesome/free-solid-svg-icons';
+import NotificationsPage from '../../pages/notificationPage';
 
 function Sidebar() {
   const location = useLocation();
-  const [activeTab, setActiveTab] = useState('/Home');
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [activeTab, setActiveTab] = useState('/Home'); // Tab hiện tại
+  const [isCollapsed, setIsCollapsed] = useState(false); // Sidebar collapsed
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Trạng thái Drawer
 
+  // Cập nhật activeTab khi đường dẫn thay đổi
   useEffect(() => {
     setActiveTab(location.pathname);
   }, [location.pathname]);
 
+  // Xử lý nhấn tab
   const handleTabClick = (tab) => {
-    setActiveTab(tab);
+    if (tab === '/notifications') {
+      setIsDrawerOpen(!isDrawerOpen); // Toggle Drawer
+      setActiveTab(tab); // Đặt tab active
+    } else {
+      setIsDrawerOpen(false); // Đóng Drawer khi chọn tab khác
+      setActiveTab(tab);
+    }
   };
 
+  // Toggle Sidebar
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
     document.querySelector('.main-content').style.marginLeft = isCollapsed ? '250px' : '100px';
@@ -24,11 +35,15 @@ function Sidebar() {
 
   return (
     <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+      {/* Toggle Button */}
       <div className="toggle-button" onClick={toggleSidebar}>
         <FontAwesomeIcon icon={faThLarge} />
       </div>
-      <h2 className="text-center ">Multi Aura</h2>
+
+      <h2 className="text-center">Multi Aura</h2>
+
       <ul className="nav flex-column">
+        {/* Home */}
         <li className="nav-item">
           <a
             className={`tab-link ${activeTab === '/Home' ? 'active' : ''}`}
@@ -39,6 +54,8 @@ function Sidebar() {
             {!isCollapsed && <span>Home</span>}
           </a>
         </li>
+
+        {/* Explore */}
         <li className="nav-item">
           <a
             className={`tab-link ${activeTab === '/explore' ? 'active' : ''}`}
@@ -49,6 +66,8 @@ function Sidebar() {
             {!isCollapsed && <span>Explore</span>}
           </a>
         </li>
+
+        {/* Messages */}
         <li className="nav-item">
           <a
             className={`tab-link ${activeTab === '/chat' ? 'active' : ''}`}
@@ -59,16 +78,20 @@ function Sidebar() {
             {!isCollapsed && <span>Messages</span>}
           </a>
         </li>
+
+        {/* Notifications */}
         <li className="nav-item">
-          <a
-            className={`tab-link ${activeTab === '/notifications' ? 'active' : ''}`}
-            href="#notifications"
+          <button
+            className={`tab-link NotificationsPage ${activeTab === '/notifications' ? 'active' : ''}`}
             onClick={() => handleTabClick('/notifications')}
           >
             <FontAwesomeIcon icon={faBell} className="icon" />
             {!isCollapsed && <span>Notifications</span>}
-          </a>
+          </button>
+          <NotificationsPage isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
         </li>
+
+        {/* Profile */}
         <li className="nav-item">
           <a
             className={`tab-link ${activeTab === '/profile' ? 'active' : ''}`}
