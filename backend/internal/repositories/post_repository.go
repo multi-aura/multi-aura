@@ -20,9 +20,9 @@ type PostRepository interface {
 	GetRecentPosts(userIDs []string, limit, page int64) ([]*models.Post, error)
 	GetPostsByUser(userID string) ([]*models.Post, error)
 	GetCommentsByPostID(postID string) ([]*models.Comment, error)
-	SearchTrendingPosts(query string, limit, page int64) ([]*models.Post, error)
-	SearchNewsMixedPosts(query string, userIDs []string, limit, page int64) ([]*models.Post, error)
-	SearchPostsForYou(query, userID string, limit, page int64) ([]*models.Post, error)
+	SearchTrendingPosts(query string, blockedUserIDs []string, limit, page int64) ([]*models.Post, error)
+	SearchNewsMixedPosts(query string, userIDs []string, blockedUserIDs []string, limit, page int64) ([]*models.Post, error)
+	SearchPostsForYou(query, userID string, friends []string, blockedUserIDs []string, limit, page int64) ([]*models.Post, error)
 	Search(query string, blockedUserIDs []string, limit, page int64) ([]*models.Post, error)
 	UploadPhotos(id string, url []string) (bool, error)
 }
@@ -243,7 +243,7 @@ func (repo *postRepository) GetCommentsByPostID(postID string) ([]*models.Commen
 	return comments, nil
 }
 
-func (repo *postRepository) SearchTrendingPosts(query string, limit, page int64) ([]*models.Post, error) {
+func (repo *postRepository) SearchTrendingPosts(query string, blockedUserIDs []string, limit, page int64) ([]*models.Post, error) {
 	var posts []*models.Post
 	skip := (page - 1) * limit
 
@@ -254,6 +254,12 @@ func (repo *postRepository) SearchTrendingPosts(query string, limit, page int64)
 	if query != "" {
 		pipeline = append(pipeline, bson.D{
 			{Key: "$match", Value: bson.M{"description": bson.M{"$regex": query, "$options": "i"}}},
+		})
+	}
+
+	if len(blockedUserIDs) > 0 {
+		pipeline = append(pipeline, bson.D{
+			{Key: "$match", Value: bson.M{"createdBy.userID": bson.M{"$nin": blockedUserIDs}}},
 		})
 	}
 
@@ -338,7 +344,7 @@ func (repo *postRepository) SearchTrendingPosts(query string, limit, page int64)
 	return posts, nil
 }
 
-func (repo *postRepository) SearchNewsMixedPosts(query string, userIDs []string, limit, page int64) ([]*models.Post, error) {
+func (repo *postRepository) SearchNewsMixedPosts(query string, userIDs []string, blockedUserIDs []string, limit, page int64) ([]*models.Post, error) {
 	var friendPosts []*models.Post
 	var otherPosts []*models.Post
 
@@ -375,6 +381,11 @@ func (repo *postRepository) SearchNewsMixedPosts(query string, userIDs []string,
 	}
 	// Bước 2: Lấy bài viết từ những người khác
 	otherFilter := bson.M{"createdBy.userID": bson.M{"$nin": userIDs}}
+
+	if len(blockedUserIDs) > 0 {
+		otherFilter["createdBy.userID"] = bson.M{"$nin": append(userIDs, blockedUserIDs...)} // Thêm $nin nếu blockedUserIDs không rỗng
+	}
+
 	if query != "" {
 		// Sử dụng $regex để tìm kiếm description chứa query
 		otherFilter["description"] = bson.M{"$regex": query, "$options": "i"}
@@ -446,78 +457,99 @@ func (repo *postRepository) SearchNewsMixedPosts(query string, userIDs []string,
 	return mixedPosts, nil
 }
 
-func (repo *postRepository) SearchPostsForYou(query, userID string, limit, page int64) ([]*models.Post, error) {
+func (repo *postRepository) SearchPostsForYou(query, userID string, friends []string, blockedUserIDs []string, limit, page int64) ([]*models.Post, error) {
 	var posts []*models.Post
-
-	// Tính toán số lượng bài viết cần bỏ qua
 	skip := (page - 1) * limit
 
-	// Tiêu chí: Bài viết từ bạn bè
-	friendFilter := bson.M{"createdBy.userID": bson.M{"$in": []string{userID}}} // Bài viết từ bạn bè
-	if query != "" {
-		// Sử dụng $regex để tìm kiếm description chứa query
-		friendFilter["description"] = bson.M{"$regex": query, "$options": "i"} // "i" để tìm kiếm không phân biệt hoa thường
-	}
-	friendSort := bson.D{{Key: "likesCount", Value: -1}} // Sắp xếp theo lượt thích
+	// Điều kiện loại trừ blockedUserIDs và chính userID
+	excludedIDs := append(blockedUserIDs, userID)
+	seenPostIDs := make(map[string]bool) // Để theo dõi bài viết đã thêm
 
-	// Kết hợp các truy vấn
-	findOptions := options.Find()
-	findOptions.SetSort(friendSort) // Sắp xếp theo lượt thích
-	findOptions.SetLimit(limit)
-	findOptions.SetSkip(skip) // Bỏ qua số bài viết đã tính toán
-	findOptions.SetProjection(bson.M{
-		"comments": bson.M{"$slice": 2},
-	})
+	// ------------------------------
 	// Lấy bài viết từ bạn bè
-	cursor, err := repo.collection.Find(context.Background(), friendFilter, findOptions)
+	// ------------------------------
+	friendFilter := bson.M{
+		"createdBy.userID": bson.M{"$in": friends, "$nin": excludedIDs},
+	}
+
+	if query != "" {
+		friendFilter["description"] = bson.M{"$regex": query, "$options": "i"}
+	}
+
+	friendSort := bson.D{{Key: "createdAt", Value: -1}} // Sắp xếp mới nhất trước
+
+	friendOptions := options.Find().
+		SetSort(friendSort).
+		SetLimit(limit).
+		SetSkip(skip).
+		SetProjection(bson.M{
+			"comments": bson.M{"$slice": 2}, // Lấy 2 comment đầu tiên
+		})
+
+	// Lấy bài viết từ bạn bè
+	cursor, err := repo.collection.Find(context.Background(), friendFilter, friendOptions)
 	if err != nil {
 		return nil, err
 	}
 	defer cursor.Close(context.Background())
 
 	for cursor.Next(context.Background()) {
-		var data map[string]interface{}
-		if err := cursor.Decode(&data); err != nil {
+		var post models.Post
+		if err := cursor.Decode(&post); err != nil {
 			return nil, err
 		}
 
-		post, err := new(models.Post).FromMap(data)
-		if err != nil {
-			return nil, err
+		// Chỉ thêm bài viết nếu chưa tồn tại trong tập hợp
+		if !seenPostIDs[post.ID.Hex()] {
+			posts = append(posts, &post)
+			seenPostIDs[post.ID.Hex()] = true
 		}
-
-		posts = append(posts, post)
 	}
 
-	// Tiêu chí: Bài viết từ những người khác
-	otherFilter := bson.M{"createdBy.userID": bson.M{"$nin": []string{userID}}} // Bài viết từ những người khác
+	// ------------------------------
+	// Lấy bài viết phổ biến từ người khác
+	// ------------------------------
+	otherFilter := bson.M{
+		"createdBy.userID": bson.M{"$nin": excludedIDs}, // Loại trừ các blockedUserIDs và chính userID
+	}
+
 	if query != "" {
-		// Sử dụng $regex để tìm kiếm description chứa query
 		otherFilter["description"] = bson.M{"$regex": query, "$options": "i"}
 	}
 
-	// Lấy bài viết từ những người khác
-	cursor, err = repo.collection.Find(context.Background(), otherFilter, findOptions)
+	otherSort := bson.D{{Key: "likesCount", Value: -1}} // Sắp xếp theo lượt thích
+
+	otherOptions := options.Find().
+		SetSort(otherSort).
+		SetLimit(limit).
+		SetSkip(skip).
+		SetProjection(bson.M{
+			"comments": bson.M{"$slice": 2}, // Lấy 2 comment đầu tiên
+		})
+
+	// Lấy bài viết phổ biến từ người khác
+	cursor, err = repo.collection.Find(context.Background(), otherFilter, otherOptions)
 	if err != nil {
 		return nil, err
 	}
 	defer cursor.Close(context.Background())
 
 	for cursor.Next(context.Background()) {
-		var data map[string]interface{}
-		if err := cursor.Decode(&data); err != nil {
+		var post models.Post
+		if err := cursor.Decode(&post); err != nil {
 			return nil, err
 		}
 
-		post, err := new(models.Post).FromMap(data)
-		if err != nil {
-			return nil, err
+		// Chỉ thêm bài viết nếu chưa tồn tại trong tập hợp
+		if !seenPostIDs[post.ID.Hex()] {
+			posts = append(posts, &post)
+			seenPostIDs[post.ID.Hex()] = true
 		}
-
-		posts = append(posts, post)
 	}
 
-	// Giới hạn số lượng bài viết về limit
+	// ------------------------------
+	// Giới hạn kết quả trả về
+	// ------------------------------
 	if int64(len(posts)) > limit {
 		posts = posts[:limit]
 	}

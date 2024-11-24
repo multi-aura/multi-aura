@@ -3,6 +3,7 @@ using BLL.Network;
 using BLL.Repositories.IRepositories;
 using BLL.Repository;
 using DTO;
+using DTO.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -109,7 +110,13 @@ namespace BLL.Services
 
             if (response is SuccessResponse<string> successResponse)
             {
-                return await UserSummary.ParseUserSummaryListAsync(successResponse.Data);
+                if (string.IsNullOrEmpty(successResponse.Data))
+                {
+                    return (new List<UserSummary>(), "");
+                }
+                var jsonData = JsonConvert.DeserializeObject<Dictionary<string, object>>(successResponse.Data);
+                var data = DictionaryConverter.ParseUserSummaryList(jsonData, "data");
+                return (data, string.Empty);
             }
 
             if (response is ErrorResponse<string> errorResponse)
@@ -126,7 +133,13 @@ namespace BLL.Services
 
             if (response is SuccessResponse<string> successResponse)
             {
-                return await UserSummary.ParseUserSummaryListAsync(successResponse.Data);
+                if (string.IsNullOrEmpty(successResponse.Data))
+                {
+                    return (new List<UserSummary>(), "");
+                }
+                var jsonData = JsonConvert.DeserializeObject<Dictionary<string, object>>(successResponse.Data);
+                var data = DictionaryConverter.ParseUserSummaryList(jsonData, "data");
+                return (data, string.Empty);
             }
 
             if (response is ErrorResponse<string> errorResponse)
@@ -143,7 +156,13 @@ namespace BLL.Services
 
             if (response is SuccessResponse<string> successResponse)
             {
-                return await UserSummary.ParseUserSummaryListAsync(successResponse.Data);
+                if (string.IsNullOrEmpty(successResponse.Data))
+                {
+                    return (new List<UserSummary>(), "");
+                }
+                var jsonData = JsonConvert.DeserializeObject<Dictionary<string, object>>(successResponse.Data);
+                var data = DictionaryConverter.ParseUserSummaryList(jsonData, "data");
+                return (data, string.Empty);
             }
 
             if (response is ErrorResponse<string> errorResponse)
@@ -160,7 +179,13 @@ namespace BLL.Services
 
             if (response is SuccessResponse<string> successResponse)
             {
-                return await UserSummary.ParseUserSummaryListAsync(successResponse.Data);
+                if (string.IsNullOrEmpty(successResponse.Data))
+                {
+                    return (new List<UserSummary>(), "");
+                }
+                var jsonData = JsonConvert.DeserializeObject<Dictionary<string, object>>(successResponse.Data);
+                var data = DictionaryConverter.ParseUserSummaryList(jsonData, "data");
+                return (data, string.Empty);
             }
 
             if (response is ErrorResponse<string> errorResponse)

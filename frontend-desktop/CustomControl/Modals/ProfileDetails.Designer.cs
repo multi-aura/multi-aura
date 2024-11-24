@@ -91,7 +91,7 @@
             this.panelWindownControlTaskBar.Location = new System.Drawing.Point(0, 0);
             this.panelWindownControlTaskBar.Margin = new System.Windows.Forms.Padding(0);
             this.panelWindownControlTaskBar.Name = "panelWindownControlTaskBar";
-            this.panelWindownControlTaskBar.Size = new System.Drawing.Size(943, 35);
+            this.panelWindownControlTaskBar.Size = new System.Drawing.Size(985, 35);
             this.panelWindownControlTaskBar.TabIndex = 69;
             // 
             // tableLayoutPanel8
@@ -103,7 +103,7 @@
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel8.Controls.Add(this.CloseWindowControlButton, 2, 0);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(843, 0);
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(885, 0);
             this.tableLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 1;
@@ -135,7 +135,7 @@
             this.panelMedias.MinimumSize = new System.Drawing.Size(0, 48);
             this.panelMedias.Name = "panelMedias";
             this.panelMedias.Padding = new System.Windows.Forms.Padding(0, 16, 0, 16);
-            this.panelMedias.Size = new System.Drawing.Size(943, 48);
+            this.panelMedias.Size = new System.Drawing.Size(985, 48);
             this.panelMedias.TabIndex = 76;
             // 
             // panelMore
@@ -147,7 +147,7 @@
             this.panelMore.Margin = new System.Windows.Forms.Padding(0);
             this.panelMore.MinimumSize = new System.Drawing.Size(0, 48);
             this.panelMore.Name = "panelMore";
-            this.panelMore.Size = new System.Drawing.Size(943, 48);
+            this.panelMore.Size = new System.Drawing.Size(985, 48);
             this.panelMore.TabIndex = 75;
             // 
             // panelFriends
@@ -159,7 +159,7 @@
             this.panelFriends.Margin = new System.Windows.Forms.Padding(0);
             this.panelFriends.MinimumSize = new System.Drawing.Size(0, 48);
             this.panelFriends.Name = "panelFriends";
-            this.panelFriends.Size = new System.Drawing.Size(943, 48);
+            this.panelFriends.Size = new System.Drawing.Size(985, 48);
             this.panelFriends.TabIndex = 74;
             // 
             // panelPosts
@@ -171,7 +171,7 @@
             this.panelPosts.Margin = new System.Windows.Forms.Padding(0);
             this.panelPosts.MinimumSize = new System.Drawing.Size(0, 48);
             this.panelPosts.Name = "panelPosts";
-            this.panelPosts.Size = new System.Drawing.Size(943, 48);
+            this.panelPosts.Size = new System.Drawing.Size(985, 48);
             this.panelPosts.TabIndex = 73;
             // 
             // NotFoundContainer
@@ -185,7 +185,7 @@
             this.NotFoundContainer.Name = "NotFoundContainer";
             this.NotFoundContainer.RowCount = 1;
             this.NotFoundContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.NotFoundContainer.Size = new System.Drawing.Size(943, 27);
+            this.NotFoundContainer.Size = new System.Drawing.Size(985, 27);
             this.NotFoundContainer.TabIndex = 72;
             // 
             // label1
@@ -196,7 +196,7 @@
             this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(943, 27);
+            this.label1.Size = new System.Drawing.Size(985, 27);
             this.label1.TabIndex = 7;
             this.label1.Text = "Not found";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -213,7 +213,7 @@
             this.panel2.Margin = new System.Windows.Forms.Padding(0);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(0, 0, 40, 0);
-            this.panel2.Size = new System.Drawing.Size(943, 76);
+            this.panel2.Size = new System.Drawing.Size(985, 76);
             this.panel2.TabIndex = 71;
             // 
             // tableLayoutPanelProfileTaskBar
@@ -233,7 +233,7 @@
             this.tableLayoutPanelProfileTaskBar.Name = "tableLayoutPanelProfileTaskBar";
             this.tableLayoutPanelProfileTaskBar.RowCount = 1;
             this.tableLayoutPanelProfileTaskBar.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelProfileTaskBar.Size = new System.Drawing.Size(903, 37);
+            this.tableLayoutPanelProfileTaskBar.Size = new System.Drawing.Size(945, 37);
             this.tableLayoutPanelProfileTaskBar.TabIndex = 24;
             // 
             // labelMore
@@ -244,10 +244,10 @@
             this.labelMore.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelMore.ForeColor = System.Drawing.Color.White;
             this.labelMore.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.labelMore.Location = new System.Drawing.Point(675, 0);
+            this.labelMore.Location = new System.Drawing.Point(708, 0);
             this.labelMore.Margin = new System.Windows.Forms.Padding(0);
             this.labelMore.Name = "labelMore";
-            this.labelMore.Size = new System.Drawing.Size(228, 37);
+            this.labelMore.Size = new System.Drawing.Size(237, 37);
             this.labelMore.TabIndex = 5;
             this.labelMore.Text = "More";
             this.labelMore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -259,10 +259,10 @@
             this.labelFriends.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelFriends.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelFriends.ForeColor = System.Drawing.Color.White;
-            this.labelFriends.Location = new System.Drawing.Point(450, 0);
+            this.labelFriends.Location = new System.Drawing.Point(472, 0);
             this.labelFriends.Margin = new System.Windows.Forms.Padding(0);
             this.labelFriends.Name = "labelFriends";
-            this.labelFriends.Size = new System.Drawing.Size(225, 37);
+            this.labelFriends.Size = new System.Drawing.Size(236, 37);
             this.labelFriends.TabIndex = 2;
             this.labelFriends.Text = "Friends";
             this.labelFriends.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -274,10 +274,10 @@
             this.labelMedias.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelMedias.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelMedias.ForeColor = System.Drawing.Color.White;
-            this.labelMedias.Location = new System.Drawing.Point(225, 0);
+            this.labelMedias.Location = new System.Drawing.Point(236, 0);
             this.labelMedias.Margin = new System.Windows.Forms.Padding(0);
             this.labelMedias.Name = "labelMedias";
-            this.labelMedias.Size = new System.Drawing.Size(225, 37);
+            this.labelMedias.Size = new System.Drawing.Size(236, 37);
             this.labelMedias.TabIndex = 1;
             this.labelMedias.Text = "Medias";
             this.labelMedias.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -292,7 +292,7 @@
             this.labelPosts.Location = new System.Drawing.Point(0, 0);
             this.labelPosts.Margin = new System.Windows.Forms.Padding(0);
             this.labelPosts.Name = "labelPosts";
-            this.labelPosts.Size = new System.Drawing.Size(225, 37);
+            this.labelPosts.Size = new System.Drawing.Size(236, 37);
             this.labelPosts.TabIndex = 0;
             this.labelPosts.Text = "Posts";
             this.labelPosts.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -303,7 +303,7 @@
             this.searchBarContainer.Location = new System.Drawing.Point(0, 0);
             this.searchBarContainer.Margin = new System.Windows.Forms.Padding(0);
             this.searchBarContainer.Name = "searchBarContainer";
-            this.searchBarContainer.Size = new System.Drawing.Size(903, 39);
+            this.searchBarContainer.Size = new System.Drawing.Size(945, 39);
             this.searchBarContainer.TabIndex = 23;
             // 
             // tableLayoutPanel1
@@ -324,14 +324,14 @@
             this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(20);
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(943, 190);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(985, 190);
             this.tableLayoutPanel1.TabIndex = 70;
             // 
             // buttonBlock
             // 
             this.buttonBlock.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonBlock.Image = global::CustomControl.Properties.Resources.block;
-            this.buttonBlock.Location = new System.Drawing.Point(870, 20);
+            this.buttonBlock.Location = new System.Drawing.Point(912, 20);
             this.buttonBlock.Margin = new System.Windows.Forms.Padding(0);
             this.buttonBlock.MaximumSize = new System.Drawing.Size(40, 40);
             this.buttonBlock.MinimumSize = new System.Drawing.Size(40, 40);
@@ -372,7 +372,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(680, 150);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(722, 150);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
             // labelUsername
@@ -385,7 +385,7 @@
             this.labelUsername.Location = new System.Drawing.Point(60, 40);
             this.labelUsername.Margin = new System.Windows.Forms.Padding(0);
             this.labelUsername.Name = "labelUsername";
-            this.labelUsername.Size = new System.Drawing.Size(620, 40);
+            this.labelUsername.Size = new System.Drawing.Size(662, 40);
             this.labelUsername.TabIndex = 3;
             this.labelUsername.Text = "Unknown";
             this.labelUsername.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -404,7 +404,7 @@
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(620, 40);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(662, 40);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // labelFullName
@@ -417,7 +417,7 @@
             this.labelFullName.Location = new System.Drawing.Point(0, 0);
             this.labelFullName.Margin = new System.Windows.Forms.Padding(0);
             this.labelFullName.Name = "labelFullName";
-            this.labelFullName.Size = new System.Drawing.Size(452, 40);
+            this.labelFullName.Size = new System.Drawing.Size(483, 40);
             this.labelFullName.TabIndex = 2;
             this.labelFullName.Text = "Unknown";
             this.labelFullName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -426,7 +426,7 @@
             // 
             this.containerCommonEditProfile.BackColor = System.Drawing.Color.DimGray;
             this.containerCommonEditProfile.Controls.Add(this.buttonFollow);
-            this.containerCommonEditProfile.Location = new System.Drawing.Point(455, 2);
+            this.containerCommonEditProfile.Location = new System.Drawing.Point(486, 2);
             this.containerCommonEditProfile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.containerCommonEditProfile.Name = "containerCommonEditProfile";
             this.containerCommonEditProfile.Radius = 4;
@@ -459,7 +459,7 @@
             this.panel1.Location = new System.Drawing.Point(60, 80);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(620, 40);
+            this.panel1.Size = new System.Drawing.Size(662, 40);
             this.panel1.TabIndex = 4;
             // 
             // tableLayoutPanel7
@@ -602,7 +602,7 @@
             this.LoadingContainer.Name = "LoadingContainer";
             this.LoadingContainer.RowCount = 1;
             this.LoadingContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.LoadingContainer.Size = new System.Drawing.Size(943, 27);
+            this.LoadingContainer.Size = new System.Drawing.Size(985, 27);
             this.LoadingContainer.TabIndex = 77;
             // 
             // label2
@@ -613,7 +613,7 @@
             this.label2.Location = new System.Drawing.Point(0, 0);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(943, 27);
+            this.label2.Size = new System.Drawing.Size(985, 27);
             this.label2.TabIndex = 7;
             this.label2.Text = "Loading...";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -624,7 +624,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
-            this.ClientSize = new System.Drawing.Size(964, 543);
+            this.ClientSize = new System.Drawing.Size(1006, 543);
             this.Controls.Add(this.LoadingContainer);
             this.Controls.Add(this.panelMedias);
             this.Controls.Add(this.panelMore);

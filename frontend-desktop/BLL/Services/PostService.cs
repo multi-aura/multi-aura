@@ -24,6 +24,11 @@ namespace BLL.Services
 
             if (response is SuccessResponse<string> successResponse)
             {
+                if (string.IsNullOrEmpty(successResponse.Data))
+                {
+                    return (new List<Post>(), string.Empty);
+                }
+
                 var posts = await Post.ParsePostListAsync(successResponse.Data);
                 return (posts, string.Empty);
             }
@@ -42,6 +47,11 @@ namespace BLL.Services
 
             if (response is SuccessResponse<string> successResponse)
             {
+                if (string.IsNullOrEmpty(successResponse.Data))
+                {
+                    return (new List<Post>(), string.Empty);
+                }
+
                 var posts = await Post.ParsePostListAsync(successResponse.Data);
                 return (posts, string.Empty);
             }
