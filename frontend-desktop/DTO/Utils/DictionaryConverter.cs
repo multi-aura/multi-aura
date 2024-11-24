@@ -141,5 +141,42 @@ namespace DTO.Utils
             return new List<UserSummary>();
         }
 
+        public static RelationshipStatus ParseRelationshipStatus(Dictionary<string, object> data, string key)
+        {
+            if (data.ContainsKey(key) && data[key] is JObject relationshipStatusObject)
+            {
+                try
+                {
+                    var relationshipDict = relationshipStatusObject.ToObject<Dictionary<string, object>>();
+
+                    if (relationshipDict.ContainsKey("status") && relationshipDict["status"] is string statusStr)
+                    {
+                        // Thay vì sử dụng Enum.TryParse, gọi hàm ParseRelationshipStatusType
+                        RelationshipStatusType status = RelationshipStatus.ParseRelationshipStatusType(statusStr);
+
+                        return new RelationshipStatus
+                        {
+                            Status = status,
+                            Since = ParseDateTime(relationshipDict, "since", DateTime.Now)
+                        };
+                    }
+                }
+                catch
+                {
+                    return new RelationshipStatus
+                    {
+                        Status = RelationshipStatusType.NoRelationship,
+                        Since = null
+                    };
+                }
+            }
+
+            return new RelationshipStatus
+            {
+                Status = RelationshipStatusType.NoRelationship,
+                Since = null
+            };
+        }
+
     }
 }

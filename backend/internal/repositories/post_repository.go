@@ -221,7 +221,7 @@ func (repo *postRepository) GetCommentsByPostID(postID string) ([]*models.Commen
 
 	commentsData, ok := result["comments"].(primitive.A)
 	if !ok {
-		return nil, fmt.Errorf("comments field is not of type primitive.A")
+		return nil, nil
 	}
 
 	// Chuyển đổi từng comment từ map vào struct Comment

@@ -25,5 +25,6 @@ func SetupRelationshipRoutes(app *fiber.App) {
 	relationships.Get("/followers", middlewares.AuthMiddleware(), controller.GetFollowers)
 	relationships.Get("/followings", middlewares.AuthMiddleware(), controller.GetFollowings)
 	relationships.Get("/blocked", middlewares.AuthMiddleware(), controller.GetBlockedUsers)
+	app.Get("auth/profile", middlewares.AuthMiddleware(), controller.GetProfile)
 	app.Get("/:username", middlewares.AuthMiddleware(), controller.GetProfile)
 }

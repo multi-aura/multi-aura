@@ -147,11 +147,11 @@
     <Compile Include="Modals\PostDetails.Designer.cs">
       <DependentUpon>PostDetails.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modals\UserProfile.cs">
+    <Compile Include="Modals\ProfileDetails.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modals\UserProfile.Designer.cs">
-      <DependentUpon>UserProfile.cs</DependentUpon>
+    <Compile Include="Modals\ProfileDetails.Designer.cs">
+      <DependentUpon>ProfileDetails.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -205,8 +205,8 @@
     <EmbeddedResource Include="Modals\PostDetails.resx">
       <DependentUpon>PostDetails.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modals\UserProfile.resx">
-      <DependentUpon>UserProfile.cs</DependentUpon>
+    <EmbeddedResource Include="Modals\ProfileDetails.resx">
+      <DependentUpon>ProfileDetails.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -300,6 +300,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\profile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\block.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

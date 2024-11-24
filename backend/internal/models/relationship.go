@@ -7,7 +7,7 @@ type RelationshipStatusType string
 const (
 	NoRelationship RelationshipStatusType = "No Relationship"
 	Following      RelationshipStatusType = "Following"
-	Follower       RelationshipStatusType = "Followed"
+	Follower       RelationshipStatusType = "Follower"
 	Blocking       RelationshipStatusType = "Blocking"
 	Blocked        RelationshipStatusType = "Blocked"
 	Friend         RelationshipStatusType = "Friend"

@@ -35,6 +35,9 @@ namespace GUI.Forms
             relationshipDataProvider.FollowingDataLoaded += LoadFollowingCounter;
             relationshipDataProvider.FriendDataLoaded += OnFriendDataLoaded;
 
+            relationshipDataProvider.OnFollowEvent += OnFollowEvent;
+            relationshipDataProvider.OnUnfollowEvent += OnFollowEvent;
+
             postDataProvider = PostDataProvider.Instance;
             postDataProvider.CurrentUserPostsDataLoaded += LoadPanelUserPosts;
 
@@ -55,6 +58,7 @@ namespace GUI.Forms
             //panelForYouNoQueryPosts.Controls.Clear();
             if (postDataProvider.CurrentUserPosts != null)
             {
+                this.labelPostCounter.Text = postDataProvider.CurrentUserPosts.Count.ToShortNumber() + " Posts";
                 hasPostsData = false;
                 foreach (var item in postDataProvider.CurrentUserPosts)
                 {
@@ -95,7 +99,6 @@ namespace GUI.Forms
                 hasPostsData = false;
             }
 
-            hasPostsData = true;
             if (currentTaskBar == labelPosts)
             {
                 HideLoading();
@@ -251,18 +254,50 @@ namespace GUI.Forms
 
         private void LoadFollowerCounter()
         {
-            if (relationshipDataProvider.Followers != null)
+            if (labelFollowerCounter.InvokeRequired)
             {
-                this.labelFollowerCounter.Text = relationshipDataProvider.Followers.Count.ToShortNumber() + " Followers";
+                labelFollowerCounter.BeginInvoke(new Action(() =>
+                {
+                    if (relationshipDataProvider.Followers != null)
+                    {
+                        this.labelFollowerCounter.Text = relationshipDataProvider.Followers.Count.ToShortNumber() + " Followers";
+                    }
+                }));
+            }
+            else
+            {
+                if (relationshipDataProvider.Followers != null)
+                {
+                    this.labelFollowerCounter.Text = relationshipDataProvider.Followers.Count.ToShortNumber() + " Followers";
+                }
             }
         }
 
         private void LoadFollowingCounter()
         {
-            if (relationshipDataProvider.Followings != null)
+            if (labelFollowingCounter.InvokeRequired)
             {
-                this.labelFollowingCounter.Text = relationshipDataProvider.Followings.Count.ToShortNumber() + " Followings";
+                labelFollowingCounter.BeginInvoke(new Action(() =>
+                {
+                    if (relationshipDataProvider.Followings != null)
+                    {
+                        this.labelFollowingCounter.Text = relationshipDataProvider.Followings.Count.ToShortNumber() + " Followings";
+                    }
+                }));
             }
+            else
+            {
+                if (relationshipDataProvider.Followings != null)
+                {
+                    this.labelFollowingCounter.Text = relationshipDataProvider.Followings.Count.ToShortNumber() + " Followings";
+                }
+            }
+        }
+
+        private void OnFollowEvent()
+        {
+            LoadFollowingCounter();
+            OnFriendDataLoaded();
         }
 
         private void OnFriendDataLoaded()
@@ -273,9 +308,22 @@ namespace GUI.Forms
 
         private void LoadFriendCounter()
         {
-            if (relationshipDataProvider.Friends != null)
+            if (labelFriendCounter.InvokeRequired)
             {
-                this.labelFriendCounter.Text = relationshipDataProvider.Friends.Count.ToShortNumber() + " Friends";
+                labelFriendCounter.BeginInvoke(new Action(() =>
+                {
+                    if (relationshipDataProvider.Friends != null)
+                    {
+                        this.labelFriendCounter.Text = relationshipDataProvider.Friends.Count.ToShortNumber() + " Friends";
+                    }
+                }));
+            }
+            else
+            {
+                if (relationshipDataProvider.Friends != null)
+                {
+                    this.labelFriendCounter.Text = relationshipDataProvider.Friends.Count.ToShortNumber() + " Friends";
+                }
             }
         }
 

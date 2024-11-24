@@ -44,7 +44,7 @@ function LoginForm({ onSubmit }) {
 
       <button type="submit" className="custom-button w-100">Login</button>
       <div className="text-center my-3">or</div>
-      <button className="btn btn-outline-danger btn-block custom-btn-google">
+      <button className="btn btn-outline-danger btn-block custom-btn-google"  style={{ width: "100%" }}>
         <FontAwesomeIcon icon={faGoogle} className="me-2" /> Sign in with Google
       </button>
       <div className="text-center mt-3">
