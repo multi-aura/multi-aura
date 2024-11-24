@@ -70,6 +70,43 @@
   cursor: pointer;  
   z-index: 1000;
 }
+.nav-item .tab-link {
+  color: #b3b3b3;
+  text-decoration: none;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  padding: 10px 30px;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.nav-item .tab-link.active {
+  background-color: #1a1a1a;
+  color: white;
+  border-right: 5px solid white;
+}
+
+.nav-item .tab-link:hover {
+  color: white;
+}
+
+/* Notifications Drawer */
+.notifications-drawer {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 350px;
+  height: 100%;
+  background: #1e1e2f;
+  color: #fff;
+  z-index: 1000;
+  transition: right 0.3s ease-in-out;
+}
+
+.notifications-drawer.open {
+  right: 0;
+}
+
 
 .toggle-button svg {
   color: white;
@@ -78,6 +115,11 @@
 .layout {
   display: flex;
   height: 100vh;
+}
+.NotificationsPage{
+  width: 100%;
+  background-color: #000000;
+  border:  none;
 }
 
 .main-content {
