@@ -24,6 +24,11 @@ namespace GUI.Forms
         private bool hasFriendsData = false;
         private bool hasMoreData = true;
 
+        public void Reload()
+        {
+            relationshipDataProvider.RefetchUserProfile();
+        }
+
         public ProfileForm()
         {
             InitializeComponent();
@@ -34,6 +39,7 @@ namespace GUI.Forms
             relationshipDataProvider.FollowerDataLoaded += LoadFollowerCounter;
             relationshipDataProvider.FollowingDataLoaded += LoadFollowingCounter;
             relationshipDataProvider.FriendDataLoaded += OnFriendDataLoaded;
+            relationshipDataProvider.BlockedDataLoaded += LoadPanelBlockedList;
 
             relationshipDataProvider.OnFollowEvent += OnFollowEvent;
             relationshipDataProvider.OnUnfollowEvent += OnFollowEvent;
@@ -200,6 +206,65 @@ namespace GUI.Forms
             }
         }
 
+        private void LoadPanelBlockedList()
+        {
+            if (panelBlockedList.InvokeRequired)
+            {
+                panelBlockedList.Invoke(new Action(LoadPanelBlockedList));
+                return;
+            }
+
+            if (currentTaskBar == labelMore)
+            {
+                ShowLoading();
+            }
+            panelBlockedList.Controls.Clear();
+            if (relationshipDataProvider.BlockedList != null)
+            {
+                hasMoreData = false;
+                foreach (var item in relationshipDataProvider.BlockedList)
+                {
+                    UserSummaryCommon userSummary = new UserSummaryCommon
+                    {
+                        CurrentUserSummary = item,
+                        IsBlocked = true,
+                        IsFollowing = false,
+                        Dock = DockStyle.Top,
+                        Margin = new Padding(0, 0, 0, 0),
+                        Padding = new Padding(10, 4, 10, 4),
+                    };
+
+                    if (panelBlockedList.InvokeRequired)
+                    {
+                        panelBlockedList.Invoke(new Action(() =>
+                        {
+                            panelBlockedList.Controls.Add(userSummary);
+                            panelBlockedList.Refresh();
+                        }));
+                    }
+                    else
+                    {
+                        panelBlockedList.Controls.Add(userSummary);
+                        panelBlockedList.Refresh();
+                    }
+                    if (!hasMoreData)
+                    {
+                        hasMoreData = true;
+                    }
+                }
+            }
+            else
+            {
+                hasMoreData = false;
+            }
+
+            if (currentTaskBar == labelMore)
+            {
+                HideLoading();
+                LoadPanel(this.panelMore, hasMoreData);
+            }
+        }
+
         private async void LoadProfile()
         {
             if (appDataProvider.User != null)
@@ -294,7 +359,7 @@ namespace GUI.Forms
             }
         }
 
-        private void OnFollowEvent()
+        private void OnFollowEvent(string id)
         {
             LoadFollowingCounter();
             OnFriendDataLoaded();

@@ -28,6 +28,7 @@ namespace BLL.DataProviders
         }
 
         private AppDataProvider appDataProvider = AppDataProvider.Instance;
+        private RelationshipDataProvider relationshipDataProvider;
 
         private PostRepository postRepository;
         private PostService postService;
@@ -75,26 +76,37 @@ namespace BLL.DataProviders
 
         public void Initialize()
         {
-            FetchRecentPosts();
+            relationshipDataProvider = RelationshipDataProvider.Instance;
+            relationshipDataProvider.FollowingDataLoaded += FetchRecentPosts;
             FetchCurrentUserPosts();
         }
 
-        public async void FetchRecentPosts()
+        public void FetchRecentPosts()
         {
-            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            Task.Run(async () =>
             {
-                var (list, errorMessage) = await postService.GetRecentsAsync(1, 10);
+                try
+                {
+                    if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+                    {
+                        var (list, errorMessage) = await postService.GetRecentsAsync(1, 10);
 
-                if (string.IsNullOrEmpty(errorMessage))
-                {
-                    this.recentPosts = list;
-                    RecentPostsDataLoaded?.Invoke();
+                        if (string.IsNullOrEmpty(errorMessage))
+                        {
+                            this.recentPosts = list;
+                            RecentPostsDataLoaded?.Invoke();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error fetching recent posts: " + errorMessage);
+                        }
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Error fetching recent posts: " + errorMessage);
+                    MessageBox.Show("Error fetching recent posts: " + ex.Message);
                 }
-            }
+            });
         }
 
         private async void FetchCurrentUserPosts()

@@ -132,8 +132,8 @@ namespace BLL.Repositories.Repositories
                     }
                 }
 
-                var response = await _httpClient.PostAsync(url, content);
-                return await HandleResponse(response);
+                var response = await _httpClient.PostAsync(url, content).ConfigureAwait(false);
+                return await HandleResponse(response).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

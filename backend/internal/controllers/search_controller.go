@@ -54,7 +54,7 @@ func (sc *SearchController) SearchNews(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
 		Status:  fiber.StatusOK,
-		Message: "Products retrieved successfully",
+		Message: "News retrieved successfully",
 		Data:    products,
 	})
 }
@@ -162,6 +162,15 @@ func (sc *SearchController) SearchPosts(c *fiber.Ctx) error {
 }
 
 func (sc *SearchController) SearchTrending(c *fiber.Ctx) error {
+	userID, ok := c.Locals("userID").(string)
+	if !ok || userID == "" {
+		return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusUnauthorized,
+			Message: "Unauthorized",
+			Error:   "StatusUnauthorized",
+		})
+	}
+
 	query := c.Query("q")
 	var req models.PagingRequest
 	if err := c.BodyParser(&req); err != nil {
@@ -179,7 +188,7 @@ func (sc *SearchController) SearchTrending(c *fiber.Ctx) error {
 		req.Page = 1 // Mặc định page là 1 nếu không cung cấp hoặc không hợp lệ
 	}
 
-	trendingItems, err := sc.service.SearchTrending(query, int(req.Page), int(req.Limit))
+	trendingItems, err := sc.service.SearchTrending(query, userID, int(req.Page), int(req.Limit))
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusInternalServerError,

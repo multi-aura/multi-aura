@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using BLL.Repository;
-using BLL.Services;
 using DTO;
 
 namespace BLL.DataProviders
@@ -46,11 +43,7 @@ namespace BLL.DataProviders
         {
             user = new User
             {
-                Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imhpa" +
-                "G9uNDU2QGdtYWlsLmNvbSIsImV4cCI6MTczMjQ0NzMzNiwiZnVsbG5hbWUiOiJIa" +
-                "SBIb24iLCJpc0FjdGl2ZSI6dHJ1ZSwiaXNBZG1pbiI6dHJ1ZSwicGhvbmUiOiIwM" +
-                "TIzMjExMjMzMiIsInVzZXJJRCI6ImFlMWE5NjkyLTFlMjEtNGEzYS1hNGZjLTA5MmJmO" +
-                "TMzNDQyNCJ9.Bf1hFF7dsZS2wm8Q6w3hFoDjmUcIOn-0d6uCubJtpHM",
+                Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhpaG9uNDU2QGdtYWlsLmNvbSIsImV4cCI6MTczMzAyNzI5NywiZnVsbG5hbWUiOiJIaSBIb24iLCJpc0FjdGl2ZSI6dHJ1ZSwiaXNBZG1pbiI6dHJ1ZSwicGhvbmUiOiIwMTIzMjExMjMzMiIsInVzZXJJRCI6ImFlMWE5NjkyLTFlMjEtNGEzYS1hNGZjLTA5MmJmOTMzNDQyNCJ9.Own0PGDZoRz2mBC3w1hdO_-ebgXg82L0avix1U40P5A",
                 //Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im10aHV3MTIzQGdtYWlsLmNvbSIsImV4cCI6MTczMjg2MDI0MSwiZnVsbG5hbWUiOiJNaW5oIFRodXciLCJpc0FjdGl2ZSI6dHJ1ZSwiaXNBZG1pbiI6dHJ1ZSwicGhvbmUiOiIwOTExMjExMjMzMiIsInVzZXJJRCI6IjZkNGYwNjQ0LWMzMGYtNGZjMy1hOGViLTg1ZmM1MWNlYWYzMCJ9.Rb2r9q4PYDEDQE_hsEZNViQ26W1A7rULz45PjRFdHyc",
                 FullName = "Hi Hon",
                 Username = "hihonnguyn123",

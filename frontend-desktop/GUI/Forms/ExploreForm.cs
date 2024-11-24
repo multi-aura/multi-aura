@@ -1,6 +1,7 @@
 ﻿using BLL.DataProviders;
 using CustomControl.Commons;
 using CustomControl.Modals;
+using DTO;
 using GUI.Properties;
 using System;
 using System.Drawing;
@@ -31,6 +32,13 @@ namespace GUI.Forms
         public SearchBarCommon SearchBar()
         {
             return this.searchBarCommon;
+        }
+
+        public void Reload()
+        {
+            ResetData();
+            ShowLoading();
+            searchDataProvider.Search();
         }
 
         public ExploreForm()
@@ -84,6 +92,52 @@ namespace GUI.Forms
             this.panelPostsNoQuery.Visible = false;
             this.panelPostsWithQuery.Visible = false;
         }
+
+        private void ResetData()
+        {
+            ClearPanel(panelForYouNoQueryPosts);
+            //this.panelForYouNoQueryPosts.Visible = false;
+            hasForYouNoQueryData = false;
+
+            ClearPanel(panelForYouPosts);
+            //this.panelForYouPosts.Visible = false;
+            hasForYouWithQueryData = false;
+
+            ClearPanel(panelTrendingNoQueryPosts);
+            //this.panelTrendingNoQueryPosts.Visible = false;
+            hasTrendingNoQueryData = false;
+
+            ClearPanel(panelTrendingPostsWithQuery);
+            //this.panelTrendingPostsWithQuery.Visible = false;
+            hasTrendingWithQueryData = false;
+
+            ClearPanel(panelNewsNoQueryPosts);
+            //this.panelNewsNoQueryPosts.Visible = false;
+            hasNewsNoQueryData = false;
+
+            ClearPanel(panelNewsPostsWithQuery);
+            //this.panelNewsPostsWithQuery.Visible = false;
+            hasNewsWithQueryData = false;
+
+            ClearPanel(panelPeopleNoQuery);
+            //this.panelPeopleNoQuery.Visible = false;
+            hasPeopleNoQueryData = false;
+
+            ClearPanel(panelPeopleWithQuery);
+            //this.panelPeopleWithQuery.Visible = false;
+            hasPeopleWithQueryData = false;
+
+            ClearPanel(panelPostsNoQuery);
+            //this.panelPostsNoQuery.Visible = false;
+            hasPostsNoQueryData = false;
+
+            ClearPanel(panelPostsWithQuery);
+            //this.panelPostsWithQuery.Visible = false;
+            hasPostsWithQueryData = false;
+
+            //ResetPanelResults();
+        }
+
         private void OnSearchEnter(object sender, EventArgs e)
         {
             string query = this.searchBarCommon.Query;
@@ -212,6 +266,21 @@ namespace GUI.Forms
             ActivatePanel(panelSender);
         }
 
+        private void ClearPanel(Panel sender)
+        {
+            if (sender.InvokeRequired)
+            {
+                sender.Invoke(new Action(() =>
+                {
+                    sender.Controls.Clear();
+                }));
+            }
+            else
+            {
+                sender.Controls.Clear();
+            }
+        }
+
         private void LoadSuggestFriends()
         {
             if (relationshipDataProvider.SuggestedFriends == null)
@@ -225,7 +294,7 @@ namespace GUI.Forms
                 return;
             }
 
-            panelSuggests.Controls.Clear();
+            ClearPanel(panelSuggests);
 
             SuggestForYouCommon suggestForYouCommon = new SuggestForYouCommon
             {
@@ -234,7 +303,18 @@ namespace GUI.Forms
                 Margin = new Padding(0, 0, 0, 0),
             };
 
-            panelSuggests.Controls.Add(suggestForYouCommon);
+            
+            if (panelSuggests.InvokeRequired)
+            {
+                panelSuggests.Invoke(new Action(() =>
+                {
+                    panelSuggests.Controls.Add(suggestForYouCommon);
+                }));
+            }
+            else
+            {
+                panelSuggests.Controls.Add(suggestForYouCommon);
+            }
         }
 
         private void LoadForYouNoQueryPosts()
@@ -245,10 +325,23 @@ namespace GUI.Forms
                 return;
             }
 
-            //panelForYouNoQueryPosts.Controls.Clear();
+
+            //if (panelForYouNoQueryPosts.InvokeRequired)
+            //{
+            //    panelForYouNoQueryPosts.Invoke(new Action(() =>
+            //    {
+            //        panelForYouNoQueryPosts.Controls.Clear();
+            //    }));
+            //}
+            //else
+            //{
+            //    panelForYouNoQueryPosts.Controls.Clear();
+            //}
+
+            ClearPanel(panelForYouNoQueryPosts);
+            hasForYouNoQueryData = false;
             if (searchDataProvider.ForYouNoQueryPosts != null)
             {
-                hasForYouNoQueryData = false;
                 foreach (var item in searchDataProvider.ForYouNoQueryPosts)
                 {
                     PostCommon postCommon = new PostCommon
@@ -295,9 +388,23 @@ namespace GUI.Forms
                 return;
             }
 
+            
+            //if (panelTrendingNoQueryPosts.InvokeRequired)
+            //{
+            //    panelTrendingNoQueryPosts.Invoke(new Action(() =>
+            //    {
+            //        panelTrendingNoQueryPosts.Controls.Clear();
+            //    }));
+            //}
+            //else
+            //{
+            //    panelTrendingNoQueryPosts.Controls.Clear();
+            //}
+
+            ClearPanel(panelTrendingNoQueryPosts);
+            hasTrendingNoQueryData = false;
             if (searchDataProvider.TrendingsNoQuery != null)
             {
-                hasTrendingNoQueryData = false;
                 foreach (var item in searchDataProvider.TrendingsNoQuery)
                 {
                     PostCommon postCommon = new PostCommon
@@ -344,9 +451,22 @@ namespace GUI.Forms
                 return;
             }
 
+
+            //if (panelNewsNoQueryPosts.InvokeRequired)
+            //{
+            //    panelNewsNoQueryPosts.Invoke(new Action(() =>
+            //    {
+            //        panelNewsNoQueryPosts.Controls.Clear();
+            //    }));
+            //}
+            //else
+            //{
+            //    panelNewsNoQueryPosts.Controls.Clear();
+            //}
+            ClearPanel(panelNewsNoQueryPosts);
+            hasNewsNoQueryData = false;
             if (searchDataProvider.NewsNoQuery != null)
             {
-                hasNewsNoQueryData = false;
                 foreach (var item in searchDataProvider.NewsNoQuery)
                 {
                     PostCommon postCommon = new PostCommon
@@ -393,9 +513,23 @@ namespace GUI.Forms
                 return;
             }
 
+
+            //if (panelPeopleNoQuery.InvokeRequired)
+            //{
+            //    panelPeopleNoQuery.Invoke(new Action(() =>
+            //    {
+            //        panelPeopleNoQuery.Controls.Clear();
+            //    }));
+            //}
+            //else
+            //{
+            //    panelPeopleNoQuery.Controls.Clear();
+            //}
+
+            ClearPanel(panelPeopleNoQuery);
+            hasPeopleNoQueryData = false;
             if (searchDataProvider.PeopleNoQuery != null)
             {
-                hasPeopleNoQueryData = false;
                 foreach (var item in searchDataProvider.PeopleNoQuery)
                 {
                     UserSummaryCommon userSummary = new UserSummaryCommon
@@ -444,9 +578,22 @@ namespace GUI.Forms
                 return;
             }
 
+            //if (panelPostsNoQuery.InvokeRequired)
+            //{
+            //    panelPostsNoQuery.Invoke(new Action(() =>
+            //    {
+            //        panelPostsNoQuery.Controls.Clear();
+            //    }));
+            //}
+            //else
+            //{
+            //    panelPostsNoQuery.Controls.Clear();
+            //}
+
+            ClearPanel(panelPostsNoQuery);
+            hasPostsNoQueryData = false;
             if (searchDataProvider.PostsNoQuery != null)
             {
-                hasPostsNoQueryData = false;
                 foreach (var item in searchDataProvider.PostsNoQuery)
                 {
                     PostCommon postCommon = new PostCommon
@@ -494,10 +641,22 @@ namespace GUI.Forms
                 return;
             }
 
-            panelForYouPosts.Controls.Clear();
+            //if (panelForYouPosts.InvokeRequired)
+            //{
+            //    panelForYouPosts.Invoke(new Action(() =>
+            //    {
+            //        panelForYouPosts.Controls.Clear();
+            //    }));
+            //}
+            //else
+            //{
+            //    panelForYouPosts.Controls.Clear();
+            //}
+
+            ClearPanel(panelForYouPosts);
+            hasForYouWithQueryData = false;
             if (searchDataProvider.ForYouPosts != null)
             {
-                hasForYouWithQueryData = false;
                 foreach (var item in searchDataProvider.ForYouPosts)
                 {
                     PostCommon postCommon = new PostCommon
@@ -544,10 +703,23 @@ namespace GUI.Forms
                 return;
             }
 
-            panelTrendingPostsWithQuery.Controls.Clear();
+            
+            //if (panelTrendingPostsWithQuery.InvokeRequired)
+            //{
+            //    panelTrendingPostsWithQuery.Invoke(new Action(() =>
+            //    {
+            //        panelTrendingPostsWithQuery.Controls.Clear();
+            //    }));
+            //}
+            //else
+            //{
+            //    panelTrendingPostsWithQuery.Controls.Clear();
+            //}
+
+            ClearPanel(panelTrendingPostsWithQuery);
+            hasTrendingWithQueryData = false;
             if (searchDataProvider.Trendings != null)
             {
-                hasTrendingWithQueryData = false;
                 foreach (var item in searchDataProvider.Trendings)
                 {
                     PostCommon postCommon = new PostCommon
@@ -594,10 +766,23 @@ namespace GUI.Forms
                 return;
             }
 
-            panelNewsPostsWithQuery.Controls.Clear();
+            
+            //if (panelNewsPostsWithQuery.InvokeRequired)
+            //{
+            //    panelNewsPostsWithQuery.Invoke(new Action(() =>
+            //    {
+            //        panelNewsPostsWithQuery.Controls.Clear();
+            //    }));
+            //}
+            //else
+            //{
+            //    panelNewsPostsWithQuery.Controls.Clear();
+            //}
+
+            ClearPanel(panelNewsPostsWithQuery);
+            hasNewsWithQueryData = false;
             if (searchDataProvider.News != null)
             {
-                hasNewsWithQueryData = false;
                 foreach (var item in searchDataProvider.News)
                 {
                     PostCommon postCommon = new PostCommon
@@ -644,10 +829,23 @@ namespace GUI.Forms
                 return;
             }
 
-            panelPeopleWithQuery.Controls.Clear();
+            
+            //if (panelPeopleWithQuery.InvokeRequired)
+            //{
+            //    panelPeopleWithQuery.Invoke(new Action(() =>
+            //    {
+            //        panelPeopleWithQuery.Controls.Clear();
+            //    }));
+            //}
+            //else
+            //{
+            //    panelPeopleWithQuery.Controls.Clear();
+            //}
+
+            ClearPanel(panelPeopleWithQuery);
+            hasPeopleWithQueryData = false;
             if (searchDataProvider.People != null)
             {
-                hasPeopleWithQueryData = false;
                 foreach (var item in searchDataProvider.People)
                 {
                     bool isFollowing = false;
@@ -702,10 +900,22 @@ namespace GUI.Forms
                 return;
             }
 
-            panelPostsWithQuery.Controls.Clear();
+            //if (panelPostsWithQuery.InvokeRequired)
+            //{
+            //    panelPostsWithQuery.Invoke(new Action(() =>
+            //    {
+            //        panelPostsWithQuery.Controls.Clear();
+            //    }));
+            //}
+            //else
+            //{
+            //    panelPostsWithQuery.Controls.Clear();
+            //}
+
+            ClearPanel(panelPostsWithQuery);
+            hasPostsWithQueryData = false;
             if (searchDataProvider.Posts!= null)
             {
-                hasPostsWithQueryData = false;
                 foreach (var item in searchDataProvider.Posts)
                 {
                     PostCommon postCommon = new PostCommon

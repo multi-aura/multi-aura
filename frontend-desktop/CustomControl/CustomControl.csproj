@@ -153,6 +153,12 @@
     <Compile Include="Modals\ProfileDetails.Designer.cs">
       <DependentUpon>ProfileDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modals\SeeAllSuggestedUsersModal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modals\SeeAllSuggestedUsersModal.Designer.cs">
+      <DependentUpon>SeeAllSuggestedUsersModal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -207,6 +213,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modals\ProfileDetails.resx">
       <DependentUpon>ProfileDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modals\SeeAllSuggestedUsersModal.resx">
+      <DependentUpon>SeeAllSuggestedUsersModal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -303,6 +312,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\block.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\unlock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loading24.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

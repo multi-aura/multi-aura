@@ -30,15 +30,14 @@
         {
             this.panelSuggests = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panelPosts = new System.Windows.Forms.Panel();
-            this.NotFoundContainer = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
             this.panelProfile = new System.Windows.Forms.Panel();
             this.flowLayoutPanelFriends = new System.Windows.Forms.FlowLayoutPanel();
             this.suggestForYouCommon1 = new CustomControl.Commons.SuggestForYouCommon();
+            this.NotFoundContainer = new System.Windows.Forms.TableLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.panelPosts = new System.Windows.Forms.Panel();
             this.panelSuggests.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.panelPosts.SuspendLayout();
             this.NotFoundContainer.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,6 +57,7 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.Controls.Add(this.panelPosts);
+            this.panel1.Controls.Add(this.NotFoundContainer);
             this.panel1.Controls.Add(this.panelProfile);
             this.panel1.Controls.Add(this.flowLayoutPanelFriends);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -67,46 +67,6 @@
             this.panel1.Padding = new System.Windows.Forms.Padding(0, 0, 40, 0);
             this.panel1.Size = new System.Drawing.Size(603, 511);
             this.panel1.TabIndex = 3;
-            // 
-            // panelPosts
-            // 
-            this.panelPosts.AutoScroll = true;
-            this.panelPosts.BackColor = System.Drawing.Color.Transparent;
-            this.panelPosts.Controls.Add(this.NotFoundContainer);
-            this.panelPosts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelPosts.Location = new System.Drawing.Point(0, 188);
-            this.panelPosts.Margin = new System.Windows.Forms.Padding(0);
-            this.panelPosts.Name = "panelPosts";
-            this.panelPosts.Padding = new System.Windows.Forms.Padding(20, 20, 40, 20);
-            this.panelPosts.Size = new System.Drawing.Size(563, 323);
-            this.panelPosts.TabIndex = 2;
-            // 
-            // NotFoundContainer
-            // 
-            this.NotFoundContainer.ColumnCount = 1;
-            this.NotFoundContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.NotFoundContainer.Controls.Add(this.label1, 0, 0);
-            this.NotFoundContainer.Dock = System.Windows.Forms.DockStyle.Top;
-            this.NotFoundContainer.Location = new System.Drawing.Point(20, 20);
-            this.NotFoundContainer.Margin = new System.Windows.Forms.Padding(0);
-            this.NotFoundContainer.Name = "NotFoundContainer";
-            this.NotFoundContainer.RowCount = 1;
-            this.NotFoundContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.NotFoundContainer.Size = new System.Drawing.Size(503, 34);
-            this.NotFoundContainer.TabIndex = 11;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Margin = new System.Windows.Forms.Padding(0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(503, 34);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "Not found";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panelProfile
             // 
@@ -141,6 +101,45 @@
             this.suggestForYouCommon1.TabIndex = 0;
             this.suggestForYouCommon1.UserSummaries = null;
             // 
+            // NotFoundContainer
+            // 
+            this.NotFoundContainer.ColumnCount = 1;
+            this.NotFoundContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.NotFoundContainer.Controls.Add(this.label1, 0, 0);
+            this.NotFoundContainer.Dock = System.Windows.Forms.DockStyle.Top;
+            this.NotFoundContainer.Location = new System.Drawing.Point(0, 188);
+            this.NotFoundContainer.Margin = new System.Windows.Forms.Padding(0);
+            this.NotFoundContainer.Name = "NotFoundContainer";
+            this.NotFoundContainer.RowCount = 1;
+            this.NotFoundContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.NotFoundContainer.Size = new System.Drawing.Size(563, 34);
+            this.NotFoundContainer.TabIndex = 12;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Margin = new System.Windows.Forms.Padding(0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(563, 34);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Not found";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panelPosts
+            // 
+            this.panelPosts.AutoScroll = true;
+            this.panelPosts.BackColor = System.Drawing.Color.Transparent;
+            this.panelPosts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelPosts.Location = new System.Drawing.Point(0, 222);
+            this.panelPosts.Margin = new System.Windows.Forms.Padding(0);
+            this.panelPosts.Name = "panelPosts";
+            this.panelPosts.Padding = new System.Windows.Forms.Padding(20, 20, 40, 20);
+            this.panelPosts.Size = new System.Drawing.Size(563, 289);
+            this.panelPosts.TabIndex = 13;
+            // 
             // HomeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -154,7 +153,6 @@
             this.Text = "HomeForm";
             this.panelSuggests.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.panelPosts.ResumeLayout(false);
             this.NotFoundContainer.ResumeLayout(false);
             this.NotFoundContainer.PerformLayout();
             this.ResumeLayout(false);
@@ -169,9 +167,9 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelFriends;
         private CustomControl.Commons.PostCommon postCommon2;
         private CustomControl.Commons.PostCommon postCommon1;
+        private System.Windows.Forms.Panel panelProfile;
         private System.Windows.Forms.Panel panelPosts;
         private System.Windows.Forms.TableLayoutPanel NotFoundContainer;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel panelProfile;
     }
 }
