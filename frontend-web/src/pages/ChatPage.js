@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Sidebar from '../components/Messages/MessSidebar/SidebarChat';
 import ChatContent from '../components/Messages/ChatContent/ChatContent';
-// import SettingSidebarChat from '../components/Messages/SettingSidebarChat/SettingSidebarChat';
+import SettingSidebarChat from '../components/Messages/SettingSidebarChat/SettingSidebarChat';
 import Layout from '../layouts/Layout';
 import '../assets/css/ChatPage.css';
 import { getUserConversation, getConversationDetails, sendMessageToConversation } from "../services/chatservice";
@@ -154,13 +154,13 @@ function ChatPage() {
             </div>
 
             {/* Sidebar */}
-            {/* {isSidebarOpen && (
+            {isSidebarOpen && (
               <SettingSidebarChat
                 isOpen={isSidebarOpen}
                 onClose={() => setIsSidebarOpen(false)}
                 currentChat={currentChat}
               />
-            )} */}
+            )}
           </div>
         </div>
       </div>
