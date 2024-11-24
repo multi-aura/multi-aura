@@ -43,7 +43,16 @@ namespace BLL.DataProviders
         private AuthDataProvider()
         {
             authRepository = AuthRepository.Instance;
+            if (authRepository == null)
+            {
+                throw new Exception("AuthRepository is not initialized.");
+            }
+
             authService = new AuthService(authRepository);
+            if (authService == null)
+            {
+                throw new Exception("AuthService is not initialized.");
+            }
 
             appDataProvider.DataLoaded += Initialize;
         }
@@ -65,14 +74,17 @@ namespace BLL.DataProviders
                 return;
             }
 
-            var loginRequest = new LoginRequest
-            {
-                Username = username,
-                Password = password
-            };
+
 
             try
             {
+
+                var loginRequest = new LoginRequest
+                {
+                    Username = username,
+                    Password = password
+                };
+
                 var (user, errorMessage) = await authService.LoginAsync(loginRequest);
                 MessageBox.Show(user.Token);
                 if (string.IsNullOrEmpty(errorMessage))

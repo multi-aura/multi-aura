@@ -15,12 +15,14 @@ namespace GUI.AuthenticationForms
     public partial class LoginForm : Form
     {
         private event EventHandler goToRegister;
-        private readonly AuthService _authService;
+        private AuthDataProvider authDataProvider;
+
         public LoginForm(EventHandler GoToRegister)
         {
             InitializeComponent();
             this.goToRegister = GoToRegister;
             this.labelGoToRegister.Click += LabelGoToRegister_Click;
+            authDataProvider = AuthDataProvider.Instance; 
         }
 
         private void LabelGoToRegister_Click(object sender, EventArgs e)
@@ -42,18 +44,27 @@ namespace GUI.AuthenticationForms
         {
             string username = txt_username.Text;
             string password = txt_password.Text;
-            MessageBox.Show(username);
+
+            if (authDataProvider == null)
+            {
+                MessageBox.Show("AuthDataProvider is not initialized.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             try
             {
-                // Gọi AuthDataProvider để xử lý đăng nhập
-                await AuthDataProvider.Instance.LoginAsync(username, password);
+                if (authDataProvider == null)
+                {
+                    MessageBox.Show("AuthDataProvider is null.", "Error");
+                    return;
+                }
 
-                // Nếu đăng nhập thành công
-                if (AuthDataProvider.Instance.CurrentUser != null)
+
+                await authDataProvider.LoginAsync(username, password);
+                if (authDataProvider.CurrentUser != null)
                 {
                     this.Hide();
-                    MainForm mainForm = new MainForm(); // Điều hướng đến MainForm
+                    MainForm mainForm = new MainForm();
                     mainForm.Show();
                 }
             }

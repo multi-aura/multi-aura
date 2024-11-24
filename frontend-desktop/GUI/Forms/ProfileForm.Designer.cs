@@ -106,7 +106,7 @@
             // buttonSettings
             // 
             this.buttonSettings.Image = global::GUI.Properties.Resources.setting;
-            this.buttonSettings.Location = new System.Drawing.Point(834, 20);
+            this.buttonSettings.Location = new System.Drawing.Point(937, 25);
             this.buttonSettings.Margin = new System.Windows.Forms.Padding(0);
             this.buttonSettings.MaximumSize = new System.Drawing.Size(40, 40);
             this.buttonSettings.MinimumSize = new System.Drawing.Size(40, 40);
@@ -120,7 +120,7 @@
             this.userAvatar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.userAvatar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.userAvatar.Image = global::GUI.Properties.Resources.profile;
-            this.userAvatar.Location = new System.Drawing.Point(20, 20);
+            this.userAvatar.Location = new System.Drawing.Point(22, 25);
             this.userAvatar.Margin = new System.Windows.Forms.Padding(0);
             this.userAvatar.MaximumSize = new System.Drawing.Size(133, 120);
             this.userAvatar.MinimumSize = new System.Drawing.Size(133, 120);
@@ -409,10 +409,10 @@
             this.labelMore.ForeColor = System.Drawing.Color.White;
             this.labelMore.Image = global::GUI.Properties.Resources.vertical_more24;
             this.labelMore.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.labelMore.Location = new System.Drawing.Point(648, 0);
+            this.labelMore.Location = new System.Drawing.Point(729, 0);
             this.labelMore.Margin = new System.Windows.Forms.Padding(0);
             this.labelMore.Name = "labelMore";
-            this.labelMore.Size = new System.Drawing.Size(219, 37);
+            this.labelMore.Size = new System.Drawing.Size(245, 46);
             this.labelMore.TabIndex = 5;
             this.labelMore.Text = "More";
             this.labelMore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -509,7 +509,7 @@
             this.panelMore.Margin = new System.Windows.Forms.Padding(0);
             this.panelMore.MinimumSize = new System.Drawing.Size(0, 60);
             this.panelMore.Name = "panelMore";
-            this.panelMore.Size = new System.Drawing.Size(907, 66);
+            this.panelMore.Size = new System.Drawing.Size(1019, 68);
             this.panelMore.TabIndex = 38;
             // 
             // panelBlockedList
@@ -517,11 +517,11 @@
             this.panelBlockedList.AutoSize = true;
             this.panelBlockedList.BackColor = System.Drawing.Color.Transparent;
             this.panelBlockedList.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelBlockedList.Location = new System.Drawing.Point(0, 18);
+            this.panelBlockedList.Location = new System.Drawing.Point(0, 20);
             this.panelBlockedList.Margin = new System.Windows.Forms.Padding(0);
             this.panelBlockedList.MinimumSize = new System.Drawing.Size(0, 48);
             this.panelBlockedList.Name = "panelBlockedList";
-            this.panelBlockedList.Size = new System.Drawing.Size(907, 48);
+            this.panelBlockedList.Size = new System.Drawing.Size(1019, 48);
             this.panelBlockedList.TabIndex = 43;
             // 
             // tableLayoutPanel8
@@ -536,18 +536,18 @@
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 1;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(907, 18);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(1019, 20);
             this.tableLayoutPanel8.TabIndex = 42;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Montserrat", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.Location = new System.Drawing.Point(0, 0);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(90, 18);
+            this.label3.Size = new System.Drawing.Size(101, 20);
             this.label3.TabIndex = 0;
             this.label3.Text = "Blocked list";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -594,12 +594,12 @@
             this.LoadingContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.LoadingContainer.Controls.Add(this.label2, 0, 0);
             this.LoadingContainer.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LoadingContainer.Location = new System.Drawing.Point(60, 503);
+            this.LoadingContainer.Location = new System.Drawing.Point(68, 615);
             this.LoadingContainer.Margin = new System.Windows.Forms.Padding(0);
             this.LoadingContainer.Name = "LoadingContainer";
             this.LoadingContainer.RowCount = 1;
             this.LoadingContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.LoadingContainer.Size = new System.Drawing.Size(907, 27);
+            this.LoadingContainer.Size = new System.Drawing.Size(1019, 27);
             this.LoadingContainer.TabIndex = 41;
             // 
             // label2
@@ -610,7 +610,7 @@
             this.label2.Location = new System.Drawing.Point(0, 0);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(1019, 34);
+            this.label2.Size = new System.Drawing.Size(1019, 27);
             this.label2.TabIndex = 7;
             this.label2.Text = "Loading...";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;

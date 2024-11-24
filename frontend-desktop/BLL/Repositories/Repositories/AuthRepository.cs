@@ -27,12 +27,58 @@ namespace BLL.Repository
                 }
             }
         }
-        private AuthRepository() : base() { }
+        private AuthRepository() : base()
+        {
+            Console.WriteLine("AuthRepository đang được khởi tạo.");
+        }
+
+
 
         public async Task<APIResponse<string>> LoginAsync(LoginRequest loginRequest)
         {
-            return await PostAsync(NetworkUrls.Auth.Login, loginRequest);
+            // Validate URL
+            if (string.IsNullOrEmpty(NetworkUrls.Auth.Login))
+            {
+                throw new Exception("Auth login URL is not configured or is empty.");
+            }
+
+            // Validate LoginRequest
+            if (loginRequest == null)
+            {
+                throw new ArgumentNullException(nameof(loginRequest), "LoginRequest is null.");
+            }
+            if (string.IsNullOrEmpty(loginRequest.Username) || string.IsNullOrEmpty(loginRequest.Password))
+            {
+                throw new ArgumentException("Username or Password in LoginRequest is empty.");
+            }
+
+            try
+            {
+                // Log the URL and request details
+                Console.WriteLine($"Sending login request to: {NetworkUrls.Auth.Login}");
+                Console.WriteLine($"Username: {loginRequest.Username}");
+
+                // Send the API request
+                var response = await PostAsync(NetworkUrls.Auth.Login, loginRequest);
+
+                // Validate the response
+                if (response == null)
+                {
+                    throw new Exception("API response is null.");
+                }
+
+                // Log successful response
+                Console.WriteLine($"API Response: {response.Status} - {response.Message}");
+                return response;
+            }
+            catch (Exception ex)
+            {
+                // Handle and log exceptions
+                throw new Exception($"Error during login API call: {ex.Message}", ex);
+            }
         }
+
+
 
     }
 }
