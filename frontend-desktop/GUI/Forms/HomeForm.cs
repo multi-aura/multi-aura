@@ -16,6 +16,7 @@ namespace GUI.Forms
         private RelationshipDataProvider relationshipDataProvider;
         private PostDataProvider postDataProvider;
         private bool isPanelProfileLoaded = false;
+        private bool hasPostsData = false;
 
         public bool IsReload
         {
@@ -45,6 +46,30 @@ namespace GUI.Forms
             }
         }
 
+        public void Reload()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(Reload));
+                return;
+            }
+
+            if (!isPanelProfileLoaded)
+            {
+                isPanelProfileLoaded = false;
+                this.panelProfile.Dock = DockStyle.Top;
+                this.panelProfile.Visible = false;
+
+                this.panelPosts.Visible = true;
+            }
+
+            // TODO: Reload home page
+            relationshipDataProvider.FetchUserFriends();
+            //relationshipDataProvider.FetchSuggestedFriends();
+
+            postDataProvider.FetchRecentPosts();
+        }
+
         private ProfileDetails profileForm = null;
         public HomeForm()
         {
@@ -65,53 +90,115 @@ namespace GUI.Forms
                 this.panelProfile.Visible = false;
             }
         }
-
-        private void LoadPanelRecentPosts()
+        private void UpdateUI(Control control, Action action)
         {
-            if (panelPosts.InvokeRequired)
+            if (control.InvokeRequired)
             {
-                panelPosts.Invoke(new Action(LoadPanelRecentPosts));
-                return;
-            }
-            //panelForYouNoQueryPosts.Controls.Clear();
-            if (postDataProvider.RecentPosts != null)
-            {
-                bool hasData = false;
-                foreach (var item in postDataProvider.RecentPosts)
-                {
-                    PostCommon postCommon = new PostCommon
-                    {
-                        CurrentPost = item,
-                        Dock = DockStyle.Top,
-                        Margin = new Padding(0, 0, 0, 0),
-                    };
-
-                    if (panelPosts.InvokeRequired)
-                    {
-                        panelPosts.Invoke(new Action(() =>
-                        {
-                            panelPosts.Controls.Add(postCommon);
-                        }));
-                    }
-                    else
-                    {
-                        panelPosts.Controls.Add(postCommon);
-                    }
-                    if (!hasData)
-                    {
-                        hasData = true;
-                    }
-                }
-                if (!hasData)
-                {
-                    this.NotFoundContainer.Visible = true;
-                }
+                control.Invoke(new Action(() => action()));
             }
             else
             {
-                this.NotFoundContainer.Visible = true;
+                action();
             }
         }
+        private void LoadPanelRecentPosts()
+        {
+            UpdateUI(panelPosts, () =>
+            {
+                panelPosts.Controls.Clear();
+                this.NotFoundContainer.Visible = false;
+
+                if (postDataProvider.RecentPosts != null && postDataProvider.RecentPosts.Count > 0)
+                {
+                    foreach (var item in postDataProvider.RecentPosts)
+                    {
+                        var postCommon = new PostCommon
+                        {
+                            CurrentPost = item,
+                            Dock = DockStyle.Top,
+                            Margin = new Padding(0, 0, 0, 0),
+                        };
+                        panelPosts.Controls.Add(postCommon);
+                    }
+                    hasPostsData = true;
+                }
+                else
+                {
+                    hasPostsData = false;
+                    if (!isPanelProfileLoaded)
+                    {
+                        this.NotFoundContainer.Visible = true;
+                    }
+                }
+            });
+        }
+        //private void LoadPanelRecentPosts()
+        //{
+        //    if (panelPosts.InvokeRequired)
+        //    {
+        //        panelPosts.Invoke(new Action(LoadPanelRecentPosts));
+        //        return;
+        //    }
+
+            
+        //    if (panelPosts.InvokeRequired)
+        //    {
+        //        panelPosts.Invoke(new Action(() =>
+        //        {
+        //            this.NotFoundContainer.Visible = false;
+        //            panelPosts.Controls.Clear();
+        //        }));
+        //    }
+        //    else
+        //    {
+        //        this.NotFoundContainer.Visible = false;
+        //        panelPosts.Controls.Clear();
+        //    }
+
+        //    if (postDataProvider.RecentPosts != null)
+        //    {
+        //        hasPostsData = false;
+        //        foreach (var item in postDataProvider.RecentPosts)
+        //        {
+        //            PostCommon postCommon = new PostCommon
+        //            {
+        //                CurrentPost = item,
+        //                Dock = DockStyle.Top,
+        //                Margin = new Padding(0, 0, 0, 0),
+        //            };
+
+        //            if (panelPosts.InvokeRequired)
+        //            {
+        //                panelPosts.Invoke(new Action(() =>
+        //                {
+        //                    panelPosts.Controls.Add(postCommon);
+        //                }));
+        //            }
+        //            else
+        //            {
+        //                panelPosts.Controls.Add(postCommon);
+        //            }
+        //            if (!hasPostsData)
+        //            {
+        //                hasPostsData = true;
+        //            }
+        //        }
+        //        if (!hasPostsData)
+        //        {
+        //            if (!isPanelProfileLoaded)
+        //            {
+        //                this.NotFoundContainer.Visible = true;
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (!isPanelProfileLoaded)
+        //        {
+        //            this.NotFoundContainer.Visible = true;
+        //        }
+        //    }
+        //}
 
         private bool isLoading = false;
 
@@ -128,7 +215,7 @@ namespace GUI.Forms
             {
                 if (flowLayoutPanelFriends.InvokeRequired)
                 {
-                    flowLayoutPanelFriends.Invoke(new Action(LoadFriends));
+                    flowLayoutPanelFriends.BeginInvoke(new Action(LoadFriends));
                     return;
                 }
 
@@ -158,9 +245,10 @@ namespace GUI.Forms
                     var image = await LoadAvatarImageAsync(friend.Avatar);
                     avatarCommon.Image = image ?? Properties.Resources.person;
 
+                    // Chỉ gọi BeginInvoke nếu cần thiết
                     if (flowLayoutPanelFriends.InvokeRequired)
                     {
-                        flowLayoutPanelFriends.Invoke(new Action(() =>
+                        flowLayoutPanelFriends.BeginInvoke(new Action(() =>
                         {
                             flowLayoutPanelFriends.Controls.Add(avatarCommon);
                         }));
@@ -310,6 +398,7 @@ namespace GUI.Forms
             // Hiển thị panelProfile
             this.panelProfile.Visible = true;
             isPanelProfileLoaded = true;
+            this.NotFoundContainer.Visible = false;
         }
 
         private void ProfileForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -317,6 +406,15 @@ namespace GUI.Forms
             this.panelProfile.Visible = false;
             isPanelProfileLoaded = false;
             this.panelPosts.Visible = true;
+
+            if (hasPostsData)
+            {
+                this.NotFoundContainer.Visible = false;
+            }
+            else
+            {
+                this.NotFoundContainer.Visible = true;
+            }
         }
     }
 }

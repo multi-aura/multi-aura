@@ -1,6 +1,7 @@
 ﻿using BLL.DataProviders;
 using CustomControl.Commons;
 using CustomControl.Extensions;
+using CustomControl.Properties;
 using CustomControl.Utils;
 using DTO;
 using System;
@@ -13,25 +14,43 @@ namespace CustomControl.Modals
 {
     public partial class ProfileDetails : Form
     {
+        private AppDataProvider appDataProvider = AppDataProvider.Instance;
         private PostDataProvider postDataProvider;
         private RelationshipDataProvider relationshipDataProvider;
 
-        private List<Post> currentUserPost;
+        private List<Post> currentUserPosts;
 
+        private UserProfile currentUserProfileBlocked;
         private UserProfile currentUserProfile;
+        private bool isBlocking;
         public UserProfile CurrentUserProfile
         {
             get => currentUserProfile;
             set
             {
                 currentUserProfile = value;
+                
                 LoadUserPosts();
                 LoadProfile();
                 LoadFollowerCounter();
                 LoadFollowingCounter();
                 OnFriendDataLoaded();
-                LoadFollowerCounter();
+
                 this.buttonFollow.Text = GetRelationshipText();
+                if (currentUserProfile != null && currentUserProfile.RelaStatus != null) {
+                    isBlocking = currentUserProfile.RelaStatus.Status == RelationshipStatusType.Blocking;
+                    if (isBlocking)
+                    {
+                        this.buttonBlock.Image = Resources.unlock;
+                        this.buttonFollow.Enabled = false;
+                    }
+                    else
+                    {
+                        this.buttonBlock.Image = Resources.block;
+                        this.buttonFollow.Enabled = true;
+                    }
+                    //this.buttonBlock.Image = isBlocking ? Resources.unlock : Resources.block;
+                }
             }
         }
 
@@ -59,7 +78,109 @@ namespace CustomControl.Modals
             this.buttonFollow.Text = GetRelationshipText();
             this.buttonFollow.Click += ButtonFollow_Click;
 
+            this.buttonBlock.Click += ButtonBlock_Click;
+
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+        }
+
+        private void ButtonBlock_Click(object sender, EventArgs e)
+        {
+            this.buttonBlock.Image = Resources.loading24;
+            this.buttonBlock.Enabled = false;
+            this.buttonFollow.Text = "Processing..";
+            this.buttonFollow.Enabled = false;
+
+            Task.Run(async () =>
+            {
+                try
+                {
+                    if (isBlocking)
+                    {
+                        if (currentUserProfileBlocked != null && currentUserProfileBlocked.User != null && !string.IsNullOrEmpty(currentUserProfileBlocked.User.UserID))
+                        {
+                            var (result, newRelationshipStatus) = await relationshipDataProvider.Unblock(UserSummary.CopyFrom(currentUserProfileBlocked.User), currentUserProfileBlocked.RelaStatus);
+                            currentUserProfileBlocked.RelaStatus = newRelationshipStatus;
+                            this.Invoke(new Action(() =>
+                            {
+                                if(currentUserProfileBlocked.RelaStatus != null)
+                                {
+                                    isBlocking = currentUserProfileBlocked.RelaStatus.Status == RelationshipStatusType.Blocking;
+                                    if (isBlocking)
+                                    {
+                                        this.buttonBlock.Image = Resources.unlock;
+                                        this.buttonBlock.Enabled = true;
+                                        this.buttonFollow.Enabled = false;
+                                    }
+                                    else
+                                    {
+                                        CurrentUserProfile = this.currentUserProfileBlocked;
+                                        this.buttonBlock.Image = Resources.block;
+                                        this.buttonBlock.Enabled = true;
+                                        this.buttonFollow.Enabled = true;
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Something went wrong! Please try again after 15mins");
+                                }
+                                
+                                this.buttonFollow.Text = GetRelationshipText();
+                            }));
+                        }
+                        else
+                        {
+                            this.buttonFollow.Text = GetRelationshipText();
+                            this.buttonBlock.Enabled = true;
+                            this.buttonFollow.Enabled = true;
+                        }
+                    }
+                    else
+                    {
+                        if (currentUserProfile != null && currentUserProfile.User != null && !string.IsNullOrEmpty(currentUserProfile.User.UserID))
+                        {
+                            this.currentUserProfileBlocked = currentUserProfile;
+                            var (result, newRelationshipStatus) = await relationshipDataProvider.Block(UserSummary.CopyFrom(CurrentUserProfile.User), CurrentUserProfile.RelaStatus);
+                            currentUserProfile.RelaStatus = newRelationshipStatus;
+                            isBlocking = result;
+                            this.Invoke(new Action(() =>
+                            {
+                                if (isBlocking)
+                                {
+                                    this.buttonBlock.Image = Resources.unlock;
+                                    this.buttonBlock.Enabled = true;
+                                    this.buttonFollow.Enabled = false;
+
+                                    CurrentUserProfile = null;
+                                }
+                                else
+                                {
+                                    this.buttonBlock.Image = Resources.block;
+                                    this.buttonBlock.Enabled = true;
+                                    this.buttonFollow.Enabled = true;
+                                }
+                                this.buttonFollow.Text = GetRelationshipText();
+                            }));
+                        }
+                        else
+                        {
+                            this.buttonFollow.Text = GetRelationshipText();
+                            this.buttonBlock.Enabled = true;
+                            this.buttonFollow.Enabled = true;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        MessageBox.Show($"Operation failed: {ex.Message}");
+                        this.buttonFollow.Text = GetRelationshipText();
+                        this.buttonBlock.Enabled = true;
+                        this.buttonFollow.Enabled = true;
+                    }));
+                }
+            });
+
         }
 
         private void ButtonFollow_Click(object sender, EventArgs e)
@@ -81,6 +202,24 @@ namespace CustomControl.Modals
                             this.Invoke(new Action(() =>
                             {
                                 this.buttonFollow.Text = GetRelationshipText();
+                                if (currentUserProfile != null && currentUserProfile.RelaStatus != null)
+                                {
+                                    if(currentUserProfile.RelaStatus.Status == RelationshipStatusType.Follower)
+                                    {
+                                        if (this.currentUserProfile.Friends != null)
+                                        {
+                                            this.currentUserProfile.Friends.RemoveAll(f => f.UserID == appDataProvider.User.UserID);
+                                            OnFriendDataLoaded();
+                                        }
+                                    }
+
+                                    if(this.currentUserProfile.Followers != null)
+                                    {
+                                        this.currentUserProfile.Followers.RemoveAll(f => f.UserID == appDataProvider.User.UserID);
+                                        LoadFollowerCounter();
+                                    }
+
+                                }
                             }));
                         }
                         else
@@ -90,6 +229,27 @@ namespace CustomControl.Modals
                             this.Invoke(new Action(() =>
                             {
                                 this.buttonFollow.Text = GetRelationshipText();
+
+                                if (currentUserProfile != null && currentUserProfile.RelaStatus != null)
+                                {
+                                    if (currentUserProfile.RelaStatus.Status == RelationshipStatusType.Friend)
+                                    {
+                                        if (this.currentUserProfile.Friends == null)
+                                        {
+                                            this.currentUserProfile.Friends = new List<UserSummary>();
+                                        }
+
+                                        this.currentUserProfile.Friends.Add(UserSummary.CopyFrom(appDataProvider.User));
+                                        OnFriendDataLoaded();
+                                    }
+
+                                    if (this.currentUserProfile.Followers == null)
+                                    {
+                                        this.currentUserProfile.Friends = new List<UserSummary>();
+                                    }
+                                    this.currentUserProfile.Followers.Add(UserSummary.CopyFrom(appDataProvider.User));
+                                    LoadFollowerCounter();
+                                }
                             }));
                         }
                     }
@@ -120,10 +280,17 @@ namespace CustomControl.Modals
         {
             if(currentUserProfile != null && currentUserProfile.User != null && !string.IsNullOrEmpty(currentUserProfile.User.UserID))
             {
-                currentUserPost = await postDataProvider.FetchOtherUserPosts(currentUserProfile.User.UserID);
+                currentUserPosts = await postDataProvider.FetchOtherUserPosts(currentUserProfile.User.UserID);
                 LoadPanelUserPosts();
             }
+            else
+            {
+                this.panelPosts.Controls.Clear();
+                hasPostsData = false;
 
+                this.panelMedias.Controls.Clear();
+                this.hasMediasData = false;
+            }
         }
 
         private void LoadPanelUserPosts()
@@ -134,11 +301,11 @@ namespace CustomControl.Modals
                 return;
             }
 
-            if (currentUserPost != null)
+            if (currentUserPosts != null)
             {
                 hasPostsData = false;
-                this.labelPostCounter.Text = currentUserPost.Count.ToShortNumber() + " Posts";
-                foreach (var item in currentUserPost)
+                this.labelPostCounter.Text = currentUserPosts.Count.ToShortNumber() + " Posts";
+                foreach (var item in currentUserPosts)
                 {
                     PostCommon postCommon = new PostCommon
                     {
@@ -224,57 +391,65 @@ namespace CustomControl.Modals
 
         private void LoadPanelFriends()
         {
-            if (panelFriends.InvokeRequired)
+            if(currentUserProfile != null)
             {
-                panelFriends.Invoke(new Action(LoadPanelFriends));
-                return;
-            }
-
-            if (currentTaskBar == labelFriends)
-            {
-                ShowLoading();
-            }
-            panelFriends.Controls.Clear();
-            if (currentUserProfile.Friends != null)
-            {
-                hasFriendsData = false;
-                foreach (var item in currentUserProfile.Friends)
+                if (panelFriends.InvokeRequired)
                 {
-                    UserSummaryCommon userSummary = new UserSummaryCommon
-                    {
-                        CurrentUserSummary = item,
-                        IsFollowing = true,
-                        Dock = DockStyle.Top,
-                        Margin = new Padding(0, 0, 0, 0),
-                        Padding = new Padding(10, 4, 10, 4),
-                    };
+                    panelFriends.Invoke(new Action(LoadPanelFriends));
+                    return;
+                }
 
-                    if (panelFriends.InvokeRequired)
+                if (currentTaskBar == labelFriends)
+                {
+                    ShowLoading();
+                }
+                panelFriends.Controls.Clear();
+                if (currentUserProfile.Friends != null)
+                {
+                    hasFriendsData = false;
+                    foreach (var item in currentUserProfile.Friends)
                     {
-                        panelFriends.Invoke(new Action(() =>
+                        UserSummaryCommon userSummary = new UserSummaryCommon
+                        {
+                            CurrentUserSummary = item,
+                            IsFollowing = true,
+                            Dock = DockStyle.Top,
+                            Margin = new Padding(0, 0, 0, 0),
+                            Padding = new Padding(10, 4, 10, 4),
+                        };
+
+                        if (panelFriends.InvokeRequired)
+                        {
+                            panelFriends.Invoke(new Action(() =>
+                            {
+                                panelFriends.Controls.Add(userSummary);
+                            }));
+                        }
+                        else
                         {
                             panelFriends.Controls.Add(userSummary);
-                        }));
+                        }
+                        if (!hasFriendsData)
+                        {
+                            hasFriendsData = true;
+                        }
                     }
-                    else
-                    {
-                        panelFriends.Controls.Add(userSummary);
-                    }
-                    if (!hasFriendsData)
-                    {
-                        hasFriendsData = true;
-                    }
+                }
+                else
+                {
+                    hasFriendsData = false;
+                }
+
+                if (currentTaskBar == labelFriends)
+                {
+                    HideLoading();
+                    LoadPanel(this.panelFriends, hasFriendsData);
                 }
             }
             else
             {
+                this.panelFriends.Controls.Clear();
                 hasFriendsData = false;
-            }
-
-            if (currentTaskBar == labelFriends)
-            {
-                HideLoading();
-                LoadPanel(this.panelFriends, hasFriendsData);
             }
         }
 
@@ -295,6 +470,12 @@ namespace CustomControl.Modals
                         this.labelUsername.Text = currentUserProfile.User.Username;
                     }
                 }
+            }
+            else
+            {
+                this.userAvatar.Image = Resources.profile;
+                this.labelFullName.Text = "Unknown";
+                this.labelUsername.Text = "Unknown";
             }
         }
 
@@ -334,17 +515,39 @@ namespace CustomControl.Modals
 
         private void LoadFollowerCounter()
         {
-            if (currentUserProfile.Followers != null)
+            if (currentUserProfile != null)
             {
-                this.labelFollowerCounter.Text = currentUserProfile.Followers.Count.ToShortNumber() + " Followers";
+                if (currentUserProfile.Followers != null)
+                {
+                    this.labelFollowerCounter.Text = currentUserProfile.Followers.Count.ToShortNumber() + " Followers";
+                }
+                else
+                {
+                    this.labelFollowerCounter.Text = "0 Followers";
+                }
+            }
+            else
+            {
+                this.labelFollowerCounter.Text = "0 Followers";
             }
         }
 
         private void LoadFollowingCounter()
         {
-            if (currentUserProfile.Followings != null)
+            if (currentUserProfile != null)
             {
-                this.labelFollowingCounter.Text = currentUserProfile.Followings.Count.ToShortNumber() + " Followings";
+                if (currentUserProfile.Followings != null)
+                {
+                    this.labelFollowingCounter.Text = currentUserProfile.Followings.Count.ToShortNumber() + " Followings";
+                }
+                else
+                {
+                    this.labelFollowingCounter.Text = "0 Followings";
+                }
+            }
+            else
+            {
+                this.labelFollowingCounter.Text = "0 Followings";
             }
         }
 
@@ -356,9 +559,20 @@ namespace CustomControl.Modals
 
         private void LoadFriendCounter()
         {
-            if (currentUserProfile.Friends != null)
+            if (currentUserProfile != null)
             {
-                this.labelFriendCounter.Text = currentUserProfile.Friends.Count.ToShortNumber() + " Friends";
+                if (currentUserProfile.Friends != null)
+                {
+                    this.labelFriendCounter.Text = currentUserProfile.Friends.Count.ToShortNumber() + " Friends";
+                }
+                else
+                {
+                    this.labelFriendCounter.Text = "0 Friends";
+                }
+            }
+            else
+            {
+                this.labelFriendCounter.Text = "0 Friends";
             }
         }
 
