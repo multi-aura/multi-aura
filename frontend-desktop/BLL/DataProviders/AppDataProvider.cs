@@ -82,7 +82,8 @@ namespace BLL.DataProviders
         public async void Initialize()
         {
             relationshipDataProvider = RelationshipDataProvider.Instance;
-
+            string token;
+            string username;
             //Lấy thông tin từ AppSettings
             //string token = ConfigurationManager.AppSettings["UserToken"];
             //string username = ConfigurationManager.AppSettings["Username"];
