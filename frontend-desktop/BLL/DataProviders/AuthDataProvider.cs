@@ -90,8 +90,9 @@ namespace BLL.DataProviders
                 if (string.IsNullOrEmpty(errorMessage))
                 {
                     currentUser = user;
-                    appDataProvider.User = user; // Lưu thông tin người dùng vào AppDataProvider
-                    UserLoggedIn?.Invoke();     // Kích hoạt event
+                    appDataProvider.User = user;
+                    UserLoggedIn?.Invoke();    
+
                     MessageBox.Show("Login successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else

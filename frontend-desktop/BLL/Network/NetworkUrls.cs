@@ -35,7 +35,7 @@ namespace BLL.Network
 
         public class AuthUrls
         {
-            private readonly string _Route = $"{BaseUrl}/auth";
+            private readonly string _Route = $"{BaseUrl}/user";
 
             public string Login => $"{_Route}/login";
             public string Register => $"{_Route}/register";

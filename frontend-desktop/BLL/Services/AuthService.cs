@@ -30,28 +30,40 @@ namespace BLL.Services
             {
                 return (null, "API response is null.");
             }
+
             if (response is SuccessResponse<string> successResponse)
             {
+                Console.WriteLine($"[INFO] SuccessResponse Received - Data: {successResponse.Data}");
+
                 try
                 {
-
                     if (string.IsNullOrEmpty(successResponse.Data))
                     {
                         return (null, "API response data is empty.");
                     }
 
-                    var userData = JsonConvert.DeserializeObject<User>(successResponse.Data);
+                    // Deserialize the data into a dictionary
+                    var dataDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(successResponse.Data);
+                    Console.WriteLine($"dataDict: {dataDict}");
 
-                    if (userData == null)
+                    if (dataDict != null)
                     {
-                        return (null, "Failed to deserialize user data.");
+                        // Parse thông tin user
+                        var userProfile = User.FromDictionary(dataDict);
+                        Console.WriteLine($"Data: {userProfile.FullName}");
+
+                        if (userProfile != null)
+                        {
+                            return (userProfile, string.Empty);
+                        }
+                        return (null, "Failed to parse user profile");
                     }
 
-                    return (userData, string.Empty);
+                    return (null, "Failed to parse response data into dictionary");
                 }
                 catch (JsonException ex)
                 {
-                    return (null, $"Error parsing user data: {ex.Message}");
+                    return (null, $"Error parsing response: {ex.Message}");
                 }
                 catch (Exception ex)
                 {
@@ -64,8 +76,9 @@ namespace BLL.Services
                 return (null, errorResponse.Message);
             }
 
-            return (null, "Unknown error occurred.");
+            return (null, "Unknown error");
         }
+
 
 
     }

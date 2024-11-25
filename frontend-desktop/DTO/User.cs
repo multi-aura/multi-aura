@@ -77,6 +77,7 @@ namespace DTO
                 IsPublic = DictionaryConverter.GetValueOrDefault(data, "isPublic", false),
             };
         }
+
     }
 
     public class RegisterRequest

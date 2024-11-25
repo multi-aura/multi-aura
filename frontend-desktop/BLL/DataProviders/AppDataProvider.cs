@@ -27,7 +27,11 @@ namespace BLL.DataProviders
         public User User
         {
             get => user;
-            set => user = value;
+            set
+            {
+                user = value;
+                DataLoaded?.Invoke();
+            }
         }
 
         public Form MainForm { get; set; }
