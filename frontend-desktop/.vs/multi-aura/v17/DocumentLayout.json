@@ -3,76 +3,44 @@
   "WorkspaceRootPath": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\customcontrol\\modals\\seeallsuggestedusersmodal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|solutionrelative:customcontrol\\modals\\seeallsuggestedusersmodal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\gui\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|solutionrelative:gui\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\customcontrol\\commons\\suggestforyoucommon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|solutionrelative:customcontrol\\commons\\suggestforyoucommon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\customcontrol\\modals\\postcreationmodal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|solutionrelative:customcontrol\\modals\\postcreationmodal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\customcontrol\\modals\\profiledetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|solutionrelative:customcontrol\\modals\\profiledetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\customcontrol\\commons\\usersummarycommon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|solutionrelative:customcontrol\\commons\\usersummarycommon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\gui\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|solutionrelative:gui\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\gui\\forms\\homeform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|solutionrelative:gui\\forms\\homeform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\customcontrol\\commons\\postcommon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|solutionrelative:customcontrol\\commons\\postcommon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\gui\\forms\\exploreform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|solutionrelative:gui\\forms\\exploreform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\customcontrol\\commons\\replycomment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|solutionrelative:customcontrol\\commons\\replycomment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\gui\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|solutionrelative:gui\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\customcontrol\\commons\\commentcommon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|solutionrelative:customcontrol\\commons\\commentcommon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\gui\\forms\\profileform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|solutionrelative:gui\\forms\\profileform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\customcontrol\\modals\\postdetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|solutionrelative:customcontrol\\modals\\postdetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\bll\\dataproviders\\postdataprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|solutionrelative:bll\\dataproviders\\postdataprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\bll\\services\\postservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\bll\\services\\postservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|solutionrelative:bll\\services\\postservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\bll\\repositories\\repositories\\baserepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|solutionrelative:bll\\repositories\\repositories\\baserepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\bll\\repositories\\repositories\\searchrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|solutionrelative:bll\\repositories\\repositories\\searchrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\bll\\services\\relationshipservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|solutionrelative:bll\\services\\relationshipservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{08561E6E-D95A-49FD-9C5F-4855F8332F7B}|DTO\\DTO.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\dto\\post.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{08561E6E-D95A-49FD-9C5F-4855F8332F7B}|DTO\\DTO.csproj|solutionrelative:dto\\post.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{08561E6E-D95A-49FD-9C5F-4855F8332F7B}|DTO\\DTO.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\dto\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{08561E6E-D95A-49FD-9C5F-4855F8332F7B}|DTO\\DTO.csproj|solutionrelative:dto\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\bll\\dataproviders\\appdataprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|solutionrelative:bll\\dataproviders\\appdataprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\gui\\forms\\homeform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|solutionrelative:gui\\forms\\homeform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\gui\\forms\\profileform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|solutionrelative:gui\\forms\\profileform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -82,7 +50,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 101,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
@@ -92,100 +60,99 @@
               "RelativeDocumentMoniker": "CustomControl\\Modals\\ProfileDetails.cs",
               "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Modals\\ProfileDetails.cs",
               "RelativeToolTip": "CustomControl\\Modals\\ProfileDetails.cs",
-              "ViewState": "AgIAAKkCAAAAAAAAAADgv7cCAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAKkCAAAAAAAAAAAAALoCAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-24T07:57:55.315Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "SeeAllSuggestedUsersModal.cs",
-              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Modals\\SeeAllSuggestedUsersModal.cs",
-              "RelativeDocumentMoniker": "CustomControl\\Modals\\SeeAllSuggestedUsersModal.cs",
-              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Modals\\SeeAllSuggestedUsersModal.cs",
-              "RelativeToolTip": "CustomControl\\Modals\\SeeAllSuggestedUsersModal.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAAiwCMAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-24T07:43:41.242Z",
+              "WhenOpened": "2024-11-25T16:17:35.116Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "SuggestForYouCommon.cs",
-              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Commons\\SuggestForYouCommon.cs",
-              "RelativeDocumentMoniker": "CustomControl\\Commons\\SuggestForYouCommon.cs",
-              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Commons\\SuggestForYouCommon.cs",
-              "RelativeToolTip": "CustomControl\\Commons\\SuggestForYouCommon.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAQwCIAAAAAAAAAAAAAAA==",
+              "Title": "PostCreationModal.cs",
+              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Modals\\PostCreationModal.cs",
+              "RelativeDocumentMoniker": "CustomControl\\Modals\\PostCreationModal.cs",
+              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Modals\\PostCreationModal.cs",
+              "RelativeToolTip": "CustomControl\\Modals\\PostCreationModal.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-24T07:41:15.648Z",
+              "WhenOpened": "2024-11-25T16:17:30.069Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 0,
               "Title": "MainForm.cs",
               "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\GUI\\MainForm.cs",
               "RelativeDocumentMoniker": "GUI\\MainForm.cs",
               "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\GUI\\MainForm.cs",
               "RelativeToolTip": "GUI\\MainForm.cs",
-              "ViewState": "AgIAAEwBAAAAAAAAAAAmwF8BAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAIAAAAAAAAAAAAAAwJYAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-23T08:28:33.894Z",
+              "WhenOpened": "2024-11-25T16:14:53.893Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "UserSummaryCommon.cs",
-              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Commons\\UserSummaryCommon.cs",
-              "RelativeDocumentMoniker": "CustomControl\\Commons\\UserSummaryCommon.cs",
-              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Commons\\UserSummaryCommon.cs",
-              "RelativeToolTip": "CustomControl\\Commons\\UserSummaryCommon.cs",
-              "ViewState": "AgIAANgAAAAAAAAAAAAEwO4AAAAOAAAAAAAAAA==",
+              "Title": "MainForm.cs [Design]",
+              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\GUI\\MainForm.cs",
+              "RelativeDocumentMoniker": "GUI\\MainForm.cs",
+              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\GUI\\MainForm.cs [Design]",
+              "RelativeToolTip": "GUI\\MainForm.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-23T11:52:50.977Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-25T16:12:30.656Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "ExploreForm.cs",
-              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\GUI\\Forms\\ExploreForm.cs",
-              "RelativeDocumentMoniker": "GUI\\Forms\\ExploreForm.cs",
-              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\GUI\\Forms\\ExploreForm.cs",
-              "RelativeToolTip": "GUI\\Forms\\ExploreForm.cs",
-              "ViewState": "AgIAAB8AAAAAAAAAAAAcwGgAAAAAAAAAAAAAAA==",
+              "Title": "ReplyComment.cs",
+              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Commons\\ReplyComment.cs",
+              "RelativeDocumentMoniker": "CustomControl\\Commons\\ReplyComment.cs",
+              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Commons\\ReplyComment.cs",
+              "RelativeToolTip": "CustomControl\\Commons\\ReplyComment.cs",
+              "ViewState": "AgIAAJQAAAAAAAAAAADwv0EAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-23T17:15:21.184Z",
+              "WhenOpened": "2024-11-25T16:00:32.625Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "HomeForm.cs",
-              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\GUI\\Forms\\HomeForm.cs",
-              "RelativeDocumentMoniker": "GUI\\Forms\\HomeForm.cs",
-              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\GUI\\Forms\\HomeForm.cs",
-              "RelativeToolTip": "GUI\\Forms\\HomeForm.cs",
-              "ViewState": "AgIAAC8AAAAAAAAAAAAIwD0AAAAAAAAAAAAAAA==",
+              "DocumentIndex": 6,
+              "Title": "CommentCommon.cs",
+              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Commons\\CommentCommon.cs",
+              "RelativeDocumentMoniker": "CustomControl\\Commons\\CommentCommon.cs",
+              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Commons\\CommentCommon.cs",
+              "RelativeToolTip": "CustomControl\\Commons\\CommentCommon.cs",
+              "ViewState": "AgIAAPUAAAAAAAAAAADwvwcBAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-23T11:53:28.149Z",
+              "WhenOpened": "2024-11-25T15:58:03.173Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "ProfileForm.cs",
-              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\GUI\\Forms\\ProfileForm.cs",
-              "RelativeDocumentMoniker": "GUI\\Forms\\ProfileForm.cs",
-              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\GUI\\Forms\\ProfileForm.cs",
-              "RelativeToolTip": "GUI\\Forms\\ProfileForm.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAASwBoAAAAVAAAAAAAAAA==",
+              "Title": "PostDetails.cs",
+              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Modals\\PostDetails.cs",
+              "RelativeDocumentMoniker": "CustomControl\\Modals\\PostDetails.cs",
+              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Modals\\PostDetails.cs",
+              "RelativeToolTip": "CustomControl\\Modals\\PostDetails.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAAAYwDoAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-24T06:34:23.779Z",
+              "WhenOpened": "2024-11-25T15:57:22.081Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PostCommon.cs",
+              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Commons\\PostCommon.cs",
+              "RelativeDocumentMoniker": "CustomControl\\Commons\\PostCommon.cs",
+              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Commons\\PostCommon.cs",
+              "RelativeToolTip": "CustomControl\\Commons\\PostCommon.cs",
+              "ViewState": "AgIAAGcAAAAAAAAAAAA7wHMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-25T15:38:30.36Z",
               "EditorCaption": ""
             },
             {
@@ -196,7 +163,7 @@
               "RelativeDocumentMoniker": "BLL\\DataProviders\\PostDataProvider.cs",
               "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\BLL\\DataProviders\\PostDataProvider.cs",
               "RelativeToolTip": "BLL\\DataProviders\\PostDataProvider.cs",
-              "ViewState": "AgIAAF0AAAAAAAAAAAAmwG0AAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAAIBAAAAAAAAAAAgwAsBAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-23T18:30:33.755Z",
               "EditorCaption": ""
@@ -209,112 +176,10 @@
               "RelativeDocumentMoniker": "BLL\\Services\\PostService.cs",
               "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\BLL\\Services\\PostService.cs",
               "RelativeToolTip": "BLL\\Services\\PostService.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAUwBYAAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAJYAAAAAAAAAAAAAwKYAAABhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-24T04:54:29.349Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "Post.cs",
-              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\DTO\\Post.cs",
-              "RelativeDocumentMoniker": "DTO\\Post.cs",
-              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\DTO\\Post.cs",
-              "RelativeToolTip": "DTO\\Post.cs",
-              "ViewState": "AgIAAEYAAAAAAAAAAAAEwE8AAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-24T04:24:59.083Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "BaseRepository.cs",
-              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\BLL\\Repositories\\Repositories\\BaseRepository.cs",
-              "RelativeDocumentMoniker": "BLL\\Repositories\\Repositories\\BaseRepository.cs",
-              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\BLL\\Repositories\\Repositories\\BaseRepository.cs",
-              "RelativeToolTip": "BLL\\Repositories\\Repositories\\BaseRepository.cs",
-              "ViewState": "AgIAAHAAAAAAAAAAAAAmwIYAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-24T05:19:08.153Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "RelationshipService.cs",
-              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\BLL\\Services\\RelationshipService.cs",
-              "RelativeDocumentMoniker": "BLL\\Services\\RelationshipService.cs",
-              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\BLL\\Services\\RelationshipService.cs",
-              "RelativeToolTip": "BLL\\Services\\RelationshipService.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAIAzwH8AAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-24T05:05:14.84Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "SearchRepository.cs",
-              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\BLL\\Repositories\\Repositories\\SearchRepository.cs",
-              "RelativeDocumentMoniker": "BLL\\Repositories\\Repositories\\SearchRepository.cs",
-              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\BLL\\Repositories\\Repositories\\SearchRepository.cs",
-              "RelativeToolTip": "BLL\\Repositories\\Repositories\\SearchRepository.cs",
-              "ViewState": "AgIAACYAAAAAAAAAAAAgwDkAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-24T05:14:28.583Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "AppDataProvider.cs",
-              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\BLL\\DataProviders\\AppDataProvider.cs",
-              "RelativeDocumentMoniker": "BLL\\DataProviders\\AppDataProvider.cs",
-              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\BLL\\DataProviders\\AppDataProvider.cs",
-              "RelativeToolTip": "BLL\\DataProviders\\AppDataProvider.cs",
-              "ViewState": "AgIAACAAAAAAAAAAAAAgwC8AAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-23T11:16:11.212Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "User.cs",
-              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\DTO\\User.cs",
-              "RelativeDocumentMoniker": "DTO\\User.cs",
-              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\DTO\\User.cs",
-              "RelativeToolTip": "DTO\\User.cs",
-              "ViewState": "AgIAAKcAAAAAAAAAAAAswLMAAABnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-24T05:02:03.345Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "HomeForm.cs [Design]",
-              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\GUI\\Forms\\HomeForm.cs",
-              "RelativeDocumentMoniker": "GUI\\Forms\\HomeForm.cs",
-              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\GUI\\Forms\\HomeForm.cs [Design]",
-              "RelativeToolTip": "GUI\\Forms\\HomeForm.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-24T03:05:20.45Z",
-              "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "ProfileForm.cs [Design]",
-              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\GUI\\Forms\\ProfileForm.cs",
-              "RelativeDocumentMoniker": "GUI\\Forms\\ProfileForm.cs",
-              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\GUI\\Forms\\ProfileForm.cs [Design]",
-              "RelativeToolTip": "GUI\\Forms\\ProfileForm.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-23T16:57:37.278Z",
-              "EditorCaption": " [Design]"
             }
           ]
         },

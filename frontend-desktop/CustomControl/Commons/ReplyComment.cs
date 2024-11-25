@@ -16,8 +16,12 @@ namespace CustomControl.Commons
         public event EventHandler ShowModalRequested;
 
         private AppDataProvider appDataProvider;
+        private PostDataProvider postDataProvider;
+
         private bool isLiked = false;
         private int likeCounter = 0;
+
+        public string ParentCommentId { get; set; } = string.Empty;
 
         private Comment currentComment = null;
         public Comment CurrentComment
@@ -37,6 +41,7 @@ namespace CustomControl.Commons
             InitializeComponent();
 
             appDataProvider = AppDataProvider.Instance;
+            postDataProvider = PostDataProvider.Instance;
 
             this.labelReply.MouseHover += LabelReply_MouseHover;
             this.labelReply.MouseLeave += LabelReply_MouseLeave;
@@ -45,23 +50,51 @@ namespace CustomControl.Commons
             this.labelLike.Click += LabelLike_Click;
         }
 
-        private void LabelLike_Click(object sender, EventArgs e)
+        private async void LabelLike_Click(object sender, EventArgs e)
         {
             if (isLiked)
             {
-                //TODO: handle unlike
                 likeCounter--;
                 this.labelTotalLikes.Text = likeCounter.ToShortNumber();
-                this.labelLike.Image = Resources.heart16;
+                this.labelLike.Image = Resources.heart;
+                var result = await postDataProvider.UnlikeReplyCommentAsync(ParentCommentId, currentComment.Id);
+                if (result)
+                {
+                    isLiked = false;
+                }
+                else
+                {
+                    likeCounter++;
+                }
             }
             else
             {
-                //TODO: handle like
                 likeCounter++;
                 this.labelTotalLikes.Text = likeCounter.ToShortNumber();
-                this.labelLike.Image = Resources.red_heart16;
+                this.labelLike.Image = Resources.red_heart;
+                var result = await postDataProvider.LikeReplyCommentAsync(ParentCommentId, currentComment.Id);
+                if (result)
+                {
+                    isLiked = true;
+                }
+                else
+                {
+                    likeCounter--;
+                }
             }
-            isLiked = !isLiked;
+            UpdateHeart();
+        }
+        private void UpdateHeart()
+        {
+            this.labelTotalLikes.Text = likeCounter.ToShortNumber();
+            if (isLiked)
+            {
+                this.labelLike.Image = Resources.red_heart;
+            }
+            else
+            {
+                this.labelLike.Image = Resources.heart;
+            }
         }
 
         private void UpdateUI()

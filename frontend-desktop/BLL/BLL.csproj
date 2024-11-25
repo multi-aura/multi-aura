@@ -58,7 +58,7 @@
     <Compile Include="Network\NetworkUrls.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IRepositories\IRelationshipRepository.cs" />
-    <Compile Include="Repositories\IRepositories\IPostRepository .cs" />
+    <Compile Include="Repositories\IRepositories\IPostRepository.cs" />
     <Compile Include="Repositories\IRepositories\ISearchRepository.cs" />
     <Compile Include="Repositories\Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\Repositories\PostRepository.cs" />

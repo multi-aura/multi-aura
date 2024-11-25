@@ -141,6 +141,12 @@
     <Compile Include="Extensions\DateTimeExtensions .cs" />
     <Compile Include="Extensions\FormExtensions.cs" />
     <Compile Include="Extensions\NumberExtensions .cs" />
+    <Compile Include="Modals\PostCreationModal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modals\PostCreationModal.Designer.cs">
+      <DependentUpon>PostCreationModal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modals\PostDetails.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -207,6 +213,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Commons\VoicePlayerCommon.resx">
       <DependentUpon>VoicePlayerCommon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modals\PostCreationModal.resx">
+      <DependentUpon>PostCreationModal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modals\PostDetails.resx">
       <DependentUpon>PostDetails.cs</DependentUpon>
