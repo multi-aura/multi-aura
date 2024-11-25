@@ -156,6 +156,7 @@
             this.searchBar.MinimumSize = new System.Drawing.Size(248, 40);
             this.searchBar.Name = "searchBar";
             this.searchBar.Padding = new System.Windows.Forms.Padding(11, 0, 11, 0);
+            this.searchBar.Query = "";
             this.searchBar.Size = new System.Drawing.Size(405, 48);
             this.searchBar.TabIndex = 0;
             // 
@@ -352,6 +353,7 @@
             // 
             // avatarCommon1
             // 
+            this.avatarCommon1.CurrentUser = null;
             this.avatarCommon1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.avatarCommon1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.avatarCommon1.Image = global::GUI.Properties.Resources._006833d62de3321b980cb2b6a46088a5;
@@ -467,6 +469,7 @@
             // 
             // avatarChat
             // 
+            this.avatarChat.CurrentUser = null;
             this.avatarChat.Cursor = System.Windows.Forms.Cursors.Hand;
             this.avatarChat.Dock = System.Windows.Forms.DockStyle.Fill;
             this.avatarChat.Image = global::GUI.Properties.Resources._006833d62de3321b980cb2b6a46088a5;
