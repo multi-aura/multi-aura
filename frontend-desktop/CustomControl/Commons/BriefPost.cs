@@ -1,25 +1,18 @@
 ﻿using BLL.DataProviders;
-using CustomControl.Extensions;
 using CustomControl.Modals;
 using CustomControl.Properties;
 using CustomControl.Utils;
 using DTO;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace CustomControl.Commons
 {
     public partial class BriefPost : UserControl
     {
         private AppDataProvider appDataProvider;
+        private PostDataProvider postDataProvider;
+
         private Post currentPost = null;
         public Post CurrentPost
         {
@@ -38,11 +31,22 @@ namespace CustomControl.Commons
         {
             InitializeComponent();
             appDataProvider = AppDataProvider.Instance;
+            postDataProvider = PostDataProvider.Instance;
+            postDataProvider.OnDeletePostSuccess += PostDataProvider_OnDeletePostSuccess;
+
             UpdateUI();
 
             this.Click += BriefPost_Click;
             this.postPhotoRepresent.Click += BriefPost_Click;
             this.labelHasMoreImages.Click += BriefPost_Click;
+        }
+
+        private void PostDataProvider_OnDeletePostSuccess(string id)
+        {
+            if (id == currentPost.Id)
+            {
+                this.Dispose();
+            }
         }
 
         private void BriefPost_Click(object sender, EventArgs e)

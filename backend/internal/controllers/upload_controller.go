@@ -80,6 +80,17 @@ func (uc *UploadController) UploadPostPhotos(c *fiber.Ctx) error {
 		})
 	}
 
+	// reader := bytes.NewReader(c.Body())
+	// data, err := io.ReadAll(reader)
+	// if err != nil {
+	// 	return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+	// 		Status:  fiber.StatusInternalServerError,
+	// 		Message: "Error reading request body",
+	// 		Error:   err.Error(),
+	// 	})
+	// }
+	// log.Println(string(data))
+
 	form, err := c.MultipartForm()
 	if err != nil {
 		return c.Status(fiber.StatusNotAcceptable).JSON(APIResponse.ErrorResponse{
@@ -270,5 +281,119 @@ func (uc *UploadController) UploadReplyCommentsPhotos(c *fiber.Ctx) error {
 		Status:  fiber.StatusOK,
 		Message: "Reply comment photos uploaded successfully",
 		Data:    fiber.Map{"urls": fileURLs},
+	})
+}
+
+func (uc *UploadController) DeletePostMediaData(c *fiber.Ctx) error {
+	userID := c.Locals("userID").(string)
+	if userID == "" {
+		return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusUnauthorized,
+			Message: "Unauthorized",
+			Error:   "StatusUnauthorized",
+		})
+	}
+
+	postID := c.Params("postID")
+	if postID == "" {
+		return c.Status(fiber.StatusNotAcceptable).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusNotAcceptable,
+			Message: "Missing post ID",
+			Error:   "PostIDMissing",
+		})
+	}
+
+	err := uc.service.DeletePostMediaData(postID)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusInternalServerError,
+			Message: "Failed to delete post photos",
+			Error:   err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
+		Status:  fiber.StatusOK,
+		Message: "Post photos deleted successfully",
+		Data:    nil,
+	})
+}
+
+func (uc *UploadController) DeleteCommentMediaData(c *fiber.Ctx) error {
+	userID := c.Locals("userID").(string)
+	if userID == "" {
+		return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusUnauthorized,
+			Message: "Unauthorized",
+			Error:   "StatusUnauthorized",
+		})
+	}
+
+	commentID := c.Params("commentID")
+	if commentID == "" {
+		return c.Status(fiber.StatusNotAcceptable).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusNotAcceptable,
+			Message: "Missing comment ID",
+			Error:   "CommentIDMissing",
+		})
+	}
+
+	err := uc.service.DeleteCommentMediaData(commentID)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusInternalServerError,
+			Message: "Failed to delete comment photos",
+			Error:   err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
+		Status:  fiber.StatusOK,
+		Message: "Comment photos deleted successfully",
+		Data:    nil,
+	})
+}
+
+func (uc *UploadController) DeleteReplyCommentMediaData(c *fiber.Ctx) error {
+	userID := c.Locals("userID").(string)
+	if userID == "" {
+		return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusUnauthorized,
+			Message: "Unauthorized",
+			Error:   "StatusUnauthorized",
+		})
+	}
+
+	commentID := c.Params("commentID")
+	if commentID == "" {
+		return c.Status(fiber.StatusNotAcceptable).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusNotAcceptable,
+			Message: "Missing comment ID",
+			Error:   "CommentIDMissing",
+		})
+	}
+
+	replyID := c.Params("replyID")
+	if replyID == "" {
+		return c.Status(fiber.StatusNotAcceptable).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusNotAcceptable,
+			Message: "Missing reply ID",
+			Error:   "ReplyIDMissing",
+		})
+	}
+
+	err := uc.service.DeleteReplyCommentMediaData(commentID, replyID)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusInternalServerError,
+			Message: "Failed to delete reply comment photos",
+			Error:   err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
+		Status:  fiber.StatusOK,
+		Message: "Reply comment photos deleted successfully",
+		Data:    nil,
 	})
 }

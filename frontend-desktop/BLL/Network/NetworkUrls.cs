@@ -89,10 +89,12 @@ namespace BLL.Network
 
             //Comments
             public string GetCommentsByPostID => $"{_Route}/comments";
+            public string GetCommentByID => $"{_Route}/comment";
             public string CreateComment => $"{_Route}/add-comment";
             public string DeleteComment => $"{_Route}/delete-comment";
 
             //Reply Comments
+            public string GetReplyCommentByID => $"{_Route}/reply";
             public string AddReplyToComment => $"{_Route}/add-reply";
             public string DeleteReplyFromComment => $"{_Route}/delete-reply";
 
@@ -123,10 +125,17 @@ namespace BLL.Network
         {
             private readonly string _Route = $"{BaseUrl}/upload";
 
-            public string UploadProfilePhoto => $"{_Route}/profile-photo";
-            public string UploadPostPhotos => $"{_Route}/post-photos";
-            public string UploadCommentPhotos => $"{_Route}/comment-photos";
-            public string UploadReplyCommentsPhotos => $"{_Route}/reply-photos";
+            public string ProfilePhoto => $"{_Route}/profile-photo";
+
+            // Photos
+            public string PostPhotos => $"{_Route}/post/photos";
+            public string CommentPhotos => $"{_Route}/comment/photos";
+            public string ReplyCommentPhotos => $"{_Route}/reply/photos";
+
+            // Delete
+            public string PostMedias => $"{_Route}/post/medias";
+            public string CommentMedias => $"{_Route}/comment/medias";
+            public string ReplyCommentMedias => $"{_Route}/reply/medias";
         }
     }
 }

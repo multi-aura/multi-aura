@@ -1,6 +1,7 @@
 #BE
 backend/cmd/server/*.exe
 backend/go.sum
+backend/.env
 node_modules
 
 #FE: Desktop

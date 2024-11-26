@@ -11,7 +11,7 @@ namespace CustomControl.Commons
         private const int defaultMaxLine = 10;
         private bool isHintVisible = true; // Biến kiểm tra trạng thái của Hint
 
-        public int MaxLine { get; set; }
+        public int MaxLine { get; set; } = defaultMaxLine;
         public string Hint { get; set; }
 
         public AutoSizeTextBox()
@@ -21,7 +21,6 @@ namespace CustomControl.Commons
             originalHeight = this.Height;
             this.BorderStyle = BorderStyle.None;
             this.ScrollBars = ScrollBars.None;
-            this.MaxLine = defaultMaxLine;
             if(Hint == null)
             {
                 this.Hint = "Aa, enter your text";
@@ -35,6 +34,11 @@ namespace CustomControl.Commons
             ShowHint(null, null);
         }
 
+        public void ClearText()
+        {
+            this.Text = string.Empty;
+            ShowHint(null, null);
+        }
         private void ShowHint(object sender, EventArgs e)
         {
             // Nếu TextBox trống và chưa có văn bản người dùng nhập vào

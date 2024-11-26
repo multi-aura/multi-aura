@@ -3,7 +3,6 @@ package services
 import (
 	"errors"
 	"fmt"
-	"log"
 	"mime/multipart"
 	"multiaura/internal/models"
 	"multiaura/internal/repositories"
@@ -15,6 +14,9 @@ type UploadService interface {
 	UploadPostPhotos(postID, userID string, files []multipart.File, fileHeaders []*multipart.FileHeader) ([]string, error)
 	UploadCommentPhotos(commentID, userID string, files []multipart.File, fileHeaders []*multipart.FileHeader) ([]string, error)
 	UploadReplyCommentPhotos(commentID, replyID, userID string, files []multipart.File, fileHeaders []*multipart.FileHeader) ([]string, error)
+	DeletePostMediaData(postID string) error
+	DeleteCommentMediaData(commentID string) error
+	DeleteReplyCommentMediaData(commentID, replyID string) error
 }
 
 type uploadService struct {
@@ -39,7 +41,7 @@ func (s *uploadService) UploadProfilePhoto(userID string, file multipart.File, f
 	}
 
 	if !result {
-		fileName, err := utils.ExtractFileName(url)
+		fileName, err := utils.ExtractPublicID(url)
 		if err != nil {
 			return "", err
 		} else {
@@ -69,26 +71,26 @@ func (s *uploadService) UploadPostPhotos(postID, userID string, files []multipar
 
 	// Upload từng file và lưu URL của file
 	for i, file := range files {
-		log.Println("file:", file)
+		// log.Println("file:", file)
 		fileURL, err := (*s.storageRepo).UploadFile(file, fileHeaders[i], folder)
 		if err != nil {
 			// Nếu xảy ra lỗi, xóa các file đã upload trước đó
-			s.cleanupUploadedFiles(fileURLs)
+			s.DeletePhotos(fileURLs)
 			return nil, errors.New("failed to upload files")
 		}
 		fileURLs = append(fileURLs, fileURL)
 	}
-	log.Println("urls:", fileURLs)
+	// log.Println("urls:", fileURLs)
 
 	// Cập nhật thông tin URL của ảnh vào database
 	result, err := (*s.postRepo).UploadPhotos(postID, fileURLs)
 	if err != nil {
-		s.cleanupUploadedFiles(fileURLs)
+		s.DeletePhotos(fileURLs)
 		return nil, err
 	}
 
 	if !result {
-		s.cleanupUploadedFiles(fileURLs)
+		s.DeletePhotos(fileURLs)
 		return nil, errors.New("failed to update post with uploaded photos")
 	}
 
@@ -127,7 +129,7 @@ func (s *uploadService) UploadCommentPhotos(commentID, userID string, files []mu
 		fileURL, err := (*s.storageRepo).UploadFile(file, fileHeaders[i], folder)
 		if err != nil {
 			// Nếu lỗi, dọn dẹp các file đã upload trước đó
-			s.cleanupUploadedFiles(fileURLs)
+			s.DeletePhotos(fileURLs)
 			return nil, fmt.Errorf("failed to upload file: %w", err)
 		}
 		fileURLs = append(fileURLs, fileURL)
@@ -135,27 +137,11 @@ func (s *uploadService) UploadCommentPhotos(commentID, userID string, files []mu
 
 	// Cập nhật URLs vào comment
 	if err := (*s.postRepo).UpdateCommentPhotos(post.ID.Hex(), commentID, fileURLs); err != nil {
-		s.cleanupUploadedFiles(fileURLs)
+		s.DeletePhotos(fileURLs)
 		return nil, fmt.Errorf("failed to update comment with photo URLs: %w", err)
 	}
 
 	return fileURLs, nil
-}
-
-func (s *uploadService) cleanupUploadedFiles(fileURLs []string) {
-	for _, fileURL := range fileURLs {
-		// Tách tên file từ URL
-		fileName, err := utils.ExtractFileName(fileURL)
-		if err != nil {
-			fmt.Println("Error extracting file name:", err)
-			continue
-		}
-
-		// Xóa file từ storage
-		if err := (*s.storageRepo).DeleteFile(fileName); err != nil {
-			fmt.Println("Error deleting file:", fileName, err)
-		}
-	}
 }
 
 func (s *uploadService) UploadReplyCommentPhotos(commentID, replyID, userID string, files []multipart.File, fileHeaders []*multipart.FileHeader) ([]string, error) {
@@ -200,16 +186,143 @@ func (s *uploadService) UploadReplyCommentPhotos(commentID, replyID, userID stri
 	for i, file := range files {
 		fileURL, err := (*s.storageRepo).UploadFile(file, fileHeaders[i], folder)
 		if err != nil {
-			s.cleanupUploadedFiles(fileURLs)
+			s.DeletePhotos(fileURLs)
 			return nil, fmt.Errorf("failed to upload file: %w", err)
 		}
 		fileURLs = append(fileURLs, fileURL)
 	}
 
 	if err := (*s.postRepo).UpdateReplyCommentPhotos(commentID, replyID, fileURLs); err != nil {
-		s.cleanupUploadedFiles(fileURLs)
+		s.DeletePhotos(fileURLs)
 		return nil, fmt.Errorf("failed to update reply with photo URLs: %w", err)
 	}
 
 	return fileURLs, nil
+}
+
+func (s *uploadService) DeletePostMediaData(postID string) error {
+	post, err := (*s.postRepo).GetByID(postID)
+	if err != nil || post == nil {
+		return fmt.Errorf("failed to retrieve post: %w", err)
+	}
+
+	var imageUrls []string
+
+	// Duyệt qua các ảnh của post
+	for _, image := range post.Images {
+		imageUrls = append(imageUrls, image.URL)
+	}
+
+	// Duyệt qua các comment và reply comment để xoá ảnh
+	for _, comment := range post.Comments {
+		// Xoá ảnh của comment
+		for _, image := range comment.Images {
+			imageUrls = append(imageUrls, image.URL)
+		}
+
+		// Duyệt qua các reply comment của comment
+		for _, reply := range comment.Replies {
+			for _, image := range reply.Images {
+				imageUrls = append(imageUrls, image.URL)
+			}
+		}
+	}
+
+	// Gọi hàm DeletePhotos để xoá ảnh
+	return s.DeletePhotos(imageUrls)
+}
+
+func (s *uploadService) DeleteCommentMediaData(commentID string) error {
+	post, err := (*s.postRepo).GetPostByCommentID(commentID)
+	if err != nil || post == nil {
+		return fmt.Errorf("failed to retrieve post: %w", err)
+	}
+
+	var targetComment *models.Comment
+	// Duyệt qua các comment để tìm comment cần xoá
+	for _, comment := range post.Comments {
+		if comment.ID.Hex() == commentID {
+			targetComment = &comment
+			break
+		}
+	}
+
+	if targetComment == nil {
+		return fmt.Errorf("comment not found")
+	}
+
+	var imageUrls []string
+	// Xoá ảnh của comment
+	for _, image := range targetComment.Images {
+		imageUrls = append(imageUrls, image.URL)
+	}
+
+	// Duyệt qua các reply comment để xoá ảnh của chúng
+	for _, reply := range targetComment.Replies {
+		for _, image := range reply.Images {
+			imageUrls = append(imageUrls, image.URL)
+		}
+	}
+
+	// Gọi hàm DeletePhotos để xoá ảnh
+	return s.DeletePhotos(imageUrls)
+}
+
+func (s *uploadService) DeleteReplyCommentMediaData(commentID, replyID string) error {
+	post, err := (*s.postRepo).GetPostByCommentID(commentID)
+	if err != nil || post == nil {
+		return fmt.Errorf("failed to retrieve post: %w", err)
+	}
+
+	var targetComment *models.Comment
+	for _, comment := range post.Comments {
+		if comment.ID.Hex() == commentID {
+			targetComment = &comment
+			break
+		}
+	}
+
+	if targetComment == nil {
+		return fmt.Errorf("comment not found")
+	}
+
+	var targetReply *models.Comment
+	for _, reply := range targetComment.Replies {
+		if reply.ID.Hex() == replyID {
+			targetReply = &reply
+			break
+		}
+	}
+
+	if targetReply == nil {
+		return fmt.Errorf("reply not found")
+	}
+
+	var imageUrls []string
+	for _, image := range targetReply.Images {
+		imageUrls = append(imageUrls, image.URL)
+	}
+
+	return s.DeletePhotos(imageUrls)
+}
+
+func (s *uploadService) DeletePhotos(images []string) error {
+	if len(images) == 0 {
+		return nil
+	}
+
+	for _, imageURL := range images {
+		fileName, err := utils.ExtractPublicID(imageURL)
+		if err != nil {
+			fmt.Printf("Error extracting file name from URL %s: %v\n", imageURL, err)
+			continue
+		}
+
+		fmt.Printf("Deleting file %s: \n", fileName)
+		if err := (*s.storageRepo).DeleteFile(fileName); err != nil {
+			fmt.Printf("Error deleting file %s: %v\n", fileName, err)
+		}
+	}
+
+	return nil
 }

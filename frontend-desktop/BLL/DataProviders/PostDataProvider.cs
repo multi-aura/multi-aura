@@ -66,6 +66,24 @@ namespace BLL.DataProviders
 
         public event Action OtherUserPostsDataLoaded;
 
+        public event Action<string> OnLikePostSuccess;
+        public event Action<string> OnUnlikePostSuccess;
+
+        public event Action<string> OnLikeCommentSuccess;
+        public event Action<string> OnUnlikeCommentSuccess;
+
+        public event Action<string> OnLikeReplyCommentSuccess;
+        public event Action<string> OnUnlikeReplyCommentSuccess;
+
+        public event Action<string> OnDeletePostSuccess;
+        public event Action<Post> OnCreatePostSuccess;
+
+        public event Action<string> OnDeleteCommentSuccess;
+        public event Action<Comment> OnCreateCommentSuccess;
+
+        public event Action<string> OnDeleteReplyCommentSuccess;
+        public event Action<Comment> OnCreateReplyCommentSuccess;
+
         private PostDataProvider()
         {
             postRepository = PostRepository.Instance;
@@ -169,6 +187,126 @@ namespace BLL.DataProviders
             }
         }
 
+        //CRUD
+        //Post
+        public async Task<bool> CreatePostAsync(string description, IEnumerable<string> photoPaths)
+        {
+            if (string.IsNullOrEmpty(description))
+            {
+                return false;
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (post, errorMessage) = await postService.CreatePostAsync(description, photoPaths);
+
+                if (post == null)
+                {
+                    MessageBox.Show($"Create post failed: {errorMessage}");
+                    return false;
+                }
+                OnCreatePostSuccess?.Invoke(post);
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> DeletePostAsync(string postId)
+        {
+            if (string.IsNullOrEmpty(postId))
+            {
+                return false;
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await postService.DeletePostAsync(postId);
+
+                if (!result)
+                {
+                    MessageBox.Show($"Delete failed: {errorMessage}");
+                    return false;
+                }
+                OnDeletePostSuccess?.Invoke(postId);
+                return result;
+            }
+            return false;
+        }
+
+        //Comment
+        public async Task<Comment> CreateCommentAsync(string postId, string text, IEnumerable<string> photoPaths)
+        {
+            if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(postId))
+            {
+                return null;
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await postService.CreateCommentAsync(postId, text, photoPaths);
+
+                OnCreateCommentSuccess?.Invoke(result);
+                return result;
+            }
+            return null;
+        }
+
+        public async Task<bool> DeleteCommentAsync(string commentId)
+        {
+            if (string.IsNullOrEmpty(commentId))
+            {
+                return false;
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await postService.DeleteCommentAsync(commentId);
+
+                if (!result)
+                {
+                    MessageBox.Show($"Delete failed: {errorMessage}");
+                    return false;
+                }
+                OnDeleteCommentSuccess?.Invoke(commentId);
+                return result;
+            }
+            return false;
+        }
+
+        //Reply comment
+        public async Task<Comment> CreateReplyCommentAsync(string commentId, string text, IEnumerable<string> photoPaths)
+        {
+            if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(commentId))
+            {
+                return null;
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (reply, errorMessage) = await postService.CreateReplyCommentAsync(commentId, text, photoPaths);
+
+                OnCreateReplyCommentSuccess?.Invoke(reply);
+                return reply;
+            }
+            return null;
+        }
+
+        public async Task<bool> DeleteReplyCommentAsync(string commentId, string replyId)
+        {
+            if (string.IsNullOrEmpty(commentId) || string.IsNullOrEmpty(replyId))
+            {
+                return false;
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await postService.DeleteReplyCommentAsync(commentId, replyId);
+
+                if (!result)
+                {
+                    MessageBox.Show($"Delete failed: {errorMessage}");
+                    return false;
+                }
+                OnDeleteReplyCommentSuccess?.Invoke(replyId);
+                return result;
+            }
+            return false;
+        }
+
         //Interactions
         public async Task<bool> LikePostAsync(string postId)
         {
@@ -184,7 +322,10 @@ namespace BLL.DataProviders
                 {
                     MessageBox.Show($"Like failed: {errorMessage}");
                 }
-
+                else
+                {
+                    OnLikePostSuccess?.Invoke(postId);
+                }
                 return result;
             }
             return false;
@@ -203,6 +344,10 @@ namespace BLL.DataProviders
                 if (!result)
                 {
                     MessageBox.Show($"Unlike failed: {errorMessage}");
+                }
+                else
+                {
+                    OnUnlikePostSuccess?.Invoke(postId);
                 }
 
                 return result;
@@ -224,6 +369,10 @@ namespace BLL.DataProviders
                 {
                     MessageBox.Show($"Like failed: {errorMessage}");
                 }
+                else
+                {
+                    OnLikeCommentSuccess?.Invoke(commentId);
+                }
 
                 return result;
             }
@@ -242,7 +391,11 @@ namespace BLL.DataProviders
 
                 if (!result)
                 {
-                    MessageBox.Show($"Like failed: {errorMessage}");
+                    MessageBox.Show($"Unlike failed: {errorMessage}");
+                }
+                else
+                {
+                    OnUnlikeCommentSuccess?.Invoke(commentId);
                 }
 
                 return result;
@@ -264,6 +417,10 @@ namespace BLL.DataProviders
                 {
                     MessageBox.Show($"Like failed: {errorMessage}");
                 }
+                else
+                {
+                    OnLikeReplyCommentSuccess?.Invoke(commentId);
+                }
 
                 return result;
             }
@@ -282,7 +439,11 @@ namespace BLL.DataProviders
 
                 if (!result)
                 {
-                    MessageBox.Show($"Like failed: {errorMessage}");
+                    MessageBox.Show($"Unlike failed: {errorMessage}");
+                }
+                else
+                {
+                    OnUnlikeReplyCommentSuccess?.Invoke(commentId);
                 }
 
                 return result;

@@ -9,6 +9,7 @@ import (
 
 var neo4jDB *databases.Neo4jDB
 var mongoDB *databases.MongoDB
+var cloudinaryURL string
 
 func SetupRoutes(app *fiber.App) {
 
@@ -21,6 +22,7 @@ func SetupRoutes(app *fiber.App) {
 
 	neo4jDB = databases.Neo4jInstance()
 	mongoDB = databases.MongoInstance()
+
 	SetupUserRoutes(app)
 	SetupRelationshipRoutes(app)
 	SetupPostRoutes(app)

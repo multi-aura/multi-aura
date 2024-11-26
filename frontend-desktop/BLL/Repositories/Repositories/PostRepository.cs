@@ -1,7 +1,6 @@
 ﻿using BLL.Network;
 using BLL.Repositories.IRepositories;
 using BLL.Repositories.Repositories;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -34,6 +33,7 @@ namespace BLL.Repository
         {
         }
         //CRUD
+        //Post
         public async Task<APIResponse<string>> CreatePostAsync(string description)
         {
             var requestBody = new
@@ -48,6 +48,47 @@ namespace BLL.Repository
         {
             string url = $"{NetworkUrls.Post.DeletePost}/{postId}";
             return await DeleteAsync(url);
+        }
+
+        //Comment
+        public async Task<APIResponse<string>> CreateCommentAsync(string postId, string text)
+        {
+            var requestBody = new
+            {
+                text = text
+            };
+            string url = $"{NetworkUrls.Post.CreateComment}/{postId}";
+            return await PostAsync(url, requestBody);
+        }
+
+        public async Task<APIResponse<string>> DeleteCommentAsync(string commentId)
+        {
+            string url = $"{NetworkUrls.Post.DeleteComment}/{commentId}";
+            return await DeleteAsync(url);
+        }
+
+        //Reply comment
+        public async Task<APIResponse<string>> CreateReplyCommentAsync(string commentId, string text)
+        {
+            var requestBody = new
+            {
+                text = text
+            };
+            string url = $"{NetworkUrls.Post.AddReplyToComment}/{commentId}";
+            return await PostAsync(url, requestBody);
+        }
+
+        public async Task<APIResponse<string>> DeletReplyCommentAsync(string commentId, string replyId)
+        {
+            string url = $"{NetworkUrls.Post.DeleteReplyFromComment}/{commentId}/{replyId}";
+            return await DeleteAsync(url);
+        }
+        
+        //GET
+        public async Task<APIResponse<string>> GetPostsByIdAsync(string postId)
+        {
+            string url = $"{NetworkUrls.Post.GetPostByID}/{postId}";
+            return await GetAsync(url);
         }
 
         public async Task<APIResponse<string>> GetRecentsAsync(int page, int limit)
@@ -71,6 +112,18 @@ namespace BLL.Repository
         {
             string url = $"{NetworkUrls.Post.GetCommentsByPostID}/{postId}";
             return await PostAsync(url);
+        }
+
+        public async Task<APIResponse<string>> GetCommentByIDAsync(string commentId)
+        {
+            string url = $"{NetworkUrls.Post.GetCommentByID}/{commentId}";
+            return await GetAsync(url);
+        }
+
+        public async Task<APIResponse<string>> GetReplyCommentByIDAsync(string commentId, string replyId)
+        {
+            string url = $"{NetworkUrls.Post.GetReplyCommentByID}/{commentId}/{replyId}";
+            return await GetAsync(url);
         }
 
         //Interactions
@@ -113,7 +166,7 @@ namespace BLL.Repository
         //Upload medias
         public async Task<APIResponse<string>> UploadPostPhotosAsync(string postId, IEnumerable<string> photoPaths)
         {
-            string url = $"{NetworkUrls.Upload.UploadPostPhotos}/{postId}";
+            string url = $"{NetworkUrls.Upload.PostPhotos}/{postId}";
 
             using (var formData = new MultipartFormDataContent())
             {
@@ -128,5 +181,57 @@ namespace BLL.Repository
             }
         }
 
+        public async Task<APIResponse<string>> UploadCommentPhotosAsync(string commentId, IEnumerable<string> photoPaths)
+        {
+            string url = $"{NetworkUrls.Upload.CommentPhotos}/{commentId}";
+
+            using (var formData = new MultipartFormDataContent())
+            {
+                foreach (var photoPath in photoPaths)
+                {
+                    var fileContent = new ByteArrayContent(File.ReadAllBytes(photoPath));
+                    fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/jpeg");
+                    formData.Add(fileContent, "photos", Path.GetFileName(photoPath));
+                }
+
+                return await PostAsync(url, formData, isFormData: true);
+            }
+        }
+
+        public async Task<APIResponse<string>> UploadReplyCommentPhotosAsync(string commentId, string replyId, IEnumerable<string> photoPaths)
+        {
+            string url = $"{NetworkUrls.Upload.ReplyCommentPhotos}/{commentId}/{replyId}";
+
+            using (var formData = new MultipartFormDataContent())
+            {
+                foreach (var photoPath in photoPaths)
+                {
+                    var fileContent = new ByteArrayContent(File.ReadAllBytes(photoPath));
+                    fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/jpeg");
+                    formData.Add(fileContent, "photos", Path.GetFileName(photoPath));
+                }
+
+                return await PostAsync(url, formData, isFormData: true);
+            }
+        }
+
+        //Delete medias
+        public async Task<APIResponse<string>> DeletePostMediaDataAsync(string postId)
+        {
+            string url = $"{NetworkUrls.Upload.PostMedias}/{postId}";
+            return await DeleteAsync(url);
+        }
+
+        public async Task<APIResponse<string>> DeleteCommentMediaDataAsync(string commentId)
+        {
+            string url = $"{NetworkUrls.Upload.CommentMedias}/{commentId}";
+            return await DeleteAsync(url);
+        }
+
+        public async Task<APIResponse<string>> DeleteReplyCommentMediaDataAsync(string commentId, string replyId)
+        {
+            string url = $"{NetworkUrls.Upload.ReplyCommentMedias}/{commentId}/{replyId}";
+            return await DeleteAsync(url);
+        }
     }
 }

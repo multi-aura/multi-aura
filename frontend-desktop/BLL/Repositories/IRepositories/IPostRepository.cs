@@ -7,13 +7,25 @@ namespace BLL.Repositories.IRepositories
     public interface IPostRepository
     {
         //CRUD
+        //Post
         Task<APIResponse<string>> CreatePostAsync(string description);
         Task<APIResponse<string>> DeletePostAsync(string postId);
 
+        //Comment
+        Task<APIResponse<string>> CreateCommentAsync(string postId, string text);
+        Task<APIResponse<string>> DeleteCommentAsync(string commentId);
+
+        //Reply comment
+        Task<APIResponse<string>> CreateReplyCommentAsync(string commentId, string text);
+        Task<APIResponse<string>> DeletReplyCommentAsync(string commentId, string replyId);
+
         //GET
+        Task<APIResponse<string>> GetPostsByIdAsync(string postId);
         Task<APIResponse<string>> GetRecentsAsync(int page, int limit);
         Task<APIResponse<string>> GetPostsByUserAsync(string userId);
         Task<APIResponse<string>> GetCommentsByPostIDAsync(string postId);
+        Task<APIResponse<string>> GetCommentByIDAsync(string commentId);
+        Task<APIResponse<string>> GetReplyCommentByIDAsync(string commentId, string replyId);
 
         //Interactions
         Task<APIResponse<string>> LikePostAsync(string postId);
@@ -25,5 +37,12 @@ namespace BLL.Repositories.IRepositories
 
         //Upload medias
         Task<APIResponse<string>> UploadPostPhotosAsync(string postId, IEnumerable<string> photoPaths);
+        Task<APIResponse<string>> UploadCommentPhotosAsync(string commentId, IEnumerable<string> photoPaths);
+        Task<APIResponse<string>> UploadReplyCommentPhotosAsync(string commentId, string replyId, IEnumerable<string> photoPaths);
+
+        //Delete medias
+        Task<APIResponse<string>> DeletePostMediaDataAsync(string postId);
+        Task<APIResponse<string>> DeleteCommentMediaDataAsync(string commentId);
+        Task<APIResponse<string>> DeleteReplyCommentMediaDataAsync(string commentId, string replyId);
     }
 }
