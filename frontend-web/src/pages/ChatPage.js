@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import Sidebar from '../components/Messages/MessSidebar/SidebarChat';
 import ChatContent from '../components/Messages/ChatContent/ChatContent';
 import SettingSidebarChat from '../components/Messages/SettingSidebarChat/SettingSidebarChat';
@@ -8,6 +9,7 @@ import { getUserConversation, getConversationDetails, sendMessageToConversation 
 import { API_URL_WS } from '../config/config';
 
 function ChatPage() {
+  const { conversationID } = useParams();
   const [userData, setUserData] = useState(null);
   const [conversations, setConversations] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -49,7 +51,24 @@ function ChatPage() {
       };
     }
   }, [userData, currentChat]);
+  useEffect(() => {
+    const fetchConversationDetails = async () => {
+      if (userData && conversationID) {
+        setLoadingChat(true);
+        try {
+          const conversationData = await getConversationDetails(conversationID, userData.userID);
+          setCurrentChat(conversationData);
+          setMessages(conversationData.chats || []);
+        } catch (error) {
+          console.error('Error fetching conversation details:', error);
+        } finally {
+          setLoadingChat(false);
+        }
+      }
+    };
 
+    fetchConversationDetails();
+  }, [conversationID, userData]);
   // Lấy danh sách cuộc trò chuyện của người dùng
   useEffect(() => {
     const fetchUserConversation = async () => {
@@ -66,7 +85,6 @@ function ChatPage() {
       fetchUserConversation();
     }
   }, [userData]);
-
   const handleSelectChatMessage = async (conversationID) => {
     setLoadingChat(true);
     try {
@@ -139,15 +157,15 @@ function ChatPage() {
                 <div>Loading chat...</div>
               ) : currentChat ? (
                 <ChatContent
-                chat={currentChat} // Truyền currentChat xuống
-                messages={messages}
-                currentUserID={userData.userID}
-                onSendMessage={handleSendMessage}
-                onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} // Truyền hàm mở/đóng sidebar
-                isSidebarOpen={isSidebarOpen} // Trạng thái sidebar
-                userData={userData} // Truyền userData xuống
-              />
-              
+                  chat={currentChat} // Truyền currentChat xuống
+                  messages={messages}
+                  currentUserID={userData.userID}
+                  onSendMessage={handleSendMessage}
+                  onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} // Truyền hàm mở/đóng sidebar
+                  isSidebarOpen={isSidebarOpen} // Trạng thái sidebar
+                  userData={userData} // Truyền userData xuống
+                />
+
               ) : (
                 <div>Please select a chat to view</div>
               )}
@@ -157,8 +175,8 @@ function ChatPage() {
             {isSidebarOpen && (
               <SettingSidebarChat
                 isOpen={isSidebarOpen}
-                onClose={() => setIsSidebarOpen(false)}
                 currentChat={currentChat}
+                userCurent={userData}
               />
             )}
           </div>

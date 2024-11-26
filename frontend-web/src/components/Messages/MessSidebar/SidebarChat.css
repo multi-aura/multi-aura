@@ -20,7 +20,7 @@
 }
 /* Ô tìm kiếm - hiển thị mượt khi bật */
 .search-input {
-  width: 0;
+  width: 45% !important;
   padding: 5px 10px;
   border-radius: 5px;
   border: none;
@@ -37,13 +37,19 @@
 
 /* Dropdown cho bộ lọc */
 .form-select {
-  width: 100px !important;
-  padding: 5px;
-  background-color: #1a1a1a;
-  color: #fff;
-  border: 1px solid #333;
-  border-radius: 5px;
-  margin-left: 0px; /* Giảm khoảng cách giữa dropdown và biểu tượng kính lúp */
+  width: 100%; /* Chiều rộng full */
+  max-width: 100px; /* Giới hạn chiều rộng tối đa */
+  padding: 8px 12px; /* Khoảng padding bên trong */
+  font-size: 16px; /* Kích thước chữ */
+  font-weight: bold; /* Chữ đậm */
+  color: #e9edef; /* Màu chữ */
+  background-color: #1a1a1a; /* Màu nền */
+  border: 1px solid #333; /* Đường viền */
+  border-radius: 5px; /* Bo góc */
+  outline: none; /* Xóa đường viền mặc định khi focus */
+  appearance: none; /* Ẩn mũi tên mặc định */
+  cursor: pointer; /* Con trỏ chuột kiểu pointer */
+  transition: all 0.3s ease; /* Hiệu ứng chuyển đổi */
 }
 /* Danh sách tin nhắn */
 .message-list {
@@ -96,9 +102,28 @@
 }
 /* Hiệu ứng khi hover vào dropdown */
 .form-select:hover {
-  background-color: #333;
+  background-color: white; /* Đổi màu nền khi hover */
+  border-color: #555; /* Đổi màu viền khi hover */
+}
+.form-select:focus {
+  background-color: white; /* Màu nền khi focus */
+  border-color: #888; /* Màu viền khi focus */
 }
 
+/* Mũi tên tùy chỉnh (trang trí bằng background-image) */
+.form-select::after {
+  content: ''; /* Nội dung mũi tên */
+  position: absolute;
+  right: 12px; /* Đặt mũi tên bên phải */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23e9edef" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M6 9l6 6 6-6"/%3E%3C/svg%3E');
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: none; /* Không bắt sự kiện chuột */
+}
 /* Hiệu ứng mượt khi chuyển trạng thái tìm kiếm */
 .search-input {
   width: 0;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBellSlash,
@@ -10,17 +10,40 @@ import {
   faTimes
 } from '@fortawesome/free-solid-svg-icons';
 import './SettingSidebarChat.css';
+import CreateGroupConversation from '../CreateGroupConversation/CreateGroupConversation';
 
-const SettingSidebarChat = ({ isOpen, onClose, currentChat }) => {
+const SettingSidebarChat = ({ isOpen, currentChat, userCurent }) => {
+  const [isModalVisible, setModalVisible] = useState(false);
+  const isGroup = currentChat.conversation_type === 'Group';
+  const currentUserID = userCurent ? userCurent.userID : null;
+  let avatar;
+  let nameDisplay;
+  if (isGroup) {
+    avatar = currentChat.thumb_group || '../static/media/Logo.af2b2f1b32b135402e38.png';
+    nameDisplay = currentChat.name_conversation || 'Multi Aura';
+  } else {
+    const otherUser = currentChat.users.find((user) => user.userID !== currentUserID);
+    avatar = otherUser ? otherUser.avatar : '../static/media/Logo.af2b2f1b32b135402e38.png';
+    nameDisplay = otherUser ? otherUser.fullname : 'Unknown User';
+  }
+  // Hàm mở modal
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  // Hàm đóng modal
+  const closeModal = () => {
+    setModalVisible(false);
+  };
   return (
     <div className={`setting-sidebar-chat ${isOpen ? 'visible' : 'hidden'}`}>
       {/* Header */}
       <div className="header">
         <img
-          src={currentChat?.avatar || 'default-avatar.png'}
+          src={avatar}
           alt="Avatar"
         />
-        <h3>{currentChat?.name_conversation || 'Hội thoại'}</h3>
+        <h3>{nameDisplay}</h3>
         <div className="actions">
           <button>
             <FontAwesomeIcon icon={faBellSlash} /> Tắt thông báo
@@ -28,12 +51,15 @@ const SettingSidebarChat = ({ isOpen, onClose, currentChat }) => {
           <button>
             <FontAwesomeIcon icon={faThumbtack} /> Ghim hội thoại
           </button>
-          <button>
+          <button onClick={openModal}>
             <FontAwesomeIcon icon={faUsers} /> Tạo nhóm
           </button>
         </div>
       </div>
-
+      <CreateGroupConversation
+        isVisible={isModalVisible}
+        onClose={closeModal}
+      />
       {/* Danh sách nhắc nhở */}
       <div className="section">
         <h4 className="section-title">
@@ -88,7 +114,7 @@ const SettingSidebarChat = ({ isOpen, onClose, currentChat }) => {
         <div className="view-all-btn">Xem tất cả</div>
       </div>
 
-     
+
     </div>
   );
 };

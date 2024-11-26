@@ -58,7 +58,7 @@ function Explore() {
     <Layout userData={userData}>
       <div className="explore-page container-fluid">
         <div className="row">
-          <div className="col-lg-8 col-md-7 col-sm-12 mb-4">
+          <div className="col-lg-8 col-md-7 col-sm-12 mb-4 mt-4" style={{background:"black"}}>
             <SearchBar onSearch={setSearchTerm} />
             <TabMenu activeTab={activeTab} setActiveTab={setActiveTab} />
             <div className="post-container">
@@ -66,7 +66,7 @@ function Explore() {
             </div>
           </div>
 
-          <div className="col-lg-4 col-md-5 col-sm-12 ">
+          <div className="col-lg-4 col-md-5 col-sm-12 " style={{background:"black"}}>
             <div className="suggestions-container p-3 rounded">
               <SuggestedUsers suggestedUsers={suggestedUsers} />
             </div>
