@@ -21,7 +21,7 @@ func (uc *UploadController) UploadProfilePhoto(c *fiber.Ctx) error {
 	if userID == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusUnauthorized,
-			Message: "Unauthorized access",
+			Message: "Unauthorized",
 			Error:   "StatusUnauthorized",
 		})
 	}
@@ -62,10 +62,19 @@ func (uc *UploadController) UploadProfilePhoto(c *fiber.Ctx) error {
 }
 
 func (uc *UploadController) UploadPostPhotos(c *fiber.Ctx) error {
+	userID := c.Locals("userID").(string)
+	if userID == "" {
+		return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusUnauthorized,
+			Message: "Unauthorized",
+			Error:   "StatusUnauthorized",
+		})
+	}
+
 	postID := c.Params("postID")
 	if postID == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
-			Status:  fiber.StatusBadRequest,
+		return c.Status(fiber.StatusNotAcceptable).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusNotAcceptable,
 			Message: "Missing post ID",
 			Error:   "PostIDMissing",
 		})
@@ -73,8 +82,8 @@ func (uc *UploadController) UploadPostPhotos(c *fiber.Ctx) error {
 
 	form, err := c.MultipartForm()
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
-			Status:  fiber.StatusBadRequest,
+		return c.Status(fiber.StatusNotAcceptable).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusNotAcceptable,
 			Message: "Invalid form data",
 			Error:   err.Error(),
 		})
@@ -83,8 +92,8 @@ func (uc *UploadController) UploadPostPhotos(c *fiber.Ctx) error {
 	// Lấy tất cả các file từ form
 	files := form.File["photos"]
 	if len(files) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
-			Status:  fiber.StatusBadRequest,
+		return c.Status(fiber.StatusFailedDependency).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusFailedDependency,
 			Message: "No files provided",
 			Error:   "NoFilesProvided",
 		})
@@ -94,8 +103,8 @@ func (uc *UploadController) UploadPostPhotos(c *fiber.Ctx) error {
 	for _, fileHeader := range files {
 		file, err := fileHeader.Open()
 		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
-				Status:  fiber.StatusInternalServerError,
+			return c.Status(fiber.StatusUnsupportedMediaType).JSON(APIResponse.ErrorResponse{
+				Status:  fiber.StatusUnsupportedMediaType,
 				Message: "Unable to open file",
 				Error:   err.Error(),
 			})
@@ -104,7 +113,7 @@ func (uc *UploadController) UploadPostPhotos(c *fiber.Ctx) error {
 		openedFiles = append(openedFiles, file)
 	}
 
-	fileURLs, err := uc.service.UploadPostPhotos(postID, openedFiles, files)
+	fileURLs, err := uc.service.UploadPostPhotos(postID, userID, openedFiles, files)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusInternalServerError,
@@ -116,6 +125,150 @@ func (uc *UploadController) UploadPostPhotos(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
 		Status:  fiber.StatusOK,
 		Message: "Post photos uploaded successfully",
+		Data:    fiber.Map{"urls": fileURLs},
+	})
+}
+
+func (uc *UploadController) UploadCommentsPhotos(c *fiber.Ctx) error {
+	userID := c.Locals("userID").(string)
+	if userID == "" {
+		return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusUnauthorized,
+			Message: "Unauthorized",
+			Error:   "StatusUnauthorized",
+		})
+	}
+
+	commentID := c.Params("commentID")
+	if commentID == "" {
+		return c.Status(fiber.StatusNotAcceptable).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusNotAcceptable,
+			Message: "Missing comment ID",
+			Error:   "CommentIDMissing",
+		})
+	}
+
+	form, err := c.MultipartForm()
+	if err != nil {
+		return c.Status(fiber.StatusNotAcceptable).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusNotAcceptable,
+			Message: "Invalid form data",
+			Error:   err.Error(),
+		})
+	}
+
+	// Lấy tất cả các file từ form
+	files := form.File["photos"]
+	if len(files) == 0 {
+		return c.Status(fiber.StatusFailedDependency).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusFailedDependency,
+			Message: "No files provided",
+			Error:   "NoFilesProvided",
+		})
+	}
+
+	var openedFiles []multipart.File
+	for _, fileHeader := range files {
+		file, err := fileHeader.Open()
+		if err != nil {
+			return c.Status(fiber.StatusUnsupportedMediaType).JSON(APIResponse.ErrorResponse{
+				Status:  fiber.StatusUnsupportedMediaType,
+				Message: "Unable to open file",
+				Error:   err.Error(),
+			})
+		}
+		defer file.Close()
+		openedFiles = append(openedFiles, file)
+	}
+
+	fileURLs, err := uc.service.UploadCommentPhotos(commentID, userID, openedFiles, files)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusInternalServerError,
+			Message: "Failed to upload comment photos",
+			Error:   err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
+		Status:  fiber.StatusOK,
+		Message: "Comment photos uploaded successfully",
+		Data:    fiber.Map{"urls": fileURLs},
+	})
+}
+
+func (uc *UploadController) UploadReplyCommentsPhotos(c *fiber.Ctx) error {
+	userID := c.Locals("userID").(string)
+	if userID == "" {
+		return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusUnauthorized,
+			Message: "Unauthorized",
+			Error:   "StatusUnauthorized",
+		})
+	}
+
+	commentID := c.Params("commentID")
+	if commentID == "" {
+		return c.Status(fiber.StatusNotAcceptable).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusNotAcceptable,
+			Message: "Missing comment ID",
+			Error:   "CommentIDMissing",
+		})
+	}
+
+	replyID := c.Params("replyID")
+	if replyID == "" {
+		return c.Status(fiber.StatusNotAcceptable).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusNotAcceptable,
+			Message: "Missing reply ID",
+			Error:   "ReplyIDMissing",
+		})
+	}
+
+	form, err := c.MultipartForm()
+	if err != nil {
+		return c.Status(fiber.StatusNotAcceptable).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusNotAcceptable,
+			Message: "Invalid form data",
+			Error:   err.Error(),
+		})
+	}
+
+	files := form.File["photos"]
+	if len(files) == 0 {
+		return c.Status(fiber.StatusFailedDependency).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusFailedDependency,
+			Message: "No files provided",
+			Error:   "NoFilesProvided",
+		})
+	}
+
+	var openedFiles []multipart.File
+	for _, fileHeader := range files {
+		file, err := fileHeader.Open()
+		if err != nil {
+			return c.Status(fiber.StatusUnsupportedMediaType).JSON(APIResponse.ErrorResponse{
+				Status:  fiber.StatusUnsupportedMediaType,
+				Message: "Unable to open file",
+				Error:   err.Error(),
+			})
+		}
+		defer file.Close()
+		openedFiles = append(openedFiles, file)
+	}
+
+	fileURLs, err := uc.service.UploadReplyCommentPhotos(commentID, replyID, userID, openedFiles, files)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusInternalServerError,
+			Message: "Failed to upload reply comment photos",
+			Error:   err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
+		Status:  fiber.StatusOK,
+		Message: "Reply comment photos uploaded successfully",
 		Data:    fiber.Map{"urls": fileURLs},
 	})
 }

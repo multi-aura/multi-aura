@@ -60,7 +60,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IRepositories\IAuthRepository.cs" />
     <Compile Include="Repositories\IRepositories\IRelationshipRepository.cs" />
-    <Compile Include="Repositories\IRepositories\IPostRepository .cs" />
+    <Compile Include="Repositories\IRepositories\IPostRepository.cs" />
     <Compile Include="Repositories\IRepositories\ISearchRepository.cs" />
     <Compile Include="Repositories\Repositories\AuthRepository.cs" />
     <Compile Include="Repositories\Repositories\BaseRepository.cs" />

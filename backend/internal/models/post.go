@@ -25,9 +25,9 @@ type Post struct {
 }
 
 type CreatePostRequest struct {
-	UserID      string  `bson:"_id,omitempty" json:"_id,omitempty" form:"_id,omitempty"`
-	Description string  `bson:"description" json:"description" form:"description"`
-	Images      []Image `bson:"images" json:"images" form:"images"`
+	UserID      string `bson:"_id,omitempty" json:"_id,omitempty" form:"_id,omitempty"`
+	Description string `bson:"description" json:"description" form:"description"`
+	// Images      []Image `bson:"images" json:"images" form:"images"`
 }
 
 func (p *Post) ToMap() map[string]interface{} {

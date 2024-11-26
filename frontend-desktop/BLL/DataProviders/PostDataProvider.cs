@@ -168,5 +168,126 @@ namespace BLL.DataProviders
                 }
             }
         }
+
+        //Interactions
+        public async Task<bool> LikePostAsync(string postId)
+        {
+            if (string.IsNullOrEmpty(postId))
+            {
+                return false;
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await postService.LikePostAsync(postId);
+
+                if (!result)
+                {
+                    MessageBox.Show($"Like failed: {errorMessage}");
+                }
+
+                return result;
+            }
+            return false;
+        }
+
+        public async Task<bool> UnlikePostAsync(string postId)
+        {
+            if (string.IsNullOrEmpty(postId))
+            {
+                return false;
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await postService.UnlikePostAsync(postId);
+
+                if (!result)
+                {
+                    MessageBox.Show($"Unlike failed: {errorMessage}");
+                }
+
+                return result;
+            }
+            return false;
+        }
+
+        public async Task<bool> LikeCommentAsync(string commentId)
+        {
+            if (string.IsNullOrEmpty(commentId))
+            {
+                return false;
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await postService.LikeCommentAsync(commentId);
+
+                if (!result)
+                {
+                    MessageBox.Show($"Like failed: {errorMessage}");
+                }
+
+                return result;
+            }
+            return false;
+        }
+
+        public async Task<bool> UnlikeCommentAsync(string commentId)
+        {
+            if (string.IsNullOrEmpty(commentId))
+            {
+                return false;
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await postService.UnlikeCommentAsync(commentId);
+
+                if (!result)
+                {
+                    MessageBox.Show($"Like failed: {errorMessage}");
+                }
+
+                return result;
+            }
+            return false;
+        }
+
+        public async Task<bool> LikeReplyCommentAsync(string commentId, string replyId)
+        {
+            if (string.IsNullOrEmpty(commentId) || string.IsNullOrEmpty(replyId))
+            {
+                return false;
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await postService.LikeReplyCommentAsync(commentId, replyId);
+
+                if (!result)
+                {
+                    MessageBox.Show($"Like failed: {errorMessage}");
+                }
+
+                return result;
+            }
+            return false;
+        }
+
+        public async Task<bool> UnlikeReplyCommentAsync(string commentId, string replyId)
+        {
+            if (string.IsNullOrEmpty(commentId) || string.IsNullOrEmpty(replyId))
+            {
+                return false;
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await postService.UnlikeReplyCommentAsync(commentId, replyId);
+
+                if (!result)
+                {
+                    MessageBox.Show($"Like failed: {errorMessage}");
+                }
+
+                return result;
+            }
+            return false;
+        }
     }
 }

@@ -24,12 +24,9 @@ type Comment struct {
 
 // CreateCommentRequest represents the structure of the request to create a new comment
 type CreateCommentRequest struct {
-	UserID   string             `bson:"userID,omitempty" json:"userID,omitempty" form:"userID,omitempty"`
-	PostID   primitive.ObjectID `bson:"postID" json:"postID" form:"postID"`
-	Text     string             `bson:"text" json:"text" form:"text"`
-	Images   []Image            `bson:"images,omitempty" json:"images,omitempty" form:"images,omitempty"`
-	ReplyFor string             `bson:"replyFor,omitempty" json:"replyFor,omitempty" form:"replyFor,omitempty"`
-	Voice    string             `bson:"voice,omitempty" json:"voice,omitempty" form:"voice,omitempty"`
+	Text     string `bson:"text" json:"text" form:"text"`
+	ReplyFor string `bson:"replyFor,omitempty" json:"replyFor,omitempty" form:"replyFor,omitempty"`
+	// Voice string `bson:"voice,omitempty" json:"voice,omitempty" form:"voice,omitempty"`
 }
 
 func (c *Comment) ToMap() map[string]interface{} {
@@ -96,7 +93,7 @@ func (c *Comment) FromMap(data map[string]interface{}) (*Comment, error) {
 		Images:    images,
 		CreatedAt: utils.GetTime(data, "createdAt"),
 		UpdatedAt: utils.GetTime(data, "updatedAt"),
-		LikedBy:   utils.GetStringArray(data, "likedBy"),
+		LikedBy:   utils.GetStringArrayFromPrimitiveAMap(data, "likedBy"),
 		Status:    utils.GetString(data, "status"),
 		Replies:   replies,
 		CreatedBy: *createdBy,

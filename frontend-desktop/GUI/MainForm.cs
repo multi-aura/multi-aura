@@ -109,7 +109,7 @@ namespace GUI
                 );
             SetUpNavigators();
 
-            this.taskBarMore.Click += TaskBarMore_Click;
+            this.taskBarCreatePost.Click += TaskBarCreatePost_Click;
             this.userAvatar.Click += (sender, e) => OpenChildForm(profileForm, this.taskBarProfile);
         }
 
@@ -141,9 +141,9 @@ namespace GUI
             }
         }
 
-        private void TaskBarMore_Click(object sender, EventArgs e)
+        private void TaskBarCreatePost_Click(object sender, EventArgs e)
         {
-            Form modal = new PostDetails
+            Form modal = new PostCreationModal
             {
                 Width = this.Width - 400,
                 Height = this.Height - 200,

@@ -25,6 +25,19 @@ type PostRepository interface {
 	SearchPostsForYou(query, userID string, friends []string, blockedUserIDs []string, limit, page int64) ([]*models.Post, error)
 	Search(query string, blockedUserIDs []string, limit, page int64) ([]*models.Post, error)
 	UploadPhotos(id string, url []string) (bool, error)
+	GetPostByCommentID(commentID string) (*models.Post, error)
+	AddComment(postID string, comment models.Comment) error
+	DeleteComment(postID, commentID string) error
+	UpdateCommentPhotos(postID, commentID string, fileURLs []string) error
+	AddReplyToComment(commentID string, reply models.Comment) error
+	DeleteReplyFromComment(commentID, replyID string) error
+	UpdateReplyCommentPhotos(commentID, replyID string, fileURLs []string) error
+	LikePost(postID string, userSummary models.UserSummary) error
+	UnlikePost(postID string, userID string) error
+	LikeComment(commentID, username string) error
+	UnlikeComment(commentID, username string) error
+	LikeReplyComment(commentID, replyID, username string) error
+	UnlikeReplyComment(commentID, replyID, username string) error
 }
 
 type postRepository struct {
@@ -644,4 +657,455 @@ func (repo *postRepository) UploadPhotos(id string, urls []string) (bool, error)
 	}
 
 	return true, nil
+}
+
+func (r *postRepository) AddComment(postID string, comment models.Comment) error {
+	objPostID, err := primitive.ObjectIDFromHex(postID)
+	if err != nil {
+		return fmt.Errorf("invalid post ID: %w", err)
+	}
+
+	filter := bson.M{"_id": objPostID}
+	update := bson.M{"$push": bson.M{"comments": comment}}
+
+	_, err = r.collection.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repo *postRepository) GetPostByCommentID(commentID string) (*models.Post, error) {
+	objCommentID, err := primitive.ObjectIDFromHex(commentID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid comment ID: %w", err)
+	}
+	filter := bson.M{
+		"comments": bson.M{
+			"$elemMatch": bson.M{
+				"_id": objCommentID,
+			},
+		},
+	}
+
+	var post models.Post
+	err = repo.collection.FindOne(context.TODO(), filter).Decode(&post)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, fmt.Errorf("no post found with comment ID: %s", commentID)
+		}
+		return nil, fmt.Errorf("failed to fetch post by comment ID: %w", err)
+	}
+
+	return &post, nil
+}
+
+func (repo *postRepository) DeleteComment(postID, commentID string) error {
+	objPostID, err := primitive.ObjectIDFromHex(postID)
+	if err != nil {
+		return fmt.Errorf("invalid post ID: %w", err)
+	}
+
+	filter := bson.M{
+		"_id": objPostID,
+	}
+
+	objCommentID, err := primitive.ObjectIDFromHex(commentID)
+	if err != nil {
+		return fmt.Errorf("invalid comment ID: %w", err)
+	}
+
+	update := bson.M{
+		"$pull": bson.M{
+			"comments": bson.M{
+				"_id": objCommentID,
+			},
+		},
+	}
+
+	result, err := repo.collection.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		return fmt.Errorf("failed to delete comment: %w", err)
+	}
+
+	if result.ModifiedCount == 0 {
+		return fmt.Errorf("no comment found with ID: %s in post: %s", commentID, postID)
+	}
+
+	return nil
+}
+
+func (repo *postRepository) AddReplyToComment(commentID string, reply models.Comment) error {
+	post, err := repo.GetPostByCommentID(commentID)
+	if err != nil {
+		return fmt.Errorf("failed to find post for comment ID %s: %w", commentID, err)
+	}
+
+	objPostID := post.ID
+
+	objCommentID, err := primitive.ObjectIDFromHex(commentID)
+	if err != nil {
+		return err
+	}
+	filter := bson.M{
+		"_id":          objPostID,
+		"comments._id": objCommentID,
+	}
+
+	update := bson.M{
+		"$push": bson.M{
+			"comments.$.replies": reply,
+		},
+	}
+
+	result, err := repo.collection.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		return fmt.Errorf("failed to add reply to comment: %w", err)
+	}
+
+	if result.ModifiedCount == 0 {
+		return fmt.Errorf("no comment found with ID: %s in post: %s", commentID, objPostID.Hex())
+	}
+
+	return nil
+}
+
+func (repo *postRepository) DeleteReplyFromComment(commentID, replyID string) error {
+	objCommentID, err := primitive.ObjectIDFromHex(commentID)
+	if err != nil {
+		return err
+	}
+
+	filter := bson.M{
+		"comments._id": objCommentID,
+	}
+
+	objReplyID, err := primitive.ObjectIDFromHex(replyID)
+	if err != nil {
+		return err
+	}
+
+	update := bson.M{
+		"$pull": bson.M{
+			"comments.$.replies": bson.M{
+				"_id": objReplyID,
+			},
+		},
+	}
+
+	result, err := repo.collection.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		return fmt.Errorf("failed to delete reply from comment: %w", err)
+	}
+
+	if result.ModifiedCount == 0 {
+		return fmt.Errorf("no reply found with ID: %s in comment: %s", replyID, commentID)
+	}
+
+	return nil
+}
+
+func (repo *postRepository) UpdateCommentPhotos(postID, commentID string, fileURLs []string) error {
+	objPostID, err := primitive.ObjectIDFromHex(postID)
+	if err != nil {
+		return fmt.Errorf("invalid post ID: %w", err)
+	}
+
+	// Tạo đối tượng ảnh
+	var images []models.Image
+	for _, url := range fileURLs {
+		images = append(images, models.Image{
+			URL: url,
+			ID:  primitive.NewObjectID(),
+		})
+	}
+
+	objCommentID, err := primitive.ObjectIDFromHex(commentID)
+	if err != nil {
+		return err
+	}
+
+	// Filter để tìm đúng comment trong mảng comments
+	filter := bson.M{
+		"_id":          objPostID,
+		"comments._id": objCommentID,
+	}
+
+	// Update để thêm URLs vào comment
+	update := bson.M{
+		"$push": bson.M{
+			"comments.$.images": bson.M{"$each": images},
+		},
+	}
+
+	_, err = repo.collection.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		return fmt.Errorf("failed to update comment photos: %w", err)
+	}
+
+	return nil
+}
+
+func (repo *postRepository) UpdateReplyCommentPhotos(commentID, replyID string, fileURLs []string) error {
+	post, err := repo.GetPostByCommentID(commentID)
+	if err != nil {
+		return fmt.Errorf("failed to find post for comment ID %s: %w", commentID, err)
+	}
+
+	objPostID := post.ID
+
+	var images []models.Image
+	for _, url := range fileURLs {
+		images = append(images, models.Image{
+			URL: url,
+			ID:  primitive.NewObjectID(),
+		})
+	}
+
+	objCommentID, err := primitive.ObjectIDFromHex(commentID)
+	if err != nil {
+		return err
+	}
+
+	filter := bson.M{
+		"_id":          objPostID,
+		"comments._id": objCommentID,
+	}
+
+	update := bson.M{
+		"$push": bson.M{
+			"comments.$[comment].replies.$[reply].images": bson.M{
+				"$each": images,
+			},
+		},
+	}
+
+	objReplyID, err := primitive.ObjectIDFromHex(replyID)
+	if err != nil {
+		return err
+	}
+
+	arrayFilters := options.ArrayFilters{
+		Filters: []interface{}{
+			bson.M{"comment._id": objCommentID},
+			bson.M{"reply._id": objReplyID},
+		},
+	}
+
+	updateOptions := options.UpdateOptions{
+		ArrayFilters: &arrayFilters,
+	}
+
+	_, err = repo.collection.UpdateOne(context.TODO(), filter, update, &updateOptions)
+	if err != nil {
+		return fmt.Errorf("failed to update reply photos: %w", err)
+	}
+
+	return nil
+}
+
+func (repo *postRepository) LikePost(postID string, userSummary models.UserSummary) error {
+	objPostID, err := primitive.ObjectIDFromHex(postID)
+	if err != nil {
+		return fmt.Errorf("invalid post ID: %w", err)
+	}
+
+	filter := bson.M{"_id": objPostID}
+	update := bson.M{
+		"$addToSet": bson.M{"likedBy": userSummary},
+	}
+
+	_, err = repo.collection.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		return fmt.Errorf("failed to like post: %w", err)
+	}
+
+	return nil
+}
+
+func (repo *postRepository) UnlikePost(postID string, userID string) error {
+	objPostID, err := primitive.ObjectIDFromHex(postID)
+	if err != nil {
+		return fmt.Errorf("invalid post ID: %w", err)
+	}
+
+	filter := bson.M{"_id": objPostID}
+	update := bson.M{
+		"$pull": bson.M{"likedBy": bson.M{"userID": userID}},
+	}
+
+	_, err = repo.collection.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		return fmt.Errorf("failed to unlike post: %w", err)
+	}
+
+	return nil
+}
+
+func (repo *postRepository) LikeComment(commentID, username string) error {
+	post, err := repo.GetPostByCommentID(commentID)
+	if err != nil {
+		return fmt.Errorf("failed to find post for comment ID %s: %w", commentID, err)
+	}
+
+	objCommentID, err := primitive.ObjectIDFromHex(commentID)
+	if err != nil {
+		return fmt.Errorf("invalid comment ID: %w", err)
+	}
+
+	filter := bson.M{
+		"_id":          post.ID,
+		"comments._id": objCommentID,
+	}
+
+	update := bson.M{
+		"$addToSet": bson.M{
+			"comments.$.likedBy": username,
+		},
+	}
+
+	result, err := repo.collection.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		return fmt.Errorf("failed to like comment: %w", err)
+	}
+
+	if result.ModifiedCount == 0 {
+		return fmt.Errorf("no comment found with ID: %s in post: %s", commentID, post.ID)
+	}
+
+	return nil
+}
+
+func (repo *postRepository) UnlikeComment(commentID, username string) error {
+	post, err := repo.GetPostByCommentID(commentID)
+	if err != nil {
+		return fmt.Errorf("failed to find post for comment ID %s: %w", commentID, err)
+	}
+
+	objCommentID, err := primitive.ObjectIDFromHex(commentID)
+	if err != nil {
+		return fmt.Errorf("invalid comment ID: %w", err)
+	}
+
+	filter := bson.M{
+		"_id":          post.ID,
+		"comments._id": objCommentID,
+	}
+
+	update := bson.M{
+		"$pull": bson.M{
+			"comments.$.likedBy": username,
+		},
+	}
+
+	result, err := repo.collection.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		return fmt.Errorf("failed to unlike comment: %w", err)
+	}
+
+	if result.ModifiedCount == 0 {
+		return fmt.Errorf("no comment found with ID: %s in post: %s", commentID, post.ID)
+	}
+
+	return nil
+}
+
+func (repo *postRepository) LikeReplyComment(commentID, replyID, username string) error {
+	post, err := repo.GetPostByCommentID(commentID)
+	if err != nil {
+		return fmt.Errorf("failed to find post for comment ID %s: %w", commentID, err)
+	}
+
+	objCommentID, err := primitive.ObjectIDFromHex(commentID)
+	if err != nil {
+		return fmt.Errorf("invalid comment ID: %w", err)
+	}
+
+	objReplyID, err := primitive.ObjectIDFromHex(replyID)
+	if err != nil {
+		return fmt.Errorf("invalid reply ID: %w", err)
+	}
+
+	filter := bson.M{
+		"_id":          post.ID,
+		"comments._id": objCommentID,
+	}
+
+	update := bson.M{
+		"$addToSet": bson.M{
+			"comments.$[comment].replies.$[reply].likedBy": username,
+		},
+	}
+
+	arrayFilters := options.ArrayFilters{
+		Filters: []interface{}{
+			bson.M{"comment._id": objCommentID},
+			bson.M{"reply._id": objReplyID},
+		},
+	}
+
+	updateOptions := options.UpdateOptions{
+		ArrayFilters: &arrayFilters,
+	}
+
+	result, err := repo.collection.UpdateOne(context.TODO(), filter, update, &updateOptions)
+	if err != nil {
+		return fmt.Errorf("failed to like reply comment: %w", err)
+	}
+
+	if result.ModifiedCount == 0 {
+		return fmt.Errorf("no reply comment found with ID: %s in comment: %s", replyID, commentID)
+	}
+
+	return nil
+}
+
+func (repo *postRepository) UnlikeReplyComment(commentID, replyID, username string) error {
+	post, err := repo.GetPostByCommentID(commentID)
+	if err != nil {
+		return fmt.Errorf("failed to find post for comment ID %s: %w", commentID, err)
+	}
+
+	objCommentID, err := primitive.ObjectIDFromHex(commentID)
+	if err != nil {
+		return fmt.Errorf("invalid comment ID: %w", err)
+	}
+
+	objReplyID, err := primitive.ObjectIDFromHex(replyID)
+	if err != nil {
+		return fmt.Errorf("invalid reply ID: %w", err)
+	}
+
+	filter := bson.M{
+		"_id":          post.ID,
+		"comments._id": objCommentID,
+	}
+
+	update := bson.M{
+		"$pull": bson.M{
+			"comments.$[comment].replies.$[reply].likedBy": username,
+		},
+	}
+
+	arrayFilters := options.ArrayFilters{
+		Filters: []interface{}{
+			bson.M{"comment._id": objCommentID},
+			bson.M{"reply._id": objReplyID},
+		},
+	}
+
+	updateOptions := options.UpdateOptions{
+		ArrayFilters: &arrayFilters,
+	}
+
+	result, err := repo.collection.UpdateOne(context.TODO(), filter, update, &updateOptions)
+	if err != nil {
+		return fmt.Errorf("failed to unlike reply comment: %w", err)
+	}
+
+	if result.ModifiedCount == 0 {
+		return fmt.Errorf("no reply comment found with ID: %s in comment: %s", replyID, commentID)
+	}
+
+	return nil
 }
