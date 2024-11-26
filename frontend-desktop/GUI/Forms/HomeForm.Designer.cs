@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.panelSuggests = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panelProfile = new System.Windows.Forms.Panel();
-            this.flowLayoutPanelFriends = new System.Windows.Forms.FlowLayoutPanel();
             this.suggestForYouCommon1 = new CustomControl.Commons.SuggestForYouCommon();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panelPosts = new System.Windows.Forms.Panel();
             this.NotFoundContainer = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
-            this.panelPosts = new System.Windows.Forms.Panel();
+            this.panelProfile = new System.Windows.Forms.Panel();
+            this.flowLayoutPanelFriends = new System.Windows.Forms.FlowLayoutPanel();
             this.panelSuggests.SuspendLayout();
             this.panel1.SuspendLayout();
             this.NotFoundContainer.SuspendLayout();
@@ -53,6 +53,17 @@
             this.panelSuggests.Size = new System.Drawing.Size(320, 511);
             this.panelSuggests.TabIndex = 2;
             // 
+            // suggestForYouCommon1
+            // 
+            this.suggestForYouCommon1.BackColor = System.Drawing.Color.Transparent;
+            this.suggestForYouCommon1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.suggestForYouCommon1.Location = new System.Drawing.Point(0, 80);
+            this.suggestForYouCommon1.Margin = new System.Windows.Forms.Padding(0);
+            this.suggestForYouCommon1.Name = "suggestForYouCommon1";
+            this.suggestForYouCommon1.Size = new System.Drawing.Size(320, 431);
+            this.suggestForYouCommon1.TabIndex = 0;
+            this.suggestForYouCommon1.UserSummaries = null;
+            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Transparent;
@@ -68,38 +79,17 @@
             this.panel1.Size = new System.Drawing.Size(603, 511);
             this.panel1.TabIndex = 3;
             // 
-            // panelProfile
+            // panelPosts
             // 
-            this.panelProfile.BackColor = System.Drawing.Color.Transparent;
-            this.panelProfile.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelProfile.Location = new System.Drawing.Point(0, 88);
-            this.panelProfile.Margin = new System.Windows.Forms.Padding(0);
-            this.panelProfile.Name = "panelProfile";
-            this.panelProfile.Size = new System.Drawing.Size(563, 100);
-            this.panelProfile.TabIndex = 1;
-            // 
-            // flowLayoutPanelFriends
-            // 
-            this.flowLayoutPanelFriends.AutoScroll = true;
-            this.flowLayoutPanelFriends.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanelFriends.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanelFriends.Margin = new System.Windows.Forms.Padding(0);
-            this.flowLayoutPanelFriends.Name = "flowLayoutPanelFriends";
-            this.flowLayoutPanelFriends.Padding = new System.Windows.Forms.Padding(0, 4, 0, 4);
-            this.flowLayoutPanelFriends.Size = new System.Drawing.Size(563, 88);
-            this.flowLayoutPanelFriends.TabIndex = 0;
-            this.flowLayoutPanelFriends.WrapContents = false;
-            // 
-            // suggestForYouCommon1
-            // 
-            this.suggestForYouCommon1.BackColor = System.Drawing.Color.Transparent;
-            this.suggestForYouCommon1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.suggestForYouCommon1.Location = new System.Drawing.Point(0, 80);
-            this.suggestForYouCommon1.Margin = new System.Windows.Forms.Padding(0);
-            this.suggestForYouCommon1.Name = "suggestForYouCommon1";
-            this.suggestForYouCommon1.Size = new System.Drawing.Size(320, 431);
-            this.suggestForYouCommon1.TabIndex = 0;
-            this.suggestForYouCommon1.UserSummaries = null;
+            this.panelPosts.AutoScroll = true;
+            this.panelPosts.BackColor = System.Drawing.Color.Transparent;
+            this.panelPosts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelPosts.Location = new System.Drawing.Point(0, 222);
+            this.panelPosts.Margin = new System.Windows.Forms.Padding(0);
+            this.panelPosts.Name = "panelPosts";
+            this.panelPosts.Padding = new System.Windows.Forms.Padding(20, 20, 40, 20);
+            this.panelPosts.Size = new System.Drawing.Size(563, 289);
+            this.panelPosts.TabIndex = 13;
             // 
             // NotFoundContainer
             // 
@@ -128,17 +118,27 @@
             this.label1.Text = "Not found";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // panelPosts
+            // panelProfile
             // 
-            this.panelPosts.AutoScroll = true;
-            this.panelPosts.BackColor = System.Drawing.Color.Transparent;
-            this.panelPosts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelPosts.Location = new System.Drawing.Point(0, 222);
-            this.panelPosts.Margin = new System.Windows.Forms.Padding(0);
-            this.panelPosts.Name = "panelPosts";
-            this.panelPosts.Padding = new System.Windows.Forms.Padding(20, 20, 40, 20);
-            this.panelPosts.Size = new System.Drawing.Size(563, 289);
-            this.panelPosts.TabIndex = 13;
+            this.panelProfile.BackColor = System.Drawing.Color.Transparent;
+            this.panelProfile.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelProfile.Location = new System.Drawing.Point(0, 88);
+            this.panelProfile.Margin = new System.Windows.Forms.Padding(0);
+            this.panelProfile.Name = "panelProfile";
+            this.panelProfile.Size = new System.Drawing.Size(563, 100);
+            this.panelProfile.TabIndex = 1;
+            // 
+            // flowLayoutPanelFriends
+            // 
+            this.flowLayoutPanelFriends.AutoScroll = true;
+            this.flowLayoutPanelFriends.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanelFriends.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanelFriends.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanelFriends.Name = "flowLayoutPanelFriends";
+            this.flowLayoutPanelFriends.Padding = new System.Windows.Forms.Padding(0, 4, 0, 4);
+            this.flowLayoutPanelFriends.Size = new System.Drawing.Size(563, 88);
+            this.flowLayoutPanelFriends.TabIndex = 0;
+            this.flowLayoutPanelFriends.WrapContents = false;
             // 
             // HomeForm
             // 

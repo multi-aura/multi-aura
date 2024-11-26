@@ -200,10 +200,9 @@ namespace CustomControl.Commons
         {
             try
             {
-                string username = CurrentUserSummary.Username;
-                if (!string.IsNullOrEmpty(username))
+                if(CurrentUserSummary != null && !string.IsNullOrEmpty(CurrentUserSummary.Username))
                 {
-                    var (profile, errorMessage) = await relationshipDataProvider.GetProfileAsync(username);
+                    var (profile, errorMessage) = await relationshipDataProvider.GetProfileAsync(CurrentUserSummary.Username);
 
                     if (string.IsNullOrEmpty(errorMessage))
                     {
@@ -213,11 +212,6 @@ namespace CustomControl.Commons
                     {
                         MessageBox.Show("Can not go to this profile \nError fetching other profile: " + errorMessage);
                     }
-
-                }
-                else
-                {
-                    MessageBox.Show("Can not go to this profile");
                 }
             }
             catch

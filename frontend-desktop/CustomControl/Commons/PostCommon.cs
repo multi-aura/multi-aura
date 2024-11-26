@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CustomControl.Commons
@@ -17,6 +17,7 @@ namespace CustomControl.Commons
     {
         private AppDataProvider appDataProvider;
         private PostDataProvider postDataProvider;
+        private RelationshipDataProvider relationshipDataProvider;
 
         private bool isLiked = false;
         private int likeCounter = 0;
@@ -44,6 +45,10 @@ namespace CustomControl.Commons
 
             appDataProvider = AppDataProvider.Instance;
             postDataProvider = PostDataProvider.Instance;
+            relationshipDataProvider = RelationshipDataProvider.Instance;
+            postDataProvider.OnDeletePostSuccess += PostDataProvider_OnDeletePostSuccess;
+            postDataProvider.OnLikePostSuccess += PostDataProvider_OnLikePostSuccess;
+            postDataProvider.OnUnlikePostSuccess += PostDataProvider_OnUnlikePostSuccess; ;
 
             this.labelComment.Click += ShowModalPostDetails;
             this.labelLike.Click += LabelLike_Click;
@@ -51,6 +56,150 @@ namespace CustomControl.Commons
             this.panelImages.SizeChanged += PanelImages_SizeChanged;
             UpdateUI();
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            this.actionButton.Click += ActionButton_Click;
+
+            this.userAvatar.Click += UserAvatar_Click;
+            this.labelFullName.Click += UserAvatar_Click;
+
+        }
+
+        private void PostDataProvider_OnUnlikePostSuccess(string id)
+        {
+            if (currentPost != null && currentPost.Author != null
+                     && !string.IsNullOrEmpty(currentPost.Author.UserID)
+                 )
+            {
+                Task.Run(() =>
+                {
+                    if (id == currentPost.Author.UserID)
+                    {
+                        if (this.IsHandleCreated)
+                        {
+                            this.BeginInvoke(new Action(() =>
+                            {
+                                isLiked = false;
+                                UpdateHeart();
+                            }));
+                        }
+                        else
+                        {
+                            this.HandleCreated += (sender, e) =>
+                            {
+                                this.BeginInvoke(new Action(() =>
+                                {
+                                    isLiked = false;
+                                    UpdateHeart();
+                                }));
+                            };
+                        }
+                    }
+                });
+            }
+        }
+
+        private void PostDataProvider_OnLikePostSuccess(string id)
+        {
+            if (currentPost != null && currentPost.Author != null
+                    && !string.IsNullOrEmpty(currentPost.Author.UserID)
+                )
+            {
+                Task.Run(() =>
+                {
+                    if (id == currentPost.Author.UserID)
+                    {
+                        if (this.IsHandleCreated)
+                        {
+                            this.BeginInvoke(new Action(() =>
+                            {
+                                isLiked = true;
+                                UpdateHeart();
+                            }));
+                        }
+                        else
+                        {
+                            this.HandleCreated += (sender, e) =>
+                            {
+                                this.BeginInvoke(new Action(() =>
+                                {
+                                    isLiked = true;
+                                    UpdateHeart();
+                                }));
+                            };
+                        }
+                    }
+                });
+            }
+        }
+
+        private async void UserAvatar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (currentPost != null && currentPost.Author != null 
+                    && !string.IsNullOrEmpty(currentPost.Author.Username))
+                {
+                    var (profile, errorMessage) = await relationshipDataProvider.GetProfileAsync(currentPost.Author.Username);
+
+                    if (string.IsNullOrEmpty(errorMessage))
+                    {
+                        RequestOpenModal(profile);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Can not go to this profile \nError fetching other profile: " + errorMessage);
+                    }
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Something went wrong \nCan not go to this profile!");
+            }
+        }
+
+        private void RequestOpenModal(UserProfile profile)
+        {
+            Form modal = new ProfileDetails
+            {
+                CurrentUserProfile = profile,
+                Width = appDataProvider.ScreenWidth - 100,
+                Height = appDataProvider.ScreenHeight - 100,
+                StartPosition = FormStartPosition.CenterScreen,
+                ShowInTaskbar = false,
+                TopMost = true
+            };
+
+            appDataProvider.ShowModal(this, modal);
+        }
+
+        private void ActionButton_Click(object sender, EventArgs e)
+        {
+            bool isOwner = false;
+            if(currentPost != null && currentPost.Author != null && !string.IsNullOrEmpty(currentPost.Author.UserID))
+            {
+                isOwner = currentPost.Author.UserID == appDataProvider.User.UserID;
+            }
+            Form modal = new PostMoreActionsModal
+            {
+                PostId = currentPost.Id,
+                IsOwner = isOwner,
+                StartPosition = FormStartPosition.CenterScreen,
+                ShowInTaskbar = false,
+                TopMost = true
+            };
+
+            appDataProvider.ShowModal(this, modal);
+        }
+
+        private void PostDataProvider_OnDeletePostSuccess(string id)
+        {
+            if (currentPost != null && !string.IsNullOrEmpty(currentPost.Id))
+            {
+                if (id == currentPost.Id)
+                {
+                    this.Dispose();
+                }
+            }
         }
 
         private async void LabelLike_Click(object sender, EventArgs e)

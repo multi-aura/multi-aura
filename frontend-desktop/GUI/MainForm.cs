@@ -155,7 +155,7 @@ namespace GUI
             appDataProvider.ShowModal(this, modal);
         }
 
-        private TransparentOverlayForm overlayForm;
+        private Dictionary<Form, TransparentOverlayForm> overlayForms = new Dictionary<Form, TransparentOverlayForm>();
         private Stack<Form> modalStack = new Stack<Form>();
 
         public void ShowModalRequest(object sender, Form modal)
@@ -170,21 +170,22 @@ namespace GUI
                 return;
             }
 
+            // Tạo overlay form mới cho modal này
+            var overlayForm = CreateOverlayForm();
+            overlayForms[modal] = overlayForm;
+
             // Đẩy modal vào stack
             modalStack.Push(modal);
 
-            // Hiển thị overlay form (chỉ hiển thị nếu là modal đầu tiên)
-            if (modalStack.Count == 1)
-            {
-                ShowOverlayForm();
-            }
+            // Hiển thị overlayForm
+            overlayForm.Show();
+            overlayForm.TopMost = true;
+            overlayForm.TopMost = false;
 
             // Đảm bảo modal hiện tại nằm trên overlayForm
             modal.FormClosed += (s, args) =>
             {
                 this.Focus();
-                this.TopMost = true;
-                this.TopMost = false;
 
                 // Loại modal hiện tại khỏi stack
                 if (modalStack.Contains(modal))
@@ -192,9 +193,16 @@ namespace GUI
                     modalStack.Pop();
                 }
 
+                if (overlayForms.ContainsKey(modal))
+                {
+                    var associatedOverlay = overlayForms[modal];
+                    associatedOverlay.Close();
+                    associatedOverlay.Dispose();
+                    overlayForms.Remove(modal);
+                }
+
                 if (modalStack.Count > 0)
                 {
-                    // Hiển thị modal tiếp theo trong stack (nếu có)
                     var nextModal = modalStack.Peek();
                     if (nextModal != null && !nextModal.IsDisposed)
                     {
@@ -204,8 +212,8 @@ namespace GUI
                 }
                 else
                 {
-                    // Nếu không còn modal nào, ẩn overlay form
-                    HideOverlayForm();
+                    this.TopMost = true;
+                    this.TopMost = false;
                 }
 
                 if (modal != null && !modal.IsDisposed)
@@ -214,51 +222,33 @@ namespace GUI
                 }
             };
 
+            modal.Show();
             modal.TopMost = true;
             modal.TopMost = false;
-            modal.Show();
         }
 
-        private void ShowOverlayForm()
+        private TransparentOverlayForm CreateOverlayForm()
         {
-            if (overlayForm == null)
+            var overlayForm = new TransparentOverlayForm
             {
-                overlayForm = new TransparentOverlayForm();
-                overlayForm.Size = this.ClientSize;
-                overlayForm.Location = this.PointToScreen(Point.Empty);
-                overlayForm.Click += OverlayForm_Click;
-                overlayForm.Show();
-            }
-            else
-            {
-                overlayForm.Show();
-            }
-            overlayForm.TopMost = true;
-            overlayForm.TopMost = false;
+                Size = this.ClientSize,
+                Location = this.PointToScreen(Point.Empty),
+                TopMost = true
+            };
+
+            overlayForm.Click += OverlayForm_Click;
+            return overlayForm;
         }
 
         private void OverlayForm_Click(object sender, EventArgs e)
         {
             if (modalStack.Count > 0)
             {
-                var currentModal = modalStack.Pop();
-                currentModal.Close();
-                currentModal.Dispose();
-            }
-
-            if (modalStack.Count == 0)
-            {
-                HideOverlayForm();
-            }
-        }
-
-        private void HideOverlayForm()
-        {
-            if (overlayForm != null && !overlayForm.IsDisposed)
-            {
-                overlayForm.Close();
-                overlayForm.Dispose();
-                overlayForm = null;
+                var currentModal = modalStack.Peek();
+                if (currentModal != null && !currentModal.IsDisposed)
+                {
+                    currentModal.Close();
+                }
             }
         }
 
@@ -266,10 +256,13 @@ namespace GUI
         {
             base.OnActivated(e);
 
-            if (overlayForm != null && !overlayForm.IsDisposed)
+            foreach (var overlay in overlayForms.Values)
             {
-                overlayForm.TopMost = true;
-                overlayForm.TopMost = false;
+                if (!overlay.IsDisposed)
+                {
+                    overlay.TopMost = true;
+                    overlay.TopMost = false;
+                }
             }
 
             EnsureModalVisibility();

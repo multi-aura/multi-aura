@@ -55,10 +55,13 @@
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.labelCreateAt = new System.Windows.Forms.Label();
             this.labelFullName = new System.Windows.Forms.Label();
-            this.panelMessageSending = new System.Windows.Forms.Panel();
+            this.panelInputComment = new System.Windows.Forms.Panel();
+            this.flowLayoutPanelPhotos = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
+            this.buttonAddPhoto = new System.Windows.Forms.Label();
             this.containerCommon1 = new CustomControl.Commons.ContainerCommon();
-            this.inputComment = new CustomControl.Commons.AutoSizeTextBox();
+            this.inputText = new CustomControl.Commons.AutoSizeTextBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.labelSending = new System.Windows.Forms.Label();
             this.panelWindownControlTaskBar = new System.Windows.Forms.Panel();
@@ -80,8 +83,9 @@
             this.tableLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.userAvatar)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
-            this.panelMessageSending.SuspendLayout();
+            this.panelInputComment.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            this.tableLayoutPanel9.SuspendLayout();
             this.containerCommon1.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.panelWindownControlTaskBar.SuspendLayout();
@@ -182,7 +186,7 @@
             this.panelDetails.Controls.Add(this.panel1);
             this.panelDetails.Controls.Add(this.panelPostTaskBar);
             this.panelDetails.Controls.Add(this.panel2);
-            this.panelDetails.Controls.Add(this.panelMessageSending);
+            this.panelDetails.Controls.Add(this.panelInputComment);
             this.panelDetails.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelDetails.Location = new System.Drawing.Point(300, 0);
             this.panelDetails.Margin = new System.Windows.Forms.Padding(0);
@@ -200,7 +204,7 @@
             this.panelInteractions.Location = new System.Drawing.Point(0, 139);
             this.panelInteractions.Margin = new System.Windows.Forms.Padding(0);
             this.panelInteractions.Name = "panelInteractions";
-            this.panelInteractions.Size = new System.Drawing.Size(581, 227);
+            this.panelInteractions.Size = new System.Drawing.Size(581, 87);
             this.panelInteractions.TabIndex = 38;
             // 
             // panelComments
@@ -462,28 +466,45 @@
             this.labelFullName.Text = "Full name";
             this.labelFullName.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
-            // panelMessageSending
+            // panelInputComment
             // 
-            this.panelMessageSending.AutoSize = true;
-            this.panelMessageSending.BackColor = System.Drawing.Color.Transparent;
-            this.panelMessageSending.Controls.Add(this.tableLayoutPanel5);
-            this.panelMessageSending.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelMessageSending.Location = new System.Drawing.Point(0, 366);
-            this.panelMessageSending.Margin = new System.Windows.Forms.Padding(0);
-            this.panelMessageSending.Name = "panelMessageSending";
-            this.panelMessageSending.Padding = new System.Windows.Forms.Padding(10);
-            this.panelMessageSending.Size = new System.Drawing.Size(581, 50);
-            this.panelMessageSending.TabIndex = 28;
+            this.panelInputComment.AutoSize = true;
+            this.panelInputComment.BackColor = System.Drawing.Color.Transparent;
+            this.panelInputComment.Controls.Add(this.flowLayoutPanelPhotos);
+            this.panelInputComment.Controls.Add(this.tableLayoutPanel5);
+            this.panelInputComment.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelInputComment.Location = new System.Drawing.Point(0, 226);
+            this.panelInputComment.Margin = new System.Windows.Forms.Padding(0);
+            this.panelInputComment.Name = "panelInputComment";
+            this.panelInputComment.Padding = new System.Windows.Forms.Padding(10);
+            this.panelInputComment.Size = new System.Drawing.Size(581, 190);
+            this.panelInputComment.TabIndex = 28;
+            // 
+            // flowLayoutPanelPhotos
+            // 
+            this.flowLayoutPanelPhotos.AutoScroll = true;
+            this.flowLayoutPanelPhotos.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanelPhotos.Location = new System.Drawing.Point(10, 40);
+            this.flowLayoutPanelPhotos.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanelPhotos.MaximumSize = new System.Drawing.Size(0, 140);
+            this.flowLayoutPanelPhotos.MinimumSize = new System.Drawing.Size(0, 140);
+            this.flowLayoutPanelPhotos.Name = "flowLayoutPanelPhotos";
+            this.flowLayoutPanelPhotos.Padding = new System.Windows.Forms.Padding(10);
+            this.flowLayoutPanelPhotos.Size = new System.Drawing.Size(561, 140);
+            this.flowLayoutPanelPhotos.TabIndex = 101;
+            this.flowLayoutPanelPhotos.WrapContents = false;
             // 
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.AutoSize = true;
-            this.tableLayoutPanel5.ColumnCount = 2;
+            this.tableLayoutPanel5.ColumnCount = 3;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel9, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.containerCommon1, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel6, 1, 0);
-            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel6, 2, 0);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(10, 10);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(10);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
@@ -492,36 +513,67 @@
             this.tableLayoutPanel5.Size = new System.Drawing.Size(561, 30);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
+            // tableLayoutPanel9
+            // 
+            this.tableLayoutPanel9.ColumnCount = 1;
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel9.Controls.Add(this.buttonAddPhoto, 0, 0);
+            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(497, 6);
+            this.tableLayoutPanel9.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel9.MinimumSize = new System.Drawing.Size(24, 24);
+            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
+            this.tableLayoutPanel9.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
+            this.tableLayoutPanel9.RowCount = 1;
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(32, 24);
+            this.tableLayoutPanel9.TabIndex = 6;
+            // 
+            // buttonAddPhoto
+            // 
+            this.buttonAddPhoto.AutoSize = true;
+            this.buttonAddPhoto.BackColor = System.Drawing.Color.Transparent;
+            this.buttonAddPhoto.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonAddPhoto.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonAddPhoto.Image = global::CustomControl.Properties.Resources.image;
+            this.buttonAddPhoto.Location = new System.Drawing.Point(4, 0);
+            this.buttonAddPhoto.Margin = new System.Windows.Forms.Padding(0);
+            this.buttonAddPhoto.MaximumSize = new System.Drawing.Size(24, 24);
+            this.buttonAddPhoto.MinimumSize = new System.Drawing.Size(24, 24);
+            this.buttonAddPhoto.Name = "buttonAddPhoto";
+            this.buttonAddPhoto.Size = new System.Drawing.Size(24, 24);
+            this.buttonAddPhoto.TabIndex = 4;
+            // 
             // containerCommon1
             // 
             this.containerCommon1.AutoSize = true;
             this.containerCommon1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.containerCommon1.Controls.Add(this.inputComment);
+            this.containerCommon1.Controls.Add(this.inputText);
             this.containerCommon1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.containerCommon1.Location = new System.Drawing.Point(0, 0);
             this.containerCommon1.Margin = new System.Windows.Forms.Padding(0, 0, 12, 0);
             this.containerCommon1.Name = "containerCommon1";
             this.containerCommon1.Padding = new System.Windows.Forms.Padding(6, 4, 6, 4);
             this.containerCommon1.Radius = 6;
-            this.containerCommon1.Size = new System.Drawing.Size(517, 30);
+            this.containerCommon1.Size = new System.Drawing.Size(485, 30);
             this.containerCommon1.TabIndex = 4;
             // 
-            // inputComment
+            // inputText
             // 
-            this.inputComment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.inputComment.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.inputComment.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.inputComment.Font = new System.Drawing.Font("Montserrat Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.inputComment.ForeColor = System.Drawing.Color.White;
-            this.inputComment.Hint = "Aa, enter your text";
-            this.inputComment.Location = new System.Drawing.Point(6, 4);
-            this.inputComment.Margin = new System.Windows.Forms.Padding(0, 0, 6, 0);
-            this.inputComment.MaxLine = 10;
-            this.inputComment.Multiline = true;
-            this.inputComment.Name = "inputComment";
-            this.inputComment.Size = new System.Drawing.Size(505, 22);
-            this.inputComment.TabIndex = 5;
-            this.inputComment.Text = "Aa, enter your text";
+            this.inputText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.inputText.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.inputText.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.inputText.Font = new System.Drawing.Font("Montserrat Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.inputText.ForeColor = System.Drawing.Color.White;
+            this.inputText.Hint = "Aa, enter your text";
+            this.inputText.Location = new System.Drawing.Point(6, 4);
+            this.inputText.Margin = new System.Windows.Forms.Padding(0, 0, 6, 0);
+            this.inputText.MaxLine = 6;
+            this.inputText.Multiline = true;
+            this.inputText.Name = "inputText";
+            this.inputText.Size = new System.Drawing.Size(473, 22);
+            this.inputText.TabIndex = 5;
+            this.inputText.Text = "Aa, enter your text";
             // 
             // tableLayoutPanel6
             // 
@@ -633,10 +685,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.userAvatar)).EndInit();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
-            this.panelMessageSending.ResumeLayout(false);
-            this.panelMessageSending.PerformLayout();
+            this.panelInputComment.ResumeLayout(false);
+            this.panelInputComment.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
+            this.tableLayoutPanel9.ResumeLayout(false);
+            this.tableLayoutPanel9.PerformLayout();
             this.containerCommon1.ResumeLayout(false);
             this.containerCommon1.PerformLayout();
             this.tableLayoutPanel6.ResumeLayout(false);
@@ -655,12 +709,11 @@
         private System.Windows.Forms.Button CloseWindowControlButton;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panelDetails;
-        private System.Windows.Forms.Panel panelMessageSending;
+        private System.Windows.Forms.Panel panelInputComment;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private Commons.ContainerCommon containerCommon1;
-        private Commons.AutoSizeTextBox inputComment;
+        private Commons.AutoSizeTextBox inputText;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
-        private System.Windows.Forms.Label labelSending;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label labelDescription;
@@ -684,5 +737,9 @@
         private Commons.AvatarCommon preImage;
         private System.Windows.Forms.PictureBox currentPhotoBox;
         private Commons.AvatarCommon nextImage;
+        private System.Windows.Forms.Label labelSending;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
+        private System.Windows.Forms.Label buttonAddPhoto;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelPhotos;
     }
 }

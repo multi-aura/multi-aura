@@ -29,6 +29,8 @@ func SetupPostRoutes(app *fiber.App) {
 	posts.Delete("/reply/unlike/:commentID/:replyID", middlewares.AuthMiddleware(), controller.UnlikeReplyComment)
 
 	posts.Post("/comments/:postID", middlewares.AuthMiddleware(), controller.GetCommentsByPostID)
+	posts.Get("/comment/:commentID", middlewares.AuthMiddleware(), controller.GetCommentByID)
+	posts.Get("/reply/:commentID/:replyID", middlewares.AuthMiddleware(), controller.GetReplyCommentByID)
 
 	posts.Post("/add-comment/:postID", middlewares.AuthMiddleware(), controller.CreateComment)
 	posts.Delete("/delete-comment/:commentID", middlewares.AuthMiddleware(), controller.DeleteComment)

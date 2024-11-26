@@ -18,6 +18,8 @@ namespace CustomControl.Modals
         private AppDataProvider appDataProvider;
         private PostDataProvider postDataProvider;
 
+        private List<string> photoPaths = new List<string>();
+
         private bool isLiked = false;
         private int likeCounter = 0;
 
@@ -33,7 +35,11 @@ namespace CustomControl.Modals
                 if (currentPost != value)
                 {
                     currentPost = value;
-                    postDataProvider.FetchCommentsOfCurrentPost(currentPost.Id);
+                    if(currentPost != null && !string.IsNullOrEmpty(currentPost.Id))
+                    {
+                        postDataProvider.FetchCommentsOfCurrentPost(currentPost.Id);
+                    }
+                    
                     UpdateUI();
                 }
             }
@@ -42,6 +48,7 @@ namespace CustomControl.Modals
         {
             InitializeComponent();
             this.CloseWindowControlButton.Click += CloseWindowControlButton_Click;
+            this.flowLayoutPanelPhotos.Visible = false;
 
             appDataProvider = AppDataProvider.Instance;
 
@@ -51,7 +58,151 @@ namespace CustomControl.Modals
             this.labelComment.Click += LabelComment_Click;
             this.labelLike.Click += LabelLike_Click;
             this.panelImages.SizeChanged += PanelImages_SizeChanged;
+            this.buttonAddPhoto.Click += ButtonAddPhoto_Click;
+
+            this.labelSending.Click += LabelSending_Click;
+
+            if (currentPost != null && !string.IsNullOrEmpty(currentPost.Id))
+            {
+                postDataProvider.FetchCommentsOfCurrentPost(currentPost.Id);
+            }
+
             UpdateUI();
+        }
+
+        private async void LabelSending_Click(object sender, EventArgs e)
+        {
+            this.labelSending.Enabled = false;
+
+            if (!ValidateInput())
+            {
+                this.labelSending.Enabled = true;
+                return;
+            }
+
+            var result = await postDataProvider.CreateCommentAsync(currentPost.Id, this.inputText.Text, photoPaths);
+            if (result != null)
+            {
+                AddReplyCommentToPanel(result);
+                //MessageBox.Show("Comment created successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClearData();
+            }
+            else
+            {
+                MessageBox.Show("Failed to create comment. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            this.labelSending.Enabled = true;
+        }
+
+        private bool ValidateInput()
+        {
+            if (string.IsNullOrEmpty(this.inputText.Text) || this.inputText.Text == this.inputText.Hint)
+                return false;
+
+            if (currentPost == null || string.IsNullOrEmpty(currentPost.Id))
+                return false;
+
+            return true;
+        }
+
+        private void AddReplyCommentToPanel(Comment result)
+        {
+            CommentCommon commentCommon = new CommentCommon
+            {
+                IsReplyable = true,
+                CurrentComment = result,
+                Margin = new Padding(0, 0, 0, 0),
+                Padding = new Padding(0, 0, 0, 0),
+                Dock = DockStyle.Top,
+            };
+
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() =>
+                {
+                    this.panelComments.Controls.Add(commentCommon);
+                    commentCommon.Dock = DockStyle.Top;
+                }));
+            }
+            else
+            {
+                this.panelComments.Controls.Add(commentCommon);
+                commentCommon.Dock = DockStyle.Top;
+            }
+        }
+
+        private void ClearData()
+        {
+            this.inputText.ClearText();
+
+            foreach (Control control in this.flowLayoutPanelPhotos.Controls)
+            {
+                if (control is PhotoHolderCommon photoHolder)
+                {
+                    photoHolder.Dispose();
+                }
+            }
+            this.flowLayoutPanelPhotos.Controls.Clear();
+            this.flowLayoutPanelPhotos.Visible = false;
+            photoPaths.Clear();
+        }
+        private void ButtonAddPhoto_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Multiselect = true;
+                openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string[] selectedFiles = openFileDialog.FileNames;
+                    bool hasData = false;
+                    foreach (string filePath in selectedFiles)
+                    {
+                        if (!hasData)
+                        {
+                            this.flowLayoutPanelPhotos.Visible = true;
+                            hasData = true;
+                        }
+                        AddPhotoToPanel(filePath);
+                    }
+                    if (!hasData)
+                    {
+                        this.flowLayoutPanelPhotos.Visible = false;
+                    }
+                }
+            }
+        }
+
+        private void AddPhotoToPanel(string filePath)
+        {
+            try
+            {
+                PhotoHolderCommon photoHolder = new PhotoHolderCommon
+                {
+                    PhotoPath = filePath,
+                    Width = 120,
+                    Height = 120,
+                    Margin = new Padding(5)
+                };
+
+                photoHolder.OnPhotoRemoved += (s, path) =>
+                {
+                    photoPaths.Remove(path);
+                    if (photoPaths.Count == 0)
+                    {
+                        this.flowLayoutPanelPhotos.Visible = false;
+                    }
+                };
+
+                this.flowLayoutPanelPhotos.Controls.Add(photoHolder);
+                photoPaths.Add(filePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error adding photo: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private async void LabelLike_Click(object sender, EventArgs e)
@@ -241,32 +392,41 @@ namespace CustomControl.Modals
                 this.nextImage.Visible = false;
             }
         }
+
+        private void UpdateUI(Control control, Action action)
+        {
+            if (control.InvokeRequired)
+            {
+                control.Invoke(new Action(() => action()));
+            }
+            else
+            {
+                action();
+            }
+        }
+
         private async void SetUpComments()
         {
-            if (currentPost.Comments != null)
+            UpdateUI(panelComments, () =>
             {
-                foreach (var item in currentPost.Comments)
+                panelComments.Controls.Clear();
+                currentPost.Comments = postDataProvider.CommentsOfCurrentPost;
+                if (currentPost.Comments != null)
                 {
-                    CommentCommon commentCommon = new CommentCommon
+                    foreach (var item in currentPost.Comments)
                     {
-                        CurrentComment = item,
-                        Dock = DockStyle.Top,
-                        Margin = new Padding(0, 0, 0, 0),
-                    };
-
-                    if (panelComments.InvokeRequired)
-                    {
-                        panelComments.Invoke(new Action(() =>
+                        CommentCommon commentCommon = new CommentCommon
                         {
-                            panelComments.Controls.Add(commentCommon);
-                        }));
-                    }
-                    else
-                    {
+                            IsReplyable = true,
+                            CurrentComment = item,
+                            Dock = DockStyle.Top,
+                            Margin = new Padding(0, 0, 0, 0),
+                        };
+
                         panelComments.Controls.Add(commentCommon);
                     }
                 }
-            }
+            });
         }
 
         private void LabelComment_Click(object sender, EventArgs e)

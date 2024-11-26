@@ -7,6 +7,7 @@ using DTO;
 using System;
 using System.Drawing;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CustomControl.Commons
@@ -14,12 +15,40 @@ namespace CustomControl.Commons
     public partial class ReplyComment : UserControl
     {
         public event EventHandler ShowModalRequested;
+        public event EventHandler OpenInputTextRequested;
 
         private AppDataProvider appDataProvider;
         private PostDataProvider postDataProvider;
+        private RelationshipDataProvider relationshipDataProvider;
 
         private bool isLiked = false;
         private int likeCounter = 0;
+
+        private bool isReplyable = false;
+
+        public bool IsReplyable
+        {
+            get => isReplyable;
+            set
+            {
+                if (isReplyable == value)
+                    return;
+
+                isReplyable = value;
+
+                this.labelReply.Click -= LabelReply_Click;
+                this.labelReply.Click -= RequestOpenPanelCommentInput;
+
+                if (isReplyable)
+                {
+                    this.labelReply.Click += RequestOpenPanelCommentInput;
+                }
+                else
+                {
+                    this.labelReply.Click += LabelReply_Click;
+                }
+            }
+        }
 
         public string ParentCommentId { get; set; } = string.Empty;
 
@@ -42,12 +71,181 @@ namespace CustomControl.Commons
 
             appDataProvider = AppDataProvider.Instance;
             postDataProvider = PostDataProvider.Instance;
+            relationshipDataProvider = RelationshipDataProvider.Instance;
+            postDataProvider.OnDeleteReplyCommentSuccess += PostDataProvider_OnDeleteReplyCommentSuccess;
+            postDataProvider.OnLikeReplyCommentSuccess += PostDataProvider_OnLikeReplyCommentSuccess;
+            postDataProvider.OnUnlikeReplyCommentSuccess += PostDataProvider_OnUnlikeReplyCommentSuccess;
+
+            this.MouseClick += ReplyComment_MouseClick;
+            this.tableLayoutPanelInfo.MouseClick += ReplyComment_MouseClick;
+            this.tableLayoutPanelLikeCounter.MouseClick += ReplyComment_MouseClick;
+            this.tableLayoutPanelComment.MouseClick += ReplyComment_MouseClick;
+            this.tableLayoutPanel12.MouseClick += ReplyComment_MouseClick;
+            this.flowLayoutPanelImages.MouseClick += ReplyComment_MouseClick;
+            this.labelFullName.MouseClick += ReplyComment_MouseClick;
+            this.labelText.MouseClick += ReplyComment_MouseClick;
 
             this.labelReply.MouseHover += LabelReply_MouseHover;
             this.labelReply.MouseLeave += LabelReply_MouseLeave;
-            this.labelReply.Click += LabelReply_Click;
 
             this.labelLike.Click += LabelLike_Click;
+
+            if (isReplyable)
+            {
+                this.labelReply.Click += RequestOpenPanelCommentInput;
+            }
+            else
+            {
+                this.labelReply.Click += LabelReply_Click;
+            }
+
+            this.userAvatar.Click += UserAvatar_Click;
+            this.labelFullName.Click += UserAvatar_Click;
+        }
+
+        private void PostDataProvider_OnUnlikeReplyCommentSuccess(string id)
+        {
+            if (currentComment != null && currentComment.Author != null
+                      && !string.IsNullOrEmpty(currentComment.Author.UserID)
+                  )
+            {
+                Task.Run(() =>
+                {
+                    if (id == currentComment.Author.UserID)
+                    {
+                        if (this.IsHandleCreated)
+                        {
+                            this.BeginInvoke(new Action(() =>
+                            {
+                                isLiked = false;
+                                UpdateHeart();
+                            }));
+                        }
+                        else
+                        {
+                            this.HandleCreated += (sender, e) =>
+                            {
+                                this.BeginInvoke(new Action(() =>
+                                {
+                                    isLiked = false;
+                                    UpdateHeart();
+                                }));
+                            };
+                        }
+                    }
+                });
+            }
+        }
+
+        private void PostDataProvider_OnLikeReplyCommentSuccess(string id)
+        {
+            if (currentComment != null && currentComment.Author != null
+                      && !string.IsNullOrEmpty(currentComment.Author.UserID)
+                  )
+            {
+                Task.Run(() =>
+                {
+                    if (id == currentComment.Author.UserID)
+                    {
+                        if (this.IsHandleCreated)
+                        {
+                            this.BeginInvoke(new Action(() =>
+                            {
+                                isLiked = true;
+                                UpdateHeart();
+                            }));
+                        }
+                        else
+                        {
+                            this.HandleCreated += (sender, e) =>
+                            {
+                                this.BeginInvoke(new Action(() =>
+                                {
+                                    isLiked = true;
+                                    UpdateHeart();
+                                }));
+                            };
+                        }
+                    }
+                });
+            }
+        }
+
+        private async void UserAvatar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (currentComment != null && currentComment.Author != null
+                    && !string.IsNullOrEmpty(currentComment.Author.Username))
+                {
+                    var (profile, errorMessage) = await relationshipDataProvider.GetProfileAsync(currentComment.Author.Username);
+
+                    if (string.IsNullOrEmpty(errorMessage))
+                    {
+                        RequestOpenModal(profile);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Can not go to this profile \nError fetching other profile: " + errorMessage);
+                    }
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Something went wrong \nCan not go to this profile!");
+            }
+        }
+
+        private void RequestOpenModal(UserProfile profile)
+        {
+            Form modal = new ProfileDetails
+            {
+                CurrentUserProfile = profile,
+                Width = appDataProvider.ScreenWidth - 100,
+                Height = appDataProvider.ScreenHeight - 100,
+                StartPosition = FormStartPosition.CenterScreen,
+                ShowInTaskbar = false,
+                TopMost = true
+            };
+
+            appDataProvider.ShowModal(this, modal);
+        }
+
+        private void PostDataProvider_OnDeleteReplyCommentSuccess(string id)
+        {
+            if (currentComment != null && !string.IsNullOrEmpty(currentComment.Id))
+            {
+                if (id == currentComment.Id)
+                {
+                    this.Dispose();
+                }
+            }
+        }
+
+        private void ReplyComment_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                ContextMenuStrip = null;
+
+                bool isOwner = false;
+                if (currentComment != null && currentComment.Author != null && !string.IsNullOrEmpty(currentComment.Author.UserID))
+                {
+                    isOwner = currentComment.Author.UserID == appDataProvider.User.UserID;
+                }
+
+                Form modal = new ReplyCommentMoreActionModal
+                {
+                    ReplyId = currentComment.Id,
+                    CommentId = ParentCommentId,
+                    IsOwner = isOwner,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    ShowInTaskbar = false,
+                    TopMost = true
+                };
+
+                appDataProvider.ShowModal(this, modal);
+            }
         }
 
         private async void LabelLike_Click(object sender, EventArgs e)
@@ -259,6 +457,11 @@ namespace CustomControl.Commons
         private void LabelReply_Click(object sender, EventArgs e)
         {
             ShowModalRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void RequestOpenPanelCommentInput(object sender, EventArgs e)
+        {
+            OpenInputTextRequested?.Invoke(this, EventArgs.Empty);
         }
 
         private void LabelReply_MouseLeave(object sender, EventArgs e)

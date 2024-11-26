@@ -111,19 +111,12 @@ namespace BLL.Repositories.Repositories
 
                 HttpContent content = null;
 
-                // Kiểm tra nếu là Form Data
+                // Kiểm tra nếu là Form Data (Multipart Form)
                 if (data != null)
                 {
                     if (isFormData)
                     {
-                        // Chuyển đổi `data` thành Dictionary<string, string> để tạo FormUrlEncodedContent
-                        var formData = new FormUrlEncodedContent(
-                            data.GetType()
-                                .GetProperties()
-                                .ToDictionary(prop => prop.Name, prop => prop.GetValue(data)?.ToString() ?? "")
-                        );
-
-                        content = formData;
+                        content = data as MultipartFormDataContent; // Nếu dữ liệu là MultipartFormDataContent, dùng nó trực tiếp
                     }
                     else
                     {
