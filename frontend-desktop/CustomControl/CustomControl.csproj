@@ -99,6 +99,12 @@
     <Compile Include="Commons\OutgoingMessage.Designer.cs">
       <DependentUpon>OutgoingMessage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Commons\PhotoHolderCommon.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Commons\PhotoHolderCommon.Designer.cs">
+      <DependentUpon>PhotoHolderCommon.cs</DependentUpon>
+    </Compile>
     <Compile Include="Commons\PostCommon.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -141,6 +147,12 @@
     <Compile Include="Extensions\DateTimeExtensions .cs" />
     <Compile Include="Extensions\FormExtensions.cs" />
     <Compile Include="Extensions\NumberExtensions .cs" />
+    <Compile Include="Modals\CommentMoreActionModal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modals\CommentMoreActionModal.Designer.cs">
+      <DependentUpon>CommentMoreActionModal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modals\PostCreationModal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -153,11 +165,23 @@
     <Compile Include="Modals\PostDetails.Designer.cs">
       <DependentUpon>PostDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modals\PostMoreActionsModal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modals\PostMoreActionsModal.Designer.cs">
+      <DependentUpon>PostMoreActionsModal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modals\ProfileDetails.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modals\ProfileDetails.Designer.cs">
       <DependentUpon>ProfileDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modals\ReplyCommentMoreActionModal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modals\ReplyCommentMoreActionModal.Designer.cs">
+      <DependentUpon>ReplyCommentMoreActionModal.cs</DependentUpon>
     </Compile>
     <Compile Include="Modals\SeeAllSuggestedUsersModal.cs">
       <SubType>Form</SubType>
@@ -196,6 +220,9 @@
     <EmbeddedResource Include="Commons\OutgoingMessage.resx">
       <DependentUpon>OutgoingMessage.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Commons\PhotoHolderCommon.resx">
+      <DependentUpon>PhotoHolderCommon.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Commons\PostCommon.resx">
       <DependentUpon>PostCommon.cs</DependentUpon>
     </EmbeddedResource>
@@ -214,14 +241,23 @@
     <EmbeddedResource Include="Commons\VoicePlayerCommon.resx">
       <DependentUpon>VoicePlayerCommon.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Modals\CommentMoreActionModal.resx">
+      <DependentUpon>CommentMoreActionModal.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modals\PostCreationModal.resx">
       <DependentUpon>PostCreationModal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modals\PostDetails.resx">
       <DependentUpon>PostDetails.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Modals\PostMoreActionsModal.resx">
+      <DependentUpon>PostMoreActionsModal.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modals\ProfileDetails.resx">
       <DependentUpon>ProfileDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modals\ReplyCommentMoreActionModal.resx">
+      <DependentUpon>ReplyCommentMoreActionModal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modals\SeeAllSuggestedUsersModal.resx">
       <DependentUpon>SeeAllSuggestedUsersModal.cs</DependentUpon>
@@ -327,6 +363,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\loading24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\add16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\image.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

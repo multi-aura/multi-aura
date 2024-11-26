@@ -46,11 +46,47 @@ namespace GUI.Forms
 
             postDataProvider = PostDataProvider.Instance;
             postDataProvider.CurrentUserPostsDataLoaded += LoadPanelUserPosts;
+            postDataProvider.OnCreatePostSuccess += PostDataProvider_OnCreatePostSuccess;
 
             RegisterHoverAndClickEventsForLabels();
 
             currentPanelResults = panelPosts;
             LoadPanel(currentPanelResults, hasPostsData);
+        }
+
+        private void PostDataProvider_OnCreatePostSuccess(Post obj)
+        {
+            if (obj == null) return;
+            UpdateUI(panelPosts, () =>
+            {
+                var postCommon = new PostCommon
+                {
+                    CurrentPost = obj,
+                    Dock = DockStyle.Top,
+                    Margin = new Padding(0, 0, 0, 0)
+                };
+
+                panelPosts.Controls.Add(postCommon);
+                panelPosts.Controls.SetChildIndex(postCommon, 0);
+                hasPostsData = true;
+
+                if (obj.Images != null && obj.Images.Count != 0)
+                {
+                    AddMediasDataItem(obj);
+                }
+            });
+        }
+
+        private void UpdateUI(Control control, Action action)
+        {
+            if (control.InvokeRequired)
+            {
+                control.Invoke(new Action(() => action()));
+            }
+            else
+            {
+                action();
+            }
         }
 
         private void LoadPanelUserPosts()

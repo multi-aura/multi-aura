@@ -26,6 +26,8 @@ type PostRepository interface {
 	Search(query string, blockedUserIDs []string, limit, page int64) ([]*models.Post, error)
 	UploadPhotos(id string, url []string) (bool, error)
 	GetPostByCommentID(commentID string) (*models.Post, error)
+	GetCommentByID(commentID string) (*models.Comment, error)
+	GetReplyCommentByID(commentID, replyID string) (*models.Comment, error)
 	AddComment(postID string, comment models.Comment) error
 	DeleteComment(postID, commentID string) error
 	UpdateCommentPhotos(postID, commentID string, fileURLs []string) error
@@ -698,6 +700,58 @@ func (repo *postRepository) GetPostByCommentID(commentID string) (*models.Post, 
 	}
 
 	return &post, nil
+}
+
+func (repo *postRepository) GetCommentByID(commentID string) (*models.Comment, error) {
+	objCommentID, err := primitive.ObjectIDFromHex(commentID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid comment ID: %w", err)
+	}
+
+	filter := bson.M{
+		"comments": bson.M{
+			"$elemMatch": bson.M{
+				"_id": objCommentID,
+			},
+		},
+	}
+
+	var post models.Post
+	err = repo.collection.FindOne(context.TODO(), filter).Decode(&post)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, fmt.Errorf("no comment found with ID: %s", commentID)
+		}
+		return nil, fmt.Errorf("failed to fetch comment by ID: %w", err)
+	}
+
+	for _, comment := range post.Comments {
+		if comment.ID == objCommentID {
+			return &comment, nil
+		}
+	}
+
+	return nil, fmt.Errorf("comment not found with ID: %s", commentID)
+}
+
+func (repo *postRepository) GetReplyCommentByID(commentID, replyID string) (*models.Comment, error) {
+	comment, err := repo.GetCommentByID(commentID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to find comment for ID %s: %w", commentID, err)
+	}
+
+	objReplyID, err := primitive.ObjectIDFromHex(replyID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid reply ID: %w", err)
+	}
+
+	for _, reply := range comment.Replies {
+		if reply.ID == objReplyID {
+			return &reply, nil
+		}
+	}
+
+	return nil, fmt.Errorf("reply not found with ID: %s", replyID)
 }
 
 func (repo *postRepository) DeleteComment(postID, commentID string) error {

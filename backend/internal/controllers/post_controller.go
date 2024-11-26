@@ -285,8 +285,76 @@ func (pc *PostController) GetCommentsByPostID(c *fiber.Ctx) error {
 	})
 }
 
+func (pc *PostController) GetCommentByID(c *fiber.Ctx) error {
+	commentID := c.Params("commentID")
+	if commentID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Comment ID is required",
+			Error:   "StatusBadRequest",
+		})
+	}
+
+	comment, err := pc.service.GetCommentByID(commentID)
+	if err != nil {
+		if err.Error() == "comment not found" {
+			return c.Status(fiber.StatusNotFound).JSON(APIResponse.ErrorResponse{
+				Status:  fiber.StatusNotFound,
+				Message: "Comment not found",
+				Error:   "StatusNotFound",
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusInternalServerError,
+			Message: err.Error(),
+			Error:   "StatusInternalServerError",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
+		Status:  fiber.StatusOK,
+		Message: "Comment retrieved successfully",
+		Data:    comment,
+	})
+}
+
+func (pc *PostController) GetReplyCommentByID(c *fiber.Ctx) error {
+	commentID := c.Params("commentID")
+	replyID := c.Params("replyID")
+
+	if commentID == "" || replyID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Comment ID and Reply ID are required",
+			Error:   "StatusBadRequest",
+		})
+	}
+
+	reply, err := pc.service.GetReplyCommentByID(commentID, replyID)
+	if err != nil {
+		if err.Error() == "reply not found" {
+			return c.Status(fiber.StatusNotFound).JSON(APIResponse.ErrorResponse{
+				Status:  fiber.StatusNotFound,
+				Message: "Reply not found",
+				Error:   "StatusNotFound",
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusInternalServerError,
+			Message: err.Error(),
+			Error:   "StatusInternalServerError",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
+		Status:  fiber.StatusOK,
+		Message: "Reply retrieved successfully",
+		Data:    reply,
+	})
+}
+
 func (pc *PostController) CreateComment(c *fiber.Ctx) error {
-	postID := c.Params("postID") // Lấy postID từ params
+	postID := c.Params("postID")
 	if postID == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusBadRequest,
@@ -295,7 +363,7 @@ func (pc *PostController) CreateComment(c *fiber.Ctx) error {
 		})
 	}
 
-	userID, ok := c.Locals("userID").(string) // Lấy userID từ context (middleware)
+	userID, ok := c.Locals("userID").(string)
 	if !ok || userID == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusUnauthorized,
@@ -330,7 +398,7 @@ func (pc *PostController) CreateComment(c *fiber.Ctx) error {
 }
 
 func (pc *PostController) AddReplyToComment(c *fiber.Ctx) error {
-	commentID := c.Params("commentID") // Get commentID from the URL
+	commentID := c.Params("commentID")
 	if commentID == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusBadRequest,
@@ -339,7 +407,7 @@ func (pc *PostController) AddReplyToComment(c *fiber.Ctx) error {
 		})
 	}
 
-	userID, ok := c.Locals("userID").(string) // Get userID from the context (middleware)
+	userID, ok := c.Locals("userID").(string)
 	if !ok || userID == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusUnauthorized,
@@ -375,7 +443,7 @@ func (pc *PostController) AddReplyToComment(c *fiber.Ctx) error {
 
 func (pc *PostController) DeleteComment(c *fiber.Ctx) error {
 	commentID := c.Params("commentID")
-	userID, ok := c.Locals("userID").(string) // Get userID from the context (middleware)
+	userID, ok := c.Locals("userID").(string)
 	if !ok || userID == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusUnauthorized,
@@ -401,8 +469,8 @@ func (pc *PostController) DeleteComment(c *fiber.Ctx) error {
 }
 
 func (pc *PostController) DeleteReplyFromComment(c *fiber.Ctx) error {
-	commentID := c.Params("commentID") // Get commentID from the URL
-	replyID := c.Params("replyID")     // Get replyID from the URL
+	commentID := c.Params("commentID")
+	replyID := c.Params("replyID")
 	if commentID == "" || replyID == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusBadRequest,

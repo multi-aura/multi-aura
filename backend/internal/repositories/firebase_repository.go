@@ -9,25 +9,28 @@ import (
 	"net/url"
 	"time"
 
+	"cloud.google.com/go/storage"
 	"github.com/google/uuid"
+	"google.golang.org/api/iterator"
 )
 
-type StorageRepository interface {
+type FirebaseStorageRepository interface {
 	UploadFile(file multipart.File, fileHeader *multipart.FileHeader, folder string) (string, error)
 	DeleteFile(fileName string) error
+	DeleteFilesInFolder(folder string) error
 }
 
-type storageRepository struct {
+type firebaseStorageRepository struct {
 	bucketName string
 }
 
-func NewStorageRepository() StorageRepository {
-	return &storageRepository{
+func NewFirebaseStorageRepository() FirebaseStorageRepository {
+	return &firebaseStorageRepository{
 		bucketName: configs.FirebaseStorageBucketName,
 	}
 }
 
-func (repo *storageRepository) UploadFile(file multipart.File, fileHeader *multipart.FileHeader, folder string) (string, error) {
+func (repo *firebaseStorageRepository) UploadFile(file multipart.File, fileHeader *multipart.FileHeader, folder string) (string, error) {
 	ctx := context.Background()
 
 	client, err := configs.InitializeFirebaseApp().Storage(ctx)
@@ -61,7 +64,7 @@ func (repo *storageRepository) UploadFile(file multipart.File, fileHeader *multi
 	return fileUrl, nil
 }
 
-func (repo *storageRepository) DeleteFile(fileName string) error {
+func (repo *firebaseStorageRepository) DeleteFile(fileName string) error {
 	ctx := context.Background()
 
 	// Khởi tạo Firebase Storage client
@@ -80,6 +83,44 @@ func (repo *storageRepository) DeleteFile(fileName string) error {
 	object := bucket.Object(fileName)
 	if err := object.Delete(ctx); err != nil {
 		return fmt.Errorf("failed to delete file %s: %w", fileName, err)
+	}
+
+	return nil
+}
+
+func (repo *firebaseStorageRepository) DeleteFilesInFolder(folder string) error {
+	ctx := context.Background()
+
+	client, err := configs.InitializeFirebaseApp().Storage(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to initialize Firebase storage client: %w", err)
+	}
+
+	bucket, err := client.Bucket(repo.bucketName)
+	if err != nil {
+		return fmt.Errorf("failed to get Firebase storage bucket: %w", err)
+	}
+
+	// List all objects (files) with the given folder prefix
+	it := bucket.Objects(ctx, &storage.Query{
+		Prefix: folder + "/",
+	})
+
+	// Iterate over the objects and delete them
+	for {
+		objAttrs, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return fmt.Errorf("failed to list files in folder: %w", err)
+		}
+
+		// Delete each file
+		object := bucket.Object(objAttrs.Name)
+		if err := object.Delete(ctx); err != nil {
+			return fmt.Errorf("failed to delete file %s: %w", objAttrs.Name, err)
+		}
 	}
 
 	return nil

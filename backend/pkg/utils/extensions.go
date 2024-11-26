@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"path"
 	"strings"
 	"time"
 
@@ -165,4 +166,35 @@ func ExtractFileName(fileURL string) (string, error) {
 	// Trả về tên file (phần cuối cùng)
 	fileName := parts[len(parts)-1]
 	return fileName, nil
+}
+
+func ExtractPublicID(fileURL string) (string, error) {
+	// Parse URL để tách phần path
+	parsedURL, err := url.Parse(fileURL)
+	if err != nil {
+		return "", fmt.Errorf("invalid URL: %v", err)
+	}
+
+	// Lấy path từ URL và giải mã
+	filePath := parsedURL.Path
+	decodedFilePath, err := url.PathUnescape(filePath)
+	if err != nil {
+		return "", fmt.Errorf("failed to decode file path: %v", err)
+	}
+
+	// Tách file path thành các phần và bỏ qua các phần không liên quan
+	parts := strings.Split(decodedFilePath, "/")
+
+	// Kiểm tra và đảm bảo có đủ phần tử
+	if len(parts) < 7 {
+		return "", fmt.Errorf("invalid file path format")
+	}
+
+	// Tìm phần public_id, đây là phần từ thứ 6 trở đi trong URL
+	publicIDWithExt := strings.Join(parts[5:], "/") // Kết hợp từ phần thứ 5 trở đi thành public_id
+
+	// Loại bỏ phần mở rộng file
+	publicID := strings.TrimSuffix(publicIDWithExt, path.Ext(publicIDWithExt))
+
+	return publicID, nil
 }

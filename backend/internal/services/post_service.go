@@ -18,6 +18,8 @@ type PostService interface {
 	GetRecentPosts(userID string, limit int64, page int64) ([]*models.Post, error)
 	GetPostsByUser(userID string) ([]*models.Post, error)
 	GetCommentsByPostID(postID string) ([]*models.Comment, error)
+	GetCommentByID(commentID string) (*models.Comment, error)
+	GetReplyCommentByID(commentID, replyID string) (*models.Comment, error)
 	CreateComment(postID, userID string, request *models.CreateCommentRequest) (*models.Comment, error)
 	AddReplyToComment(commentID string, userID string, request *models.CreateCommentRequest) (*models.Comment, error)
 	DeleteComment(commentID string) error
@@ -65,12 +67,12 @@ func (s *postService) CreatePost(post *models.CreatePostRequest) (*models.Post, 
 		ID:          primitive.NewObjectID(),
 		Description: post.Description,
 		Images:      []models.Image{},
-		CreatedAt:   time.Now(),
+		CreatedAt:   time.Now().UTC(),
 		CreatedBy:   *user,
 		LikedBy:     []models.UserSummary{},
 		SharedBy:    []string{},
 		Comments:    []models.Comment{},
-		UpdatedAt:   time.Now(),
+		UpdatedAt:   time.Now().UTC(),
 	}
 	err = s.repo.Create(*newPost)
 	if err != nil {
@@ -144,6 +146,30 @@ func (s *postService) GetCommentsByPostID(postID string) ([]*models.Comment, err
 	return comments, nil
 }
 
+func (s *postService) GetCommentByID(commentID string) (*models.Comment, error) {
+	comment, err := s.repo.GetCommentByID(commentID)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, errors.New("comment not found")
+		}
+		return nil, errors.New("failed to fetch comment: " + err.Error())
+	}
+
+	return comment, nil
+}
+
+func (s *postService) GetReplyCommentByID(commentID, replyID string) (*models.Comment, error) {
+	reply, err := s.repo.GetReplyCommentByID(commentID, replyID)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, errors.New("reply not found")
+		}
+		return nil, errors.New("failed to fetch reply: " + err.Error())
+	}
+
+	return reply, nil
+}
+
 func (s *postService) CreateComment(postID, userID string, request *models.CreateCommentRequest) (*models.Comment, error) {
 	_, err := s.repo.GetByID(postID)
 	if err != nil {
@@ -164,8 +190,8 @@ func (s *postService) CreateComment(postID, userID string, request *models.Creat
 		Text:      request.Text,
 		Voice:     "",
 		Images:    []models.Image{},
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
 		LikedBy:   []string{},
 		Replies:   []models.Comment{},
 		CreatedBy: *user,
@@ -193,8 +219,8 @@ func (s *postService) AddReplyToComment(commentID string, userID string, request
 		Text:      request.Text,
 		Voice:     "",
 		Images:    []models.Image{},
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
 		LikedBy:   []string{},
 		Replies:   []models.Comment{},
 		CreatedBy: *user,
