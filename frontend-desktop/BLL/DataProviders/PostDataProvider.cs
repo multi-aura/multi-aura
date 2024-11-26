@@ -28,6 +28,7 @@ namespace BLL.DataProviders
         }
 
         private AppDataProvider appDataProvider = AppDataProvider.Instance;
+        private RelationshipDataProvider relationshipDataProvider;
 
         private PostRepository postRepository;
         private PostService postService;
@@ -75,26 +76,37 @@ namespace BLL.DataProviders
 
         public void Initialize()
         {
-            FetchRecentPosts();
+            relationshipDataProvider = RelationshipDataProvider.Instance;
+            relationshipDataProvider.FollowingDataLoaded += FetchRecentPosts;
             FetchCurrentUserPosts();
         }
 
-        public async void FetchRecentPosts()
+        public void FetchRecentPosts()
         {
-            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            Task.Run(async () =>
             {
-                var (list, errorMessage) = await postService.GetRecentsAsync(1, 10);
+                try
+                {
+                    if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+                    {
+                        var (list, errorMessage) = await postService.GetRecentsAsync(1, 10);
 
-                if (string.IsNullOrEmpty(errorMessage))
-                {
-                    this.recentPosts = list;
-                    RecentPostsDataLoaded?.Invoke();
+                        if (string.IsNullOrEmpty(errorMessage))
+                        {
+                            this.recentPosts = list;
+                            RecentPostsDataLoaded?.Invoke();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error fetching recent posts: " + errorMessage);
+                        }
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Error fetching recent posts: " + errorMessage);
+                    MessageBox.Show("Error fetching recent posts: " + ex.Message);
                 }
-            }
+            });
         }
 
         private async void FetchCurrentUserPosts()
@@ -155,6 +167,127 @@ namespace BLL.DataProviders
                     MessageBox.Show("Error fetching comments of current post: " + errorMessage);
                 }
             }
+        }
+
+        //Interactions
+        public async Task<bool> LikePostAsync(string postId)
+        {
+            if (string.IsNullOrEmpty(postId))
+            {
+                return false;
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await postService.LikePostAsync(postId);
+
+                if (!result)
+                {
+                    MessageBox.Show($"Like failed: {errorMessage}");
+                }
+
+                return result;
+            }
+            return false;
+        }
+
+        public async Task<bool> UnlikePostAsync(string postId)
+        {
+            if (string.IsNullOrEmpty(postId))
+            {
+                return false;
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await postService.UnlikePostAsync(postId);
+
+                if (!result)
+                {
+                    MessageBox.Show($"Unlike failed: {errorMessage}");
+                }
+
+                return result;
+            }
+            return false;
+        }
+
+        public async Task<bool> LikeCommentAsync(string commentId)
+        {
+            if (string.IsNullOrEmpty(commentId))
+            {
+                return false;
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await postService.LikeCommentAsync(commentId);
+
+                if (!result)
+                {
+                    MessageBox.Show($"Like failed: {errorMessage}");
+                }
+
+                return result;
+            }
+            return false;
+        }
+
+        public async Task<bool> UnlikeCommentAsync(string commentId)
+        {
+            if (string.IsNullOrEmpty(commentId))
+            {
+                return false;
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await postService.UnlikeCommentAsync(commentId);
+
+                if (!result)
+                {
+                    MessageBox.Show($"Like failed: {errorMessage}");
+                }
+
+                return result;
+            }
+            return false;
+        }
+
+        public async Task<bool> LikeReplyCommentAsync(string commentId, string replyId)
+        {
+            if (string.IsNullOrEmpty(commentId) || string.IsNullOrEmpty(replyId))
+            {
+                return false;
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await postService.LikeReplyCommentAsync(commentId, replyId);
+
+                if (!result)
+                {
+                    MessageBox.Show($"Like failed: {errorMessage}");
+                }
+
+                return result;
+            }
+            return false;
+        }
+
+        public async Task<bool> UnlikeReplyCommentAsync(string commentId, string replyId)
+        {
+            if (string.IsNullOrEmpty(commentId) || string.IsNullOrEmpty(replyId))
+            {
+                return false;
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await postService.UnlikeReplyCommentAsync(commentId, replyId);
+
+                if (!result)
+                {
+                    MessageBox.Show($"Like failed: {errorMessage}");
+                }
+
+                return result;
+            }
+            return false;
         }
     }
 }

@@ -3,10 +3,7 @@ using BLL.Services;
 using DTO;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace BLL.DataProviders
 {
@@ -124,15 +121,18 @@ namespace BLL.DataProviders
 
         public void Initialize()
         {
-            SearchForYou();
-            SearchTrending();
-            SearchNews();
-            SearchPeople();
-            SearchPosts();
-        }
+            relationshipRepository = RelationshipRepository.Instance;
+            relationshipService = new RelationshipService(relationshipRepository);
 
+            searchRepository = SearchRepository.Instance;
+            searchService = new SearchService(searchRepository);
+
+            Search();
+        }
+        public string Query { get; set; } = "";
         public void Search(string query = "", int page = 1, int limit = 10)
         {
+            Query = query;
             SearchForYou(query, page, limit);
             SearchTrending(query, page, limit);
             SearchNews(query, page, limit);
@@ -278,6 +278,21 @@ namespace BLL.DataProviders
                     }
                 }
             }
+        }
+
+        public async Task<(List<UserSummary>, string)> SearchSuggestedPeople( int page = 1, int limit = 10)
+        {
+            try
+            {
+                if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+                {
+                    return await searchService.SearchPeopleAsync("", page, limit);
+                }
+            }
+            catch (Exception ex) {
+                return (null, "Have a problem: " + ex.Message);
+            }
+            return (null, "Unknown error");
         }
 
         public async void SearchPosts(string query = "", int page = 1, int limit = 10)

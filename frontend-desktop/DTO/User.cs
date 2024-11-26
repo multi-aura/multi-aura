@@ -72,11 +72,12 @@ namespace DTO
                 Nation = data.ContainsKey("nation") ? data["nation"] as string : string.Empty,
                 Province = data.ContainsKey("province") ? data["province"] as string : string.Empty,
                 Avatar = data.ContainsKey("avatar") ? data["avatar"] as string : string.Empty,
-                IsAdmin = data.ContainsKey("isAdmin") && bool.TryParse(data["isAdmin"].ToString(), out bool isAdmin) ? isAdmin : false,
-                IsActive = data.ContainsKey("isActive") && bool.TryParse(data["isActive"].ToString(), out bool isActive) ? isActive : false,
-                IsPublic = data.ContainsKey("isPublic") && bool.TryParse(data["isPublic"].ToString(), out bool isPublic) ? isPublic : false,
+                IsAdmin = DictionaryConverter.GetValueOrDefault(data, "isAdmin", false),
+                IsActive = DictionaryConverter.GetValueOrDefault(data, "isActive", false),
+                IsPublic = DictionaryConverter.GetValueOrDefault(data, "isPublic", false),
             };
         }
+
     }
 
     public class RegisterRequest
@@ -139,11 +140,11 @@ namespace DTO
         {
             return new UserSummary
             {
-                UserID = data.ContainsKey("userID") ? data["userID"] as string : string.Empty,
-                FullName = data.ContainsKey("fullname") ? data["fullname"] as string : string.Empty,
-                Username = data.ContainsKey("username") ? data["username"] as string : string.Empty,
-                Avatar = data.ContainsKey("avatar") ? data["avatar"] as string : string.Empty,
-                IsActive = data.ContainsKey("isActive") && bool.TryParse(data["isActive"].ToString(), out bool isActive) ? isActive : false,
+                UserID = DictionaryConverter.GetValueOrDefault(data, "userID", string.Empty),
+                FullName = DictionaryConverter.GetValueOrDefault(data, "fullname", string.Empty),
+                Username = DictionaryConverter.GetValueOrDefault(data, "username", string.Empty),
+                Avatar = DictionaryConverter.GetValueOrDefault(data, "avatar", string.Empty),
+                IsActive = DictionaryConverter.GetValueOrDefault(data, "isActive", false),
             };
         }
 
@@ -198,7 +199,7 @@ namespace DTO
                     return (userList, string.Empty);
                 }
 
-                return (null, "Failed to parse user list data");
+                return (null, "");
             }
             catch (Exception ex)
             {
@@ -209,25 +210,6 @@ namespace DTO
 
     public class UserProfile
     {
-        //public string UserID { get; set; }
-        //public string FullName { get; set; }
-        //public string Username { get; set; }
-
-        //[EmailAddress]
-        //public string Email { get; set; }
-
-        //[Phone]
-        //public string PhoneNumber { get; set; }
-
-        //public string Password { get; set; }
-        //public DateTime Birthday { get; set; }
-        //public string Gender { get; set; }
-        //public string Nation { get; set; }
-        //public string Province { get; set; }
-        //public string Avatar { get; set; }
-        //public bool IsAdmin { get; set; }
-        //public bool IsActive { get; set; }
-        //public bool IsPublic { get; set; }
         public User User { get; set; }
         public RelationshipStatus RelaStatus { get; set; }
         public List<UserSummary> Friends { get; set; }
@@ -276,40 +258,20 @@ namespace DTO
                 RelaStatus = DictionaryConverter.ParseRelationshipStatus(data, "relationshipStatus"),
 
                 // Parse Friends
-                Friends = ParseUserSummaryList(data, "friends"),
+                Friends = DictionaryConverter.ParseUserSummaryList(data, "friends"),
 
                 // Parse Followings
-                Followings = ParseUserSummaryList(data, "followings"),
+                Followings = DictionaryConverter.ParseUserSummaryList(data, "followings"),
 
                 // Parse Followers
-                Followers = ParseUserSummaryList(data, "followers"),
+                Followers = DictionaryConverter.ParseUserSummaryList(data, "followers"),
 
                 // Parse MutualFollowings
-                MutualFollowings = ParseUserSummaryList(data, "mutualFollowings"),
+                MutualFollowings = DictionaryConverter.ParseUserSummaryList(data, "mutualFollowings"),
 
                 // Parse MutualFriends
-                MutualFriends = ParseUserSummaryList(data, "mutualFriends")
+                MutualFriends = DictionaryConverter.ParseUserSummaryList(data, "mutualFriends")
             };
-        }
-
-        private static List<UserSummary> ParseUserSummaryList(Dictionary<string, object> data, string key)
-        {
-            if (data.ContainsKey(key) && data[key] is Newtonsoft.Json.Linq.JArray array)
-            {
-                return array.Select(item =>
-                {
-                    if (item is JObject jObject)
-                    {
-                        var dictFromJObject = jObject.ToObject<Dictionary<string, object>>();
-                        return UserSummary.FromDictionary(dictFromJObject);
-                    }
-                    return null;
-                })
-                .Where(user => user != null)
-                .ToList();
-            }
-
-            return new List<UserSummary>();
         }
     }
 }

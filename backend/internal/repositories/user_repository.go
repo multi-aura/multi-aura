@@ -31,11 +31,12 @@ type UserRepository interface {
 	GetFriends(userID string) ([]*models.UserSummary, error)
 	GetFollowers(userID string) ([]*models.UserSummary, error)
 	GetFollowings(userID string) ([]*models.UserSummary, error)
+	GetFollowingIDs(userID string) ([]string, error)
 	GetBlockedList(userID string) ([]string, error)
 	GetBlockedUsers(userID string) ([]*models.UserSummary, error)
 	GetRelationship(targetUserID, userID string) (models.RelationshipStatus, error)
-	Search(userID, query string, page, limit int) ([]*models.OtherUser, error)
-	GetSuggestedFriends(userID string, page, limit int) ([]*models.OtherUser, error)
+	Search(userID, query string, page, limit int) ([]*models.UserSummary, error)
+	GetSuggestedFriends(userID string, page, limit int) ([]*models.UserSummary, error)
 	UploadProfilePhoto(userID, url string) (bool, error)
 	GetMutualFollowings(targetUserID, userID string) ([]*models.UserSummary, error)
 	GetMutualFriends(targetUserID, userID string) ([]*models.UserSummary, error)
@@ -667,6 +668,7 @@ func (repo *userRepository) IsFriend(targetUserID, userID string) (bool, error) 
 	result, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (interface{}, error) {
 		query := `
 			MATCH (u1:User {userID: $userID})-[r:FRIEND_WITH]-(u2:User {userID: $targetUserID})
+			WHERE NOT EXISTS((u1)-[:BLOCKED]-(u2))
 			RETURN COUNT(r) > 0 AS isFriend
 		`
 
@@ -704,7 +706,8 @@ func (repo *userRepository) GetFriends(userID string) ([]*models.UserSummary, er
 	result, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (interface{}, error) {
 		records, err := tx.Run(ctx, `
 			MATCH (u:User {userID: $userID})-[:FRIEND_WITH]->(f:User)
-			RETURN f.userID AS userID, f.fullname AS fullname, f.username AS username, f.avatar AS avatar
+			WHERE NOT EXISTS((u)-[:BLOCKED]-(f))
+			RETURN f.userID AS userID, f.fullname AS fullname, f.username AS username, f.avatar AS avatar, f.isActive AS isActive
 		`, map[string]interface{}{
 			"userID": userID,
 		})
@@ -765,7 +768,8 @@ func (repo *userRepository) GetFollowers(userID string) ([]*models.UserSummary, 
 	result, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (interface{}, error) {
 		records, err := tx.Run(ctx, `
 			MATCH (u:User{userID: $userID})<-[:FOLLOWS|FRIEND_WITH]-(f:User)
-			RETURN f.userID AS userID, f.fullname AS fullname, f.username AS username, f.avatar AS avatar
+			WHERE NOT EXISTS((u)-[:BLOCKED]-(f))
+			RETURN f.userID AS userID, f.fullname AS fullname, f.username AS username, f.avatar AS avatar, f.isActive AS isActive
 		`, map[string]interface{}{
 			"userID": userID,
 		})
@@ -825,8 +829,8 @@ func (repo *userRepository) GetFollowings(userID string) ([]*models.UserSummary,
 	result, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (interface{}, error) {
 		records, err := tx.Run(ctx, `
 			MATCH (u:User{userID: $userID})-[:FOLLOWS|FRIEND_WITH]->(f:User)
-			WHERE u.userID = $userID
-			RETURN f.userID AS userID, f.fullname AS fullname, f.username AS username, f.avatar AS avatar
+			WHERE NOT EXISTS((u)-[:BLOCKED]-(f))
+			RETURN f.userID AS userID, f.fullname AS fullname, f.username AS username, f.avatar AS avatar, f.isActive AS isActive
 		`, map[string]interface{}{
 			"userID": userID,
 		})
@@ -871,6 +875,53 @@ func (repo *userRepository) GetFollowings(userID string) ([]*models.UserSummary,
 	followingList, ok := result.([]*models.UserSummary)
 	if !ok {
 		return nil, errors.New("failed to cast result to []*models.UserSummary")
+	}
+
+	return followingList, nil
+}
+
+func (repo *userRepository) GetFollowingIDs(userID string) ([]string, error) {
+	ctx := context.Background()
+	session := repo.db.Driver.NewSession(ctx, neo4j.SessionConfig{
+		AccessMode: neo4j.AccessModeRead,
+	})
+	defer session.Close(ctx)
+
+	result, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (interface{}, error) {
+		records, err := tx.Run(ctx, `
+			MATCH (u:User{userID: $userID})-[:FOLLOWS|FRIEND_WITH]->(f:User)
+			WHERE NOT EXISTS((u)-[:BLOCKED]-(f))
+			RETURN f.userID AS userID
+		`, map[string]interface{}{
+			"userID": userID,
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		var followings []string
+		for records.Next(ctx) {
+			record := records.Record()
+
+			if userIDVal, ok := record.Get("userID"); ok {
+				id := userIDVal.(string)
+				followings = append(followings, id)
+			}
+		}
+
+		if err = records.Err(); err != nil {
+			return nil, err
+		}
+		return followings, nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	followingList, ok := result.([]string)
+	if !ok {
+		return nil, errors.New("failed to cast result to []string")
 	}
 
 	return followingList, nil
@@ -965,13 +1016,13 @@ func (repo *userRepository) GetRelationship(targetUserID, userID string) (models
 	return result.(models.RelationshipStatus), nil
 }
 
-func (repo *userRepository) Search(userID, query string, page, limit int) ([]*models.OtherUser, error) {
+func (repo *userRepository) Search(userID, query string, page, limit int) ([]*models.UserSummary, error) {
 	ctx := context.Background()
 	session := repo.db.Driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeRead})
 	defer session.Close(ctx)
 
 	result, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (interface{}, error) {
-		// Calculate the number of records to skip based on the page and limit
+		// Tính toán số bản ghi cần bỏ qua dựa trên trang và giới hạn
 		skip := (page - 1) * limit
 
 		searchQuery := `
@@ -981,30 +1032,13 @@ func (repo *userRepository) Search(userID, query string, page, limit int) ([]*mo
 				AND NOT EXISTS {
 					MATCH (u)-[:BLOCKED]-(b:User {userID: $currentUserID})
 				}
-			OPTIONAL MATCH (u1:User {userID: $currentUserID})
-			OPTIONAL MATCH (u1)-[r1:FOLLOWS]->(u)
-			OPTIONAL MATCH (u)-[r2:FOLLOWS]->(u1)
-			OPTIONAL MATCH (u1)-[r3:FRIEND_WITH]-(u)
-			OPTIONAL MATCH (u)-[r4:FRIEND_WITH]-(u1)
-			RETURN u,
-			CASE 
-				WHEN COUNT(r3) > 0 THEN 'FRIEND'
-				WHEN COUNT(r4) > 0 THEN 'FRIEND'
-				WHEN COUNT(r1) > 0 THEN 'FOLLOWING'
-				WHEN COUNT(r2) > 0 THEN 'FOLLOWED_BY'
-				ELSE 'NO_RELATIONSHIP'
-			END AS relationshipStatus,
-			COALESCE(
-				MAX(CASE WHEN r3 IS NOT NULL THEN r3.since END), 
-				MAX(CASE WHEN r4 IS NOT NULL THEN r4.since END), 
-				MAX(CASE WHEN r1 IS NOT NULL THEN r1.since END), 
-				MAX(CASE WHEN r2 IS NOT NULL THEN r2.since END)
-			) AS since
+			RETURN u.userID AS userID, u.fullname AS fullname, u.username AS username, 
+			       u.avatar AS avatar, u.isActive AS isActive
 			SKIP $skip
 			LIMIT $limit
 		`
 
-		// Execute the query with pagination parameters
+		// Thực hiện truy vấn với các tham số phân trang
 		records, err := tx.Run(ctx, searchQuery, map[string]interface{}{
 			"query":         query,
 			"currentUserID": userID,
@@ -1016,54 +1050,133 @@ func (repo *userRepository) Search(userID, query string, page, limit int) ([]*mo
 			return nil, err
 		}
 
-		var otherUsers []*models.OtherUser
+		var userSummaries []*models.UserSummary
 
-		// Loop through the result set
+		// Duyệt qua tập kết quả
 		for records.Next(ctx) {
 			record := records.Record()
+			userSummary := &models.UserSummary{}
 
-			// Create a map to combine all data
-			userData := make(map[string]interface{})
-
-			// Get the user node
-			otherUserNode, _ := record.Get("u")
-			otherUserNodeProps := otherUserNode.(neo4j.Node).Props
-
-			// Get the relationship status and since timestamp
-			relationshipStatus, _ := record.Get("relationshipStatus")
-			since, _ := record.Get("since")
-
-			// Add user properties to the map
-			for key, value := range otherUserNodeProps {
-				userData[key] = value
+			if userIDVal, ok := record.Get("userID"); ok {
+				userSummary.ID = userIDVal.(string)
+			}
+			if fullnameVal, ok := record.Get("fullname"); ok {
+				userSummary.FullName = fullnameVal.(string)
+			}
+			if usernameVal, ok := record.Get("username"); ok {
+				userSummary.Username = usernameVal.(string)
+			}
+			if avatarVal, ok := record.Get("avatar"); ok {
+				userSummary.Avatar = avatarVal.(string)
+			}
+			if isActiveVal, ok := record.Get("isActive"); ok {
+				userSummary.IsActive = isActiveVal.(bool)
 			}
 
-			// Add relationship status and since to the map
-			userData["relationshipStatus"] = relationshipStatus
-			userData["since"] = since
-
-			// Convert the map to OtherUser model
-			otherUser := &models.OtherUser{}
-			otherUser, err = otherUser.FromMap(userData)
-			if err != nil {
-				return nil, errors.New("error converting map to User")
-			}
-
-			otherUsers = append(otherUsers, otherUser)
+			userSummaries = append(userSummaries, userSummary)
 		}
 
-		return otherUsers, nil
+		if err := records.Err(); err != nil {
+			return nil, err
+		}
+
+		return userSummaries, nil
 	})
 
 	if err != nil {
 		return nil, err
 	}
 
-	users := result.([]*models.OtherUser)
-	return users, nil
+	userSummaries, ok := result.([]*models.UserSummary)
+	if !ok {
+		return nil, errors.New("failed to cast result to []*models.UserSummary")
+	}
+
+	return userSummaries, nil
 }
 
-func (repo *userRepository) GetSuggestedFriends(userID string, page, limit int) ([]*models.OtherUser, error) {
+// func (repo *userRepository) GetSuggestedFriends(userID string, page, limit int) ([]*models.UserSummary, error) {
+// 	ctx := context.Background()
+// 	session := repo.db.Driver.NewSession(ctx, neo4j.SessionConfig{
+// 		AccessMode: neo4j.AccessModeRead,
+// 	})
+// 	defer session.Close(ctx)
+
+// 	result, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (interface{}, error) {
+// 		query := `
+// 			MATCH (me:User {userID: $userID})
+// 			OPTIONAL MATCH (me)-[:FOLLOWS|FRIEND_WITH]-(friend:User)
+// 			WITH me, COUNT(friend) AS friendCount
+// 			MATCH (fof:User)
+// 			WHERE fof.userID <> me.userID
+// 				AND NOT (me)-[:BLOCKED]-(fof)
+// 				AND NOT (me)-[:FOLLOWS|FRIEND_WITH]->(fof)
+// 			RETURN fof.userID AS userID, fof.fullname AS fullname, fof.username AS username,
+// 			       fof.avatar AS avatar, fof.isActive AS isActive, friendCount
+// 			ORDER BY
+// 				friendCount DESC,
+// 				CASE WHEN fof.province = me.province THEN 0 ELSE 1 END,
+// 				CASE WHEN fof.nation = me.nation THEN 0 ELSE 1 END
+// 			SKIP $skip
+// 			LIMIT $limit
+// 		`
+// 		skip := (page - 1) * limit
+
+// 		records, err := tx.Run(ctx, query, map[string]interface{}{
+// 			"userID": userID,
+// 			"skip":   skip,
+// 			"limit":  limit,
+// 		})
+// 		if err != nil {
+// 			return nil, err
+// 		}
+
+// 		var suggestedUsers []*models.UserSummary
+
+// 		for records.Next(ctx) {
+// 			record := records.Record()
+
+// 			// Tạo UserSummary từ các trường trả về
+// 			userSummary := &models.UserSummary{}
+
+// 			if userIDVal, ok := record.Get("userID"); ok {
+// 				userSummary.ID = userIDVal.(string)
+// 			}
+// 			if fullnameVal, ok := record.Get("fullname"); ok {
+// 				userSummary.FullName = fullnameVal.(string)
+// 			}
+// 			if usernameVal, ok := record.Get("username"); ok {
+// 				userSummary.Username = usernameVal.(string)
+// 			}
+// 			if avatarVal, ok := record.Get("avatar"); ok {
+// 				userSummary.Avatar = avatarVal.(string)
+// 			}
+// 			if isActive, ok := record.Get("isActive"); ok {
+// 				userSummary.IsActive = isActive.(bool)
+// 			}
+
+// 			suggestedUsers = append(suggestedUsers, userSummary)
+// 		}
+
+// 		if err = records.Err(); err != nil {
+// 			return nil, err
+// 		}
+// 		return suggestedUsers, nil
+// 	})
+
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	suggestedUserList, ok := result.([]*models.UserSummary)
+// 	if !ok {
+// 		return nil, errors.New("failed to cast result to []*models.UserSummary")
+// 	}
+
+// 	return suggestedUserList, nil
+// }
+
+func (repo *userRepository) GetSuggestedFriends(userID string, page, limit int) ([]*models.UserSummary, error) {
 	ctx := context.Background()
 	session := repo.db.Driver.NewSession(ctx, neo4j.SessionConfig{
 		AccessMode: neo4j.AccessModeRead,
@@ -1075,45 +1188,83 @@ func (repo *userRepository) GetSuggestedFriends(userID string, page, limit int) 
 			MATCH (me:User {userID: $userID})
 			OPTIONAL MATCH (me)-[:FOLLOWS|FRIEND_WITH]-(friend:User)
 			WITH me, COUNT(friend) AS friendCount
+
+			// Phần 1: Gợi ý dựa trên bạn bè chung
 			MATCH (fof:User)
 			WHERE fof.userID <> me.userID
 				AND NOT (me)-[:BLOCKED]-(fof)
 				AND NOT (me)-[:FOLLOWS|FRIEND_WITH]->(fof)
-			RETURN fof, friendCount
+			WITH me, fof, friendCount,
+				CASE WHEN fof.province = me.province THEN 0 ELSE 1 END AS sameProvince,
+				CASE WHEN fof.nation = me.nation THEN 0 ELSE 1 END AS sameNation
 			ORDER BY
 				friendCount DESC,
-				CASE WHEN fof.province = me.province THEN 0 ELSE 1 END,
-				CASE WHEN fof.nation = me.nation THEN 0 ELSE 1 END
-			SKIP $skip
-            LIMIT $limit
-        `
+				sameProvince,
+				sameNation
+
+			WITH me, collect(fof)[..$suggestedLimit] AS suggestedFriends
+
+			// Phần 2: Người dùng ngẫu nhiên (ngoại trừ các điều kiện trên)
+			MATCH (randomUser:User)
+			WHERE randomUser.userID <> me.userID
+				AND NOT (me)-[:BLOCKED]-(randomUser)
+				AND NOT (me)-[:FOLLOWS|FRIEND_WITH]->(randomUser)
+				AND NOT randomUser IN suggestedFriends
+			WITH suggestedFriends, collect(randomUser)[..$randomLimit] AS randomFriends
+
+			// Hợp nhất hai danh sách
+			UNWIND (suggestedFriends + randomFriends) AS user
+			RETURN DISTINCT user.userID AS userID, user.fullname AS fullname, 
+			                user.username AS username, user.avatar AS avatar, 
+			                user.isActive AS isActive
+		`
+
+		// Phân phối giới hạn giữa hai nhóm
+		suggestedLimit := limit / 2
+		randomLimit := limit - suggestedLimit
 		skip := (page - 1) * limit
 
 		records, err := tx.Run(ctx, query, map[string]interface{}{
-			"userID": userID,
-			"skip":   skip,
-			"limit":  limit,
+			"userID":         userID,
+			"suggestedLimit": suggestedLimit,
+			"randomLimit":    randomLimit,
+			"skip":           skip,
+			"limit":          limit,
 		})
 		if err != nil {
 			return nil, err
 		}
 
-		var suggestedUsers []*models.OtherUser
+		var suggestedUsers []*models.UserSummary
 
 		for records.Next(ctx) {
 			record := records.Record()
-			otherUserNode, _ := record.Get("fof")
-			otherUser := &models.OtherUser{}
-			otherUserNodeProps := otherUserNode.(neo4j.Node).Props
 
-			otherUser, err = otherUser.FromMap(otherUserNodeProps)
-			if err != nil {
-				return nil, errors.New("error converting map to UserSummary")
+			// Tạo UserSummary từ các trường trả về
+			userSummary := &models.UserSummary{}
+
+			if userIDVal, ok := record.Get("userID"); ok {
+				userSummary.ID = userIDVal.(string)
+			}
+			if fullnameVal, ok := record.Get("fullname"); ok {
+				userSummary.FullName = fullnameVal.(string)
+			}
+			if usernameVal, ok := record.Get("username"); ok {
+				userSummary.Username = usernameVal.(string)
+			}
+			if avatarVal, ok := record.Get("avatar"); ok {
+				userSummary.Avatar = avatarVal.(string)
+			}
+			if isActive, ok := record.Get("isActive"); ok {
+				userSummary.IsActive = isActive.(bool)
 			}
 
-			suggestedUsers = append(suggestedUsers, otherUser)
+			suggestedUsers = append(suggestedUsers, userSummary)
 		}
 
+		if err = records.Err(); err != nil {
+			return nil, err
+		}
 		return suggestedUsers, nil
 	})
 
@@ -1121,8 +1272,12 @@ func (repo *userRepository) GetSuggestedFriends(userID string, page, limit int) 
 		return nil, err
 	}
 
-	users := result.([]*models.OtherUser)
-	return users, nil
+	suggestedUserList, ok := result.([]*models.UserSummary)
+	if !ok {
+		return nil, errors.New("failed to cast result to []*models.UserSummary")
+	}
+
+	return suggestedUserList, nil
 }
 
 func (repo *userRepository) GetBlockedList(userID string) ([]string, error) {
@@ -1180,7 +1335,7 @@ func (repo *userRepository) GetBlockedUsers(userID string) ([]*models.UserSummar
 	result, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (interface{}, error) {
 		records, err := tx.Run(ctx, `
 			MATCH (u:User{userID: $userID})-[:BLOCKED]->(f:User)
-			RETURN f.userID AS userID, f.fullname AS fullname, f.username AS username, f.avatar AS avatar
+			RETURN f.userID AS userID, f.fullname AS fullname, f.username AS username, f.avatar AS avatar, f.isActive AS isActive
 		`, map[string]interface{}{
 			"userID": userID,
 		})

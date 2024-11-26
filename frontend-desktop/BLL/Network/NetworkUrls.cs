@@ -35,7 +35,7 @@ namespace BLL.Network
 
         public class AuthUrls
         {
-            private readonly string _Route = $"{BaseUrl}/auth";
+            private readonly string _Route = $"{BaseUrl}/user";
 
             public string Login => $"{_Route}/login";
             public string Register => $"{_Route}/register";
@@ -79,12 +79,33 @@ namespace BLL.Network
 
             //CRUD
             public string CreatePost => $"{_Route}/create";
+            public string DeletePost => $"{_Route}/delete";
+
 
             //Get
             public string GetPostByID => $"{_Route}";
             public string GetRecentPosts => $"{_Route}/recents";
             public string GetPostsByUser => $"{_Route}/user";
+
+            //Comments
             public string GetCommentsByPostID => $"{_Route}/comments";
+            public string CreateComment => $"{_Route}/add-comment";
+            public string DeleteComment => $"{_Route}/delete-comment";
+
+            //Reply Comments
+            public string AddReplyToComment => $"{_Route}/add-reply";
+            public string DeleteReplyFromComment => $"{_Route}/delete-reply";
+
+            //Interactions
+            //Like
+            public string LikePost => $"{_Route}/like";
+            public string LikeComment => $"{_Route}/comment/like";
+            public string LikeReplyComment => $"{_Route}/reply/like";
+
+            //Unlike
+            public string UnlikePost => $"{_Route}/unlike";
+            public string UnlikeComment => $"{_Route}/comment/unlike";
+            public string UnlikeReplyComment => $"{_Route}/reply/unlike";
         }
 
         public class SearchUrls
@@ -104,6 +125,8 @@ namespace BLL.Network
 
             public string UploadProfilePhoto => $"{_Route}/profile-photo";
             public string UploadPostPhotos => $"{_Route}/post-photos";
+            public string UploadCommentPhotos => $"{_Route}/comment-photos";
+            public string UploadReplyCommentsPhotos => $"{_Route}/reply-photos";
         }
     }
 }

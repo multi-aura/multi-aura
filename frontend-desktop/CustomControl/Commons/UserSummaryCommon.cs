@@ -15,6 +15,7 @@ namespace CustomControl.Commons
         public RelationshipDataProvider relationshipDataProvider;
         public UserSummary CurrentUserSummary = null;
         public bool IsFollowing = false;
+        public bool IsBlocked = false;
         public UserSummaryCommon()
         {
             InitializeComponent();
@@ -31,6 +32,123 @@ namespace CustomControl.Commons
             this.userAvatar.Click += UserSummaryCommon_Click;
             this.labelFullName.Click += UserSummaryCommon_Click;
             this.labelUsername.Click += UserSummaryCommon_Click;
+
+            relationshipDataProvider.OnFollowEvent += RelationshipDataProvider_OnFollowEvent;
+            relationshipDataProvider.OnUnfollowEvent += RelationshipDataProvider_OnUnfollowEvent;
+            relationshipDataProvider.OnBlockEvent += RelationshipDataProvider_OnBlockEvent;
+            relationshipDataProvider.OnUnblockEvent += RelationshipDataProvider_OnUnblockEvent;
+        }
+
+        private void RelationshipDataProvider_OnUnblockEvent(string id)
+        {
+            Task.Run(() =>
+            {
+                if (id == CurrentUserSummary.UserID)
+                {
+                    if (this.IsHandleCreated)
+                    {
+                        this.BeginInvoke(new Action(() =>
+                        {
+                            this.Visible = true;
+                        }));
+                    }
+                    else
+                    {
+                        this.HandleCreated += (sender, e) =>
+                        {
+                            this.BeginInvoke(new Action(() =>
+                            {
+                                this.Visible = true;
+                            }));
+                        };
+                    }
+                }
+            });
+        }
+
+        private void RelationshipDataProvider_OnBlockEvent(string id)
+        {
+            Task.Run(() =>
+            {
+                if (id == CurrentUserSummary.UserID)
+                {
+                    if (this.IsHandleCreated)
+                    {
+                        this.BeginInvoke(new Action(() =>
+                        {
+                            this.Visible = false;
+                        }));
+                    }
+                    else
+                    {
+                        this.HandleCreated += (sender, e) =>
+                        {
+                            this.BeginInvoke(new Action(() =>
+                            {
+                                this.Visible = false;
+                            }));
+                        };
+                    }
+                }
+            });
+        }
+
+        private void RelationshipDataProvider_OnUnfollowEvent(string id)
+        {
+            Task.Run(() =>
+            {
+                if (id == CurrentUserSummary.UserID)
+                {
+                    if (this.IsHandleCreated)
+                    {
+                        this.BeginInvoke(new Action(() =>
+                        {
+                            this.actionButton.Text = "Follow";
+                            IsFollowing = false;
+                        }));
+                    }
+                    else
+                    {
+                        this.HandleCreated += (sender, e) =>
+                        {
+                            this.BeginInvoke(new Action(() =>
+                            {
+                                this.actionButton.Text = "Follow";
+                                IsFollowing = false;
+                            }));
+                        };
+                    }
+                }
+            });
+        }
+
+        private void RelationshipDataProvider_OnFollowEvent(string id)
+        {
+            Task.Run(() =>
+            {
+                if (id == CurrentUserSummary.UserID)
+                {
+                    if (this.IsHandleCreated)
+                    {
+                        this.BeginInvoke(new Action(() =>
+                        {
+                            this.actionButton.Text = "Following";
+                            IsFollowing = true;
+                        }));
+                    }
+                    else
+                    {
+                        this.HandleCreated += (sender, e) =>
+                        {
+                            this.BeginInvoke(new Action(() =>
+                            {
+                                this.actionButton.Text = "Following";
+                                IsFollowing = true;
+                            }));
+                        };
+                    }
+                }
+            });
         }
 
         private async void UserSummaryCommon_Load(object sender, EventArgs e)
@@ -75,7 +193,7 @@ namespace CustomControl.Commons
                 }
             }
 
-            this.actionButton.Text = IsFollowing ? "Following" : "Follow";
+            this.actionButton.Text = IsBlocked ? "Unblock" : IsFollowing ? "Following" : "Follow";
         }
 
         private async void UserSummaryCommon_Click(object sender, EventArgs e)
@@ -133,7 +251,22 @@ namespace CustomControl.Commons
                 {
                     try
                     {
-                        if (IsFollowing)
+                        if (IsBlocked)
+                        {
+                            var (result, _) = await relationshipDataProvider.Unblock(CurrentUserSummary);
+
+                            this.Invoke(new Action(() =>
+                            {
+                                if (result)
+                                {
+                                    IsBlocked = false;
+                                    this.actionButton.Text = "Block";
+                                    this.Visible = false;
+                                    this.Dispose();
+                                }
+                            }));
+                        }
+                        else if (IsFollowing)
                         {
                             var (result,  _) = await relationshipDataProvider.Unfollow(CurrentUserSummary);
 

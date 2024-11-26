@@ -40,7 +40,7 @@ func (repo *storageRepository) UploadFile(file multipart.File, fileHeader *multi
 		return "", err
 	}
 
-	fileName := fmt.Sprintf("%s/%d_%s", folder, time.Now().Unix(), fileHeader.Filename)
+	fileName := fmt.Sprintf("%s/%d_%s", folder, time.Now().Unix(), uuid.New().String())
 
 	writer := bucket.Object(fileName).NewWriter(ctx)
 
@@ -84,7 +84,6 @@ func (repo *storageRepository) DeleteFile(fileName string) error {
 
 	return nil
 }
-
 
 func generateUUID() string {
 	return uuid.New().String()

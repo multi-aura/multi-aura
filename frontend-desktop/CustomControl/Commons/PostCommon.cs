@@ -16,6 +16,7 @@ namespace CustomControl.Commons
     public partial class PostCommon : UserControl
     {
         private AppDataProvider appDataProvider;
+        private PostDataProvider postDataProvider;
 
         private bool isLiked = false;
         private int likeCounter = 0;
@@ -42,6 +43,7 @@ namespace CustomControl.Commons
             InitializeComponent();
 
             appDataProvider = AppDataProvider.Instance;
+            postDataProvider = PostDataProvider.Instance;
 
             this.labelComment.Click += ShowModalPostDetails;
             this.labelLike.Click += LabelLike_Click;
@@ -51,23 +53,52 @@ namespace CustomControl.Commons
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
         }
 
-        private void LabelLike_Click(object sender, EventArgs e)
+        private async void LabelLike_Click(object sender, EventArgs e)
         {
             if (isLiked)
             {
-                //TODO: handle unlike
                 likeCounter--;
                 this.labelTotalLikes.Text = likeCounter.ToShortNumber();
                 this.labelLike.Image = Resources.heart;
+                var result = await postDataProvider.UnlikePostAsync(currentPost.Id);
+                if (result)
+                {
+                    isLiked = false;
+                }
+                else
+                {
+                    likeCounter++;
+                }
             }
             else
             {
-                //TODO: handle like
                 likeCounter++;
                 this.labelTotalLikes.Text = likeCounter.ToShortNumber();
                 this.labelLike.Image = Resources.red_heart;
+                var result = await postDataProvider.LikePostAsync(currentPost.Id);
+                if (result)
+                {
+                    isLiked = true;
+                }
+                else
+                {
+                    likeCounter--;
+                }
             }
-            isLiked = !isLiked;
+            UpdateHeart();
+        }
+
+        private void UpdateHeart()
+        {
+            this.labelTotalLikes.Text = likeCounter.ToShortNumber();
+            if (isLiked)
+            {
+                this.labelLike.Image = Resources.red_heart;
+            }
+            else
+            {
+                this.labelLike.Image = Resources.heart;
+            }
         }
 
         private async void UpdateUI()

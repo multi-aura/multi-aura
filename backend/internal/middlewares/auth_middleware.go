@@ -11,9 +11,9 @@ import (
 )
 
 func AuthMiddleware() fiber.Handler {
-    return func(c *fiber.Ctx) error {
+	return func(c *fiber.Ctx) error {
 		token := c.Get("Authorization")
-		log.Println("Authorization Header:", token)
+		// log.Println("Authorization Header:", token)
 
 		if token == "" {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Missing or invalid token"})

@@ -109,7 +109,7 @@ namespace GUI
                 );
             SetUpNavigators();
 
-            this.taskBarMore.Click += TaskBarMore_Click;
+            this.taskBarCreatePost.Click += TaskBarCreatePost_Click;
             this.userAvatar.Click += (sender, e) => OpenChildForm(profileForm, this.taskBarProfile);
         }
 
@@ -141,9 +141,9 @@ namespace GUI
             }
         }
 
-        private void TaskBarMore_Click(object sender, EventArgs e)
+        private void TaskBarCreatePost_Click(object sender, EventArgs e)
         {
-            Form modal = new PostDetails
+            Form modal = new PostCreationModal
             {
                 Width = this.Width - 400,
                 Height = this.Height - 200,
@@ -199,6 +199,7 @@ namespace GUI
                     if (nextModal != null && !nextModal.IsDisposed)
                     {
                         nextModal.TopMost = true;
+                        nextModal.TopMost = false;
                     }
                 }
                 else
@@ -214,6 +215,7 @@ namespace GUI
             };
 
             modal.TopMost = true;
+            modal.TopMost = false;
             modal.Show();
         }
 
@@ -231,6 +233,8 @@ namespace GUI
             {
                 overlayForm.Show();
             }
+            overlayForm.TopMost = true;
+            overlayForm.TopMost = false;
         }
 
         private void OverlayForm_Click(object sender, EventArgs e)
@@ -279,6 +283,7 @@ namespace GUI
                 if (topModal != null && !topModal.IsDisposed && topModal.Visible)
                 {
                     topModal.TopMost = true;
+                    topModal.TopMost = false;
                 }
             }
         }
@@ -316,23 +321,56 @@ namespace GUI
             //this.Load += (sender, e) => OpenChildForm(new HomeForm(), this.taskBarHome);
 
             this.taskBarHome.Click += TaskBarHome_Click;
-            this.taskBarExplore.Click += (sender, e) => OpenChildForm(exploreForm, sender);
+            this.taskBarExplore.Click += TaskBarExplore_Click;
             this.taskBarMessages.Click += (sender, e) => OpenChildForm(messagesForm, sender);
             this.taskBarNotifications.Click += (sender, e) => OpenChildForm(notificationsForm, sender);
-            this.taskBarProfile.Click += (sender, e) => OpenChildForm(profileForm, sender);
+            this.taskBarProfile.Click += TaskBarProfile_Click; ;
             this.labelAppName.Click += (sender, e) => OpenChildForm(homeForm, this.taskBarHome);
             this.Load += (sender, e) => OpenChildForm(homeForm, this.taskBarHome);
+
+            relationshipDataProvider.RequestReloadByBlockEvent += RelationshipDataProvider_RequestReloadByBlockEvent;
+        }
+
+        private void TaskBarProfile_Click(object sender, EventArgs e)
+        {
+            if (currentButton == (Button)sender)
+            {
+                ((ProfileForm)profileForm).Reload();
+            }
+            else
+            {
+                OpenChildForm(profileForm, sender);
+            }
+        }
+
+        private void RelationshipDataProvider_RequestReloadByBlockEvent()
+        {
+            ((HomeForm)homeForm).Reload();
+            ((ExploreForm)exploreForm).Reload();
+            ((ProfileForm)profileForm).Reload();
         }
 
         private void TaskBarHome_Click(object sender, EventArgs e)
         {
-            if(currentButton == (Button)sender)
+            if (currentButton == (Button)sender)
             {
                 ((HomeForm)homeForm).IsReload = !((HomeForm)homeForm).IsReload;
             }
             else
             {
                 OpenChildForm(homeForm, sender);
+            }
+        }
+
+        private void TaskBarExplore_Click(object sender, EventArgs e)
+        {
+            if (currentButton == (Button)sender)
+            {
+                ((ExploreForm)exploreForm).Reload();
+            }
+            else
+            {
+                OpenChildForm(exploreForm, sender);
             }
         }
 

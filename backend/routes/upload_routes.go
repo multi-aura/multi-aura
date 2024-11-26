@@ -20,4 +20,7 @@ func SetupUploadRoutes(app *fiber.App) {
 
 	uploadGroup.Post("/profile-photo", middlewares.AuthMiddleware(), controller.UploadProfilePhoto)
 	uploadGroup.Post("/post-photos/:postID", middlewares.AuthMiddleware(), controller.UploadPostPhotos)
+	uploadGroup.Post("/comment-photos/:commentID", middlewares.AuthMiddleware(), controller.UploadCommentsPhotos)
+	uploadGroup.Post("/reply-photos/:commentID/:replyID", middlewares.AuthMiddleware(), controller.UploadReplyCommentsPhotos)
+
 }
