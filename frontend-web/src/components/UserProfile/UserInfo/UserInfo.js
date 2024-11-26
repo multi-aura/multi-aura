@@ -1,11 +1,23 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import './UserInfo.css';
 import { followUser, unfollowUser, checkRelationshipStatus, blockUser } from '../../../services/RelationshipService';
+import { createConversation } from '../../../services/chatservice';
 
 const UserInfo = ({ user }) => {
+
   const [relationshipStatus, setRelationshipStatus] = useState('');
   const [loading, setLoading] = useState(true);
   const [isBlocked, setIsBlocked] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUserData(JSON.parse(storedUser));
+    }
+  }, []);
   useEffect(() => {
     const fetchRelationshipStatus = async () => {
       try {
@@ -22,6 +34,22 @@ const UserInfo = ({ user }) => {
 
     fetchRelationshipStatus();
   }, [user.userID]);
+
+  const handleCreateConversation = async () => {
+    try {
+      const name_conversation = "";
+      const userIDs = [userData.userID, user.userID];
+
+      const response = await createConversation(userIDs, name_conversation);
+      console.log(response);
+      if (response.status === 201 || response.status === 200) {
+        navigate(`/chat/${response.data._id}`);
+      }
+    } catch (err) {
+      console.error("Lỗi khi tạo cuộc trò chuyện:", err.message || err);
+    }
+  };
+
 
   const handleFollowClick = async () => {
     try {
@@ -42,8 +70,8 @@ const UserInfo = ({ user }) => {
   };
   const handleBlockClick = async () => {
     try {
-      await blockUser(user.userID); 
-      setIsBlocked(true); 
+      await blockUser(user.userID);
+      setIsBlocked(true);
     } catch (error) {
       console.error('Lỗi khi block người dùng:', error);
     }
@@ -59,7 +87,7 @@ const UserInfo = ({ user }) => {
       case 'Following':
         return <button className="btn btn-info" onClick={handleFollowClick}>FollowBack</button>;
       case 'Followed':
-        return <button className="btn btn-danger" onClick={handleUnfollowClick}>Unfollow</button>; 
+        return <button className="btn btn-danger" onClick={handleUnfollowClick}>Unfollow</button>;
       default:
         return <button className="btn btn-secondary" onClick={handleFollowClick}>Follow</button>;
     }
@@ -72,8 +100,8 @@ const UserInfo = ({ user }) => {
       <p>@{user.username}</p>
       <p>{user.posts} posts • {user.followers} followers • {user.following} following</p>
       <p>{user.bio}</p>
-      {renderActionButton()}  
-      <button className="btn btn-secondary">Message</button>
+      {renderActionButton()}
+      <button className="btn btn-secondary" onClick={handleCreateConversation}>Message</button>
       <button className="btn btn-danger" onClick={handleBlockClick} disabled={isBlocked}>
         {isBlocked ? 'Blocked' : 'Block'}
       </button>

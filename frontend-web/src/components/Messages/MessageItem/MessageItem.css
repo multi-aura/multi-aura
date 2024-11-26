@@ -2,7 +2,7 @@
 .message-item {
   display: flex;
   align-items: center;
-  padding: 15px;
+  padding:  5px 10px  !important;
   cursor: pointer;
   width: 100%;
   background-color: #1a1a1a;
@@ -16,8 +16,10 @@
   background-color: #444444 !important;
 }
 
+
 .message-item.selected {
-  background-color: #333 !important; /* Nền nổi bật khi được chọn */
+  background-color: #3b3b3b !important; /* Nền nổi bật khi được chọn */
+  border-right:  5px solid white;
 }
 
 .avatar {
@@ -71,7 +73,7 @@
   flex: 0 0 300px; /* Chiều rộng cố định cho sidebar */
   border-right: 1px solid #333; /* Đường viền bên phải để tạo thanh chia */
   overflow-y: auto; /* Cuộn nếu nội dung vượt quá chiều cao */
-  padding: 10px;
+  padding: 0px !important;
 }
 
 .chat-content-wrapper {

@@ -26,13 +26,13 @@
     height: 80px;
     border-radius: 50%; /* Bo tròn ảnh */
     margin-bottom: 10px;
-    border: 2px solid #007bff; /* Viền xanh nhạt */
+    border: 2px solid white; /* Viền xanh nhạt */
   }
   
   .setting-sidebar-chat .header h3 {
     font-size: 18px;
     margin: 5px 0;
-    color: #4caf50; /* Màu xanh lá nhạt */
+    color: white; /* Màu xanh lá nhạt */
   }
   
   .setting-sidebar-chat .header .actions {
