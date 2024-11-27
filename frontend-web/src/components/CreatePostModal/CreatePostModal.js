@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import "./CreatePostModal.css";
 import MapModal from "../MapModal/MapModal";
-import axios from "axios";
 import EmojiPicker from "../EmojiPicker/EmojiPicker";
+import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
 import { getAddressFromCoordinates } from "../../services/exploreSevice";
 
-const CreatePostModal = ({ onClose }) => {
+const CreatePostModal = ({ onClose, userCurent, onPostSubmit }) => {
+
     const [postContent, setPostContent] = useState("");
     const [selectedImages, setSelectedImages] = useState([]);
     const [showMap, setShowMap] = useState(false);
@@ -13,17 +14,46 @@ const CreatePostModal = ({ onClose }) => {
     const [selectedPosition, setSelectedPosition] = useState(null);
     const [address, setAddress] = useState("Không có địa chỉ");
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+    const handleCancel = () => {
+        if (postContent || selectedImages.length > 0) {
+            setShowConfirmModal(true); // Chỉ hiển thị modal khi có nội dung
+        } else {
+            onClose();
+        }
+    };
+
+    const handleClose = () => {
+        if (postContent || selectedImages.length > 0) {
+            setShowConfirmModal(true); // Mở modal xác nhận
+        } else {
+            onClose();
+        }
+    };
+
+    const handleConfirmClose = () => {
+        setShowConfirmModal(false); // Đóng modal xác nhận
+        onClose(); // Thực hiện hành động đóng modal
+    };
+
+    const handleConfirmCancel = () => {
+        setShowConfirmModal(false); // Đóng modal xác nhận
+        onClose(); // Thực hiện hành động hủy modal
+    };
+
     const handleInputChange = (event) => {
         setPostContent(event.target.value);
     };
+
     const onEmojiClick = (emojiObject) => {
         setPostContent((prev) => prev + emojiObject.emoji);
         setShowEmojiPicker(false); // Đóng bảng chọn emoji sau khi chọn
     };
+
     const handleImageChange = (event) => {
         const files = Array.from(event.target.files);
-        const newImages = files.map((file) => URL.createObjectURL(file));
-        setSelectedImages((prevImages) => [...prevImages, ...newImages]);
+        setSelectedImages((prevImages) => [...prevImages, ...files]);
     };
 
     const removeImage = (index) => {
@@ -49,33 +79,42 @@ const CreatePostModal = ({ onClose }) => {
             alert("Trình duyệt của bạn không hỗ trợ định vị.");
         }
     };
+
     const handleMapPositionSelect = async ({ lat, lng }) => {
         setSelectedPosition({ lat, lng });
 
         try {
             const location = await getAddressFromCoordinates(lat, lng);
             setAddress(location);
-            setShowMap(false); 
+            setShowMap(false);
         } catch (error) {
             console.error(error);
             setAddress("Không thể lấy địa chỉ cụ thể");
         }
     };
+
     const decodeHtmlEntity = (html) => {
         const textarea = document.createElement("textarea");
         textarea.innerHTML = html;
         return textarea.value;
     };
 
+ 
+    const handleSubmit = () => {
+        onPostSubmit(postContent, selectedImages); 
+    };
+    
+
+
     return (
         <div className="unique-post-overlay">
             <div className="unique-post-container">
                 <div className="unique-post-header">
-                    <button className="unique-post-cancel-btn" onClick={onClose}>
+                    <button className="unique-post-cancel-btn" onClick={handleCancel}>
                         Hủy
                     </button>
                     <p className="unique-post-slogan">Cùng Multi-Aura Tạo nên câu chuyện của riêng bạn!</p>
-                    <button className="unique-post-close-btn" onClick={onClose}>
+                    <button className="unique-post-close-btn" onClick={handleClose}>
                         <i className="fas fa-times"></i>
                     </button>
                 </div>
@@ -85,12 +124,12 @@ const CreatePostModal = ({ onClose }) => {
                         <div>
                             <div className="unique-post-header-container">
                                 <img
-                                    src="https://via.placeholder.com/40"
+                                    src={userCurent.avatar}
                                     alt="Avatar"
                                     className="unique-post-avatar"
                                 />
                                 <div>
-                                    <p className="unique-post-username">thang.trong.71216</p>
+                                    <p className="unique-post-username">{userCurent.fullname}</p>
                                     {selectedPosition && (
                                         <div className="address-display">
                                             <p className="address-text"> 🌍 {address}</p>
@@ -109,10 +148,10 @@ const CreatePostModal = ({ onClose }) => {
 
                             {selectedImages.length > 0 && (
                                 <div className="unique-post-images-grid">
-                                    {selectedImages.map((src, index) => (
+                                    {selectedImages.map((file, index) => (
                                         <div key={index} className="unique-post-image-item">
                                             <img
-                                                src={src}
+                                                src={URL.createObjectURL(file)}
                                                 alt={`Preview ${index}`}
                                                 className="unique-post-image-preview"
                                             />
@@ -165,7 +204,6 @@ const CreatePostModal = ({ onClose }) => {
                                         setShowEmojiPicker(false); // Đóng picker
                                     }}
                                 />
-
                             </div>
                         )}
 
@@ -176,23 +214,32 @@ const CreatePostModal = ({ onClose }) => {
                     </div>
                 </div>
 
-
                 <MapModal
                     show={showMap}
                     onClose={() => setShowMap(false)}
                     location={currentLocation}
                     onMapClick={handleMapPositionSelect}
                 />
+            
 
                 <div className="unique-post-footer">
                     <button
                         className="btn btn-outline-success"
                         disabled={!postContent && selectedImages.length === 0}
+                        onClick={handleSubmit}
                     >
                         Đăng
                     </button>
                 </div>
 
+                {showConfirmModal && (
+                    <ConfirmModal
+                        slogan=" Multi-Aura chờ bạn ! 😊"
+                        message="Bạn có chắc chắn muốn hủy tạo bài đăng?"
+                        onConfirm={handleConfirmClose}
+                        onCancel={() => setShowConfirmModal(false)}
+                    />
+                )}
             </div>
         </div>
     );

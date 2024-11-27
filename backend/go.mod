@@ -3,10 +3,13 @@ module multiaura
 go 1.23.1
 
 require (
+	cloud.google.com/go/storage v1.38.0
 	firebase.google.com/go v3.13.0+incompatible
+	github.com/cloudinary/cloudinary-go/v2 v2.9.0
 	github.com/gofiber/fiber/v2 v2.52.5
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/gorilla/websocket v1.5.3
+	github.com/joho/godotenv v1.5.1
 	go.mongodb.org/mongo-driver v1.17.0
 	google.golang.org/api v0.171.0
 )
@@ -18,8 +21,6 @@ require (
 	cloud.google.com/go/firestore v1.15.0 // indirect
 	cloud.google.com/go/iam v1.1.6 // indirect
 	cloud.google.com/go/longrunning v0.5.5 // indirect
-	cloud.google.com/go/storage v1.38.0 // indirect
-	github.com/cloudinary/cloudinary-go/v2 v2.9.0 // indirect
 	github.com/creasty/defaults v1.7.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
@@ -33,7 +34,6 @@ require (
 	github.com/googleapis/gax-go/v2 v2.12.3 // indirect
 	github.com/gorilla/schema v1.4.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
-	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/montanaflynn/stats v0.7.1 // indirect
@@ -75,7 +75,6 @@ require (
 
 require (
 	github.com/andybalholm/brotli v1.1.0 // indirect
-	github.com/cloudinary/cloudinary-go v1.7.0
 	github.com/google/uuid v1.6.0
 	github.com/klauspost/compress v1.17.9 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
