@@ -127,12 +127,7 @@ namespace BLL.Network
 
             public string ProfilePhoto => $"{_Route}/profile-photo";
 
-            // Photos
-            public string PostPhotos => $"{_Route}/post/photos";
-            public string CommentPhotos => $"{_Route}/comment/photos";
-            public string ReplyCommentPhotos => $"{_Route}/reply/photos";
-
-            // Delete
+            // Medias
             public string PostMedias => $"{_Route}/post/medias";
             public string CommentMedias => $"{_Route}/comment/medias";
             public string ReplyCommentMedias => $"{_Route}/reply/medias";

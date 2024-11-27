@@ -18,19 +18,27 @@ namespace CustomControl.Modals
 
             this.CloseWindowControlButton.Click += CloseWindowControlButton_Click;
             this.labelClear.Click += LabelClear_Click;
+            this.labelTextToSpeechClear.Click += LabelTextToSpeechClear_Click;
             this.buttonAddPhoto.Click += ButtonAddPhoto_Click;
             this.buttonPost.Click += ButtonPost_Click;
+        }
+
+        private void LabelTextToSpeechClear_Click(object sender, EventArgs e)
+        {
+            this.inputTextToSpeech.ClearText();
         }
 
         private async void ButtonPost_Click(object sender, EventArgs e)
         {
             this.buttonPost.Enabled = false;
-            if (!string.IsNullOrEmpty(this.inputText.Text) && this.inputText.Text != this.inputText.Hint)
+            string text = this.inputText.GetInputText();
+            string textToSpeech = this.inputTextToSpeech.GetInputText();
+            if (!string.IsNullOrEmpty(text))
             {
-                var result = await postDataProvider.CreatePostAsync(this.inputText.Text, photoPaths);
+                var result = await postDataProvider.CreatePostAsync(text, textToSpeech, photoPaths);
                 if (result)
                 {
-                    MessageBox.Show("Post created successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //MessageBox.Show("Post created successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ClearData();
                     this.Close();
                 }
@@ -45,6 +53,7 @@ namespace CustomControl.Modals
         private void ClearData()
         {
             this.inputText.ClearText();
+            this.inputTextToSpeech.ClearText();
 
             foreach (Control control in this.flowLayoutPanelPhotos.Controls)
             {

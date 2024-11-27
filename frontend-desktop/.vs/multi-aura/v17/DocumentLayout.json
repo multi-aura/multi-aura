@@ -1,36 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\customcontrol\\modals\\postcreationmodal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|solutionrelative:customcontrol\\modals\\postcreationmodal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
-        {
-          "DockedWidth": 101,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "PostCreationModal.cs",
-              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Modals\\PostCreationModal.cs",
-              "RelativeDocumentMoniker": "CustomControl\\Modals\\PostCreationModal.cs",
-              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Modals\\PostCreationModal.cs",
-              "RelativeToolTip": "CustomControl\\Modals\\PostCreationModal.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-26T17:50:00.622Z",
-              "EditorCaption": ""
-            }
-          ]
-        },
         {
           "DockedWidth": 101,
           "SelectedChildIndex": -1,

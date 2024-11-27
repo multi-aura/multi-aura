@@ -4,9 +4,7 @@ using BLL.Repositories.Repositories;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
-using System;
 using System.Threading.Tasks;
-using DTO;
 
 namespace BLL.Repository
 {
@@ -164,12 +162,17 @@ namespace BLL.Repository
         }
 
         //Upload medias
-        public async Task<APIResponse<string>> UploadPostPhotosAsync(string postId, IEnumerable<string> photoPaths)
+        public async Task<APIResponse<string>> UploadPostMediasAsync(string postId, string textToSpeech, IEnumerable<string> photoPaths)
         {
-            string url = $"{NetworkUrls.Upload.PostPhotos}/{postId}";
+            string url = $"{NetworkUrls.Upload.PostMedias}/{postId}";
 
             using (var formData = new MultipartFormDataContent())
             {
+                if (!string.IsNullOrEmpty(textToSpeech))
+                {
+                    formData.Add(new StringContent(textToSpeech), "text");
+                }
+
                 foreach (var photoPath in photoPaths)
                 {
                     var fileContent = new ByteArrayContent(File.ReadAllBytes(photoPath));
@@ -181,12 +184,17 @@ namespace BLL.Repository
             }
         }
 
-        public async Task<APIResponse<string>> UploadCommentPhotosAsync(string commentId, IEnumerable<string> photoPaths)
+        public async Task<APIResponse<string>> UploadCommentMediasAsync(string commentId, string textToSpeech, IEnumerable<string> photoPaths)
         {
-            string url = $"{NetworkUrls.Upload.CommentPhotos}/{commentId}";
+            string url = $"{NetworkUrls.Upload.CommentMedias}/{commentId}";
 
             using (var formData = new MultipartFormDataContent())
             {
+                if (!string.IsNullOrEmpty(textToSpeech))
+                {
+                    formData.Add(new StringContent(textToSpeech), "text");
+                }
+
                 foreach (var photoPath in photoPaths)
                 {
                     var fileContent = new ByteArrayContent(File.ReadAllBytes(photoPath));
@@ -198,12 +206,17 @@ namespace BLL.Repository
             }
         }
 
-        public async Task<APIResponse<string>> UploadReplyCommentPhotosAsync(string commentId, string replyId, IEnumerable<string> photoPaths)
+        public async Task<APIResponse<string>> UploadReplyCommentMediasAsync(string commentId, string replyId, string textToSpeech, IEnumerable<string> photoPaths)
         {
-            string url = $"{NetworkUrls.Upload.ReplyCommentPhotos}/{commentId}/{replyId}";
+            string url = $"{NetworkUrls.Upload.ReplyCommentMedias}/{commentId}/{replyId}";
 
             using (var formData = new MultipartFormDataContent())
             {
+                if (!string.IsNullOrEmpty(textToSpeech))
+                {
+                    formData.Add(new StringContent(textToSpeech), "text");
+                }
+                
                 foreach (var photoPath in photoPaths)
                 {
                     var fileContent = new ByteArrayContent(File.ReadAllBytes(photoPath));
