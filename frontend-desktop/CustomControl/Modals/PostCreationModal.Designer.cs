@@ -42,9 +42,16 @@
             this.inputText = new CustomControl.Commons.AutoSizeTextBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.labelClear = new System.Windows.Forms.Label();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.flowLayoutPanelPhotos = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.buttonAddPhoto = new System.Windows.Forms.Button();
-            this.flowLayoutPanelPhotos = new System.Windows.Forms.FlowLayoutPanel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.inputTextToSpeech = new CustomControl.Commons.AutoSizeTextBox();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.labelTextToSpeechClear = new System.Windows.Forms.Label();
             this.tableLayoutPanel8.SuspendLayout();
             this.panelWindownControlTaskBar.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -52,7 +59,11 @@
             this.panelMessageSending.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel8
@@ -259,16 +270,58 @@
             this.labelClear.Size = new System.Drawing.Size(24, 24);
             this.labelClear.TabIndex = 4;
             // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 1;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Controls.Add(this.label4, 0, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 113);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.Padding = new System.Windows.Forms.Padding(0, 4, 0, 4);
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(600, 34);
+            this.tableLayoutPanel4.TabIndex = 103;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label4.Font = new System.Drawing.Font("Montserrat SemiBold", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(0, 4);
+            this.label4.Margin = new System.Windows.Forms.Padding(0);
+            this.label4.Name = "label4";
+            this.label4.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.label4.Size = new System.Drawing.Size(410, 26);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Wanna some fun? Let\'s make a sound by type some word";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // flowLayoutPanelPhotos
+            // 
+            this.flowLayoutPanelPhotos.AutoSize = true;
+            this.flowLayoutPanelPhotos.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanelPhotos.Location = new System.Drawing.Point(0, 231);
+            this.flowLayoutPanelPhotos.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanelPhotos.MinimumSize = new System.Drawing.Size(40, 40);
+            this.flowLayoutPanelPhotos.Name = "flowLayoutPanelPhotos";
+            this.flowLayoutPanelPhotos.Padding = new System.Windows.Forms.Padding(10);
+            this.flowLayoutPanelPhotos.Size = new System.Drawing.Size(600, 40);
+            this.flowLayoutPanelPhotos.TabIndex = 106;
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.buttonAddPhoto);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 113);
+            this.panel1.Location = new System.Drawing.Point(0, 191);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(8, 6, 0, 6);
             this.panel1.Size = new System.Drawing.Size(600, 40);
-            this.panel1.TabIndex = 98;
+            this.panel1.TabIndex = 105;
             // 
             // buttonAddPhoto
             // 
@@ -293,17 +346,84 @@
             this.buttonAddPhoto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonAddPhoto.UseVisualStyleBackColor = false;
             // 
-            // flowLayoutPanelPhotos
+            // panel2
             // 
-            this.flowLayoutPanelPhotos.AutoSize = true;
-            this.flowLayoutPanelPhotos.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanelPhotos.Location = new System.Drawing.Point(0, 153);
-            this.flowLayoutPanelPhotos.Margin = new System.Windows.Forms.Padding(0);
-            this.flowLayoutPanelPhotos.MinimumSize = new System.Drawing.Size(40, 40);
-            this.flowLayoutPanelPhotos.Name = "flowLayoutPanelPhotos";
-            this.flowLayoutPanelPhotos.Padding = new System.Windows.Forms.Padding(10);
-            this.flowLayoutPanelPhotos.Size = new System.Drawing.Size(600, 40);
-            this.flowLayoutPanelPhotos.TabIndex = 99;
+            this.panel2.AutoSize = true;
+            this.panel2.BackColor = System.Drawing.Color.Transparent;
+            this.panel2.Controls.Add(this.tableLayoutPanel1);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(0, 147);
+            this.panel2.Margin = new System.Windows.Forms.Padding(0);
+            this.panel2.Name = "panel2";
+            this.panel2.Padding = new System.Windows.Forms.Padding(10);
+            this.panel2.Size = new System.Drawing.Size(600, 44);
+            this.panel2.TabIndex = 104;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            this.tableLayoutPanel1.Controls.Add(this.inputTextToSpeech, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 1, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(10, 10);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(10);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(580, 24);
+            this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // inputTextToSpeech
+            // 
+            this.inputTextToSpeech.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.inputTextToSpeech.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.inputTextToSpeech.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.inputTextToSpeech.Font = new System.Drawing.Font("Montserrat Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.inputTextToSpeech.ForeColor = System.Drawing.Color.White;
+            this.inputTextToSpeech.Hint = "Aa, enter your text";
+            this.inputTextToSpeech.Location = new System.Drawing.Point(0, 2);
+            this.inputTextToSpeech.Margin = new System.Windows.Forms.Padding(0, 0, 6, 0);
+            this.inputTextToSpeech.MaxLength = 180;
+            this.inputTextToSpeech.MaxLine = 6;
+            this.inputTextToSpeech.Multiline = true;
+            this.inputTextToSpeech.Name = "inputTextToSpeech";
+            this.inputTextToSpeech.Size = new System.Drawing.Size(542, 22);
+            this.inputTextToSpeech.TabIndex = 6;
+            this.inputTextToSpeech.Text = "Aa, enter your text";
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 1;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Controls.Add(this.labelTextToSpeechClear, 0, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(548, 0);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel3.MinimumSize = new System.Drawing.Size(24, 24);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(32, 24);
+            this.tableLayoutPanel3.TabIndex = 5;
+            // 
+            // labelTextToSpeechClear
+            // 
+            this.labelTextToSpeechClear.AutoSize = true;
+            this.labelTextToSpeechClear.BackColor = System.Drawing.Color.Transparent;
+            this.labelTextToSpeechClear.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.labelTextToSpeechClear.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelTextToSpeechClear.Image = global::CustomControl.Properties.Resources.clear24;
+            this.labelTextToSpeechClear.Location = new System.Drawing.Point(4, 0);
+            this.labelTextToSpeechClear.Margin = new System.Windows.Forms.Padding(0);
+            this.labelTextToSpeechClear.MaximumSize = new System.Drawing.Size(24, 24);
+            this.labelTextToSpeechClear.MinimumSize = new System.Drawing.Size(24, 24);
+            this.labelTextToSpeechClear.Name = "labelTextToSpeechClear";
+            this.labelTextToSpeechClear.Size = new System.Drawing.Size(24, 24);
+            this.labelTextToSpeechClear.TabIndex = 4;
             // 
             // PostCreationModal
             // 
@@ -314,6 +434,8 @@
             this.ClientSize = new System.Drawing.Size(600, 700);
             this.Controls.Add(this.flowLayoutPanelPhotos);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.tableLayoutPanel4);
             this.Controls.Add(this.panelMessageSending);
             this.Controls.Add(this.panel12);
             this.Controls.Add(this.panelWindownControlTaskBar);
@@ -335,8 +457,16 @@
             this.tableLayoutPanel5.PerformLayout();
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -354,10 +484,17 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.Label labelClear;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelPhotos;
         private Commons.AutoSizeTextBox inputText;
-        private System.Windows.Forms.Button buttonAddPhoto;
         private System.Windows.Forms.Button buttonPost;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelPhotos;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button buttonAddPhoto;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private Commons.AutoSizeTextBox inputTextToSpeech;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Label labelTextToSpeechClear;
     }
 }

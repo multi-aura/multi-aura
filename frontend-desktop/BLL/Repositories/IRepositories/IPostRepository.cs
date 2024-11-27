@@ -36,9 +36,9 @@ namespace BLL.Repositories.IRepositories
         Task<APIResponse<string>> UnlikeReplyCommentAsync(string commentId, string replyId);
 
         //Upload medias
-        Task<APIResponse<string>> UploadPostPhotosAsync(string postId, IEnumerable<string> photoPaths);
-        Task<APIResponse<string>> UploadCommentPhotosAsync(string commentId, IEnumerable<string> photoPaths);
-        Task<APIResponse<string>> UploadReplyCommentPhotosAsync(string commentId, string replyId, IEnumerable<string> photoPaths);
+        Task<APIResponse<string>> UploadPostMediasAsync(string postId, string textToSpeech, IEnumerable<string> photoPaths);
+        Task<APIResponse<string>> UploadCommentMediasAsync(string commentId, string textToSpeech, IEnumerable<string> photoPaths);
+        Task<APIResponse<string>> UploadReplyCommentMediasAsync(string commentId, string replyId, string textToSpeech, IEnumerable<string> photoPaths);
 
         //Delete medias
         Task<APIResponse<string>> DeletePostMediaDataAsync(string postId);

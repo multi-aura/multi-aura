@@ -34,6 +34,16 @@ namespace CustomControl.Commons
             ShowHint(null, null);
         }
 
+        public string GetInputText()
+        {
+            if (isHintVisible || string.IsNullOrEmpty(this.Text))
+            {
+                return string.Empty;
+            }
+
+            return this.Text;
+        }
+
         public void ClearText()
         {
             this.Text = string.Empty;

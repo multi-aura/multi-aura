@@ -61,7 +61,7 @@ func (uc *UploadController) UploadProfilePhoto(c *fiber.Ctx) error {
 	})
 }
 
-func (uc *UploadController) UploadPostPhotos(c *fiber.Ctx) error {
+func (uc *UploadController) UploadPostMediaData(c *fiber.Ctx) error {
 	userID := c.Locals("userID").(string)
 	if userID == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
@@ -80,17 +80,6 @@ func (uc *UploadController) UploadPostPhotos(c *fiber.Ctx) error {
 		})
 	}
 
-	// reader := bytes.NewReader(c.Body())
-	// data, err := io.ReadAll(reader)
-	// if err != nil {
-	// 	return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
-	// 		Status:  fiber.StatusInternalServerError,
-	// 		Message: "Error reading request body",
-	// 		Error:   err.Error(),
-	// 	})
-	// }
-	// log.Println(string(data))
-
 	form, err := c.MultipartForm()
 	if err != nil {
 		return c.Status(fiber.StatusNotAcceptable).JSON(APIResponse.ErrorResponse{
@@ -100,47 +89,54 @@ func (uc *UploadController) UploadPostPhotos(c *fiber.Ctx) error {
 		})
 	}
 
-	// Lấy tất cả các file từ form
 	files := form.File["photos"]
-	if len(files) == 0 {
+
+	text := ""
+	if val, ok := form.Value["text"]; ok && len(val) > 0 {
+		text = val[0]
+	}
+
+	if len(files) == 0 && text == "" {
 		return c.Status(fiber.StatusFailedDependency).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusFailedDependency,
-			Message: "No files provided",
-			Error:   "NoFilesProvided",
+			Message: "No media or text provided",
+			Error:   "NoMediaOrTextProvided",
 		})
 	}
 
 	var openedFiles []multipart.File
-	for _, fileHeader := range files {
-		file, err := fileHeader.Open()
-		if err != nil {
-			return c.Status(fiber.StatusUnsupportedMediaType).JSON(APIResponse.ErrorResponse{
-				Status:  fiber.StatusUnsupportedMediaType,
-				Message: "Unable to open file",
-				Error:   err.Error(),
-			})
+	if len(files) > 0 {
+		for _, fileHeader := range files {
+			file, err := fileHeader.Open()
+			if err != nil {
+				return c.Status(fiber.StatusUnsupportedMediaType).JSON(APIResponse.ErrorResponse{
+					Status:  fiber.StatusUnsupportedMediaType,
+					Message: "Unable to open file",
+					Error:   err.Error(),
+				})
+			}
+			defer file.Close()
+			openedFiles = append(openedFiles, file)
 		}
-		defer file.Close()
-		openedFiles = append(openedFiles, file)
 	}
 
-	fileURLs, err := uc.service.UploadPostPhotos(postID, userID, openedFiles, files)
+	fileURLs, err := uc.service.UploadPostMediaData(postID, userID, text, openedFiles, files)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusInternalServerError,
-			Message: "Failed to upload post photos",
+			Message: "Failed to upload post medias",
 			Error:   err.Error(),
 		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
 		Status:  fiber.StatusOK,
-		Message: "Post photos uploaded successfully",
+		Message: "Post medias uploaded successfully",
 		Data:    fiber.Map{"urls": fileURLs},
 	})
 }
 
-func (uc *UploadController) UploadCommentsPhotos(c *fiber.Ctx) error {
+func (uc *UploadController) UploadCommentsMediaData(c *fiber.Ctx) error {
 	userID := c.Locals("userID").(string)
 	if userID == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
@@ -168,47 +164,54 @@ func (uc *UploadController) UploadCommentsPhotos(c *fiber.Ctx) error {
 		})
 	}
 
-	// Lấy tất cả các file từ form
 	files := form.File["photos"]
-	if len(files) == 0 {
+
+	text := ""
+	if val, ok := form.Value["text"]; ok && len(val) > 0 {
+		text = val[0]
+	}
+
+	if len(files) == 0 && text == "" {
 		return c.Status(fiber.StatusFailedDependency).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusFailedDependency,
-			Message: "No files provided",
-			Error:   "NoFilesProvided",
+			Message: "No media or text provided",
+			Error:   "NoMediaOrTextProvided",
 		})
 	}
 
 	var openedFiles []multipart.File
-	for _, fileHeader := range files {
-		file, err := fileHeader.Open()
-		if err != nil {
-			return c.Status(fiber.StatusUnsupportedMediaType).JSON(APIResponse.ErrorResponse{
-				Status:  fiber.StatusUnsupportedMediaType,
-				Message: "Unable to open file",
-				Error:   err.Error(),
-			})
+	if len(files) > 0 {
+		for _, fileHeader := range files {
+			file, err := fileHeader.Open()
+			if err != nil {
+				return c.Status(fiber.StatusUnsupportedMediaType).JSON(APIResponse.ErrorResponse{
+					Status:  fiber.StatusUnsupportedMediaType,
+					Message: "Unable to open file",
+					Error:   err.Error(),
+				})
+			}
+			defer file.Close()
+			openedFiles = append(openedFiles, file)
 		}
-		defer file.Close()
-		openedFiles = append(openedFiles, file)
 	}
 
-	fileURLs, err := uc.service.UploadCommentPhotos(commentID, userID, openedFiles, files)
+	fileURLs, err := uc.service.UploadCommentMediaData(commentID, userID, text, openedFiles, files)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusInternalServerError,
-			Message: "Failed to upload comment photos",
+			Message: "Failed to upload comment medias",
 			Error:   err.Error(),
 		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
 		Status:  fiber.StatusOK,
-		Message: "Comment photos uploaded successfully",
+		Message: "Comment medias uploaded successfully",
 		Data:    fiber.Map{"urls": fileURLs},
 	})
 }
 
-func (uc *UploadController) UploadReplyCommentsPhotos(c *fiber.Ctx) error {
+func (uc *UploadController) UploadReplyCommentMediaData(c *fiber.Ctx) error {
 	userID := c.Locals("userID").(string)
 	if userID == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
@@ -246,40 +249,48 @@ func (uc *UploadController) UploadReplyCommentsPhotos(c *fiber.Ctx) error {
 	}
 
 	files := form.File["photos"]
-	if len(files) == 0 {
+
+	text := ""
+	if val, ok := form.Value["text"]; ok && len(val) > 0 {
+		text = val[0]
+	}
+
+	if len(files) == 0 && text == "" {
 		return c.Status(fiber.StatusFailedDependency).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusFailedDependency,
-			Message: "No files provided",
-			Error:   "NoFilesProvided",
+			Message: "No media or text provided",
+			Error:   "NoMediaOrTextProvided",
 		})
 	}
 
 	var openedFiles []multipart.File
-	for _, fileHeader := range files {
-		file, err := fileHeader.Open()
-		if err != nil {
-			return c.Status(fiber.StatusUnsupportedMediaType).JSON(APIResponse.ErrorResponse{
-				Status:  fiber.StatusUnsupportedMediaType,
-				Message: "Unable to open file",
-				Error:   err.Error(),
-			})
+	if len(files) > 0 {
+		for _, fileHeader := range files {
+			file, err := fileHeader.Open()
+			if err != nil {
+				return c.Status(fiber.StatusUnsupportedMediaType).JSON(APIResponse.ErrorResponse{
+					Status:  fiber.StatusUnsupportedMediaType,
+					Message: "Unable to open file",
+					Error:   err.Error(),
+				})
+			}
+			defer file.Close()
+			openedFiles = append(openedFiles, file)
 		}
-		defer file.Close()
-		openedFiles = append(openedFiles, file)
 	}
 
-	fileURLs, err := uc.service.UploadReplyCommentPhotos(commentID, replyID, userID, openedFiles, files)
+	fileURLs, err := uc.service.UploadReplyCommentMediaData(commentID, replyID, userID, text, openedFiles, files)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusInternalServerError,
-			Message: "Failed to upload reply comment photos",
+			Message: "Failed to upload reply comment medias",
 			Error:   err.Error(),
 		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
 		Status:  fiber.StatusOK,
-		Message: "Reply comment photos uploaded successfully",
+		Message: "Reply comment medias uploaded successfully",
 		Data:    fiber.Map{"urls": fileURLs},
 	})
 }
@@ -307,14 +318,14 @@ func (uc *UploadController) DeletePostMediaData(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusInternalServerError,
-			Message: "Failed to delete post photos",
+			Message: "Failed to delete post medias",
 			Error:   err.Error(),
 		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
 		Status:  fiber.StatusOK,
-		Message: "Post photos deleted successfully",
+		Message: "Post medias deleted successfully",
 		Data:    nil,
 	})
 }
@@ -342,14 +353,14 @@ func (uc *UploadController) DeleteCommentMediaData(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusInternalServerError,
-			Message: "Failed to delete comment photos",
+			Message: "Failed to delete comment medias",
 			Error:   err.Error(),
 		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
 		Status:  fiber.StatusOK,
-		Message: "Comment photos deleted successfully",
+		Message: "Comment medias deleted successfully",
 		Data:    nil,
 	})
 }
@@ -386,14 +397,14 @@ func (uc *UploadController) DeleteReplyCommentMediaData(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
 			Status:  fiber.StatusInternalServerError,
-			Message: "Failed to delete reply comment photos",
+			Message: "Failed to delete reply comment medias",
 			Error:   err.Error(),
 		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
 		Status:  fiber.StatusOK,
-		Message: "Reply comment photos deleted successfully",
+		Message: "Reply comment medias deleted successfully",
 		Data:    nil,
 	})
 }

@@ -53,11 +53,13 @@ func (repo *cloudinaryRepository) UploadFile(file multipart.File, fileHeader *mu
 	return uploadResult.SecureURL, nil
 }
 
-func (repo *cloudinaryRepository) DeleteFile(fileName string) error {
+func (repo *cloudinaryRepository) DeleteFile(fileName, resourceType string) error {
 	ctx := context.Background()
 
+	// Đặt loại tài nguyên dựa vào tham số truyền vào
 	_, err := repo.cloudinary.Upload.Destroy(ctx, uploader.DestroyParams{
-		PublicID: fileName,
+		PublicID:    fileName,
+		ResourceType: resourceType, // "image", "video", hoặc "raw"
 	})
 	if err != nil {
 		return fmt.Errorf("failed to delete file %s from Cloudinary: %w", fileName, err)

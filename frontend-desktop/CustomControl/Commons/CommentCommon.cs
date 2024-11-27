@@ -110,6 +110,8 @@ namespace CustomControl.Commons
 
             this.userAvatar.Click += UserAvatar_Click;
             this.labelFullName.Click += UserAvatar_Click;
+
+            this.labelTextToSpeechClear.Click += LabelTextToSpeechClear_Click;
         }
 
         private void PostDataProvider_OnUnlikeCommentSuccess(string id)
@@ -276,7 +278,10 @@ namespace CustomControl.Commons
                 return;
             }
 
-            var result = await postDataProvider.CreateReplyCommentAsync(currentComment.Id, this.inputText.Text, photoPaths);
+            string text = this.inputText.GetInputText();
+            string textToSpeech = this.inputTextToSpeech.GetInputText();
+
+            var result = await postDataProvider.CreateReplyCommentAsync(currentComment.Id, text, textToSpeech, photoPaths);
             if (result != null)
             {
                 AddReplyCommentToPanel(result);
@@ -285,7 +290,7 @@ namespace CustomControl.Commons
             }
             else
             {
-                MessageBox.Show("Failed to create creply comment. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Failed to create reply comment. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             this.labelSending.Enabled = true;
@@ -510,7 +515,7 @@ namespace CustomControl.Commons
                 else
                 {
                     this.labelFullName.Text = "Unknown";
-                }                
+                }
             }
         }
 
@@ -558,7 +563,8 @@ namespace CustomControl.Commons
                 {
                     this.voicePlayer.Visible = true;
                 }
-                else {
+                else
+                {
                     this.voicePlayer.Visible = false;
                 }
             }
@@ -680,6 +686,11 @@ namespace CustomControl.Commons
         private void LabelReply_MouseHover(object sender, EventArgs e)
         {
             labelReply.ForeColor = Color.White;
+        }
+
+        private void LabelTextToSpeechClear_Click(object sender, EventArgs e)
+        {
+            this.inputTextToSpeech.ClearText();
         }
     }
 }

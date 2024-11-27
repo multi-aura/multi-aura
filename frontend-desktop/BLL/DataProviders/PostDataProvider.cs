@@ -189,7 +189,7 @@ namespace BLL.DataProviders
 
         //CRUD
         //Post
-        public async Task<bool> CreatePostAsync(string description, IEnumerable<string> photoPaths)
+        public async Task<bool> CreatePostAsync(string description, string textToSpeech, IEnumerable<string> photoPaths)
         {
             if (string.IsNullOrEmpty(description))
             {
@@ -197,7 +197,7 @@ namespace BLL.DataProviders
             }
             if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
             {
-                var (post, errorMessage) = await postService.CreatePostAsync(description, photoPaths);
+                var (post, errorMessage) = await postService.CreatePostAsync(description, textToSpeech, photoPaths);
 
                 if (post == null)
                 {
@@ -232,7 +232,7 @@ namespace BLL.DataProviders
         }
 
         //Comment
-        public async Task<Comment> CreateCommentAsync(string postId, string text, IEnumerable<string> photoPaths)
+        public async Task<Comment> CreateCommentAsync(string postId, string text, string textToSpeech, IEnumerable<string> photoPaths)
         {
             if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(postId))
             {
@@ -240,7 +240,7 @@ namespace BLL.DataProviders
             }
             if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
             {
-                var (result, errorMessage) = await postService.CreateCommentAsync(postId, text, photoPaths);
+                var (result, errorMessage) = await postService.CreateCommentAsync(postId, text, textToSpeech, photoPaths);
 
                 OnCreateCommentSuccess?.Invoke(result);
                 return result;
@@ -270,7 +270,7 @@ namespace BLL.DataProviders
         }
 
         //Reply comment
-        public async Task<Comment> CreateReplyCommentAsync(string commentId, string text, IEnumerable<string> photoPaths)
+        public async Task<Comment> CreateReplyCommentAsync(string commentId, string text, string textToSpeech, IEnumerable<string> photoPaths)
         {
             if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(commentId))
             {
@@ -278,7 +278,7 @@ namespace BLL.DataProviders
             }
             if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
             {
-                var (reply, errorMessage) = await postService.CreateReplyCommentAsync(commentId, text, photoPaths);
+                var (reply, errorMessage) = await postService.CreateReplyCommentAsync(commentId, text, textToSpeech, photoPaths);
 
                 OnCreateReplyCommentSuccess?.Invoke(reply);
                 return reply;

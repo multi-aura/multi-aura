@@ -66,6 +66,7 @@ func (s *postService) CreatePost(post *models.CreatePostRequest) (*models.Post, 
 	newPost := &models.Post{
 		ID:          primitive.NewObjectID(),
 		Description: post.Description,
+		Voice:       "",
 		Images:      []models.Image{},
 		CreatedAt:   time.Now().UTC(),
 		CreatedBy:   *user,

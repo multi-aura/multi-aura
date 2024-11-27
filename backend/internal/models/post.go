@@ -15,6 +15,7 @@ type Image struct {
 type Post struct {
 	ID          primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" form:"_id,omitempty"`
 	Description string             `bson:"description" json:"description" form:"description"`
+	Voice       string             `bson:"voice,omitempty" json:"voice,omitempty" form:"voice,omitempty"`
 	Images      []Image            `bson:"images" json:"images" form:"images"`
 	CreatedAt   time.Time          `bson:"createdAt" json:"createdAt" form:"createdAt"`
 	CreatedBy   UserSummary        `bson:"createdBy" json:"createdBy" form:"createdBy"`
@@ -52,6 +53,7 @@ func (p *Post) ToMap() map[string]interface{} {
 	return map[string]interface{}{
 		"_id":         p.ID,
 		"description": p.Description,
+		"voice":       p.Voice,
 		"images":      images,
 		"createdAt":   p.CreatedAt,
 		"createdBy":   p.CreatedBy.ToMap(),
@@ -106,6 +108,7 @@ func (p *Post) FromMap(data map[string]interface{}) (*Post, error) {
 	return &Post{
 		ID:          utils.GetObjectID(data, "_id"),
 		Description: utils.GetString(data, "description"),
+		Voice:       utils.GetString(data, "voice"),
 		Images:      images,
 		CreatedAt:   utils.GetTime(data, "createdAt"),
 		CreatedBy:   *createdBy,
