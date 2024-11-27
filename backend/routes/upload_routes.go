@@ -29,9 +29,9 @@ func SetupUploadRoutes(app *fiber.App) {
 	uploadGroup := app.Group("/upload")
 
 	uploadGroup.Post("/profile-photo", middlewares.AuthMiddleware(), controller.UploadProfilePhoto)
-	uploadGroup.Post("/post/photos/:postID", middlewares.AuthMiddleware(), controller.UploadPostPhotos)
-	uploadGroup.Post("/comment/photos/:commentID", middlewares.AuthMiddleware(), controller.UploadCommentsPhotos)
-	uploadGroup.Post("/reply/photos/:commentID/:replyID", middlewares.AuthMiddleware(), controller.UploadReplyCommentsPhotos)
+	uploadGroup.Post("/post/medias/:postID", middlewares.AuthMiddleware(), controller.UploadPostMediaData)
+	uploadGroup.Post("/comment/medias/:commentID", middlewares.AuthMiddleware(), controller.UploadCommentsMediaData)
+	uploadGroup.Post("/reply/medias/:commentID/:replyID", middlewares.AuthMiddleware(), controller.UploadReplyCommentMediaData)
 
 	//Delete from cloud
 	uploadGroup.Delete("/post/medias/:postID", middlewares.AuthMiddleware(), controller.DeletePostMediaData)

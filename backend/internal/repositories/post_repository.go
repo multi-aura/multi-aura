@@ -25,15 +25,18 @@ type PostRepository interface {
 	SearchPostsForYou(query, userID string, friends []string, blockedUserIDs []string, limit, page int64) ([]*models.Post, error)
 	Search(query string, blockedUserIDs []string, limit, page int64) ([]*models.Post, error)
 	UploadPhotos(id string, url []string) (bool, error)
+	UpdateVoice(id string, url string) (bool, error)
 	GetPostByCommentID(commentID string) (*models.Post, error)
 	GetCommentByID(commentID string) (*models.Comment, error)
 	GetReplyCommentByID(commentID, replyID string) (*models.Comment, error)
 	AddComment(postID string, comment models.Comment) error
 	DeleteComment(postID, commentID string) error
 	UpdateCommentPhotos(postID, commentID string, fileURLs []string) error
+	UpdateCommentVoice(postID, commentID string, url string) (bool, error)
 	AddReplyToComment(commentID string, reply models.Comment) error
 	DeleteReplyFromComment(commentID, replyID string) error
 	UpdateReplyCommentPhotos(commentID, replyID string, fileURLs []string) error
+	UpdateReplyCommentVoice(commentID, replyID string, url string) (bool, error)
 	LikePost(postID string, userSummary models.UserSummary) error
 	UnlikePost(postID string, userID string) error
 	LikeComment(commentID, username string) error
@@ -362,7 +365,6 @@ func (repo *postRepository) SearchTrendingPosts(query string, blockedUserIDs []s
 func (repo *postRepository) SearchNewsMixedPosts(query string, userIDs []string, blockedUserIDs []string, limit, page int64) ([]*models.Post, error) {
 	var friendPosts []*models.Post
 	var otherPosts []*models.Post
-
 	sort := bson.D{{Key: "createdAt", Value: -1}}
 	skip := (page - 1) * limit
 	// Bước 1: Lấy bài viết từ bạn bè
@@ -412,7 +414,6 @@ func (repo *postRepository) SearchNewsMixedPosts(query string, userIDs []string,
 		return nil, err
 	}
 	defer otherCursor.Close(context.Background())
-
 	for otherCursor.Next(context.Background()) {
 		var data map[string]interface{}
 		if err := otherCursor.Decode(&data); err != nil {
@@ -432,43 +433,58 @@ func (repo *postRepository) SearchNewsMixedPosts(query string, userIDs []string,
 	otherCount := 0
 
 	for len(mixedPosts) < int(limit) {
-		// Kiểm tra nếu đã hết bài viết từ bạn bè và người khác
+		// Nếu cả hai danh sách friendPosts và otherPosts đều đã hết bài viết, thoát vòng lặp
 		if friendCount >= len(friendPosts) && otherCount >= len(otherPosts) {
-			break // Thoát vòng lặp nếu không còn bài viết nào
+			break
 		}
 
-		// Lấy bài viết từ bạn bè
+		// Thêm các bài viết từ friendPosts, đảm bảo 3 bài đầu tiên và xen kẽ 2 bài tiếp theo
 		if friendCount < len(friendPosts) {
 			// 3 bài đầu tiên từ bạn bè
 			if len(mixedPosts) < 3 {
 				mixedPosts = append(mixedPosts, friendPosts[friendCount])
 				friendCount++
 			} else if (len(mixedPosts)-3)%2 == 0 && len(mixedPosts) < int(limit) {
-				// Lấy bài từ bạn bè theo quy tắc xen kẽ
+				// Xen kẽ bài viết từ bạn bè sau 3 bài đầu tiên
 				mixedPosts = append(mixedPosts, friendPosts[friendCount])
 				friendCount++
 			}
 		}
 
-		// Lấy bài viết từ những người khác
+		// Thêm bài viết từ otherPosts, đảm bảo xen kẽ 2 bài mỗi chu kỳ
 		if otherCount < len(otherPosts) {
-			// 2 bài từ những người khác
-			if len(mixedPosts) < 2 || (len(mixedPosts)%2 == 0 && len(mixedPosts) < int(limit)) {
+			// Thêm 2 bài từ những người khác sau các bài viết của bạn bè
+			if len(mixedPosts) < 2 || (len(mixedPosts)-3)%2 == 1 {
 				mixedPosts = append(mixedPosts, otherPosts[otherCount])
 				otherCount++
 			}
 		}
+
+		// Nếu không còn đủ bài từ friendPosts hoặc otherPosts, lấy hết bài còn lại từ danh sách còn lại
+		if friendCount >= len(friendPosts) && otherCount < len(otherPosts) {
+			// Nếu friendPosts hết, lấy hết bài còn lại từ otherPosts
+			remainingPosts := otherPosts[otherCount:]
+			mixedPosts = append(mixedPosts, remainingPosts...)
+			break
+		}
+
+		if otherCount >= len(otherPosts) && friendCount < len(friendPosts) {
+			// Nếu otherPosts hết, lấy hết bài còn lại từ friendPosts
+			remainingPosts := friendPosts[friendCount:]
+			mixedPosts = append(mixedPosts, remainingPosts...)
+			break
+		}
 	}
-	// Bước 4: Random hóa kết quả
+
 	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(len(mixedPosts), func(i, j int) {
 		mixedPosts[i], mixedPosts[j] = mixedPosts[j], mixedPosts[i]
 	})
 
-	// Giới hạn kết quả về số lượng bài viết tối đa
 	if int64(len(mixedPosts)) > limit {
 		mixedPosts = mixedPosts[:limit]
 	}
+
 	return mixedPosts, nil
 }
 
@@ -646,6 +662,34 @@ func (repo *postRepository) UploadPhotos(id string, urls []string) (bool, error)
 	update := bson.M{
 		"$set": bson.M{
 			"images": images,
+		},
+	}
+
+	result, err := repo.collection.UpdateOne(context.Background(), filter, update)
+	if err != nil {
+		return false, err
+	}
+
+	if result.MatchedCount == 0 {
+		return false, nil
+	}
+
+	return true, nil
+}
+
+func (repo *postRepository) UpdateVoice(id string, url string) (bool, error) {
+	objID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return false, err
+	}
+
+	filter := bson.M{
+		"_id": objID,
+	}
+
+	update := bson.M{
+		"$set": bson.M{
+			"voice": url,
 		},
 	}
 
@@ -900,6 +944,41 @@ func (repo *postRepository) UpdateCommentPhotos(postID, commentID string, fileUR
 	return nil
 }
 
+func (repo *postRepository) UpdateCommentVoice(postID string, commentID string, url string) (bool, error) {
+	objPostID, err := primitive.ObjectIDFromHex(postID)
+	if err != nil {
+		return false, err
+	}
+
+	objCommentID, err := primitive.ObjectIDFromHex(commentID)
+	if err != nil {
+		return false, err
+	}
+
+	filter := bson.M{
+		"_id":          objPostID,
+		"comments._id": objCommentID,
+	}
+
+	// Cập nhật URL voice của bình luận
+	update := bson.M{
+		"$set": bson.M{
+			"comments.$.voice": url,
+		},
+	}
+
+	result, err := repo.collection.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		return false, err
+	}
+
+	if result.MatchedCount == 0 {
+		return false, nil
+	}
+
+	return true, nil
+}
+
 func (repo *postRepository) UpdateReplyCommentPhotos(commentID, replyID string, fileURLs []string) error {
 	post, err := repo.GetPostByCommentID(commentID)
 	if err != nil {
@@ -956,6 +1035,59 @@ func (repo *postRepository) UpdateReplyCommentPhotos(commentID, replyID string, 
 	}
 
 	return nil
+}
+
+func (repo *postRepository) UpdateReplyCommentVoice(commentID string, replyID string, url string) (bool, error) {
+	post, err := repo.GetPostByCommentID(commentID)
+	if err != nil {
+		return false, fmt.Errorf("failed to find post for comment ID %s: %w", commentID, err)
+	}
+
+	objPostID := post.ID
+
+	objCommentID, err := primitive.ObjectIDFromHex(commentID)
+	if err != nil {
+		return false, err
+	}
+
+	objReplyID, err := primitive.ObjectIDFromHex(replyID)
+	if err != nil {
+		return false, err
+	}
+
+	filter := bson.M{
+		"_id":                  objPostID,
+		"comments._id":         objCommentID,
+		"comments.replies._id": objReplyID,
+	}
+
+	update := bson.M{
+		"$set": bson.M{
+			"comments.$[comment].replies.$[reply].voice": url,
+		},
+	}
+
+	arrayFilters := options.ArrayFilters{
+		Filters: []interface{}{
+			bson.M{"comment._id": objCommentID},
+			bson.M{"reply._id": objReplyID},
+		},
+	}
+
+	updateOptions := options.UpdateOptions{
+		ArrayFilters: &arrayFilters,
+	}
+
+	result, err := repo.collection.UpdateOne(context.TODO(), filter, update, &updateOptions)
+	if err != nil {
+		return false, fmt.Errorf("failed to update reply comment voice: %w", err)
+	}
+
+	if result.MatchedCount == 0 {
+		return false, nil
+	}
+
+	return true, nil
 }
 
 func (repo *postRepository) LikePost(postID string, userSummary models.UserSummary) error {

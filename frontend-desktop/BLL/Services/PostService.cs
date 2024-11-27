@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace BLL.Services
 {
@@ -22,7 +21,7 @@ namespace BLL.Services
 
         // CRUD
         // Post
-        public async Task<(Post, string)> CreatePostAsync(string description, IEnumerable<string> photoPaths)
+        public async Task<(Post, string)> CreatePostAsync(string description, string textToSpeech, IEnumerable<string> photoPaths)
         {
             var response = await _postRepository.CreatePostAsync(description);
 
@@ -31,9 +30,9 @@ namespace BLL.Services
                 var postData = JsonConvert.DeserializeObject<dynamic>(successResponse.Data);
                 string postId = postData.data._id;
 
-                if (photoPaths != null && photoPaths.Any())
+                if ((photoPaths != null && photoPaths.Any()) || !string.IsNullOrEmpty(textToSpeech))
                 {
-                    var (result, errorMessage) = await UploadPostPhotosAsync(postId, photoPaths);
+                    var (result, errorMessage) = await UploadPostMediasAsync(postId, textToSpeech, photoPaths);
 
                     if (!result)
                     {
@@ -74,7 +73,7 @@ namespace BLL.Services
         }
 
         // Comment
-        public async Task<(Comment, string)> CreateCommentAsync(string postId, string text, IEnumerable<string> photoPaths)
+        public async Task<(Comment, string)> CreateCommentAsync(string postId, string text, string textToSpeech, IEnumerable<string> photoPaths)
         {
             var response = await _postRepository.CreateCommentAsync(postId, text);
 
@@ -83,9 +82,9 @@ namespace BLL.Services
                 var commentData = JsonConvert.DeserializeObject<dynamic>(successResponse.Data);
                 string commentId = commentData.data._id;
 
-                if (photoPaths != null && photoPaths.Any())
+                if ((photoPaths != null && photoPaths.Any()) || !string.IsNullOrEmpty(textToSpeech))
                 {
-                    var (result, errorMessage) = await UploadCommentPhotosAsync(commentId, photoPaths);
+                    var (result, errorMessage) = await UploadCommentMediasAsync(commentId, textToSpeech, photoPaths);
                     if (!result)
                     {
                         (result, errorMessage) = await DeleteCommentAsync(commentId);
@@ -125,7 +124,7 @@ namespace BLL.Services
         }
 
         // Reply comment
-        public async Task<(Comment, string)> CreateReplyCommentAsync(string commentId, string text, IEnumerable<string> photoPaths)
+        public async Task<(Comment, string)> CreateReplyCommentAsync(string commentId, string text, string textToSpeech, IEnumerable<string> photoPaths)
         {
             var response = await _postRepository.CreateReplyCommentAsync(commentId, text);
 
@@ -134,9 +133,9 @@ namespace BLL.Services
                 var replyData = JsonConvert.DeserializeObject<dynamic>(successResponse.Data);
                 string replyId = replyData.data._id;
 
-                if (photoPaths != null && photoPaths.Any())
+                if ((photoPaths != null && photoPaths.Any()) || !string.IsNullOrEmpty(textToSpeech))
                 {
-                    var (result, errorMessage) = await UploadReplyCommentPhotosAsync(commentId, replyId, photoPaths);
+                    var (result, errorMessage) = await UploadReplyCommentMediasAsync(commentId, replyId, textToSpeech, photoPaths);
                     if (!result)
                     {
                         (result, errorMessage) = await DeleteReplyCommentAsync(commentId, replyId);
@@ -413,34 +412,34 @@ namespace BLL.Services
         }
 
         // Upload medias
-        public async Task<(bool, string)> UploadPostPhotosAsync(string postId, IEnumerable<string> photoPaths)
+        public async Task<(bool, string)> UploadPostMediasAsync(string postId, string textToSpeech, IEnumerable<string> photoPaths)
         {
-            var response = await _postRepository.UploadPostPhotosAsync(postId, photoPaths);
+            var response = await _postRepository.UploadPostMediasAsync(postId, textToSpeech, photoPaths);
             if (response is SuccessResponse<string> successResponse)
             {
                 return (true, successResponse.Message);
             }
-            return (false, "Error uploading photos");
+            return (false, "Error uploading medias");
         }
 
-        public async Task<(bool, string)> UploadCommentPhotosAsync(string commentId, IEnumerable<string> photoPaths)
+        public async Task<(bool, string)> UploadCommentMediasAsync(string commentId, string textToSpeech, IEnumerable<string> photoPaths)
         {
-            var response = await _postRepository.UploadCommentPhotosAsync(commentId, photoPaths);
+            var response = await _postRepository.UploadCommentMediasAsync(commentId, textToSpeech, photoPaths);
             if (response is SuccessResponse<string> successResponse)
             {
                 return (true, successResponse.Message);
             }
-            return (false, "Error uploading comment photos");
+            return (false, "Error uploading comment medias");
         }
 
-        public async Task<(bool, string)> UploadReplyCommentPhotosAsync(string commentId, string replyId, IEnumerable<string> photoPaths)
+        public async Task<(bool, string)> UploadReplyCommentMediasAsync(string commentId, string replyId, string textToSpeech, IEnumerable<string> photoPaths)
         {
-            var response = await _postRepository.UploadReplyCommentPhotosAsync(commentId, replyId, photoPaths);
+            var response = await _postRepository.UploadReplyCommentMediasAsync(commentId, replyId, textToSpeech, photoPaths);
             if (response is SuccessResponse<string> successResponse)
             {
                 return (true, successResponse.Message);
             }
-            return (false, "Error uploading reply comment photos");
+            return (false, "Error uploading reply comment medias");
         }
 
         // Delete medias
@@ -451,7 +450,11 @@ namespace BLL.Services
             {
                 return (true, successResponse.Message);
             }
-            return (false, "Error deleting post medias");
+            else if (response is ErrorResponse<string> errorResponse)
+            {
+                return (false, errorResponse.Message);
+            }
+            return (false, "Error delete post medias");
         }
 
         public async Task<(bool, string)> DeleteCommentMediaDataAsync(string commentId)

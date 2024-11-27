@@ -62,6 +62,8 @@ namespace CustomControl.Modals
 
             this.labelSending.Click += LabelSending_Click;
 
+            this.labelTextToSpeechClear.Click += LabelTextToSpeechClear_Click;
+
             if (currentPost != null && !string.IsNullOrEmpty(currentPost.Id))
             {
                 postDataProvider.FetchCommentsOfCurrentPost(currentPost.Id);
@@ -79,8 +81,9 @@ namespace CustomControl.Modals
                 this.labelSending.Enabled = true;
                 return;
             }
-
-            var result = await postDataProvider.CreateCommentAsync(currentPost.Id, this.inputText.Text, photoPaths);
+            string text = this.inputText.GetInputText();
+            string textToSpeech = this.inputTextToSpeech.GetInputText();
+            var result = await postDataProvider.CreateCommentAsync(currentPost.Id, text, textToSpeech, photoPaths);
             if (result != null)
             {
                 AddReplyCommentToPanel(result);
@@ -505,6 +508,11 @@ namespace CustomControl.Modals
         private void CloseWindowControlButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void LabelTextToSpeechClear_Click(object sender, EventArgs e)
+        {
+            this.inputTextToSpeech.ClearText();
         }
 
         private void PanelImages_SizeChanged(object sender, EventArgs e)
