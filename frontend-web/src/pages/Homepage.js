@@ -21,7 +21,6 @@ function Homepage() {
     const authToken = Cookies.get('authToken');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [posts, setPosts] = useState([]);  // State to store posts
-
     // Fetch user data and posts when the component mounts
     useEffect(() => {
         if (!authToken) {
@@ -42,7 +41,7 @@ function Homepage() {
     const fetchNewsPosts = async () => {
         try {
             const response = await getNewsPosts();
-            setPosts(response.data); 
+            setPosts(response.data);
         } catch (error) {
             console.error('Lỗi khi lấy bài viết "News":', error);
         }
@@ -84,36 +83,37 @@ function Homepage() {
         setShowModal(false); // Close modal
     };
 
-    // Handle post submission
-    const handlePostSubmit = async (postContent, selectedImages) => {
+    const handlePostSubmit = async (postContent, selectedImages, postText) => {
         try {
             const response = await createPost(postContent);
             const ID_post = response.data._id;
 
             if (selectedImages.length > 0) {
-                const uploadResponse = await uploadImagePost(ID_post, selectedImages);
+                const uploadResponse = await uploadImagePost(ID_post, selectedImages, postText);
                 if (uploadResponse.status === 200) {
                     setShowSuccessModal(true);
                     setTimeout(() => {
                         handleCloseModal();
-                        fetchNewsPosts(); 
+                        fetchNewsPosts();
                     }, 200);
                 }
             } else {
                 setShowSuccessModal(true);
                 setTimeout(() => {
                     handleCloseModal();
-                    fetchNewsPosts(); 
+                    fetchNewsPosts();
                 }, 200);
             }
         } catch (err) {
             console.log('Failed to create post', err); // Handle errors
         }
     };
-
     return (
         <Layout userData={userData}>
-            <Feed posts={posts} /> {/* Pass posts to Feed component */}
+     <Feed posts={posts} userData={userData} />
+
+
+
             <div
                 className="floating-button"
                 onMouseDown={handleMouseDown}

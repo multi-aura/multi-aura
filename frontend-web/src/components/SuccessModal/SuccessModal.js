@@ -25,10 +25,8 @@ const SuccessModal = ({ title, description, onClose }) => {
         <div className={`success-modal-overlay ${showModal ? 'show' : 'hide'}`}>
             <div className="success-modal-container">
                 <div className="success-modal-content">
-                    <div className="success-modal-icon">
-                        <i className="fas fa-check-circle"></i>
-                    </div>
-                    {title && <h2 className="success-modal-title">{title}</h2>}
+                      
+                    {title && <h2 className="success-modal-title">   <i className="fas fa-check-circle"> </i> {title}</h2>}
                     {description && <p className="success-modal-description">{description}</p>}
                 </div>
             </div>

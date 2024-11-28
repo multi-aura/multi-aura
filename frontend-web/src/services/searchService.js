@@ -91,7 +91,6 @@ export const getForYouPosts = async (limit = 10, page = 1) => {
           }
         }
       );
-      console.log("a");
       
       return response.data;
     } catch (error) {

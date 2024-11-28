@@ -4,7 +4,7 @@ import MapModal from "../MapModal/MapModal";
 import EmojiPicker from "../EmojiPicker/EmojiPicker";
 import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
 import { getAddressFromCoordinates } from "../../services/exploreSevice";
-
+import { FaKeyboard } from 'react-icons/fa';
 const CreatePostModal = ({ onClose, userCurent, onPostSubmit }) => {
 
     const [postContent, setPostContent] = useState("");
@@ -15,7 +15,8 @@ const CreatePostModal = ({ onClose, userCurent, onPostSubmit }) => {
     const [address, setAddress] = useState("Không có địa chỉ");
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
-
+    const [postText , setpostText ] = useState("");  // State cho trường nhập liệu bổ sung
+    const [showTextInput, setShowTextInput] = useState(false);
     const handleCancel = () => {
         if (postContent || selectedImages.length > 0) {
             setShowConfirmModal(true); // Chỉ hiển thị modal khi có nội dung
@@ -25,8 +26,8 @@ const CreatePostModal = ({ onClose, userCurent, onPostSubmit }) => {
     };
 
     const handleClose = () => {
-        if (postContent || selectedImages.length > 0) {
-            setShowConfirmModal(true); // Mở modal xác nhận
+        if (postContent || selectedImages.length > 0 || postText ) {
+            setShowConfirmModal(true); // Only show confirmation if there's content
         } else {
             onClose();
         }
@@ -99,11 +100,11 @@ const CreatePostModal = ({ onClose, userCurent, onPostSubmit }) => {
         return textarea.value;
     };
 
- 
     const handleSubmit = () => {
-        onPostSubmit(postContent, selectedImages); 
+
+        onPostSubmit(postContent, selectedImages, postText );
     };
-    
+
 
 
     return (
@@ -140,11 +141,21 @@ const CreatePostModal = ({ onClose, userCurent, onPostSubmit }) => {
                             <div className="unique-post-input-container">
                                 <textarea
                                     className="unique-post-input"
-                                    placeholder="Có gì mới?"
+                                    placeholder="Bạn có gì mới ?"
                                     value={postContent} // Nội dung hiện tại, bao gồm cả emoji
                                     onChange={handleInputChange} // Cập nhật nội dung khi người dùng nhập
                                 ></textarea>
                             </div>
+                            {showTextInput && (
+                                <div className="additional-input-container">
+                                    <textarea
+                                        className="additional-input"
+                                        placeholder="Nhập thêm mô tả gì đó..."
+                                        value={postText }  // Bind input value to postText  state
+                                        onChange={(e) => setpostText (e.target.value)}  // Update state when user types
+                                    ></textarea>
+                                </div>
+                            )}
 
                             {selectedImages.length > 0 && (
                                 <div className="unique-post-images-grid">
@@ -179,13 +190,20 @@ const CreatePostModal = ({ onClose, userCurent, onPostSubmit }) => {
                                 style={{ display: "none" }}
                             />
                         </label>
-                        <i className="fas fa-hashtag unique-post-icon"></i>
-                        <i className="fas fa-align-left unique-post-icon"></i>
+                        <i
+                            className="fas fa-map-marker-alt unique-post-icon"
+                            onClick={handleMapClick}
+                        ></i>
+
 
                         <i
                             className="fas fa-smile unique-post-icon"
                             onClick={() => setShowEmojiPicker((prev) => !prev)}
                         ></i>
+                        <i className="fas fa-keyboard unique-post-icon" onClick={() => setShowTextInput((prev) => !prev)}>
+
+                        </i>
+
 
                         {showEmojiPicker && (
                             <div
@@ -207,10 +225,7 @@ const CreatePostModal = ({ onClose, userCurent, onPostSubmit }) => {
                             </div>
                         )}
 
-                        <i
-                            className="fas fa-map-marker-alt unique-post-icon"
-                            onClick={handleMapClick}
-                        ></i>
+
                     </div>
                 </div>
 
@@ -220,7 +235,7 @@ const CreatePostModal = ({ onClose, userCurent, onPostSubmit }) => {
                     location={currentLocation}
                     onMapClick={handleMapPositionSelect}
                 />
-            
+
 
                 <div className="unique-post-footer">
                     <button

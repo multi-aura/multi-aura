@@ -105,7 +105,7 @@
     background: #1c1c1e; /* Màu nền */
     border: none; /* Loại bỏ đường viền */
     border-radius: 8px 0px; /* Bo góc */
-    padding: 12px; /* Khoảng cách bên trong */
+    padding-top: 12px; /* Khoảng cách bên trong */
     color: white; /* Màu chữ */
     font-size: 14px; /* Kích thước chữ */
     line-height: 1.5; /* Khoảng cách dòng */
@@ -258,4 +258,22 @@
 .unique-post-submit-btn:disabled {
     background: #444;
     cursor: not-allowed;
+}
+.additional-input-container{
+    border-top:1px solid #333 ;
+    padding-top: 10px;
+}
+.additional-input{
+    width: 100%; 
+    background: #1c1c1e; 
+    border: none; 
+    border-radius: 8px 0px; 
+    padding-top: 12px;
+    color: white; 
+    font-size: 14px;
+    line-height: 1.5; 
+    resize: none; 
+    outline: none; 
+    box-sizing: border-box; 
+    overflow: hidden;
 }

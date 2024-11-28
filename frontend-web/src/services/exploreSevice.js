@@ -75,7 +75,7 @@ export const createPost = async (postContent) => {
   }
 }
 
-export const uploadImagePost = async (idPost, imagePost) => {
+export const uploadImagePost = async (idPost, imagePost, postText) => {
   try {
     const token = Cookies.get('authToken');
     const formData = new FormData(); 
@@ -83,8 +83,10 @@ export const uploadImagePost = async (idPost, imagePost) => {
     imagePost.forEach((image) => {
       formData.append("photos", image);
     });
-
-    const response = await axios.post(`${UploadImage_URL}/post/photos/${idPost}`, formData, {
+    if (postText) {
+      formData.append("text", postText);
+    }
+    const response = await axios.post(`${UploadImage_URL}/post/medias/${idPost}`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
