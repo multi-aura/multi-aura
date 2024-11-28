@@ -267,6 +267,21 @@ namespace CustomControl.Modals
                 SetUpAuthorInfo();
                 SetUpComments();
 
+                if (!string.IsNullOrEmpty(currentPost.Voice))
+                {
+                    VoicePlayerCommon voicePlayerCommon = new VoicePlayerCommon
+                    {
+                        Mp3URL = currentPost.Voice,
+                    };
+
+                    this.panelVoicePlayer.Controls.Add(voicePlayerCommon);
+                    this.panelVoicePlayer.Visible = true;
+                }
+                else
+                {
+                    this.panelVoicePlayer.Visible = false;
+                }
+
                 if (currentPost.CreatedAt != null)
                 {
                     this.labelCreateAt.Text = currentPost.CreatedAt.ToRelativeTime();
@@ -305,6 +320,7 @@ namespace CustomControl.Modals
                 this.panelImages.Width = 0;
                 this.nextImage.Visible = false;
                 this.preImage.Visible = false;
+                this.panelVoicePlayer.Visible = false;
             }
         }
 

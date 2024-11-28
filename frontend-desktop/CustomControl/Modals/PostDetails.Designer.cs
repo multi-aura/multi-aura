@@ -32,8 +32,6 @@
             this.panelDesktop = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panelImages = new System.Windows.Forms.Panel();
-            this.nextImage = new CustomControl.Commons.AvatarCommon();
-            this.preImage = new CustomControl.Commons.AvatarCommon();
             this.currentPhotoBox = new System.Windows.Forms.PictureBox();
             this.panelDetails = new System.Windows.Forms.Panel();
             this.panelInteractions = new System.Windows.Forms.Panel();
@@ -51,7 +49,6 @@
             this.labelDescription = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.actionButton = new System.Windows.Forms.Label();
-            this.userAvatar = new CustomControl.Commons.AvatarCommon();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.labelCreateAt = new System.Windows.Forms.Label();
             this.labelFullName = new System.Windows.Forms.Label();
@@ -59,7 +56,6 @@
             this.flowLayoutPanelPhotos = new System.Windows.Forms.FlowLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
-            this.inputTextToSpeech = new CustomControl.Commons.AutoSizeTextBox();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.labelTextToSpeechClear = new System.Windows.Forms.Label();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
@@ -67,18 +63,21 @@
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonAddPhoto = new System.Windows.Forms.Label();
-            this.containerCommon1 = new CustomControl.Commons.ContainerCommon();
-            this.inputText = new CustomControl.Commons.AutoSizeTextBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.labelSending = new System.Windows.Forms.Label();
             this.panelWindownControlTaskBar = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.CloseWindowControlButton = new System.Windows.Forms.Button();
+            this.panelVoicePlayer = new System.Windows.Forms.Panel();
+            this.nextImage = new CustomControl.Commons.AvatarCommon();
+            this.preImage = new CustomControl.Commons.AvatarCommon();
+            this.userAvatar = new CustomControl.Commons.AvatarCommon();
+            this.inputTextToSpeech = new CustomControl.Commons.AutoSizeTextBox();
+            this.containerCommon1 = new CustomControl.Commons.ContainerCommon();
+            this.inputText = new CustomControl.Commons.AutoSizeTextBox();
             this.panelDesktop.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panelImages.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nextImage)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.preImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.currentPhotoBox)).BeginInit();
             this.panelDetails.SuspendLayout();
             this.panelInteractions.SuspendLayout();
@@ -88,7 +87,6 @@
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.userAvatar)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
             this.panelInputComment.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -97,10 +95,13 @@
             this.tableLayoutPanel12.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel9.SuspendLayout();
-            this.containerCommon1.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.panelWindownControlTaskBar.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nextImage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.preImage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.userAvatar)).BeginInit();
+            this.containerCommon1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelDesktop
@@ -143,42 +144,6 @@
             this.panelImages.Size = new System.Drawing.Size(300, 416);
             this.panelImages.TabIndex = 11;
             // 
-            // nextImage
-            // 
-            this.nextImage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.nextImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
-            this.nextImage.CurrentUser = null;
-            this.nextImage.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.nextImage.Image = global::CustomControl.Properties.Resources.chevron_right;
-            this.nextImage.Location = new System.Drawing.Point(264, 202);
-            this.nextImage.Margin = new System.Windows.Forms.Padding(0);
-            this.nextImage.MaximumSize = new System.Drawing.Size(24, 24);
-            this.nextImage.MinimumSize = new System.Drawing.Size(24, 24);
-            this.nextImage.Name = "nextImage";
-            this.nextImage.Size = new System.Drawing.Size(24, 24);
-            this.nextImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.nextImage.TabIndex = 2;
-            this.nextImage.TabStop = false;
-            // 
-            // preImage
-            // 
-            this.preImage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.preImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
-            this.preImage.CurrentUser = null;
-            this.preImage.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.preImage.Image = global::CustomControl.Properties.Resources.chevron_left;
-            this.preImage.Location = new System.Drawing.Point(9, 202);
-            this.preImage.Margin = new System.Windows.Forms.Padding(0);
-            this.preImage.MaximumSize = new System.Drawing.Size(24, 24);
-            this.preImage.MinimumSize = new System.Drawing.Size(24, 24);
-            this.preImage.Name = "preImage";
-            this.preImage.Size = new System.Drawing.Size(24, 24);
-            this.preImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.preImage.TabIndex = 1;
-            this.preImage.TabStop = false;
-            // 
             // currentPhotoBox
             // 
             this.currentPhotoBox.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -212,10 +177,10 @@
             this.panelInteractions.BackColor = System.Drawing.Color.Transparent;
             this.panelInteractions.Controls.Add(this.panelComments);
             this.panelInteractions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelInteractions.Location = new System.Drawing.Point(0, 139);
+            this.panelInteractions.Location = new System.Drawing.Point(0, 184);
             this.panelInteractions.Margin = new System.Windows.Forms.Padding(0);
             this.panelInteractions.Name = "panelInteractions";
-            this.panelInteractions.Size = new System.Drawing.Size(581, 9);
+            this.panelInteractions.Size = new System.Drawing.Size(581, 0);
             this.panelInteractions.TabIndex = 38;
             // 
             // panelComments
@@ -227,14 +192,14 @@
             this.panelComments.MinimumSize = new System.Drawing.Size(0, 40);
             this.panelComments.Name = "panelComments";
             this.panelComments.Padding = new System.Windows.Forms.Padding(10, 10, 0, 0);
-            this.panelComments.Size = new System.Drawing.Size(560, 40);
+            this.panelComments.Size = new System.Drawing.Size(581, 40);
             this.panelComments.TabIndex = 19;
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Silver;
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 138);
+            this.panel1.Location = new System.Drawing.Point(0, 183);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(581, 1);
@@ -246,7 +211,7 @@
             this.panelPostTaskBar.Controls.Add(this.tableLayoutPanel7);
             this.panelPostTaskBar.Controls.Add(this.tableLayoutPanel8);
             this.panelPostTaskBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelPostTaskBar.Location = new System.Drawing.Point(0, 78);
+            this.panelPostTaskBar.Location = new System.Drawing.Point(0, 123);
             this.panelPostTaskBar.Margin = new System.Windows.Forms.Padding(0);
             this.panelPostTaskBar.Name = "panelPostTaskBar";
             this.panelPostTaskBar.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
@@ -346,6 +311,7 @@
             // 
             this.panel2.AutoSize = true;
             this.panel2.BackColor = System.Drawing.Color.Transparent;
+            this.panel2.Controls.Add(this.panelVoicePlayer);
             this.panel2.Controls.Add(this.panel4);
             this.panel2.Controls.Add(this.tableLayoutPanel3);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
@@ -353,7 +319,7 @@
             this.panel2.Margin = new System.Windows.Forms.Padding(0);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(10, 4, 0, 4);
-            this.panel2.Size = new System.Drawing.Size(581, 68);
+            this.panel2.Size = new System.Drawing.Size(581, 113);
             this.panel2.TabIndex = 30;
             // 
             // panel4
@@ -364,18 +330,19 @@
             this.panel4.Location = new System.Drawing.Point(10, 48);
             this.panel4.Margin = new System.Windows.Forms.Padding(0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(571, 16);
+            this.panel4.Size = new System.Drawing.Size(571, 21);
             this.panel4.TabIndex = 3;
             // 
             // labelDescription
             // 
             this.labelDescription.AutoSize = true;
+            this.labelDescription.Font = new System.Drawing.Font("Montserrat Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelDescription.ForeColor = System.Drawing.Color.White;
             this.labelDescription.Location = new System.Drawing.Point(1, 0);
             this.labelDescription.Margin = new System.Windows.Forms.Padding(0);
             this.labelDescription.MaximumSize = new System.Drawing.Size(580, 0);
             this.labelDescription.Name = "labelDescription";
-            this.labelDescription.Size = new System.Drawing.Size(75, 16);
+            this.labelDescription.Size = new System.Drawing.Size(98, 21);
             this.labelDescription.TabIndex = 0;
             this.labelDescription.Text = "Description";
             // 
@@ -414,21 +381,6 @@
             this.actionButton.Size = new System.Drawing.Size(46, 16);
             this.actionButton.TabIndex = 3;
             this.actionButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // userAvatar
-            // 
-            this.userAvatar.CurrentUser = null;
-            this.userAvatar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.userAvatar.Image = global::CustomControl.Properties.Resources.person;
-            this.userAvatar.Location = new System.Drawing.Point(0, 0);
-            this.userAvatar.Margin = new System.Windows.Forms.Padding(0);
-            this.userAvatar.MaximumSize = new System.Drawing.Size(40, 40);
-            this.userAvatar.MinimumSize = new System.Drawing.Size(40, 40);
-            this.userAvatar.Name = "userAvatar";
-            this.userAvatar.Size = new System.Drawing.Size(40, 40);
-            this.userAvatar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.userAvatar.TabIndex = 1;
-            this.userAvatar.TabStop = false;
             // 
             // tableLayoutPanel4
             // 
@@ -536,24 +488,6 @@
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel10.Size = new System.Drawing.Size(541, 24);
             this.tableLayoutPanel10.TabIndex = 0;
-            // 
-            // inputTextToSpeech
-            // 
-            this.inputTextToSpeech.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.inputTextToSpeech.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.inputTextToSpeech.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.inputTextToSpeech.Font = new System.Drawing.Font("Montserrat Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.inputTextToSpeech.ForeColor = System.Drawing.Color.White;
-            this.inputTextToSpeech.Hint = "Aa, enter your text";
-            this.inputTextToSpeech.Location = new System.Drawing.Point(0, 2);
-            this.inputTextToSpeech.Margin = new System.Windows.Forms.Padding(0, 0, 6, 0);
-            this.inputTextToSpeech.MaxLength = 180;
-            this.inputTextToSpeech.MaxLine = 6;
-            this.inputTextToSpeech.Multiline = true;
-            this.inputTextToSpeech.Name = "inputTextToSpeech";
-            this.inputTextToSpeech.Size = new System.Drawing.Size(503, 22);
-            this.inputTextToSpeech.TabIndex = 6;
-            this.inputTextToSpeech.Text = "Aa, enter your text";
             // 
             // tableLayoutPanel11
             // 
@@ -666,37 +600,6 @@
             this.buttonAddPhoto.Size = new System.Drawing.Size(24, 24);
             this.buttonAddPhoto.TabIndex = 4;
             // 
-            // containerCommon1
-            // 
-            this.containerCommon1.AutoSize = true;
-            this.containerCommon1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.containerCommon1.Controls.Add(this.inputText);
-            this.containerCommon1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.containerCommon1.Location = new System.Drawing.Point(0, 0);
-            this.containerCommon1.Margin = new System.Windows.Forms.Padding(0, 0, 12, 0);
-            this.containerCommon1.Name = "containerCommon1";
-            this.containerCommon1.Padding = new System.Windows.Forms.Padding(6, 4, 6, 4);
-            this.containerCommon1.Radius = 6;
-            this.containerCommon1.Size = new System.Drawing.Size(485, 30);
-            this.containerCommon1.TabIndex = 4;
-            // 
-            // inputText
-            // 
-            this.inputText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.inputText.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.inputText.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.inputText.Font = new System.Drawing.Font("Montserrat Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.inputText.ForeColor = System.Drawing.Color.White;
-            this.inputText.Hint = "Aa, enter your text";
-            this.inputText.Location = new System.Drawing.Point(6, 4);
-            this.inputText.Margin = new System.Windows.Forms.Padding(0, 0, 6, 0);
-            this.inputText.MaxLine = 6;
-            this.inputText.Multiline = true;
-            this.inputText.Name = "inputText";
-            this.inputText.Size = new System.Drawing.Size(473, 22);
-            this.inputText.TabIndex = 5;
-            this.inputText.Text = "Aa, enter your text";
-            // 
             // tableLayoutPanel6
             // 
             this.tableLayoutPanel6.ColumnCount = 1;
@@ -771,6 +674,117 @@
             this.CloseWindowControlButton.TabIndex = 2;
             this.CloseWindowControlButton.UseVisualStyleBackColor = false;
             // 
+            // panelVoicePlayer
+            // 
+            this.panelVoicePlayer.AutoSize = true;
+            this.panelVoicePlayer.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelVoicePlayer.Location = new System.Drawing.Point(10, 69);
+            this.panelVoicePlayer.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
+            this.panelVoicePlayer.MinimumSize = new System.Drawing.Size(0, 40);
+            this.panelVoicePlayer.Name = "panelVoicePlayer";
+            this.panelVoicePlayer.Size = new System.Drawing.Size(571, 40);
+            this.panelVoicePlayer.TabIndex = 5;
+            // 
+            // nextImage
+            // 
+            this.nextImage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.nextImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.nextImage.CurrentUser = null;
+            this.nextImage.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.nextImage.Image = global::CustomControl.Properties.Resources.chevron_right;
+            this.nextImage.Location = new System.Drawing.Point(264, 202);
+            this.nextImage.Margin = new System.Windows.Forms.Padding(0);
+            this.nextImage.MaximumSize = new System.Drawing.Size(24, 24);
+            this.nextImage.MinimumSize = new System.Drawing.Size(24, 24);
+            this.nextImage.Name = "nextImage";
+            this.nextImage.Size = new System.Drawing.Size(24, 24);
+            this.nextImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.nextImage.TabIndex = 2;
+            this.nextImage.TabStop = false;
+            // 
+            // preImage
+            // 
+            this.preImage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.preImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.preImage.CurrentUser = null;
+            this.preImage.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.preImage.Image = global::CustomControl.Properties.Resources.chevron_left;
+            this.preImage.Location = new System.Drawing.Point(9, 202);
+            this.preImage.Margin = new System.Windows.Forms.Padding(0);
+            this.preImage.MaximumSize = new System.Drawing.Size(24, 24);
+            this.preImage.MinimumSize = new System.Drawing.Size(24, 24);
+            this.preImage.Name = "preImage";
+            this.preImage.Size = new System.Drawing.Size(24, 24);
+            this.preImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.preImage.TabIndex = 1;
+            this.preImage.TabStop = false;
+            // 
+            // userAvatar
+            // 
+            this.userAvatar.CurrentUser = null;
+            this.userAvatar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.userAvatar.Image = global::CustomControl.Properties.Resources.person;
+            this.userAvatar.Location = new System.Drawing.Point(0, 0);
+            this.userAvatar.Margin = new System.Windows.Forms.Padding(0);
+            this.userAvatar.MaximumSize = new System.Drawing.Size(40, 40);
+            this.userAvatar.MinimumSize = new System.Drawing.Size(40, 40);
+            this.userAvatar.Name = "userAvatar";
+            this.userAvatar.Size = new System.Drawing.Size(40, 40);
+            this.userAvatar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.userAvatar.TabIndex = 1;
+            this.userAvatar.TabStop = false;
+            // 
+            // inputTextToSpeech
+            // 
+            this.inputTextToSpeech.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.inputTextToSpeech.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.inputTextToSpeech.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.inputTextToSpeech.Font = new System.Drawing.Font("Montserrat Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.inputTextToSpeech.ForeColor = System.Drawing.Color.White;
+            this.inputTextToSpeech.Hint = "Aa, enter your text";
+            this.inputTextToSpeech.Location = new System.Drawing.Point(0, 2);
+            this.inputTextToSpeech.Margin = new System.Windows.Forms.Padding(0, 0, 6, 0);
+            this.inputTextToSpeech.MaxLength = 180;
+            this.inputTextToSpeech.MaxLine = 6;
+            this.inputTextToSpeech.Multiline = true;
+            this.inputTextToSpeech.Name = "inputTextToSpeech";
+            this.inputTextToSpeech.Size = new System.Drawing.Size(503, 22);
+            this.inputTextToSpeech.TabIndex = 6;
+            this.inputTextToSpeech.Text = "Aa, enter your text";
+            // 
+            // containerCommon1
+            // 
+            this.containerCommon1.AutoSize = true;
+            this.containerCommon1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.containerCommon1.Controls.Add(this.inputText);
+            this.containerCommon1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.containerCommon1.Location = new System.Drawing.Point(0, 0);
+            this.containerCommon1.Margin = new System.Windows.Forms.Padding(0, 0, 12, 0);
+            this.containerCommon1.Name = "containerCommon1";
+            this.containerCommon1.Padding = new System.Windows.Forms.Padding(6, 4, 6, 4);
+            this.containerCommon1.Radius = 6;
+            this.containerCommon1.Size = new System.Drawing.Size(485, 30);
+            this.containerCommon1.TabIndex = 4;
+            // 
+            // inputText
+            // 
+            this.inputText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.inputText.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.inputText.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.inputText.Font = new System.Drawing.Font("Montserrat Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.inputText.ForeColor = System.Drawing.Color.White;
+            this.inputText.Hint = "Aa, enter your text";
+            this.inputText.Location = new System.Drawing.Point(6, 4);
+            this.inputText.Margin = new System.Windows.Forms.Padding(0, 0, 6, 0);
+            this.inputText.MaxLine = 6;
+            this.inputText.Multiline = true;
+            this.inputText.Name = "inputText";
+            this.inputText.Size = new System.Drawing.Size(473, 22);
+            this.inputText.TabIndex = 5;
+            this.inputText.Text = "Aa, enter your text";
+            // 
             // PostDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -786,8 +800,6 @@
             this.panelDesktop.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panelImages.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.nextImage)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.preImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.currentPhotoBox)).EndInit();
             this.panelDetails.ResumeLayout(false);
             this.panelDetails.PerformLayout();
@@ -804,7 +816,6 @@
             this.panel4.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.userAvatar)).EndInit();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
             this.panelInputComment.ResumeLayout(false);
@@ -821,12 +832,15 @@
             this.tableLayoutPanel5.PerformLayout();
             this.tableLayoutPanel9.ResumeLayout(false);
             this.tableLayoutPanel9.PerformLayout();
-            this.containerCommon1.ResumeLayout(false);
-            this.containerCommon1.PerformLayout();
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
             this.panelWindownControlTaskBar.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nextImage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.preImage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.userAvatar)).EndInit();
+            this.containerCommon1.ResumeLayout(false);
+            this.containerCommon1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -878,5 +892,6 @@
         private System.Windows.Forms.Label labelTextToSpeechClear;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Panel panelVoicePlayer;
     }
 }

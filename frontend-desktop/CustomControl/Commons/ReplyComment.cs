@@ -390,11 +390,17 @@ namespace CustomControl.Commons
                 }
                 if (!string.IsNullOrEmpty(currentComment.Voice))
                 {
-                    this.voicePlayer.Visible = true;
+                    VoicePlayerCommon voicePlayerCommon = new VoicePlayerCommon
+                    {
+                        Mp3URL = currentComment.Voice,
+                    };
+
+                    this.panelVoicePlayer.Controls.Add(voicePlayerCommon);
+                    this.panelVoicePlayer.Visible = true;
                 }
                 else
                 {
-                    this.voicePlayer.Visible = false;
+                    this.panelVoicePlayer.Visible = false;
                 }
             }
         }

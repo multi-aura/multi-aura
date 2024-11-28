@@ -29,10 +29,8 @@ namespace BLL.Repository
         }
         private AuthRepository() : base()
         {
-            Console.WriteLine("AuthRepository đang được khởi tạo.");
+            
         }
-
-
 
         public async Task<APIResponse<string>> LoginAsync(LoginRequest loginRequest)
         {
@@ -52,10 +50,6 @@ namespace BLL.Repository
 
             try
             {
-
-                Console.WriteLine($"Sending login request to: {NetworkUrls.Auth.Login}");
-                Console.WriteLine($"Username: {loginRequest.Username}");
-
                 var response = await PostAsync(NetworkUrls.Auth.Login, loginRequest);
 
                 if (response == null)
@@ -63,7 +57,6 @@ namespace BLL.Repository
                     throw new Exception("API response is null.");
                 }
 
-                Console.WriteLine($"API Response: {response.Status} - {response.Message} ");
                 return response;
             }
             catch (Exception ex)

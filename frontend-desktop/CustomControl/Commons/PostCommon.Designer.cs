@@ -36,15 +36,16 @@
             this.labelCreateAt = new System.Windows.Forms.Label();
             this.labelFullName = new System.Windows.Forms.Label();
             this.tableLayoutPanelDescription = new System.Windows.Forms.TableLayoutPanel();
+            this.panelVoicePlayer = new System.Windows.Forms.Panel();
             this.labelDescription = new System.Windows.Forms.Label();
             this.panelComments = new System.Windows.Forms.Panel();
             this.panelPostTaskBar = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.labelTotalLikes = new System.Windows.Forms.Label();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.labelShare = new System.Windows.Forms.Label();
             this.labelComment = new System.Windows.Forms.Label();
             this.labelLike = new System.Windows.Forms.Label();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.labelTotalLikes = new System.Windows.Forms.Label();
             this.panelImages = new System.Windows.Forms.Panel();
             this.nextImage = new CustomControl.Commons.AvatarCommon();
             this.preImage = new CustomControl.Commons.AvatarCommon();
@@ -55,8 +56,8 @@
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanelDescription.SuspendLayout();
             this.panelPostTaskBar.SuspendLayout();
-            this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.panelImages.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nextImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.preImage)).BeginInit();
@@ -177,7 +178,8 @@
             // 
             this.tableLayoutPanelDescription.AutoSize = true;
             this.tableLayoutPanelDescription.ColumnCount = 1;
-            this.tableLayoutPanelDescription.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelDescription.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelDescription.Controls.Add(this.panelVoicePlayer, 0, 1);
             this.tableLayoutPanelDescription.Controls.Add(this.labelDescription, 0, 0);
             this.tableLayoutPanelDescription.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanelDescription.Location = new System.Drawing.Point(0, 52);
@@ -185,21 +187,33 @@
             this.tableLayoutPanelDescription.MinimumSize = new System.Drawing.Size(0, 40);
             this.tableLayoutPanelDescription.Name = "tableLayoutPanelDescription";
             this.tableLayoutPanelDescription.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.tableLayoutPanelDescription.RowCount = 1;
-            this.tableLayoutPanelDescription.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelDescription.Size = new System.Drawing.Size(520, 40);
+            this.tableLayoutPanelDescription.RowCount = 2;
+            this.tableLayoutPanelDescription.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanelDescription.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanelDescription.Size = new System.Drawing.Size(520, 61);
             this.tableLayoutPanelDescription.TabIndex = 1;
+            // 
+            // panelVoicePlayer
+            // 
+            this.panelVoicePlayer.AutoSize = true;
+            this.panelVoicePlayer.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelVoicePlayer.Location = new System.Drawing.Point(10, 21);
+            this.panelVoicePlayer.Margin = new System.Windows.Forms.Padding(0);
+            this.panelVoicePlayer.MinimumSize = new System.Drawing.Size(0, 40);
+            this.panelVoicePlayer.Name = "panelVoicePlayer";
+            this.panelVoicePlayer.Size = new System.Drawing.Size(510, 40);
+            this.panelVoicePlayer.TabIndex = 23;
             // 
             // labelDescription
             // 
             this.labelDescription.AutoSize = true;
             this.labelDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelDescription.Font = new System.Drawing.Font("Montserrat Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelDescription.ForeColor = System.Drawing.Color.White;
             this.labelDescription.Location = new System.Drawing.Point(10, 0);
             this.labelDescription.Margin = new System.Windows.Forms.Padding(0);
             this.labelDescription.Name = "labelDescription";
-            this.labelDescription.Size = new System.Drawing.Size(510, 40);
+            this.labelDescription.Size = new System.Drawing.Size(510, 21);
             this.labelDescription.TabIndex = 0;
             this.labelDescription.Text = "Description";
             // 
@@ -207,56 +221,25 @@
             // 
             this.panelComments.AutoSize = true;
             this.panelComments.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelComments.Location = new System.Drawing.Point(0, 717);
+            this.panelComments.Location = new System.Drawing.Point(0, 738);
             this.panelComments.Margin = new System.Windows.Forms.Padding(0);
             this.panelComments.MinimumSize = new System.Drawing.Size(0, 40);
             this.panelComments.Name = "panelComments";
             this.panelComments.Padding = new System.Windows.Forms.Padding(20, 10, 0, 0);
             this.panelComments.Size = new System.Drawing.Size(520, 40);
-            this.panelComments.TabIndex = 11;
+            this.panelComments.TabIndex = 25;
             // 
             // panelPostTaskBar
             // 
-            this.panelPostTaskBar.Controls.Add(this.tableLayoutPanel4);
             this.panelPostTaskBar.Controls.Add(this.tableLayoutPanel5);
+            this.panelPostTaskBar.Controls.Add(this.tableLayoutPanel4);
             this.panelPostTaskBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelPostTaskBar.Location = new System.Drawing.Point(0, 657);
+            this.panelPostTaskBar.Location = new System.Drawing.Point(0, 678);
             this.panelPostTaskBar.Margin = new System.Windows.Forms.Padding(0);
             this.panelPostTaskBar.Name = "panelPostTaskBar";
             this.panelPostTaskBar.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
             this.panelPostTaskBar.Size = new System.Drawing.Size(520, 60);
-            this.panelPostTaskBar.TabIndex = 10;
-            // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.ColumnCount = 2;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Controls.Add(this.labelTotalLikes, 0, 0);
-            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 42);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.tableLayoutPanel4.RowCount = 1;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(520, 18);
-            this.tableLayoutPanel4.TabIndex = 1;
-            // 
-            // labelTotalLikes
-            // 
-            this.labelTotalLikes.AutoSize = true;
-            this.labelTotalLikes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelTotalLikes.ForeColor = System.Drawing.Color.White;
-            this.labelTotalLikes.Location = new System.Drawing.Point(10, 0);
-            this.labelTotalLikes.Margin = new System.Windows.Forms.Padding(0);
-            this.labelTotalLikes.MaximumSize = new System.Drawing.Size(48, 18);
-            this.labelTotalLikes.MinimumSize = new System.Drawing.Size(48, 0);
-            this.labelTotalLikes.Name = "labelTotalLikes";
-            this.labelTotalLikes.Size = new System.Drawing.Size(48, 18);
-            this.labelTotalLikes.TabIndex = 0;
-            this.labelTotalLikes.Text = "0";
-            this.labelTotalLikes.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.panelPostTaskBar.TabIndex = 24;
             // 
             // tableLayoutPanel5
             // 
@@ -316,19 +299,50 @@
             this.labelLike.Size = new System.Drawing.Size(48, 32);
             this.labelLike.TabIndex = 0;
             // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 2;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Controls.Add(this.labelTotalLikes, 0, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 10);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(520, 50);
+            this.tableLayoutPanel4.TabIndex = 1;
+            // 
+            // labelTotalLikes
+            // 
+            this.labelTotalLikes.AutoSize = true;
+            this.labelTotalLikes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelTotalLikes.ForeColor = System.Drawing.Color.White;
+            this.labelTotalLikes.Location = new System.Drawing.Point(10, 0);
+            this.labelTotalLikes.Margin = new System.Windows.Forms.Padding(0);
+            this.labelTotalLikes.MaximumSize = new System.Drawing.Size(48, 18);
+            this.labelTotalLikes.MinimumSize = new System.Drawing.Size(48, 0);
+            this.labelTotalLikes.Name = "labelTotalLikes";
+            this.labelTotalLikes.Size = new System.Drawing.Size(48, 18);
+            this.labelTotalLikes.TabIndex = 0;
+            this.labelTotalLikes.Text = "0";
+            this.labelTotalLikes.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
             // panelImages
             // 
             this.panelImages.Controls.Add(this.nextImage);
             this.panelImages.Controls.Add(this.preImage);
             this.panelImages.Controls.Add(this.currentPhotoBox);
             this.panelImages.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelImages.Location = new System.Drawing.Point(0, 92);
+            this.panelImages.Location = new System.Drawing.Point(0, 113);
             this.panelImages.Margin = new System.Windows.Forms.Padding(0);
             this.panelImages.MinimumSize = new System.Drawing.Size(520, 440);
             this.panelImages.Name = "panelImages";
             this.panelImages.Padding = new System.Windows.Forms.Padding(20, 0, 20, 0);
             this.panelImages.Size = new System.Drawing.Size(520, 565);
-            this.panelImages.TabIndex = 9;
+            this.panelImages.TabIndex = 23;
             // 
             // nextImage
             // 
@@ -393,7 +407,7 @@
             this.Margin = new System.Windows.Forms.Padding(0);
             this.MinimumSize = new System.Drawing.Size(520, 40);
             this.Name = "PostCommon";
-            this.Size = new System.Drawing.Size(520, 757);
+            this.Size = new System.Drawing.Size(520, 797);
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -403,10 +417,10 @@
             this.tableLayoutPanelDescription.ResumeLayout(false);
             this.tableLayoutPanelDescription.PerformLayout();
             this.panelPostTaskBar.ResumeLayout(false);
-            this.tableLayoutPanel4.ResumeLayout(false);
-            this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
             this.panelImages.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nextImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.preImage)).EndInit();
@@ -426,18 +440,19 @@
         private System.Windows.Forms.Label labelCreateAt;
         private System.Windows.Forms.Label labelFullName;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelDescription;
+        private System.Windows.Forms.Label labelDescription;
         private System.Windows.Forms.Panel panelComments;
         private System.Windows.Forms.Panel panelPostTaskBar;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private System.Windows.Forms.Label labelTotalLikes;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Label labelShare;
         private System.Windows.Forms.Label labelComment;
         private System.Windows.Forms.Label labelLike;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.Label labelTotalLikes;
         private System.Windows.Forms.Panel panelImages;
         private AvatarCommon nextImage;
         private AvatarCommon preImage;
         private System.Windows.Forms.PictureBox currentPhotoBox;
-        private System.Windows.Forms.Label labelDescription;
+        private System.Windows.Forms.Panel panelVoicePlayer;
     }
 }
