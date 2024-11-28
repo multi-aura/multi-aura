@@ -7,7 +7,7 @@ import { FaVolumeUp, FaPauseCircle, FaPlayCircle } from 'react-icons/fa';
 import { Carousel } from 'react-bootstrap'; // Import Carousel từ Bootstrap
 
 function Post({ post, userData}) {
-  console.log(userData);
+  // console.log(userData);
   // console.log(post); 
   const [showAllImages, setShowAllImages] = useState(false);
   const [commentText, setCommentText] = useState('');

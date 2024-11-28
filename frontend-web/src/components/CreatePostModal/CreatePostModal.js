@@ -15,7 +15,7 @@ const CreatePostModal = ({ onClose, userCurent, onPostSubmit }) => {
     const [address, setAddress] = useState("Không có địa chỉ");
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
-    const [postText , setpostText ] = useState("");  // State cho trường nhập liệu bổ sung
+    const [postText, setpostText] = useState("");  // State cho trường nhập liệu bổ sung
     const [showTextInput, setShowTextInput] = useState(false);
     const handleCancel = () => {
         if (postContent || selectedImages.length > 0) {
@@ -26,7 +26,7 @@ const CreatePostModal = ({ onClose, userCurent, onPostSubmit }) => {
     };
 
     const handleClose = () => {
-        if (postContent || selectedImages.length > 0 || postText ) {
+        if (postContent || selectedImages.length > 0 || postText) {
             setShowConfirmModal(true); // Only show confirmation if there's content
         } else {
             onClose();
@@ -101,8 +101,8 @@ const CreatePostModal = ({ onClose, userCurent, onPostSubmit }) => {
     };
 
     const handleSubmit = () => {
-
-        onPostSubmit(postContent, selectedImages, postText );
+        console.log(selectedImages);
+        // onPostSubmit(postContent, selectedImages, postText );
     };
 
 
@@ -151,8 +151,8 @@ const CreatePostModal = ({ onClose, userCurent, onPostSubmit }) => {
                                     <textarea
                                         className="additional-input"
                                         placeholder="Nhập thêm mô tả gì đó..."
-                                        value={postText }  // Bind input value to postText  state
-                                        onChange={(e) => setpostText (e.target.value)}  // Update state when user types
+                                        value={postText}  // Bind input value to postText  state
+                                        onChange={(e) => setpostText(e.target.value)}  // Update state when user types
                                     ></textarea>
                                 </div>
                             )}

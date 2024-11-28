@@ -13,7 +13,7 @@ function Feed({ posts, userData }) {
     <div className="feed">
       {posts && posts.map(post => (
         <Post key={post._id} post={post} userData={userData} />
-      ))}
+        ))}
     </div>
   );
 };
