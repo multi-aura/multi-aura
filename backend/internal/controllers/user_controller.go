@@ -131,10 +131,8 @@ func (uc *UserController) DeleteUser(c *fiber.Ctx) error {
 
 // Update
 func (uc *UserController) UpdateUser(c *fiber.Ctx) error {
-	// Khai báo một map để lưu dữ liệu cập nhật
 	updatedData := make(map[string]interface{})
 
-	// Phân tích JSON vào map
 	if err := c.BodyParser(&updatedData); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Cannot parse JSON",
@@ -150,10 +148,8 @@ func (uc *UserController) UpdateUser(c *fiber.Ctx) error {
 		})
 	}
 
-	// Thêm userID vào map cập nhật
 	updatedData["userID"] = userID
 
-	// Gọi hàm Update với map thay vì đối tượng User
 	err := uc.service.Update(&updatedData)
 	if err != nil {
 		if err.Error() == "user not found" {
@@ -240,4 +236,3 @@ func (uc *UserController) ChangePassword(c *fiber.Ctx) error {
 		Data:    nil,
 	})
 }
-

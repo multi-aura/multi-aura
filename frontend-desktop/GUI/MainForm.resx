@@ -118,17 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="taskBarCreatePost.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAAZdEVYdFNvZnR3YXJlAHd3dy5pbmtzY2FwZS5vcmeb7jwa
-        AAAA+0lEQVRIS+2VSw6CMBRFuxBxBepcHYlLRN0TS2Cg6AL8DRUV7+0naYLSQtqJ8SQnIS9971aKIAx1
-        XQ/hBh7gA3aFPexdw0SPVaCwhFcYigtMzXDuPORwA0MSBvC2xGLFAN63WJQM6HOgvlQM8IUbGcMJfLLg
-        Q5eAo3wqAK9Vyc1vB9zg1jLX89mTW/UdvMOPtAWM9DwnXKtamrQFzHW/E6ydqpYmbQHkDE/aQs9jT2HV
-        ueYrrgCb/2PqhK+HGUzhiwUfGFCpyyjIl91eXUdBvq75DY1FxoAE8vMWGv4/Buap4MGFDOHwhRxuQIG/
-        ZAVL2Ofg2cPeDKqdCyHeOZMgLIuhynIAAAAASUVORK5CYII=
-</value>
-  </data>
   <data name="taskBarProfile.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -215,6 +204,17 @@
         CoAgEIQ9WNHj9v2JukWdwj5rCqE1pRoYaOexkuh+gfd+gI3GLMi2cNa4CxVcYC8pCTI1XGEn6QBCdgme
         XT6BkVwiL10+EQWvJZb2iLgQf8suA4Vw06EY2Eoux6cFFN7/glWwNBNPQXnpd5INAGXuB8gofcr3JQwj
         LL5psg2cNH6BcxuJAAgLIEKWxgAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="taskBarCreatePost.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wAAADsABataJCQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAD7SURBVEhL7ZVL
+        DoIwFEW7EHEF6lwdiUtE3RNLYKDoAvwNFRXv7SdpgtJC2onxJCchL33vVoogDHVdD+EGHuADdoU97F3D
+        RI9VoLCEVxiKC0zNcO485HADQxIG8LbEYsUA3rdYlAzoc6C+VAzwhRsZwwl8suBDl4CjfCoAr1XJzW8H
+        3ODWMtfz2ZNb9R28w4+0BYz0PCdcq1qatAXMdb8TrJ2qliZtAeQMT9pCz2NPYdW55iuuAJv/Y+qEr4cZ
+        TOGLBR8YUKnLKMiX3V5dR0G+rvkNjUXGgATy8xYa/j8G5qngwYUM4fCFHG5Agb9kBUvY5+DZw94Mqp0L
+        Id45kyAsi6HKcgAAAABJRU5ErkJggg==
 </value>
   </data>
 </root>

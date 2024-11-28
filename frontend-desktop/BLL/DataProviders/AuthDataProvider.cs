@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using DTO;
 using BLL.Services;
 using BLL.Repository;
+using System.Configuration;
 
 namespace BLL.DataProviders
 {
@@ -53,17 +54,7 @@ namespace BLL.DataProviders
             {
                 throw new Exception("AuthService is not initialized.");
             }
-
-            appDataProvider.DataLoaded += Initialize;
-        }
-
-        private void Initialize()
-        {
-            if (appDataProvider.User != null)
-            {
-                currentUser = appDataProvider.User; // Lấy thông tin người dùng đã lưu
-                UserLoggedIn?.Invoke();
-            }
+            currentUser = appDataProvider.User;
         }
 
         public async Task LoginAsync(string username, string password)
@@ -74,11 +65,8 @@ namespace BLL.DataProviders
                 return;
             }
 
-
-
             try
             {
-
                 var loginRequest = new LoginRequest
                 {
                     Username = username,
@@ -86,14 +74,14 @@ namespace BLL.DataProviders
                 };
 
                 var (user, errorMessage) = await authService.LoginAsync(loginRequest);
-                MessageBox.Show(user.Token);
                 if (string.IsNullOrEmpty(errorMessage))
                 {
                     currentUser = user;
                     appDataProvider.User = user;
-                    UserLoggedIn?.Invoke();    
 
-                    MessageBox.Show("Login successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    SaveUserConfiguration(user.Token, username);
+
+                    UserLoggedIn?.Invoke();
                 }
                 else
                 {
@@ -106,12 +94,61 @@ namespace BLL.DataProviders
             }
         }
 
+
         public void Logout()
         {
             currentUser = null;
             appDataProvider.User = null;
-            UserLoggedOut?.Invoke(); // Kích hoạt event khi đăng xuất
-            MessageBox.Show("Logged out successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ClearUserConfiguration();
+
+            UserLoggedOut?.Invoke();
+            //MessageBox.Show("Logged out successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void SaveUserConfiguration(string token, string username)
+        {
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+            if (config.AppSettings.Settings["UserToken"] != null)
+            {
+                config.AppSettings.Settings["UserToken"].Value = token;
+            }
+            else
+            {
+                config.AppSettings.Settings.Add("UserToken", token);
+            }
+
+            if (config.AppSettings.Settings["Username"] != null)
+            {
+                config.AppSettings.Settings["Username"].Value = username;
+            }
+            else
+            {
+                config.AppSettings.Settings.Add("Username", username);
+            }
+
+            config.Save(ConfigurationSaveMode.Modified);
+
+            ConfigurationManager.RefreshSection("appSettings");
+        }
+
+        private void ClearUserConfiguration()
+        {
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+            if (config.AppSettings.Settings["UserToken"] != null)
+            {
+                config.AppSettings.Settings["UserToken"].Value = string.Empty;
+            }
+
+            if (config.AppSettings.Settings["Username"] != null)
+            {
+                config.AppSettings.Settings["Username"].Value = string.Empty;
+            }
+
+            config.Save(ConfigurationSaveMode.Modified);
+
+            ConfigurationManager.RefreshSection("appSettings");
         }
     }
 }

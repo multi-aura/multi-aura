@@ -96,8 +96,8 @@ namespace GUI.Forms
                 panelPosts.Invoke(new Action(LoadPanelUserPosts));
                 return;
             }
-            
-            //panelForYouNoQueryPosts.Controls.Clear();
+
+            panelPosts.Controls.Clear();
             if (postDataProvider.CurrentUserPosts != null)
             {
                 this.labelPostCounter.Text = postDataProvider.CurrentUserPosts.Count.ToShortNumber() + " Posts";

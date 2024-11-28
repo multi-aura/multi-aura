@@ -18,6 +18,7 @@ namespace GUI.AuthenticationForms
         private Button currentButton;
         private Form activeForm;
         private AppDataProvider appDataProvider = AppDataProvider.Instance;
+        private AuthDataProvider authDataProvider;
         public AuthenticationForm()
         {
             InitializeComponent();
@@ -26,6 +27,15 @@ namespace GUI.AuthenticationForms
                 closeButton: this.CloseWindowControlButton);
             this.FormClosed += AuthenticationForm_FormClosed;
             SetUpNavigators();
+            this.languageCombobox1.Visible = false;
+            authDataProvider = AuthDataProvider.Instance;
+
+            authDataProvider.UserLoggedIn += AuthDataProvider_UserLoggedIn;
+        }
+
+        private void AuthDataProvider_UserLoggedIn()
+        {
+            this.Close();
         }
 
         private void AuthenticationForm_FormClosed(object sender, FormClosedEventArgs e)

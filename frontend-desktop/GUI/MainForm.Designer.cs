@@ -33,6 +33,16 @@
             this.panelSideBarItems = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panelAvatar = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.labelAppName = new System.Windows.Forms.Label();
+            this.panelWindownControlTaskBar = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.panelDesktop = new System.Windows.Forms.Panel();
+            this.MaximizeWindowControlButton = new System.Windows.Forms.Button();
+            this.MinimizeWindowControlButton = new System.Windows.Forms.Button();
+            this.CloseWindowControlButton = new System.Windows.Forms.Button();
+            this.taskBarLogOut = new System.Windows.Forms.Button();
             this.userAvatar = new CustomControl.Commons.AvatarCommon();
             this.taskBarCreatePost = new System.Windows.Forms.Button();
             this.taskBarProfile = new System.Windows.Forms.Button();
@@ -40,24 +50,15 @@
             this.taskBarMessages = new System.Windows.Forms.Button();
             this.taskBarExplore = new System.Windows.Forms.Button();
             this.taskBarHome = new System.Windows.Forms.Button();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.labelAppName = new System.Windows.Forms.Label();
-            this.panelWindownControlTaskBar = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.MaximizeWindowControlButton = new System.Windows.Forms.Button();
-            this.MinimizeWindowControlButton = new System.Windows.Forms.Button();
-            this.CloseWindowControlButton = new System.Windows.Forms.Button();
-            this.panelDesktop = new System.Windows.Forms.Panel();
             this.panelSideBar.SuspendLayout();
             this.panelSideBarItems.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelAvatar.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.userAvatar)).BeginInit();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panelWindownControlTaskBar.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.userAvatar)).BeginInit();
             this.SuspendLayout();
             // 
             // panelSideBar
@@ -75,6 +76,7 @@
             // panelSideBarItems
             // 
             this.panelSideBarItems.BackColor = System.Drawing.Color.Transparent;
+            this.panelSideBarItems.Controls.Add(this.taskBarLogOut);
             this.panelSideBarItems.Controls.Add(this.panel1);
             this.panelSideBarItems.Controls.Add(this.taskBarProfile);
             this.panelSideBarItems.Controls.Add(this.taskBarNotifications);
@@ -111,6 +113,156 @@
             this.panelAvatar.Padding = new System.Windows.Forms.Padding(10);
             this.panelAvatar.Size = new System.Drawing.Size(60, 60);
             this.panelAvatar.TabIndex = 10;
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.Transparent;
+            this.panel3.Controls.Add(this.tableLayoutPanel1);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(0, 0);
+            this.panel3.Margin = new System.Windows.Forms.Padding(0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(220, 58);
+            this.panel3.TabIndex = 2;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.labelAppName, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(220, 58);
+            this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // labelAppName
+            // 
+            this.labelAppName.AutoSize = true;
+            this.labelAppName.BackColor = System.Drawing.Color.Transparent;
+            this.labelAppName.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.labelAppName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelAppName.Font = new System.Drawing.Font("iCiel Cadena", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAppName.ForeColor = System.Drawing.Color.White;
+            this.labelAppName.Location = new System.Drawing.Point(0, 0);
+            this.labelAppName.Margin = new System.Windows.Forms.Padding(0);
+            this.labelAppName.Name = "labelAppName";
+            this.labelAppName.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.labelAppName.Size = new System.Drawing.Size(220, 58);
+            this.labelAppName.TabIndex = 1;
+            this.labelAppName.Text = "Multi Aura";
+            this.labelAppName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // panelWindownControlTaskBar
+            // 
+            this.panelWindownControlTaskBar.BackColor = System.Drawing.Color.Transparent;
+            this.panelWindownControlTaskBar.Controls.Add(this.tableLayoutPanel2);
+            this.panelWindownControlTaskBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelWindownControlTaskBar.Location = new System.Drawing.Point(224, 4);
+            this.panelWindownControlTaskBar.Margin = new System.Windows.Forms.Padding(0);
+            this.panelWindownControlTaskBar.Name = "panelWindownControlTaskBar";
+            this.panelWindownControlTaskBar.Size = new System.Drawing.Size(1232, 35);
+            this.panelWindownControlTaskBar.TabIndex = 1;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.BackColor = System.Drawing.Color.Transparent;
+            this.tableLayoutPanel2.ColumnCount = 3;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel2.Controls.Add(this.MaximizeWindowControlButton, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.MinimizeWindowControlButton, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.CloseWindowControlButton, 2, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(1132, 0);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(100, 35);
+            this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // panelDesktop
+            // 
+            this.panelDesktop.BackColor = System.Drawing.Color.Transparent;
+            this.panelDesktop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelDesktop.Location = new System.Drawing.Point(224, 39);
+            this.panelDesktop.Margin = new System.Windows.Forms.Padding(0);
+            this.panelDesktop.Name = "panelDesktop";
+            this.panelDesktop.Size = new System.Drawing.Size(1232, 757);
+            this.panelDesktop.TabIndex = 2;
+            // 
+            // MaximizeWindowControlButton
+            // 
+            this.MaximizeWindowControlButton.BackColor = System.Drawing.Color.Transparent;
+            this.MaximizeWindowControlButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MaximizeWindowControlButton.FlatAppearance.BorderSize = 0;
+            this.MaximizeWindowControlButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
+            this.MaximizeWindowControlButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MaximizeWindowControlButton.Image = ((System.Drawing.Image)(resources.GetObject("MaximizeWindowControlButton.Image")));
+            this.MaximizeWindowControlButton.Location = new System.Drawing.Point(33, 0);
+            this.MaximizeWindowControlButton.Margin = new System.Windows.Forms.Padding(0);
+            this.MaximizeWindowControlButton.Name = "MaximizeWindowControlButton";
+            this.MaximizeWindowControlButton.Size = new System.Drawing.Size(33, 35);
+            this.MaximizeWindowControlButton.TabIndex = 4;
+            this.MaximizeWindowControlButton.UseVisualStyleBackColor = false;
+            // 
+            // MinimizeWindowControlButton
+            // 
+            this.MinimizeWindowControlButton.BackColor = System.Drawing.Color.Transparent;
+            this.MinimizeWindowControlButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MinimizeWindowControlButton.FlatAppearance.BorderSize = 0;
+            this.MinimizeWindowControlButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
+            this.MinimizeWindowControlButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MinimizeWindowControlButton.Image = ((System.Drawing.Image)(resources.GetObject("MinimizeWindowControlButton.Image")));
+            this.MinimizeWindowControlButton.Location = new System.Drawing.Point(0, 0);
+            this.MinimizeWindowControlButton.Margin = new System.Windows.Forms.Padding(0);
+            this.MinimizeWindowControlButton.Name = "MinimizeWindowControlButton";
+            this.MinimizeWindowControlButton.Size = new System.Drawing.Size(33, 35);
+            this.MinimizeWindowControlButton.TabIndex = 3;
+            this.MinimizeWindowControlButton.UseVisualStyleBackColor = false;
+            // 
+            // CloseWindowControlButton
+            // 
+            this.CloseWindowControlButton.BackColor = System.Drawing.Color.Transparent;
+            this.CloseWindowControlButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CloseWindowControlButton.FlatAppearance.BorderSize = 0;
+            this.CloseWindowControlButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
+            this.CloseWindowControlButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CloseWindowControlButton.Image = ((System.Drawing.Image)(resources.GetObject("CloseWindowControlButton.Image")));
+            this.CloseWindowControlButton.Location = new System.Drawing.Point(66, 0);
+            this.CloseWindowControlButton.Margin = new System.Windows.Forms.Padding(0);
+            this.CloseWindowControlButton.Name = "CloseWindowControlButton";
+            this.CloseWindowControlButton.Size = new System.Drawing.Size(34, 35);
+            this.CloseWindowControlButton.TabIndex = 2;
+            this.CloseWindowControlButton.UseVisualStyleBackColor = false;
+            // 
+            // taskBarLogOut
+            // 
+            this.taskBarLogOut.BackColor = System.Drawing.Color.Transparent;
+            this.taskBarLogOut.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.taskBarLogOut.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.taskBarLogOut.FlatAppearance.BorderSize = 0;
+            this.taskBarLogOut.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
+            this.taskBarLogOut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.taskBarLogOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.taskBarLogOut.ForeColor = System.Drawing.Color.White;
+            this.taskBarLogOut.Image = global::GUI.Properties.Resources.log_out;
+            this.taskBarLogOut.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.taskBarLogOut.Location = new System.Drawing.Point(0, 637);
+            this.taskBarLogOut.Margin = new System.Windows.Forms.Padding(0);
+            this.taskBarLogOut.Name = "taskBarLogOut";
+            this.taskBarLogOut.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.taskBarLogOut.Size = new System.Drawing.Size(220, 37);
+            this.taskBarLogOut.TabIndex = 9;
+            this.taskBarLogOut.Text = "        Log Out";
+            this.taskBarLogOut.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.taskBarLogOut.UseVisualStyleBackColor = false;
             // 
             // userAvatar
             // 
@@ -255,134 +407,6 @@
             this.taskBarHome.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.taskBarHome.UseVisualStyleBackColor = false;
             // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.Color.Transparent;
-            this.panel3.Controls.Add(this.tableLayoutPanel1);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3.Location = new System.Drawing.Point(0, 0);
-            this.panel3.Margin = new System.Windows.Forms.Padding(0);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(220, 58);
-            this.panel3.TabIndex = 2;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.labelAppName, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(220, 58);
-            this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // labelAppName
-            // 
-            this.labelAppName.AutoSize = true;
-            this.labelAppName.BackColor = System.Drawing.Color.Transparent;
-            this.labelAppName.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.labelAppName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelAppName.Font = new System.Drawing.Font("iCiel Cadena", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelAppName.ForeColor = System.Drawing.Color.White;
-            this.labelAppName.Location = new System.Drawing.Point(0, 0);
-            this.labelAppName.Margin = new System.Windows.Forms.Padding(0);
-            this.labelAppName.Name = "labelAppName";
-            this.labelAppName.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.labelAppName.Size = new System.Drawing.Size(220, 58);
-            this.labelAppName.TabIndex = 1;
-            this.labelAppName.Text = "Multi Aura";
-            this.labelAppName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // panelWindownControlTaskBar
-            // 
-            this.panelWindownControlTaskBar.BackColor = System.Drawing.Color.Transparent;
-            this.panelWindownControlTaskBar.Controls.Add(this.tableLayoutPanel2);
-            this.panelWindownControlTaskBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelWindownControlTaskBar.Location = new System.Drawing.Point(224, 4);
-            this.panelWindownControlTaskBar.Margin = new System.Windows.Forms.Padding(0);
-            this.panelWindownControlTaskBar.Name = "panelWindownControlTaskBar";
-            this.panelWindownControlTaskBar.Size = new System.Drawing.Size(1232, 35);
-            this.panelWindownControlTaskBar.TabIndex = 1;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.BackColor = System.Drawing.Color.Transparent;
-            this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel2.Controls.Add(this.MaximizeWindowControlButton, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.MinimizeWindowControlButton, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.CloseWindowControlButton, 2, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(1132, 0);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(100, 35);
-            this.tableLayoutPanel2.TabIndex = 0;
-            // 
-            // MaximizeWindowControlButton
-            // 
-            this.MaximizeWindowControlButton.BackColor = System.Drawing.Color.Transparent;
-            this.MaximizeWindowControlButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MaximizeWindowControlButton.FlatAppearance.BorderSize = 0;
-            this.MaximizeWindowControlButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
-            this.MaximizeWindowControlButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MaximizeWindowControlButton.Image = ((System.Drawing.Image)(resources.GetObject("MaximizeWindowControlButton.Image")));
-            this.MaximizeWindowControlButton.Location = new System.Drawing.Point(33, 0);
-            this.MaximizeWindowControlButton.Margin = new System.Windows.Forms.Padding(0);
-            this.MaximizeWindowControlButton.Name = "MaximizeWindowControlButton";
-            this.MaximizeWindowControlButton.Size = new System.Drawing.Size(33, 35);
-            this.MaximizeWindowControlButton.TabIndex = 4;
-            this.MaximizeWindowControlButton.UseVisualStyleBackColor = false;
-            // 
-            // MinimizeWindowControlButton
-            // 
-            this.MinimizeWindowControlButton.BackColor = System.Drawing.Color.Transparent;
-            this.MinimizeWindowControlButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MinimizeWindowControlButton.FlatAppearance.BorderSize = 0;
-            this.MinimizeWindowControlButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
-            this.MinimizeWindowControlButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeWindowControlButton.Image = ((System.Drawing.Image)(resources.GetObject("MinimizeWindowControlButton.Image")));
-            this.MinimizeWindowControlButton.Location = new System.Drawing.Point(0, 0);
-            this.MinimizeWindowControlButton.Margin = new System.Windows.Forms.Padding(0);
-            this.MinimizeWindowControlButton.Name = "MinimizeWindowControlButton";
-            this.MinimizeWindowControlButton.Size = new System.Drawing.Size(33, 35);
-            this.MinimizeWindowControlButton.TabIndex = 3;
-            this.MinimizeWindowControlButton.UseVisualStyleBackColor = false;
-            // 
-            // CloseWindowControlButton
-            // 
-            this.CloseWindowControlButton.BackColor = System.Drawing.Color.Transparent;
-            this.CloseWindowControlButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CloseWindowControlButton.FlatAppearance.BorderSize = 0;
-            this.CloseWindowControlButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
-            this.CloseWindowControlButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CloseWindowControlButton.Image = ((System.Drawing.Image)(resources.GetObject("CloseWindowControlButton.Image")));
-            this.CloseWindowControlButton.Location = new System.Drawing.Point(66, 0);
-            this.CloseWindowControlButton.Margin = new System.Windows.Forms.Padding(0);
-            this.CloseWindowControlButton.Name = "CloseWindowControlButton";
-            this.CloseWindowControlButton.Size = new System.Drawing.Size(34, 35);
-            this.CloseWindowControlButton.TabIndex = 2;
-            this.CloseWindowControlButton.UseVisualStyleBackColor = false;
-            // 
-            // panelDesktop
-            // 
-            this.panelDesktop.BackColor = System.Drawing.Color.Transparent;
-            this.panelDesktop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDesktop.Location = new System.Drawing.Point(224, 39);
-            this.panelDesktop.Margin = new System.Windows.Forms.Padding(0);
-            this.panelDesktop.Name = "panelDesktop";
-            this.panelDesktop.Size = new System.Drawing.Size(1232, 757);
-            this.panelDesktop.TabIndex = 2;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -401,12 +425,12 @@
             this.panelSideBarItems.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panelAvatar.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.userAvatar)).EndInit();
             this.panel3.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.panelWindownControlTaskBar.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.userAvatar)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -433,5 +457,6 @@
         private CustomControl.Commons.AvatarCommon userAvatar;
         private System.Windows.Forms.Panel panelDesktop;
         private System.Windows.Forms.Button taskBarProfile;
+        private System.Windows.Forms.Button taskBarLogOut;
     }
 }

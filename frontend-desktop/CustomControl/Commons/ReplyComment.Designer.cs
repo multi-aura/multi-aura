@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.voicePlayer = new CustomControl.Commons.VoicePlayerCommon();
             this.tableLayoutPanelComment = new System.Windows.Forms.TableLayoutPanel();
             this.userAvatar = new CustomControl.Commons.AvatarCommon();
             this.tableLayoutPanelInfo = new System.Windows.Forms.TableLayoutPanel();
@@ -42,6 +41,7 @@
             this.labelReply = new System.Windows.Forms.Label();
             this.labelTime = new System.Windows.Forms.Label();
             this.labelFullName = new System.Windows.Forms.Label();
+            this.panelVoicePlayer = new System.Windows.Forms.Panel();
             this.tableLayoutPanelComment.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.userAvatar)).BeginInit();
             this.tableLayoutPanelInfo.SuspendLayout();
@@ -49,18 +49,6 @@
             this.tableLayoutPanelLikeCounter.SuspendLayout();
             this.tableLayoutPanel12.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // voicePlayer
-            // 
-            this.voicePlayer.BackColor = System.Drawing.Color.Transparent;
-            this.voicePlayer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.voicePlayer.Location = new System.Drawing.Point(10, 38);
-            this.voicePlayer.Margin = new System.Windows.Forms.Padding(0);
-            this.voicePlayer.MinimumSize = new System.Drawing.Size(457, 60);
-            this.voicePlayer.Name = "voicePlayer";
-            this.voicePlayer.Padding = new System.Windows.Forms.Padding(6, 10, 6, 10);
-            this.voicePlayer.Size = new System.Drawing.Size(509, 60);
-            this.voicePlayer.TabIndex = 14;
             // 
             // tableLayoutPanelComment
             // 
@@ -78,7 +66,7 @@
             this.tableLayoutPanelComment.RowCount = 1;
             this.tableLayoutPanelComment.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelComment.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 162F));
-            this.tableLayoutPanelComment.Size = new System.Drawing.Size(569, 162);
+            this.tableLayoutPanelComment.Size = new System.Drawing.Size(569, 142);
             this.tableLayoutPanelComment.TabIndex = 17;
             // 
             // userAvatar
@@ -105,7 +93,7 @@
             this.tableLayoutPanelInfo.Controls.Add(this.flowLayoutPanelImages, 0, 3);
             this.tableLayoutPanelInfo.Controls.Add(this.panelActionTaskBar, 0, 4);
             this.tableLayoutPanelInfo.Controls.Add(this.labelFullName, 0, 0);
-            this.tableLayoutPanelInfo.Controls.Add(this.voicePlayer, 0, 2);
+            this.tableLayoutPanelInfo.Controls.Add(this.panelVoicePlayer, 0, 2);
             this.tableLayoutPanelInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanelInfo.Location = new System.Drawing.Point(40, 0);
             this.tableLayoutPanelInfo.Margin = new System.Windows.Forms.Padding(0);
@@ -117,7 +105,7 @@
             this.tableLayoutPanelInfo.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelInfo.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanelInfo.Size = new System.Drawing.Size(529, 162);
+            this.tableLayoutPanelInfo.Size = new System.Drawing.Size(529, 142);
             this.tableLayoutPanelInfo.TabIndex = 2;
             // 
             // labelText
@@ -138,7 +126,7 @@
             this.flowLayoutPanelImages.AutoScroll = true;
             this.flowLayoutPanelImages.AutoSize = true;
             this.flowLayoutPanelImages.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanelImages.Location = new System.Drawing.Point(10, 98);
+            this.flowLayoutPanelImages.Location = new System.Drawing.Point(10, 78);
             this.flowLayoutPanelImages.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanelImages.Name = "flowLayoutPanelImages";
             this.flowLayoutPanelImages.Padding = new System.Windows.Forms.Padding(0, 4, 0, 20);
@@ -151,7 +139,7 @@
             this.panelActionTaskBar.Controls.Add(this.tableLayoutPanelLikeCounter);
             this.panelActionTaskBar.Controls.Add(this.tableLayoutPanel12);
             this.panelActionTaskBar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelActionTaskBar.Location = new System.Drawing.Point(10, 122);
+            this.panelActionTaskBar.Location = new System.Drawing.Point(10, 102);
             this.panelActionTaskBar.Margin = new System.Windows.Forms.Padding(0);
             this.panelActionTaskBar.Name = "panelActionTaskBar";
             this.panelActionTaskBar.Size = new System.Drawing.Size(509, 40);
@@ -267,6 +255,16 @@
             this.labelFullName.Text = "Full name";
             this.labelFullName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // panelVoicePlayer
+            // 
+            this.panelVoicePlayer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelVoicePlayer.Location = new System.Drawing.Point(10, 38);
+            this.panelVoicePlayer.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
+            this.panelVoicePlayer.MinimumSize = new System.Drawing.Size(0, 40);
+            this.panelVoicePlayer.Name = "panelVoicePlayer";
+            this.panelVoicePlayer.Size = new System.Drawing.Size(509, 40);
+            this.panelVoicePlayer.TabIndex = 16;
+            // 
             // ReplyComment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -294,8 +292,6 @@
         }
 
         #endregion
-
-        private VoicePlayerCommon voicePlayer;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelComment;
         private AvatarCommon userAvatar;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelInfo;
@@ -309,5 +305,6 @@
         private System.Windows.Forms.Label labelReply;
         private System.Windows.Forms.Label labelTime;
         private System.Windows.Forms.Label labelFullName;
+        private System.Windows.Forms.Panel panelVoicePlayer;
     }
 }
