@@ -21,15 +21,6 @@ namespace GUI.AuthenticationForms
             goToRegister?.Invoke(this, EventArgs.Empty);
         }
 
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel1_Paint_1(object sender, PaintEventArgs e)
-        {
-
-        }
 
         private async void btn_login_Click(object sender, EventArgs e)
         {
@@ -55,8 +46,6 @@ namespace GUI.AuthenticationForms
                 if (authDataProvider.CurrentUser != null)
                 {
                     this.Hide();
-                    MainForm mainForm = new MainForm();
-                    mainForm.Show();
                 }
             }
             catch (Exception ex)

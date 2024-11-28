@@ -9,7 +9,6 @@ using CustomControl.Modals;
 using System.Net.Http;
 using BLL.DataProviders;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace GUI
 {
@@ -49,12 +48,6 @@ namespace GUI
 
             appDataProvider.ShowModalRequested += ShowModalRequest;
 
-            homeForm = new HomeForm();
-            exploreForm = new ExploreForm();
-            messagesForm = new MessagesForm();
-            notificationsForm = new NotificationsForm();
-            profileForm = new ProfileForm();
-
             this.taskBarNotifications.Visible = false;
             this.KeyPreview = true;
 
@@ -67,9 +60,9 @@ namespace GUI
                 {
                     if (appDataProvider.HasUser())
                     {
+                        SetUpDefaultActions();
                         relationshipDataProvider.Initialize();
 
-                        SetUpDefaultActions();
                         //appDataProvider.DataLoaded += SetUpUI;
                         //SetUpUI();
                         this.Show();
@@ -83,9 +76,9 @@ namespace GUI
             }
             else
             {
+                SetUpDefaultActions();
                 relationshipDataProvider.Initialize();
 
-                SetUpDefaultActions();
                 //appDataProvider.DataLoaded += SetUpUI;
                 //SetUpUI();
             }
@@ -107,37 +100,85 @@ namespace GUI
                 maximizeButton: this.MaximizeWindowControlButton,
                 closeButton: this.CloseWindowControlButton
                 );
+
+            InitializeForms();
             SetUpNavigators();
 
             this.taskBarCreatePost.Click += TaskBarCreatePost_Click;
+            this.taskBarLogOut.Click += TaskBarLogOut_Click;
             this.userAvatar.Click += (sender, e) => OpenChildForm(profileForm, this.taskBarProfile);
+        }
+
+        private void TaskBarLogOut_Click(object sender, EventArgs e)
+        {
+            AuthDataProvider.Instance.Logout();
+
+            DisposeForms();
+
+            this.Hide();
+
+            AuthenticationForm authenticationForm = new AuthenticationForm();
+            authenticationForm.FormClosed += (s, args) =>
+            {
+                if (appDataProvider.HasUser())
+                {
+                    Application.Restart();
+                }
+                else
+                {
+                    Application.Exit();
+                }
+            };
+            authenticationForm.ShowDialog();
+        }
+        private void InitializeForms()
+        {
+            // Khởi tạo lại các form con
+            homeForm = new HomeForm();
+            exploreForm = new ExploreForm();
+            messagesForm = new MessagesForm();
+            notificationsForm = new NotificationsForm();
+            profileForm = new ProfileForm();
+        }
+
+        private void DisposeForms()
+        {
+            // Giải phóng tài nguyên của các form con khi đăng xuất
+            homeForm?.Dispose();
+            exploreForm?.Dispose();
+            messagesForm?.Dispose();
+            notificationsForm?.Dispose();
+            profileForm?.Dispose();
         }
 
         private async void SetUpUI()
         {
-            if (!string.IsNullOrEmpty(appDataProvider.User.Avatar))
+            if (appDataProvider.User != null)
             {
-                try
+                if (!string.IsNullOrEmpty(appDataProvider.User.Avatar))
                 {
-                    var imageUrl = appDataProvider.User.Avatar;
-                    using (HttpClient httpClient = new HttpClient())
+                    try
                     {
-                        var imageBytes = await httpClient.GetByteArrayAsync(imageUrl);
-
-                        using (var ms = new System.IO.MemoryStream(imageBytes))
+                        var imageUrl = appDataProvider.User.Avatar;
+                        using (HttpClient httpClient = new HttpClient())
                         {
-                            userAvatar.Image = Image.FromStream(ms);
+                            var imageBytes = await httpClient.GetByteArrayAsync(imageUrl);
+
+                            using (var ms = new System.IO.MemoryStream(imageBytes))
+                            {
+                                userAvatar.Image = Image.FromStream(ms);
+                            }
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        userAvatar.Image = Properties.Resources.person;
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
                     userAvatar.Image = Properties.Resources.person;
                 }
-            }
-            else
-            {
-                userAvatar.Image = Properties.Resources.person;
             }
         }
 

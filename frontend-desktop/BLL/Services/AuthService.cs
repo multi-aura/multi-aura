@@ -33,33 +33,28 @@ namespace BLL.Services
 
             if (response is SuccessResponse<string> successResponse)
             {
-                Console.WriteLine($"[INFO] SuccessResponse Received - Data: {successResponse.Data}");
-
                 try
                 {
-                    if (string.IsNullOrEmpty(successResponse.Data))
+                    var userData = JsonConvert.DeserializeObject<dynamic>(successResponse.Data);
+                    Console.WriteLine($"[INFO] SuccessResponse Received - Data: {successResponse.Data}");
+
+                    if (userData?.data?.data == null)
                     {
-                        return (null, "API response data is empty.");
+                        return (null, "API response data is empty or invalid.");
                     }
 
-                    // Deserialize the data into a dictionary
-                    var dataDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(successResponse.Data);
-                    Console.WriteLine($"dataDict: {dataDict}");
+                    var userDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(userData.data.data.ToString());
+                    var token = userData.data.token?.ToString();
 
-                    if (dataDict != null)
+                    var userProfile = User.FromDictionary(userDict);
+
+                    if (userProfile != null)
                     {
-                        // Parse thông tin user
-                        var userProfile = User.FromDictionary(dataDict);
-                        Console.WriteLine($"Data: {userProfile.FullName}");
-
-                        if (userProfile != null)
-                        {
-                            return (userProfile, string.Empty);
-                        }
-                        return (null, "Failed to parse user profile");
+                        userProfile.Token = token;
+                        return (userProfile, string.Empty);
                     }
 
-                    return (null, "Failed to parse response data into dictionary");
+                    return (null, "Failed to parse user profile.");
                 }
                 catch (JsonException ex)
                 {
@@ -76,10 +71,7 @@ namespace BLL.Services
                 return (null, errorResponse.Message);
             }
 
-            return (null, "Unknown error");
+            return (null, "Unknown error.");
         }
-
-
-
     }
 }

@@ -15,6 +15,8 @@ namespace DTO
 
         [JsonProperty("description")]
         public string Content { get; set; }
+        [JsonProperty("voice")]
+        public string Voice { get; set; }
 
         [JsonProperty("createdBy")]
         public UserSummary Author { get; set; }
@@ -47,6 +49,7 @@ namespace DTO
             {
                 { "_id", Id },
                 { "description", Content },
+                { "voice", Voice },
                 { "createdBy", Author?.ToDictionary() },
                 { "createdAt", CreatedAt },
                 { "updatedAt", UpdatedAt },
@@ -64,6 +67,7 @@ namespace DTO
             {
                 Id = DictionaryConverter.GetValueOrDefault(data, "_id", string.Empty),
                 Content = DictionaryConverter.GetValueOrDefault(data, "description", string.Empty),
+                Voice = DictionaryConverter.GetValueOrDefault(data, "voice", string.Empty),
                 Author = DictionaryConverter.ParseUserSummary(data, "createdBy"),
                 CreatedAt = DictionaryConverter.ParseDateTime(data, "createdAt", DateTime.MinValue),
                 UpdatedAt = DictionaryConverter.ParseDateTime(data, "updatedAt", DateTime.MinValue),
