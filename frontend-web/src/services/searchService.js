@@ -75,7 +75,9 @@ export const getForYouPosts = async (limit = 10, page = 1) => {
   };
 
   export const getNewsPosts = async (limit = 10, page = 1) => {
+
     try {
+
       const token = Cookies.get('authToken'); 
   
       const response = await axios.post(`${SEARCH_URL}/news`, 

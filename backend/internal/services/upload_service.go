@@ -24,16 +24,18 @@ type UploadService interface {
 	DeletePostMediaData(postID string) error
 	DeleteCommentMediaData(commentID string) error
 	DeleteReplyCommentMediaData(commentID, replyID string) error
+	UploadConversationImageData(conversatinID string, files []multipart.File, fileHeaders []*multipart.FileHeader) ([]string, error)
 }
 
 type uploadService struct {
-	userRepo    *repositories.UserRepository
-	postRepo    *repositories.PostRepository
-	storageRepo *repositories.StorageRepository
+	userRepo         *repositories.UserRepository
+	postRepo         *repositories.PostRepository
+	storageRepo      *repositories.StorageRepository
+	conversationRepo repositories.ConversationRepository
 }
 
-func NewUploadService(userRepo *repositories.UserRepository, postRepo *repositories.PostRepository, storageRepo *repositories.StorageRepository) UploadService {
-	return &uploadService{userRepo, postRepo, storageRepo}
+func NewUploadService(userRepo *repositories.UserRepository, postRepo *repositories.PostRepository, storageRepo *repositories.StorageRepository, conversationRepo repositories.ConversationRepository) UploadService {
+	return &uploadService{userRepo, postRepo, storageRepo, conversationRepo}
 }
 
 func (s *uploadService) UploadProfilePhoto(userID string, file multipart.File, fileHeader *multipart.FileHeader) (string, error) {
@@ -143,6 +145,44 @@ func (s *uploadService) UploadPostMediaData(postID, userID, text string, files [
 		if !updateVoiceResult {
 			s.DeleteMedias(fileURLs)
 			return nil, errors.New("failed to update post with voice")
+		}
+	}
+
+	return fileURLs, nil
+}
+func (s *uploadService) UploadConversationImageData(conversatinID string, files []multipart.File, fileHeaders []*multipart.FileHeader) ([]string, error) {
+	conversation, err := s.conversationRepo.GetByID(conversatinID)
+	if err != nil {
+		return nil, errors.New("failed to retrieve conversation: " + err.Error())
+	}
+	if conversation == nil {
+		return nil, errors.New("conversation not found")
+	}
+
+	var fileURLs []string
+	folder := fmt.Sprintf("conversation/%s", conversatinID)
+
+	if len(files) > 0 {
+		file := files[0]
+		fileHeader := fileHeaders[0]
+
+		fileURL, err := (*s.storageRepo).UploadFile(file, fileHeader, folder)
+		if err != nil {
+			s.DeleteMedias(fileURLs)
+			return nil, errors.New("failed to upload file: " + err.Error())
+		}
+
+		fileURLs = append(fileURLs, fileURL)
+
+		uploadPhotosResult, err := s.conversationRepo.UploadPhotos(conversatinID, fileURLs)
+		if err != nil {
+			s.DeleteMedias(fileURLs)
+			return nil, err
+		}
+
+		if !uploadPhotosResult {
+			s.DeleteMedias(fileURLs) // Xóa các file nếu việc cập nhật không thành công
+			return nil, errors.New("failed to update conversation with uploaded photo")
 		}
 	}
 

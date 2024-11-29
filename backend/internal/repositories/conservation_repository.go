@@ -23,6 +23,7 @@ type ConversationRepository interface {
 	UpdateRemoveUser(conversation *models.Conversation) error
 	AddMessageToConversation(message *models.Chat, conversationID string) error
 	MarkMessageAsDeleted(conversationID string, messageID string) error
+	UploadPhotos(conversationID string, fileURLs []string) (bool, error)
 }
 
 type conversationRepository struct {
@@ -64,7 +65,10 @@ func (repo *conversationRepository) GetByID(conversationID string) (*models.Conv
 }
 
 func (repo *conversationRepository) Create(conversation models.Conversation) error {
-	_, err := repo.collection.InsertOne(context.Background(), conversation)
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	defer cancel()
+
+	_, err := repo.collection.InsertOne(ctx, conversation)
 	if err != nil {
 		return err
 	}
@@ -284,4 +288,34 @@ func (r *conversationRepository) GetMessagesByConversationID(conversationID stri
 	}
 
 	return conversation.Chats, nil
+}
+func (repo *conversationRepository) UploadPhotos(conversationID string, fileURLs []string) (bool, error) {
+	objectID, err := primitive.ObjectIDFromHex(conversationID)
+	if err != nil {
+		return false, errors.New("invalid conversation ID format")
+	}
+
+	filter := bson.M{"_id": objectID}
+
+	if len(fileURLs) == 0 {
+		return false, errors.New("no file URL provided")
+	}
+
+	update := bson.M{
+		"$set": bson.M{
+			"thumb_group": fileURLs[0],    
+			"updatedat":   time.Now().UTC(), 
+		},
+	}
+
+	result, err := repo.collection.UpdateOne(context.Background(), filter, update)
+	if err != nil {
+		return false, errors.New("failed to upload photos to conversation: " + err.Error())
+	}
+
+	if result.MatchedCount == 0 {
+		return false, errors.New("no conversation found with the provided ID")
+	}
+
+	return true, nil
 }

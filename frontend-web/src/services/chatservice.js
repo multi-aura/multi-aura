@@ -3,6 +3,8 @@ import { API_URL } from '../config/config';
 import Cookies from 'js-cookie';
 
 const CONVERSATION_URL = `${API_URL}/conversation`;
+const UploadImage_URL = `${API_URL}/upload/conversation`;
+
 
 export const getUserConversation = async (userID) => {
     try {
@@ -63,17 +65,17 @@ export const sendMessageToConversation = async (conversationID, userID, content)
 };
 export const createConversation = async (userID, name_conversation) => {
     try {
-        const token = Cookies.get('authToken'); 
+        const token = Cookies.get('authToken');
         const response = await axios.post(
-            `${CONVERSATION_URL}/create-conversation`, 
+            `${CONVERSATION_URL}/create-conversation`,
             {
-                user_ids: userID, 
+                user_ids: userID,
                 name: name_conversation
             },
             {
                 headers: {
-                    Authorization: `Bearer ${token}`, 
-                    "Content-Type": "application/json" 
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
                 }
             }
         );
@@ -83,4 +85,59 @@ export const createConversation = async (userID, name_conversation) => {
         console.error("Error creating conversation:", error.response?.data || error.message);
         throw error; // Ném lỗi để xử lý ở nơi gọi hàm
     }
+};
+
+
+export const createGroupConversation = async (userIDs, name_conversation) => {
+    try {
+        const token = Cookies.get('authToken'); // Lấy token từ cookie
+
+        const data = {
+            user_ids: userIDs.users,
+            name: name_conversation,
+        };
+
+        const response = await axios.post(
+            `${CONVERSATION_URL}/create-conversation`, 
+            data, 
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`, 
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        return response.data; // Trả về dữ liệu nếu thành công
+    } catch (error) {
+        console.error('Error creating conversation:', error.response?.data || error.message);
+        throw error; // Ném lỗi để xử lý ở nơi gọi hàm
+    }
+};
+
+
+export const uploadImageConversation = async (conversatinID, image) => {
+  try {
+    const token = Cookies.get('authToken'); 
+
+    const formData = new FormData();
+    formData.append("photos", image);  
+
+    const response = await axios.post(`${UploadImage_URL}/image/${conversatinID}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data", 
+      },
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Upload failed with status: ${response.status}`);
+    }
+
+  } catch (error) {
+    console.error("Error uploading image for conversation", error);
+    throw error;  
+  }
 };

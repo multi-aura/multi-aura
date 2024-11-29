@@ -1,36 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Post from '../Post/Post';
-import { getNewsPosts } from '../../services/searchService';
 import './Feed.css';
 
-const Feed = () => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchNewsPosts = async () => {
-      try {
-        const response = await getNewsPosts(); 
-        setPosts(response.data); 
-      } catch (error) {
-        console.error('Lỗi khi lấy bài viết "News":', error);
-      } finally {
-        setLoading(false); 
-      }
-    };
-
-    fetchNewsPosts();
-  }, []);
+function Feed({ posts, userData }) {
+  const [loading, setLoading] = useState(false);  // Trạng thái loading nếu cần
 
   if (loading) {
-    return <p>Loading...</p>; 
+    return <p>Loading...</p>;
   }
 
   return (
     <div className="feed">
-      {posts.map(post => (
-        <Post key={post._id} post={post} /> 
-      ))}
+      {posts && posts.map(post => (
+        <Post key={post._id} post={post} userData={userData} />
+        ))}
     </div>
   );
 };

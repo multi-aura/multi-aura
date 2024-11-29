@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import CreateGroupConversation from '../CreateGroupConversation/CreateGroupConversation';
+
 import {
   faBellSlash,
   faThumbtack,
@@ -10,9 +12,9 @@ import {
   faTimes
 } from '@fortawesome/free-solid-svg-icons';
 import './SettingSidebarChat.css';
-import CreateGroupConversation from '../CreateGroupConversation/CreateGroupConversation';
 
-const SettingSidebarChat = ({ isOpen, currentChat, userCurent }) => {
+const SettingSidebarChat = ({ isOpen, currentChat, userCurent, dataFriend, onCreateGroup  }) => {
+
   const [isModalVisible, setModalVisible] = useState(false);
   const isGroup = currentChat.conversation_type === 'Group';
   const currentUserID = userCurent ? userCurent.userID : null;
@@ -35,6 +37,10 @@ const SettingSidebarChat = ({ isOpen, currentChat, userCurent }) => {
   const closeModal = () => {
     setModalVisible(false);
   };
+
+//   const onCreateGroup = (groupData) => {
+//     console.log("Group created:", groupData);
+// };
   return (
     <div className={`setting-sidebar-chat ${isOpen ? 'visible' : 'hidden'}`}>
       {/* Header */}
@@ -57,9 +63,11 @@ const SettingSidebarChat = ({ isOpen, currentChat, userCurent }) => {
         </div>
       </div>
       <CreateGroupConversation
-        isVisible={isModalVisible}
-        onClose={closeModal}
-      />
+                dataFriend={dataFriend}  
+                isVisible={isModalVisible}
+                onClose={closeModal}  
+                onCreateGroup={onCreateGroup}
+            />
       {/* Danh sách nhắc nhở */}
       <div className="section">
         <h4 className="section-title">

@@ -5,8 +5,11 @@ import ChatContent from '../components/Messages/ChatContent/ChatContent';
 import SettingSidebarChat from '../components/Messages/SettingSidebarChat/SettingSidebarChat';
 import Layout from '../layouts/Layout';
 import '../assets/css/ChatPage.css';
-import { getUserConversation, getConversationDetails, sendMessageToConversation } from "../services/chatservice";
+import { getUserConversation, getConversationDetails, sendMessageToConversation, createGroupConversation, uploadImageConversation } from "../services/chatservice";
+
 import { API_URL_WS } from '../config/config';
+import { getFriends } from '../services/RelationshipService';
+import SuccessModal from '../components/SuccessModal/SuccessModal';
 
 function ChatPage() {
   const { conversationID } = useParams();
@@ -18,6 +21,9 @@ function ChatPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Trạng thái mở/đóng sidebar
   const ws = useRef(null);
   const [newMessageItems, setNewMessageItems] = useState(null);
+  const [friends, setFriends] = useState([]);
+
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // Load dữ liệu người dùng từ localStorage
   useEffect(() => {
@@ -27,7 +33,6 @@ function ChatPage() {
     }
   }, []);
 
-  // Kết nối WebSocket khi có userData và currentChat
   useEffect(() => {
     if (userData && currentChat) {
       ws.current = new WebSocket(`${API_URL_WS}/ws?user_id=${userData.userID}&conversation_id=${currentChat._id}`);
@@ -129,6 +134,50 @@ function ChatPage() {
     }
     setNewMessageItems(messageData);
   };
+  const getFriendsbyUser = async () => {
+    try {
+      const response = await getFriends();
+      setFriends(response);
+    } catch (err) {
+      console.log("fetching get friend", err);
+    }
+
+  }
+
+  useEffect(() => {
+    getFriendsbyUser();
+  }, []);
+
+  const onCreateGroup = async (groupData) => {
+    const { title, image, users } = groupData;
+    const listUserCurrent = currentChat?.users || [];
+
+    const group = {
+      users: [
+        ...listUserCurrent.map((user) => user.userID),
+        ...users.map((user) => user)
+      ]
+    };
+
+
+    try {
+
+      const response = await createGroupConversation(group, title);
+      if (response.status === 201) {
+        const ID_conversation = response.data._id;
+        if (image) {
+          const uploadResponse = await uploadImageConversation(ID_conversation, image);
+          if (uploadResponse.status === 200) {
+            setShowSuccessModal(true);
+
+          }
+        }
+      }
+    } catch (err) {
+      console.error('Lỗi khi tạo cuộc trò chuyện:', err.message || err);
+    }
+  };
+
 
   return (
     <Layout userData={userData}>
@@ -149,6 +198,7 @@ function ChatPage() {
               padding: '0',
             }}
           >
+
             <div
               className={`chat-content ${isSidebarOpen ? 'shrink-content' : ''}`}
               style={{ flex: isSidebarOpen ? '0.7' : '1', transition: 'flex 0.3s ease' }}
@@ -177,11 +227,21 @@ function ChatPage() {
                 isOpen={isSidebarOpen}
                 currentChat={currentChat}
                 userCurent={userData}
+                dataFriend={friends}
+                onCreateGroup={onCreateGroup}
               />
             )}
+
           </div>
         </div>
       </div>
+      {showSuccessModal && (
+        <SuccessModal
+          title="Thành công!"
+          description="Cảm ơn bạn đã tạo nhóm thành công."
+          onClose={() => setShowSuccessModal(false)}
+        />
+      )}
     </Layout>
   );
 }

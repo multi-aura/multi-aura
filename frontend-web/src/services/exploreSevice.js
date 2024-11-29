@@ -1,4 +1,10 @@
 import axios from "axios";
+import { API_URL } from '../config/config';
+import Cookies from 'js-cookie';
+const Post_URL = `${API_URL}/post`;
+const UploadImage_URL = `${API_URL}/upload`;
+
+
 
 /**
  * Lấy danh sách emoji từ API.
@@ -48,3 +54,49 @@ export const getAddressFromCoordinates = async (lat, lng) => {
     throw new Error("Không thể lấy địa chỉ cụ thể");
   }
 };
+
+
+export const createPost = async (postContent) => {
+  try {
+    const token = Cookies.get('authToken');
+    const response = await axios.post(`${Post_URL}/create`, {
+      description: postContent,
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+
+
+  } catch (error) {
+    console.log(`Error to create post`, error);
+    throw error;
+  }
+}
+
+export const uploadImagePost = async (idPost, imagePost, postText) => {
+  try {
+    const token = Cookies.get('authToken');
+    const formData = new FormData(); 
+
+    imagePost.forEach((image) => {
+      formData.append("photos", image);
+    });
+    if (postText) {
+      formData.append("text", postText);
+    }
+    const response = await axios.post(`${UploadImage_URL}/post/medias/${idPost}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data; 
+
+  } catch (error) {
+    console.log("Error to upload image post", error);
+    throw error;
+  }
+}

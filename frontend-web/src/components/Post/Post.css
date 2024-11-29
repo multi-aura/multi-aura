@@ -1,39 +1,44 @@
 .post {
   width: 100%;
   height: auto;
-  background-color: #000; /* Nền đen */
-  color: #fff; /* Chữ trắng */
+  background-color: #000;
+  /* Nền đen */
+  color: #fff;
+  /* Chữ trắng */
   padding: 20px;
-  border-radius: 10px; /* Bo góc */
+  border-radius: 10px;
+  /* Bo góc */
   margin-bottom: 20px;
 }
-.img-post{
+
+.img-post {
   width: 100%;
 }
-.post img {
-  border-radius: 10px;
-  margin-bottom: 15px;
-  margin-right: 15px;
-}
+
+
 
 .post .avatar {
   width: 40px;
   height: 40px;
   object-fit: cover;
-  border: 2px solid #fff; /* Viền trắng cho avatar */
+  border: 2px solid #fff;
+  /* Viền trắng cho avatar */
 }
 
 .post .text-muted {
-  color: #ccc; /* Màu xám cho phần thời gian */
+  color: #ccc;
+  /* Màu xám cho phần thời gian */
 }
 
 .post button.btn-link {
-  color: #fff; /* Chữ trắng cho nút */
+  color: #fff;
+  /* Chữ trắng cho nút */
   font-size: 20px;
 }
 
 .post button.btn-link:hover {
-  color: #ccc; /* Màu xám khi di chuột */
+  color: #ccc;
+  /* Màu xám khi di chuột */
 }
 
 .post .d-flex {
@@ -41,39 +46,145 @@
 }
 
 .post .mr-3 {
-  margin-right: 1rem; /* Căn chỉnh khoảng cách giữa các biểu tượng */
+  margin-right: 1rem;
+  /* Căn chỉnh khoảng cách giữa các biểu tượng */
 }
 
 .comments {
   margin-top: 20px;
 }
 
-input.form-control {
-  background-color: #333;
+input.comment-text {
+  background-color: black;
+  /* Nền đen */
   color: #fff;
-  border: 1px solid #444;
+  /* Chữ trắng */
+  border: none;
+  border-bottom: 1px solid #444;
+  /* Viền dưới */
+  padding: 10px;
+  width: 75%;
+  font-size: 14px;
+  outline: none;
+  /* Xóa viền khi focus */
+  margin-right: 40px;
 }
 
-input.form-control::placeholder {
-  color: #ccc;
+.avatar-container {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 5px;
+}
+
+.avatar-container img {
+  margin: 0px;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+input.comment-text:focus,
+input.comment-text:active {
+  border-color: #444;
+  border-bottom: 1px solid #444;
+  background-color: black;
+  color: #fff;
+  box-shadow: none;
 }
 
 button.btn-primary {
-  background-color: #00000000;
+  background-color: transparent;
+  /* Không nền */
   border: none;
-}
-button.btn-primary:hover {
-  background-color: #494949c7;
-  border: none;
-}
-.text-time{
-  padding: 0px;
 }
 
-.text-fullname{
-  margin-bottom: 0px;
+button.btn-primary:hover {
+  background-color: #494949c7;
+  /* Màu xám nhạt khi hover */
 }
-.content-post{
-  margin-top: 0px;
-  padding-top: 0px;
+
+.text-time,
+.text-fullname,
+.content-post {
+  margin: 0;
+  padding: 0;
 }
+
+/* Bỏ padding không cần thiết */
+.text-time {
+  color: gray;
+  padding-top: 5px;
+}
+
+/* Ensure the content of the post is aligned in a single row */
+.content-post {
+  display: flex;
+  align-items: center;
+  /* Vertically center align both elements */
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+/* Style for the audio controls button */
+.audio-controls {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  outline: none;
+
+}
+
+/* Style the play/pause button */
+.audio-btn {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: white;
+  font-size: 30px;
+  margin: 0px !important;
+  width: 40px !important; 
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.audio-controls {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  
+}
+.audio-controls:hover {
+outline: none !important;
+border: none !important;
+  
+}
+.audio-btn:active, :focus{
+  border: none !important;
+}
+
+/* Style for the post description */
+.post-description {
+  font-size: 16px;
+  color: white;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+/* Container cho hàng hình ảnh */
+.image-row {
+
+  width: 70%;
+}
+
+.carousel-image-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
