@@ -3,8 +3,28 @@
   "WorkspaceRootPath": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\gui\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|solutionrelative:gui\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\bll\\dataproviders\\authdataprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|solutionrelative:bll\\dataproviders\\authdataprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\bll\\repositories\\repositories\\authrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|solutionrelative:bll\\repositories\\repositories\\authrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\bll\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|solutionrelative:bll\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\customcontrol\\modals\\profileupdationmodal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|solutionrelative:customcontrol\\modals\\profileupdationmodal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\customcontrol\\modals\\profileupdationmodal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{C68ECFAB-364D-4F77-BFEB-B939C99C4D5D}|CustomControl\\CustomControl.csproj|solutionrelative:customcontrol\\modals\\profileupdationmodal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\gui\\forms\\profileform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|solutionrelative:gui\\forms\\profileform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,19 +34,83 @@
       "DocumentGroups": [
         {
           "DockedWidth": 101,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\GUI\\Program.cs",
-              "RelativeDocumentMoniker": "GUI\\Program.cs",
-              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\GUI\\Program.cs",
-              "RelativeToolTip": "GUI\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAABBAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\BLL\\Services\\AuthService.cs",
+              "RelativeDocumentMoniker": "BLL\\Services\\AuthService.cs",
+              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\BLL\\Services\\AuthService.cs",
+              "RelativeToolTip": "BLL\\Services\\AuthService.cs",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAqwFgAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-28T16:23:06.757Z",
+              "WhenOpened": "2024-11-29T04:12:27.381Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ProfileUpdationModal.cs",
+              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Modals\\ProfileUpdationModal.cs",
+              "RelativeDocumentMoniker": "CustomControl\\Modals\\ProfileUpdationModal.cs",
+              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Modals\\ProfileUpdationModal.cs",
+              "RelativeToolTip": "CustomControl\\Modals\\ProfileUpdationModal.cs",
+              "ViewState": "AgIAAEkAAAAAAAAAAAAkwFcAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-29T04:32:21.172Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AuthDataProvider.cs",
+              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\BLL\\DataProviders\\AuthDataProvider.cs",
+              "RelativeDocumentMoniker": "BLL\\DataProviders\\AuthDataProvider.cs",
+              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\BLL\\DataProviders\\AuthDataProvider.cs",
+              "RelativeToolTip": "BLL\\DataProviders\\AuthDataProvider.cs",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAlwHcAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-29T04:12:20.045Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AuthRepository.cs",
+              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\BLL\\Repositories\\Repositories\\AuthRepository.cs",
+              "RelativeDocumentMoniker": "BLL\\Repositories\\Repositories\\AuthRepository.cs",
+              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\BLL\\Repositories\\Repositories\\AuthRepository.cs",
+              "RelativeToolTip": "BLL\\Repositories\\Repositories\\AuthRepository.cs",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAAAFIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-29T04:38:46.424Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ProfileUpdationModal.cs [Design]",
+              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Modals\\ProfileUpdationModal.cs",
+              "RelativeDocumentMoniker": "CustomControl\\Modals\\ProfileUpdationModal.cs",
+              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\CustomControl\\Modals\\ProfileUpdationModal.cs [Design]",
+              "RelativeToolTip": "CustomControl\\Modals\\ProfileUpdationModal.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-29T04:34:57.07Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ProfileForm.cs",
+              "DocumentMoniker": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\GUI\\Forms\\ProfileForm.cs",
+              "RelativeDocumentMoniker": "GUI\\Forms\\ProfileForm.cs",
+              "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\GUI\\Forms\\ProfileForm.cs",
+              "RelativeToolTip": "GUI\\Forms\\ProfileForm.cs",
+              "ViewState": "AgIAAFABAAAAAAAAAAD4v10BAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-29T04:11:40.472Z",
               "EditorCaption": ""
             }
           ]
