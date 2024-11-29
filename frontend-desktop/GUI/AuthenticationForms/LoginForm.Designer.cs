@@ -71,8 +71,8 @@
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.30047F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.69953F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 75F));
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.txt_username, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -80,7 +80,7 @@
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 6F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(378, 50);
             this.tableLayoutPanel2.TabIndex = 2;
@@ -92,7 +92,7 @@
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(78, 44);
+            this.label1.Size = new System.Drawing.Size(88, 44);
             this.label1.TabIndex = 0;
             this.label1.Text = "Email:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -100,18 +100,17 @@
             // txt_username
             // 
             this.txt_username.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txt_username.Location = new System.Drawing.Point(87, 2);
-            this.txt_username.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txt_username.Multiline = true;
+            this.txt_username.Location = new System.Drawing.Point(94, 10);
+            this.txt_username.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
             this.txt_username.Name = "txt_username";
-            this.txt_username.Size = new System.Drawing.Size(288, 40);
+            this.txt_username.Size = new System.Drawing.Size(284, 22);
             this.txt_username.TabIndex = 1;
             // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 21.83099F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 78.16901F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 75F));
             this.tableLayoutPanel3.Controls.Add(this.txt_password, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.label2, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -119,7 +118,7 @@
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 2;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 6F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(378, 50);
             this.tableLayoutPanel3.TabIndex = 3;
@@ -127,11 +126,10 @@
             // txt_password
             // 
             this.txt_password.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txt_password.Location = new System.Drawing.Point(85, 2);
-            this.txt_password.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txt_password.Multiline = true;
+            this.txt_password.Location = new System.Drawing.Point(94, 10);
+            this.txt_password.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
             this.txt_password.Name = "txt_password";
-            this.txt_password.Size = new System.Drawing.Size(290, 40);
+            this.txt_password.Size = new System.Drawing.Size(284, 22);
             this.txt_password.TabIndex = 2;
             this.txt_password.UseSystemPasswordChar = true;
             // 
@@ -142,7 +140,7 @@
             this.label2.ForeColor = System.Drawing.Color.White;
             this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(76, 44);
+            this.label2.Size = new System.Drawing.Size(88, 44);
             this.label2.TabIndex = 0;
             this.label2.Text = "Password";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

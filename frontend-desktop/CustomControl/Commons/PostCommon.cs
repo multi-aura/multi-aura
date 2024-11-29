@@ -289,6 +289,21 @@ namespace CustomControl.Commons
                     isLiked = false;
                     this.labelLike.Image = Resources.heart;
                 }
+
+                if (!string.IsNullOrEmpty(currentPost.Voice))
+                {
+                    VoicePlayerCommon voicePlayerCommon = new VoicePlayerCommon
+                    {
+                        Mp3URL = currentPost.Voice,
+                    };
+
+                    this.panelVoicePlayer.Controls.Add(voicePlayerCommon);
+                    this.panelVoicePlayer.Visible = true;
+                }
+                else
+                {
+                    this.panelVoicePlayer.Visible = false;
+                }
             }
             else
             {
