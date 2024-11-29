@@ -5,6 +5,7 @@ using DTO;
 using BLL.Services;
 using BLL.Repository;
 using System.Configuration;
+using System.Collections.Generic;
 
 namespace BLL.DataProviders
 {
@@ -40,6 +41,7 @@ namespace BLL.DataProviders
 
         public event Action UserLoggedIn;
         public event Action UserLoggedOut;
+        public event Action OnRequestReloadApp;
 
         private AuthDataProvider()
         {
@@ -103,6 +105,30 @@ namespace BLL.DataProviders
 
             UserLoggedOut?.Invoke();
             //MessageBox.Show("Logged out successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        public async Task<(bool, string)> UpdateProfileAsync(string photoPath = "", Dictionary<string, object> changes = null)
+        {
+            if (changes == null && string.IsNullOrEmpty(photoPath))
+            {
+                return (false, "No any changes");
+            }
+            if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token))
+            {
+                var (result, errorMessage) = await authService.UpdateProfileAsync(photoPath, changes);
+
+                if (!result)
+                {
+                    MessageBox.Show(errorMessage);
+                }
+                else
+                {
+                    OnRequestReloadApp?.Invoke();
+                }
+
+                return (result, "Update failed");
+            }
+            return (false, "Update failed");
         }
 
         private void SaveUserConfiguration(string token, string username)

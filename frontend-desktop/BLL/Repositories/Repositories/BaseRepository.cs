@@ -138,19 +138,21 @@ namespace BLL.Repositories.Repositories
         /// <summary>
         /// PUT Request
         /// </summary>
-        protected async Task<APIResponse<string>> PutAsync(string url, object data)
-        {            
+        protected async Task<APIResponse<string>> PutAsync(string url, string data)
+        {
             try
             {
                 SetAuthorizationHeader();
-                var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
                 var response = await _httpClient.PutAsync(url, content);
+
                 return await HandleResponse(response);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
-                throw ex;
+                Console.WriteLine($"[PutAsync] Error while sending PUT request to {url}: {ex.Message}");
+                return new ErrorResponse<string>(500, "An error occurred while sending PUT request", ex.Message);
             }
         }
 

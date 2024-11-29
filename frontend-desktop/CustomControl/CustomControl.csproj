@@ -193,6 +193,12 @@
     <Compile Include="Modals\ProfileDetails.Designer.cs">
       <DependentUpon>ProfileDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modals\ProfileUpdationModal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modals\ProfileUpdationModal.Designer.cs">
+      <DependentUpon>ProfileUpdationModal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modals\ReplyCommentMoreActionModal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -271,6 +277,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modals\ProfileDetails.resx">
       <DependentUpon>ProfileDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modals\ProfileUpdationModal.resx">
+      <DependentUpon>ProfileUpdationModal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modals\ReplyCommentMoreActionModal.resx">
       <DependentUpon>ReplyCommentMoreActionModal.cs</DependentUpon>
@@ -392,6 +401,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\audio_wave.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\insert_image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\check.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\invalid.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

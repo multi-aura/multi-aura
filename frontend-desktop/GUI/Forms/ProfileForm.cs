@@ -1,5 +1,6 @@
 ﻿using BLL.DataProviders;
 using CustomControl.Commons;
+using CustomControl.Modals;
 using CustomControl.Utils;
 using DTO;
 using GUI.Extensions;
@@ -27,6 +28,7 @@ namespace GUI.Forms
         public void Reload()
         {
             relationshipDataProvider.RefetchUserProfile();
+            LoadProfile();
         }
 
         public ProfileForm()
@@ -34,7 +36,7 @@ namespace GUI.Forms
             InitializeComponent();
             appDataProvider = AppDataProvider.Instance;
             appDataProvider.DataLoaded += LoadProfile;
-
+            LoadProfile();
             relationshipDataProvider = RelationshipDataProvider.Instance;
             relationshipDataProvider.FollowerDataLoaded += LoadFollowerCounter;
             relationshipDataProvider.FollowingDataLoaded += LoadFollowingCounter;
@@ -52,6 +54,21 @@ namespace GUI.Forms
 
             currentPanelResults = panelPosts;
             LoadPanel(currentPanelResults, hasPostsData);
+
+            this.buttonEditProfile.Click += ButtonEditProfile_Click;
+        }
+
+        private void ButtonEditProfile_Click(object sender, EventArgs e)
+        {
+            Form modal = new ProfileUpdationModal
+            {
+                CurrentUser = appDataProvider.User,
+                StartPosition = FormStartPosition.CenterScreen,
+                ShowInTaskbar = false,
+                TopMost = true
+            };
+
+            appDataProvider.ShowModal(this, modal);
         }
 
         private void PostDataProvider_OnCreatePostSuccess(Post obj)

@@ -8,6 +8,7 @@ using BLL.Network;
 using DTO;
 using DTO.Utils;
 using Newtonsoft.Json;
+using BLL.Repository;
 namespace BLL.Services
 {
     public class AuthService
@@ -73,5 +74,56 @@ namespace BLL.Services
 
             return (null, "Unknown error.");
         }
+
+        public async Task<(bool, string)> UpdateProfileAsync(string photoPath = "", Dictionary<string, object> changes = null)
+        {
+            try
+            {
+                var tasks = new List<Task<APIResponse<string>>>();
+
+                if (!string.IsNullOrWhiteSpace(photoPath))
+                {
+                    tasks.Add(_authRepository.UploadProfilePhotoAsync(photoPath));
+                }
+
+                if (changes != null && changes.Count > 0)
+                {
+                    tasks.Add(_authRepository.UdateProfileAsync(changes));
+                }
+
+                if (tasks.Count == 0)
+                {
+                    return (true, "No updates needed");
+                }
+
+                var responses = await Task.WhenAll(tasks);
+
+                bool allSuccess = true;
+                string errorMessage = "";
+
+                foreach (var response in responses)
+                {
+                    if (response is ErrorResponse<string> errorResponse)
+                    {
+                        allSuccess = false;
+                        errorMessage += $"{errorResponse.Message}. ";
+                    }
+                }
+
+                if (allSuccess)
+                {
+                    return (true, "Profile updated successfully");
+                }
+                else
+                {
+                    return (false, errorMessage.Trim());
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error occurred: {ex.Message}");
+            }
+        }
+
     }
 }
