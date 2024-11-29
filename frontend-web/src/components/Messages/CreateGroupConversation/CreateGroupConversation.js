@@ -5,68 +5,50 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { createGroupConversation } from "../../../services/chatservice";
 import SuccessModal from "../../SuccessModal/SuccessModal";
+import { debounce } from "lodash"; // Giả sử lodash đã được cài đặt để sử dụng debouncing
 
 const CreateGroupConversation = ({ isVisible, onClose, dataFriend, onCreateGroup }) => {
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedImage, setSelectedImage] = useState(null);
     const [groupTitle, setGroupTitle] = useState("");
-    const [userData, setUserData] = useState(null);
-    const [isSuccess, setIsSuccess] = useState(false); // Trạng thái thông báo thành công
-
+    const [groupData, setGroupData] = useState(null);
+    const [imageUrl, setImageUrl] = useState("");
+    // Chọn hoặc bỏ chọn người dùng
     const handleSelectUser = (user) => {
-        if (selectedUsers.some((u) => u.userID === user.userID)) {
-            setSelectedUsers(selectedUsers.filter((u) => u.userID !== user.userID));
-        } else {
-            setSelectedUsers([...selectedUsers, user]);
-        }
+        setSelectedUsers((prevUsers) =>
+            prevUsers.some((u) => u.userID === user.userID)
+                ? prevUsers.filter((u) => u.userID !== user.userID)
+                : [...prevUsers, user]
+        );
     };
 
-    useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-            setUserData(JSON.parse(storedUser));
-        }
-    }, []);
-
+    // Xử lý tải lên ảnh
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
+        setImageUrl(file);
         if (file && file.type.startsWith("image/")) {
-            const imageUrl = URL.createObjectURL(file);
-            setSelectedImage(imageUrl);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setSelectedImage(reader.result); // Lưu URL dữ liệu ảnh
+            };
+            reader.readAsDataURL(file);
         } else {
             alert("Vui lòng chọn tệp ảnh hợp lệ.");
         }
     };
+    
 
-    const handleCreateGroupConversation = async () => {
-        if (!groupTitle || selectedUsers.length === 0) return;
 
-        const userIDCurent = userData?.userID;
-        if (!userIDCurent) {
-            console.error("Current user not found");
-            return;
-        }
 
+    const hanleSubmit = () => {
         const groupData = {
             title: groupTitle,
-            users: [...selectedUsers.map((user) => user.userID), userIDCurent],
+            image:imageUrl,
+            users: [...selectedUsers.map((user) => user.userID)],
         };
-
-        try {
-            const name_conversation = groupData.title;
-            const userIDs = groupData.users;
-
-            const response = await createGroupConversation(userIDs, name_conversation);
-            if (response.status === 201) {
-                alert("Bạn đã tạo group thành công");
-                setIsSuccess(true); // Hiển thị thông báo thành công
-                onClose(); // Đóng popup tạo nhóm
-            }
-        } catch (err) {
-            console.error('Lỗi khi tạo cuộc trò chuyện:', err.message || err);
-        }
-    };
+        onCreateGroup(groupData); 
+    }
 
     if (!isVisible) return null;
 
@@ -120,7 +102,7 @@ const CreateGroupConversation = ({ isVisible, onClose, dataFriend, onCreateGroup
                                     className="create-group-search-input"
                                     placeholder="Nhập tên hoặc số điện thoại"
                                     value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    onChange={debounce((e) => setSearchTerm(e.target.value), 500)}
                                 />
                             </div>
                         </div>
@@ -128,13 +110,7 @@ const CreateGroupConversation = ({ isVisible, onClose, dataFriend, onCreateGroup
                             <div className="create-group-user-list">
                                 {Array.isArray(dataFriend) &&
                                     dataFriend
-                                        .filter((user) => {
-                                            return (
-                                                user.fullname &&
-                                                user.fullname.toLowerCase().includes(searchTerm.toLowerCase()) &&
-                                                (!userData || user.userID !== userData.userID)
-                                            );
-                                        })
+                                        .filter((user) => user.fullname?.toLowerCase().includes(searchTerm.toLowerCase()))
                                         .map((user) => (
                                             <div key={user.userID} className="create-group-user-item">
                                                 <input
@@ -171,6 +147,7 @@ const CreateGroupConversation = ({ isVisible, onClose, dataFriend, onCreateGroup
                                         >
                                             <FontAwesomeIcon icon={faTimes} />
                                         </button>
+
                                     </div>
                                 ))}
                             </div>
@@ -183,20 +160,13 @@ const CreateGroupConversation = ({ isVisible, onClose, dataFriend, onCreateGroup
                         <button
                             className="btn btn-success"
                             disabled={selectedUsers.length === 0 || !groupTitle}
-                            onClick={handleCreateGroupConversation}
+                            onClick={hanleSubmit}
                         >
                             Tạo nhóm
                         </button>
                     </div>
                 </div>
             </div>
-            {isSuccess && (
-                <SuccessModal
-                    title="Tạo nhóm thành công!"
-                    description="Nhóm đã được tạo và sẵn sàng sử dụng."
-                    onClose={() => setIsSuccess(false)}
-                />
-            )}
         </>,
         document.body
     );

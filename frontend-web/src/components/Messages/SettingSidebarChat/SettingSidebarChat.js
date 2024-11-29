@@ -13,7 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import './SettingSidebarChat.css';
 
-const SettingSidebarChat = ({ isOpen, currentChat, userCurent, dataFriend }) => {
+const SettingSidebarChat = ({ isOpen, currentChat, userCurent, dataFriend, onCreateGroup  }) => {
 
   const [isModalVisible, setModalVisible] = useState(false);
   const isGroup = currentChat.conversation_type === 'Group';
@@ -37,6 +37,10 @@ const SettingSidebarChat = ({ isOpen, currentChat, userCurent, dataFriend }) => 
   const closeModal = () => {
     setModalVisible(false);
   };
+
+//   const onCreateGroup = (groupData) => {
+//     console.log("Group created:", groupData);
+// };
   return (
     <div className={`setting-sidebar-chat ${isOpen ? 'visible' : 'hidden'}`}>
       {/* Header */}
@@ -62,7 +66,7 @@ const SettingSidebarChat = ({ isOpen, currentChat, userCurent, dataFriend }) => 
                 dataFriend={dataFriend}  
                 isVisible={isModalVisible}
                 onClose={closeModal}  
-                userCurent={userCurent}
+                onCreateGroup={onCreateGroup}
             />
       {/* Danh sách nhắc nhở */}
       <div className="section">

@@ -4,6 +4,7 @@ import (
 	"mime/multipart"
 	"multiaura/internal/services"
 	APIResponse "multiaura/pkg/api_response"
+	"strings"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -134,6 +135,91 @@ func (uc *UploadController) UploadPostMediaData(c *fiber.Ctx) error {
 		Message: "Post medias uploaded successfully",
 		Data:    fiber.Map{"urls": fileURLs},
 	})
+}
+func (uc *UploadController) UploadConversationImageData(c *fiber.Ctx) error {
+	userID := c.Locals("userID").(string)
+	if userID == "" {
+		return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusUnauthorized,
+			Message: "Unauthorized",
+			Error:   "StatusUnauthorized",
+		})
+	}
+
+	conversatinID := c.Params("conversatinID")
+	if conversatinID == "" {
+		return c.Status(fiber.StatusNotAcceptable).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusNotAcceptable,
+			Message: "Missing conversationID",
+			Error:   "conversationID Missing",
+		})
+	}
+
+	form, err := c.MultipartForm()
+	if err != nil {
+		return c.Status(fiber.StatusNotAcceptable).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusNotAcceptable,
+			Message: "Invalid form data",
+			Error:   err.Error(),
+		})
+	}
+
+	files := form.File["photos"]
+	if len(files) == 0 {
+		return c.Status(fiber.StatusFailedDependency).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusFailedDependency,
+			Message: "No image provided",
+			Error:   "No image",
+		})
+	}
+
+	if len(files) > 1 {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Only one image allowed",
+			Error:   "Multiple files not allowed",
+		})
+	}
+
+	fileHeader := files[0]
+
+	if !isValidImage(fileHeader) {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Invalid file type, only images allowed",
+			Error:   "InvalidFileType",
+		})
+	}
+
+	file, err := fileHeader.Open()
+	if err != nil {
+		return c.Status(fiber.StatusUnsupportedMediaType).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusUnsupportedMediaType,
+			Message: "Unable to open file",
+			Error:   err.Error(),
+		})
+	}
+	defer file.Close()
+
+	fileURLs, err := uc.service.UploadConversationImageData(conversatinID, []multipart.File{file}, files)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusInternalServerError,
+			Message: "Failed to upload image",
+			Error:   err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
+		Status:  fiber.StatusOK,
+		Message: "Image uploaded successfully",
+		Data:    fiber.Map{"urls": fileURLs},
+	})
+}
+
+func isValidImage(fileHeader *multipart.FileHeader) bool {
+	contentType := fileHeader.Header.Get("Content-Type")
+	return strings.HasPrefix(contentType, "image/")
 }
 
 func (uc *UploadController) UploadCommentsMediaData(c *fiber.Ctx) error {

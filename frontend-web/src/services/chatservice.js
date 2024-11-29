@@ -3,6 +3,7 @@ import { API_URL } from '../config/config';
 import Cookies from 'js-cookie';
 
 const CONVERSATION_URL = `${API_URL}/conversation`;
+const UploadImage_URL = `${API_URL}/upload/conversation`;
 
 
 export const getUserConversation = async (userID) => {
@@ -92,7 +93,7 @@ export const createGroupConversation = async (userIDs, name_conversation) => {
         const token = Cookies.get('authToken'); // Lấy token từ cookie
 
         const data = {
-            user_ids: userIDs,
+            user_ids: userIDs.users,
             name: name_conversation,
         };
 
@@ -112,4 +113,31 @@ export const createGroupConversation = async (userIDs, name_conversation) => {
         console.error('Error creating conversation:', error.response?.data || error.message);
         throw error; // Ném lỗi để xử lý ở nơi gọi hàm
     }
+};
+
+
+export const uploadImageConversation = async (conversatinID, image) => {
+  try {
+    const token = Cookies.get('authToken'); 
+
+    const formData = new FormData();
+    formData.append("photos", image);  
+
+    const response = await axios.post(`${UploadImage_URL}/image/${conversatinID}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data", 
+      },
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Upload failed with status: ${response.status}`);
+    }
+
+  } catch (error) {
+    console.error("Error uploading image for conversation", error);
+    throw error;  
+  }
 };
