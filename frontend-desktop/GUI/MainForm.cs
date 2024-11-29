@@ -18,6 +18,7 @@ namespace GUI
         private Form activeForm;
         private AppDataProvider appDataProvider = AppDataProvider.Instance;
         private RelationshipDataProvider relationshipDataProvider = RelationshipDataProvider.Instance;
+        private PostDataProvider postDataProvider = PostDataProvider.Instance;
         private bool isListeningForMouseDown = false;
 
         private Form homeForm;
@@ -82,6 +83,12 @@ namespace GUI
                 //appDataProvider.DataLoaded += SetUpUI;
                 //SetUpUI();
             }
+            AuthDataProvider.Instance.OnRequestReloadApp += Instance_OnRequestReloadApp;
+        }
+
+        private void Instance_OnRequestReloadApp()
+        {
+            Application.Restart();
         }
 
         private void MainForm_SizeChanged(object sender, EventArgs e)
@@ -358,7 +365,7 @@ namespace GUI
             this.taskBarExplore.Click += TaskBarExplore_Click;
             this.taskBarMessages.Click += (sender, e) => OpenChildForm(messagesForm, sender);
             this.taskBarNotifications.Click += (sender, e) => OpenChildForm(notificationsForm, sender);
-            this.taskBarProfile.Click += TaskBarProfile_Click; ;
+            this.taskBarProfile.Click += TaskBarProfile_Click;
             this.labelAppName.Click += (sender, e) => OpenChildForm(homeForm, this.taskBarHome);
             this.Load += (sender, e) => OpenChildForm(homeForm, this.taskBarHome);
 

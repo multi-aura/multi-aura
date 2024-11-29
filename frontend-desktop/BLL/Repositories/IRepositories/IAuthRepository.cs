@@ -10,5 +10,7 @@ namespace BLL.Repositories.IRepositories
     public interface IAuthRepository
     {
         Task<APIResponse<string>> LoginAsync(LoginRequest loginRequest);
+        Task<APIResponse<string>> UploadProfilePhotoAsync(string photoPath);
+        Task<APIResponse<string>> UdateProfileAsync(Dictionary<string, object> changes);
     }
 }

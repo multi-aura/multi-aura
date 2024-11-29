@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using BLL.Network;
 using BLL.Repositories.IRepositories;
 using BLL.Repositories.Repositories;
 using DTO;
+using Newtonsoft.Json;
 namespace BLL.Repository
 {
-    public class AuthRepository:BaseRepository,IAuthRepository
+    public class AuthRepository : BaseRepository, IAuthRepository
     {
         private static AuthRepository instance;
         private static readonly object padlock = new object();
@@ -29,7 +32,7 @@ namespace BLL.Repository
         }
         private AuthRepository() : base()
         {
-            
+
         }
 
         public async Task<APIResponse<string>> LoginAsync(LoginRequest loginRequest)
@@ -66,6 +69,29 @@ namespace BLL.Repository
         }
 
 
+        public async Task<APIResponse<string>> UploadProfilePhotoAsync(string photoPath)
+        {
+            using (var formData = new MultipartFormDataContent())
+            {
+                var fileContent = new ByteArrayContent(File.ReadAllBytes(photoPath));
+                fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/jpeg");
+                formData.Add(fileContent, "image", Path.GetFileName(photoPath));
+
+                return await PostAsync(NetworkUrls.Upload.ProfilePhoto, formData, isFormData: true);
+            }
+        }
+
+        public async Task<APIResponse<string>> UdateProfileAsync(Dictionary<string, object> changes)
+        {
+            if (changes == null)
+            {
+                return new ErrorResponse<string>(400, "No any changes requested", "StatusBadRequest");
+            }
+
+            string jsonBody = JsonConvert.SerializeObject(changes);
+
+            return await PutAsync(NetworkUrls.Auth.Update, jsonBody);
+        }
 
     }
 }

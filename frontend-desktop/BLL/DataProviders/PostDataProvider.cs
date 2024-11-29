@@ -95,7 +95,9 @@ namespace BLL.DataProviders
         public void Initialize()
         {
             relationshipDataProvider = RelationshipDataProvider.Instance;
+
             relationshipDataProvider.FollowingDataLoaded += FetchRecentPosts;
+            AuthDataProvider.Instance.UserLoggedIn += FetchRecentPosts;
             FetchCurrentUserPosts();
         }
 

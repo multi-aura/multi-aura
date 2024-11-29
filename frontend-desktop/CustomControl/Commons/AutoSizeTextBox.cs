@@ -9,8 +9,14 @@ namespace CustomControl.Commons
         private int originalHeight;
         private const int lineHeight = 16;
         private const int defaultMaxLine = 10;
-        private bool isHintVisible = true; // Biến kiểm tra trạng thái của Hint
+        private bool isHintVisible = true;
 
+        public bool IsHintVisible
+        { 
+            set { 
+                isHintVisible = value;
+            } 
+        }
         public int MaxLine { get; set; } = defaultMaxLine;
         public string Hint { get; set; }
 
@@ -61,7 +67,6 @@ namespace CustomControl.Commons
 
         private void RemoveHint(object sender, EventArgs e)
         {
-            // Nếu gợi ý đang được hiển thị, xóa gợi ý khi người dùng click vào TextBox
             if (isHintVisible)
             {
                 isHintVisible = false;
@@ -73,7 +78,6 @@ namespace CustomControl.Commons
         {
             base.OnTextChanged(e);
 
-            // Chỉ điều chỉnh chiều cao nếu Hint không hiển thị
             if (!isHintVisible)
             {
                 AdjustHeight();

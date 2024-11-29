@@ -144,10 +144,11 @@ func (s *userService) Update(userMap *map[string]interface{}) error {
 	if userID != existingUser.ID {
 		return errors.New("user ID does not match")
 	}
-	existsPhone, _ := s.repo.GetUserByPhone((*userMap)["phone"].(string))
-	if existsPhone != nil {
-		return errors.New("phone already exists")
-	}
+
+	// existsPhone, _ := s.repo.GetUserByPhone((*userMap)["phone"].(string))
+	// if existsPhone != nil {
+	// 	return errors.New("phone already exists")
+	// }
 
 	if err := s.repo.Update(userMap); err != nil {
 		return errors.New("failed to update user information")
