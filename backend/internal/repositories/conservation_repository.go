@@ -64,13 +64,17 @@ func (repo *conversationRepository) GetByID(conversationID string) (*models.Conv
 }
 
 func (repo *conversationRepository) Create(conversation models.Conversation) error {
-	_, err := repo.collection.InsertOne(context.Background(), conversation)
-	if err != nil {
-		return err
-	}
+    ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+    defer cancel() 
 
-	return nil
+    _, err := repo.collection.InsertOne(ctx, conversation)
+    if err != nil {
+        return err
+    }
+
+    return nil
 }
+
 
 func (repo *conversationRepository) Delete(id string) error {
 	objectID, err := primitive.ObjectIDFromHex(id)

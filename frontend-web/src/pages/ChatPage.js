@@ -31,7 +31,6 @@ function ChatPage() {
     }
   }, []);
 
-  // Kết nối WebSocket khi có userData và currentChat
   useEffect(() => {
     if (userData && currentChat) {
       ws.current = new WebSocket(`${API_URL_WS}/ws?user_id=${userData.userID}&conversation_id=${currentChat._id}`);
@@ -143,6 +142,9 @@ function ChatPage() {
 
   }
 
+  useEffect(() => {
+    getFriendsbyUser();
+  }, []);
 
 
   return (
@@ -164,7 +166,7 @@ function ChatPage() {
               padding: '0',
             }}
           >
- 
+
             <div
               className={`chat-content ${isSidebarOpen ? 'shrink-content' : ''}`}
               style={{ flex: isSidebarOpen ? '0.7' : '1', transition: 'flex 0.3s ease' }}
@@ -188,7 +190,7 @@ function ChatPage() {
             </div>
 
             {/* Sidebar */}
-            {isSidebarOpen && (
+            {isSidebarOpen  && (
               <SettingSidebarChat
                 isOpen={isSidebarOpen}
                 currentChat={currentChat}
@@ -196,6 +198,7 @@ function ChatPage() {
                 dataFriend={friends}
               />
             )}
+
           </div>
         </div>
       </div>

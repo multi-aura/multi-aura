@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import CreateGroupConversation from '../CreateGroupConversation/CreateGroupConversation';
+
 import {
   faBellSlash,
   faThumbtack,
@@ -10,10 +12,9 @@ import {
   faTimes
 } from '@fortawesome/free-solid-svg-icons';
 import './SettingSidebarChat.css';
-import CreateGroupConversation from '../CreateGroupConversation/CreateGroupConversation';
 
 const SettingSidebarChat = ({ isOpen, currentChat, userCurent, dataFriend }) => {
-  console.log(dataFriend);
+
   const [isModalVisible, setModalVisible] = useState(false);
   const isGroup = currentChat.conversation_type === 'Group';
   const currentUserID = userCurent ? userCurent.userID : null;
@@ -58,9 +59,11 @@ const SettingSidebarChat = ({ isOpen, currentChat, userCurent, dataFriend }) => 
         </div>
       </div>
       <CreateGroupConversation
-        isVisible={isModalVisible}
-        onClose={closeModal}
-      />
+                dataFriend={dataFriend}  
+                isVisible={isModalVisible}
+                onClose={closeModal}  
+                userCurent={userCurent}
+            />
       {/* Danh sách nhắc nhở */}
       <div className="section">
         <h4 className="section-title">

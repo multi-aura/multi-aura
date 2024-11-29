@@ -64,17 +64,17 @@ export const sendMessageToConversation = async (conversationID, userID, content)
 };
 export const createConversation = async (userID, name_conversation) => {
     try {
-        const token = Cookies.get('authToken'); 
+        const token = Cookies.get('authToken');
         const response = await axios.post(
-            `${CONVERSATION_URL}/create-conversation`, 
+            `${CONVERSATION_URL}/create-conversation`,
             {
-                user_ids: userID, 
+                user_ids: userID,
                 name: name_conversation
             },
             {
                 headers: {
-                    Authorization: `Bearer ${token}`, 
-                    "Content-Type": "application/json" 
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
                 }
             }
         );
@@ -87,3 +87,29 @@ export const createConversation = async (userID, name_conversation) => {
 };
 
 
+export const createGroupConversation = async (userIDs, name_conversation) => {
+    try {
+        const token = Cookies.get('authToken'); // Lấy token từ cookie
+
+        const data = {
+            user_ids: userIDs,
+            name: name_conversation,
+        };
+
+        const response = await axios.post(
+            `${CONVERSATION_URL}/create-conversation`, 
+            data, 
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`, 
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        return response.data; // Trả về dữ liệu nếu thành công
+    } catch (error) {
+        console.error('Error creating conversation:', error.response?.data || error.message);
+        throw error; // Ném lỗi để xử lý ở nơi gọi hàm
+    }
+};
