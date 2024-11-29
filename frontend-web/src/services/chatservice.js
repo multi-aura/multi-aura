@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 
 const CONVERSATION_URL = `${API_URL}/conversation`;
 
+
 export const getUserConversation = async (userID) => {
     try {
         const token = Cookies.get('authToken');
@@ -84,3 +85,5 @@ export const createConversation = async (userID, name_conversation) => {
         throw error; // Ném lỗi để xử lý ở nơi gọi hàm
     }
 };
+
+

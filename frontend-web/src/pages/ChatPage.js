@@ -6,7 +6,9 @@ import SettingSidebarChat from '../components/Messages/SettingSidebarChat/Settin
 import Layout from '../layouts/Layout';
 import '../assets/css/ChatPage.css';
 import { getUserConversation, getConversationDetails, sendMessageToConversation } from "../services/chatservice";
+
 import { API_URL_WS } from '../config/config';
+import { getFriends } from '../services/RelationshipService';
 
 function ChatPage() {
   const { conversationID } = useParams();
@@ -18,6 +20,8 @@ function ChatPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Trạng thái mở/đóng sidebar
   const ws = useRef(null);
   const [newMessageItems, setNewMessageItems] = useState(null);
+  const [friends, setFriends] = useState([]);
+
 
   // Load dữ liệu người dùng từ localStorage
   useEffect(() => {
@@ -129,6 +133,17 @@ function ChatPage() {
     }
     setNewMessageItems(messageData);
   };
+  const getFriendsbyUser = async () => {
+    try {
+      const response = await getFriends();
+      setFriends(response);
+    } catch (err) {
+      console.log("fetching get friend", err);
+    }
+
+  }
+
+
 
   return (
     <Layout userData={userData}>
@@ -149,6 +164,7 @@ function ChatPage() {
               padding: '0',
             }}
           >
+ 
             <div
               className={`chat-content ${isSidebarOpen ? 'shrink-content' : ''}`}
               style={{ flex: isSidebarOpen ? '0.7' : '1', transition: 'flex 0.3s ease' }}
@@ -177,6 +193,7 @@ function ChatPage() {
                 isOpen={isSidebarOpen}
                 currentChat={currentChat}
                 userCurent={userData}
+                dataFriend={friends}
               />
             )}
           </div>

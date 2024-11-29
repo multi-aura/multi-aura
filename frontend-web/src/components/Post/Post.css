@@ -157,6 +157,15 @@ button.btn-primary:hover {
   display: flex;
   align-items: center;
   margin-right: 10px;
+  
+}
+.audio-controls:hover {
+outline: none !important;
+border: none !important;
+  
+}
+.audio-btn:active, :focus{
+  border: none !important;
 }
 
 /* Style for the post description */
@@ -168,10 +177,6 @@ button.btn-primary:hover {
 }
 /* Container cho hàng hình ảnh */
 .image-row {
-  /* display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto; */
 
   width: 70%;
 }

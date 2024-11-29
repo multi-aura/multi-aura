@@ -12,7 +12,8 @@ import {
 import './SettingSidebarChat.css';
 import CreateGroupConversation from '../CreateGroupConversation/CreateGroupConversation';
 
-const SettingSidebarChat = ({ isOpen, currentChat, userCurent }) => {
+const SettingSidebarChat = ({ isOpen, currentChat, userCurent, dataFriend }) => {
+  console.log(dataFriend);
   const [isModalVisible, setModalVisible] = useState(false);
   const isGroup = currentChat.conversation_type === 'Group';
   const currentUserID = userCurent ? userCurent.userID : null;
