@@ -175,4 +175,73 @@
   .setting-sidebar-chat .footer button:hover {
     background-color: #333;
   }
-  
+  /* CSS for dropdown */
+.dropdown-toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  color: white;
+}
+
+.members-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.member-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  border-bottom: 1px solid #ddd; /* Đường viền dưới */
+}
+
+.member-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.ellipsis-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #555;
+  padding: 0;
+}
+
+.ellipsis-btn:hover {
+  color:white; /* Đổi màu khi hover */
+}
+
+.member-item span {
+  font-size: 16px;
+}
+
+
+button.leave-group {
+  background-color: white; 
+  color: black ;
+  border: none; 
+  border-radius: 5px; 
+  padding: 8px 16px;
+  font-size: 14px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease, transform 0.3s ease; 
+}
+
+button.leave-group:hover {
+  background-color: white;
+  transform: scale(1.1);
+}
+
+button.leave-group:focus {
+  outline: none; /* Bỏ viền focus mặc định */
+  box-shadow: 0 0 5px 2px rgba(255, 0, 0, 0.5); /* Tạo viền sáng đỏ khi focus */
+}

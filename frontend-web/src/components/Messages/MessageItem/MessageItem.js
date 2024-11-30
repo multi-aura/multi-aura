@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './MessageItem.css';
 
-const MessageItem = ({ message, onClick, selected }) => {
+const MessageItem = ({ message, onClick, isSelected  }) => {
   const [userData, setUserData] = useState(null);
   const isGroup = message.conversation_type === 'Group';
   let avatar;
@@ -55,10 +55,9 @@ const MessageItem = ({ message, onClick, selected }) => {
       timeDisplay = `${days} day${days > 1 ? 's' : ''} ago`;
     }
   }
-
   return (
     <li
-      className={`list-group-item d-flex align-items-center message-item ${selected ? 'selected' : ''}`}
+      className={`list-group-item d-flex align-items-center message-item ${isSelected  ? 'selected' : ''}`}
       style={{ borderBottom: "1px solid #333" }}
       onClick={onClick}
     >

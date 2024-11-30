@@ -157,3 +157,7 @@
   font-size: 50px;
   margin-bottom: 10px;
 }
+.selected {
+  background-color: #f0f0f0; /* Hoặc bất kỳ màu nào bạn muốn */
+  border-left: 4px solid #007bff; /* Thêm một đường viền bên trái để làm nổi bật */
+}

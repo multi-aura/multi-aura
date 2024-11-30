@@ -141,3 +141,51 @@ export const uploadImageConversation = async (conversatinID, image) => {
     throw error;  
   }
 };
+
+export const addMenberConversation = async (userIDs, id_conversation) => {
+    try {
+        const token = Cookies.get('authToken'); // Lấy token từ cookie
+
+        const data = {
+            conversation_id: id_conversation,
+            user_ids: userIDs.users,
+
+        };
+
+        const response = await axios.post(
+            `${CONVERSATION_URL}/add-member-message`, 
+            data, 
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`, 
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        return response.data; // Trả về dữ liệu nếu thành công
+    } catch (error) {
+        console.error('Error creating conversation:', error.response?.data || error.message);
+        throw error; // Ném lỗi để xử lý ở nơi gọi hàm
+    }
+};
+export const RemoveMenberConversation = async (userID, id_conversation) => {
+    try {
+        const token = Cookies.get('authToken'); 
+
+        const response = await axios.delete(
+            `http://localhost:3000/conversation/remove-member-conversation/${id_conversation}/${userID}`, 
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`, 
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        return response.data; 
+    } catch (error) {
+        console.error('Error removing member from conversation:', error.response?.data || error.message);
+        throw error; 
+    }
+};
