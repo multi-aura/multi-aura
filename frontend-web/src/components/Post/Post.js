@@ -5,14 +5,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faCommentDots, faShare, faHeart, faBookmark } from '@fortawesome/free-solid-svg-icons';
 import { FaVolumeUp, FaPauseCircle, FaPlayCircle } from 'react-icons/fa';
 import { Carousel } from 'react-bootstrap'; // Import Carousel từ Bootstrap
+import { CommentPost, likePost, unlikePost } from '../../services/exploreSevice';
 
-function Post({ post, userData}) {
-  // console.log(userData);
-  // console.log(post); 
+function Post({ post, userData }) {
+  const userCurent = userData.userID || null;  // Lấy userID của người dùng hiện tại
   const [showAllImages, setShowAllImages] = useState(false);
   const [commentText, setCommentText] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [icon, setIcon] = useState(<FaPlayCircle size={30} />);
+  const [liked, setLiked] = useState(post.likedBy.some(user => user.userID === userCurent));
+  const [bookmarked, setBookmarked] = useState(false);
+  const [commentOpen, setCommentOpen] = useState(false);
+  const [likesCount, setLikesCount] = useState(post?.likedBy.length || 0);
+  const [CommentCount, setCommentCount] = useState(post?.comments?.length || 0);
+  const [ShareCount, setShareCount] = useState(post?.sharedBy?.length || 0);
+
 
   const audioRef = useRef(null);
 
@@ -35,6 +42,7 @@ function Post({ post, userData}) {
 
     setIsPlaying(!isPlaying);
   };
+
 
   const renderImages = () => {
     const imageCount = post.images.length;
@@ -98,27 +106,60 @@ function Post({ post, userData}) {
         </div>
       );
     }
-    
-    
-
 
     return null;
   };
 
-  const handlePostComment = () => {
+  const handlePostComment = (postID) => {
     if (commentText.trim()) {
-      // Logic to post the comment (you can implement this depending on your app's backend)
       console.log('New comment posted:', commentText);
-      setCommentText(''); // Clear the input after posting the comment
+      try {
+        const response = CommentPost(postID, commentText);
+        setCommentCount(CommentCount + 1);
+
+        setCommentText('');
+
+      } catch (error) {
+        console.log("Error API comment post:", error);
+      }
+    }
+  };
+  const handleLike = async (postID) => {
+    setLiked(!liked);
+
+    try {
+      if (liked) {
+
+        const response = await unlikePost(postID);
+        setLikesCount(likesCount - 1);
+        setLiked(false);
+      } else {
+        const response = await likePost(postID);
+        setLikesCount(likesCount + 1);
+        setLiked(true);
+      }
+    } catch (error) {
+      console.log("Error API like/unlike post:", error);
     }
   };
 
+
+
+
+  const handleShare = () => {
+    console.log('Chia sẻ bài viết');
+  };
+
+  const handleBookmark = () => {
+    setBookmarked(!bookmarked); // Chuyển đổi trạng thái "bookmarked"
+    console.log(bookmarked ? 'Đã bỏ lưu' : 'Đã lưu bài viết');
+  };
   return (
     <div className="post p-3 mb-4 rounded shadow-sm text-white">
       <div className="d-flex align-items-center mb-2" style={{ height: '100%' }}>
         <div className="avatar-container">
           <img
-            src={post.avatar || 'https://firebasestorage.googleapis.com/v0/b/multi-aura.appspot.com/o/Hihon%2F393107bb-4c20-44d9-9022-9c900b6b3b71.jpg?alt=media&token=5e41e599-4b72-432b-beb9-6363b2e7b0ce'}
+            src={post.createdBy.avatar || 'https://firebasestorage.googleapis.com/v0/b/multi-aura.appspot.com/o/Hihon%2F393107bb-4c20-44d9-9022-9c900b6b3b71.jpg?alt=media&token=5e41e599-4b72-432b-beb9-6363b2e7b0ce'}
             alt="Avatar"
             className="avatar rounded-circle"
           />
@@ -132,12 +173,15 @@ function Post({ post, userData}) {
 
       {/* Đoạn ghi âm với biểu tượng play/pause */}
       <p className="content-post">
-        <div className="audio-controls">
-          <button onClick={handlePlayPause} className="btn audio-btn">
-            {icon}
-          </button>
-          <audio ref={audioRef} src={post.audioUrl} />
-        </div>
+        {post.voice && (
+          <div className="audio-controls">
+            <button onClick={handlePlayPause} className="btn audio-btn">
+              {icon}
+            </button>
+            <audio ref={audioRef} src={post.voice} />
+          </div>
+        )}
+
         <span className="post-description">{post.description}</span>
       </p>
 
@@ -153,26 +197,34 @@ function Post({ post, userData}) {
 
       <div className="d-flex justify-content-between align-items-center" style={{ width: "85%" }}>
         <div className="d-flex">
-          <button className="btn btn-link text-white mr-3">
-            <FontAwesomeIcon icon={faHeart} />
+
+          <button
+            className="btn btn-link text-white mr-3" style={{ border: "none" }}
+            onClick={() => handleLike(post._id)}
+          >
+            <FontAwesomeIcon icon={faHeart} color={liked ? 'red' : 'white'} style={{ border: "none" }} />
+
+            <span className="likes-count" style={{ border: "none" }}>{likesCount}</span>
+
           </button>
-          <button className="btn btn-link text-white mr-3">
+
+          <button className="btn btn-link text-white mr-3" >
             <FontAwesomeIcon icon={faCommentDots} />
+            <span className="likes-count" style={{ border: "none" }}>{CommentCount}</span>
+
           </button>
-          <button className="btn btn-link text-white mr-3">
+          <button className="btn btn-link text-white mr-3" onClick={handleShare}>
             <FontAwesomeIcon icon={faShare} />
+            <span className="likes-count" style={{ border: "none" }}>{ShareCount}</span>
+
           </button>
         </div>
-        <button className="btn btn-link text-white">
-          <FontAwesomeIcon icon={faBookmark} />
+        <button className="btn btn-link text-white" onClick={handleBookmark}>
+          <FontAwesomeIcon icon={faBookmark} color={bookmarked ? 'yellow' : 'white'} />
         </button>
       </div>
 
-      <div className="comments mt-3">
-        {(post.comments || []).map((comment, index) => (
-          <Comment key={index} comment={comment} />
-        ))}
-      </div>
+      
 
       <div className="d-flex mt-3">
         <input
@@ -182,7 +234,7 @@ function Post({ post, userData}) {
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
         />
-        <button className="btn btn-outline-light ml-2" onClick={handlePostComment} disabled={!commentText.trim()}>
+        <button className="btn btn-outline-light ml-2" onClick={() => handlePostComment(post._id)} disabled={!commentText.trim()}>
           Đăng
         </button>
       </div>

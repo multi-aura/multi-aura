@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Layout from '../layouts/Layout';
 import Feed from '../components/Feed/Feed';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -16,12 +16,17 @@ function Homepage() {
     const [dragging, setDragging] = useState(false);
     const [startMousePos, setStartMousePos] = useState({ x: 0, y: 0 });
     const [distanceMoved, setDistanceMoved] = useState(0);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [posts, setPosts] = useState([]); // State to store posts
+    const [loading, setLoading] = useState(false);
+    const [page, setPage] = useState(1);
+    const [hasMorePosts, setHasMorePosts] = useState(true); // Track if more posts can be loaded
+    const [errorMessage, setErrorMessage] = useState(''); // Error message state
+    const debounceLoadMore = useRef(false); // Prevent rapid multiple API calls
     const navigate = useNavigate();
     const location = useLocation();
     const authToken = Cookies.get('authToken');
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
-    const [posts, setPosts] = useState([]);  // State to store posts
-    // Fetch user data and posts when the component mounts
+
     useEffect(() => {
         if (!authToken) {
             localStorage.removeItem('activeTab');
@@ -37,21 +42,58 @@ function Homepage() {
         }
     }, [authToken, location, navigate]);
 
-    // Function to fetch news posts
     const fetchNewsPosts = async () => {
         try {
-            const response = await getNewsPosts();
-            setPosts(response.data);
+            setLoading(true);
+            setErrorMessage('');
+    
+            const response = await getNewsPosts(1, page);
+            if (response?.data) {
+                if (response.data.length > 0) {
+                    setPosts((prevPosts) => [...prevPosts, ...response.data]);
+                } else {
+                    setHasMorePosts(false); // Không còn bài viết để tải thêm
+                }
+            } else {
+                setHasMorePosts(false);
+                setErrorMessage('Không có bài viết nào để hiển thị.');
+            }
         } catch (error) {
-            console.error('Lỗi khi lấy bài viết "News":', error);
+            setErrorMessage('Lỗi khi tải bài viết.');
+            console.error('Lỗi khi lấy bài viết:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+    useEffect(() => {
+        fetchNewsPosts();
+    }, [page]);
+
+    const loadMorePosts = () => {
+        if (!debounceLoadMore.current && hasMorePosts && !loading) {
+            debounceLoadMore.current = true;
+            setTimeout(() => (debounceLoadMore.current = false), 1000); // Delay 1s để tránh gọi nhiều lần
+    
+            // Tăng page để tải thêm dữ liệu
+            setPage((prevPage) => prevPage + 1);  // Tăng số trang lên
+        }
+    };
+
+    const handleScroll = () => {
+        const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+        if (scrollHeight - scrollTop - clientHeight < 200) {
+            loadMorePosts(); // Tải thêm khi cuộn đến cuối trang
         }
     };
 
     useEffect(() => {
-        fetchNewsPosts();
-    }, []);  // Run once when the component is mounted
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [loading, hasMorePosts]); // Chỉ tái sử dụng sự kiện khi có sự thay đổi
 
-    // Handle mouse events for dragging the floating button
     const handleMouseDown = (event) => {
         setDragging(true);
         setStartMousePos({ x: event.clientX, y: event.clientY });
@@ -74,13 +116,13 @@ function Homepage() {
 
     const handleMouseUp = () => {
         if (dragging && distanceMoved < 5) {
-            setShowModal(true); // Show modal if click
+            setShowModal(true);
         }
         setDragging(false);
     };
 
     const handleCloseModal = () => {
-        setShowModal(false); // Close modal
+        setShowModal(false);
     };
 
     const handlePostSubmit = async (postContent, selectedImages, postText) => {
@@ -105,15 +147,14 @@ function Homepage() {
                 }, 200);
             }
         } catch (err) {
-            console.log('Failed to create post', err); // Handle errors
+            console.log('Failed to create post', err);
         }
     };
+
     return (
         <Layout userData={userData}>
-     <Feed posts={posts} userData={userData} />
-
-
-
+            <Feed posts={posts} userData={userData} />
+            {loading && <div>Đang tải...</div>}
             <div
                 className="floating-button"
                 onMouseDown={handleMouseDown}
