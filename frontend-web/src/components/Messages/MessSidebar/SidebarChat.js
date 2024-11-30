@@ -1,18 +1,16 @@
-
 import React, { useState, useEffect } from 'react';
 import MessageItem from '../MessageItem/MessageItem';
 import './SidebarChat.css';
 import { FaSearch } from 'react-icons/fa';
 
-function SidebarChat({ conversations = [], onSelectChat, newMessageItems }) {
+function SidebarChat({ conversations = [], onSelectChat, newMessageItems, selectedChatId }) {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('All'); // All, Group, Single
-  const [isSearchVisible, setSearchVisible] = useState(false); // State để kiểm soát hiển thị input
+  const [isSearchVisible, setSearchVisible] = useState(false);
   const [filteredConversations, setFilteredConversations] = useState([]);
   const [sortedConversations, setSortedConversations] = useState([]);
 
-  // Sắp xếp các cuộc trò chuyện dựa trên tin nhắn mới nhất (updatedat)
   useEffect(() => {
     if (conversations.length > 0) {
       const sorted = conversations.slice().sort((a, b) => {
@@ -24,7 +22,6 @@ function SidebarChat({ conversations = [], onSelectChat, newMessageItems }) {
     }
   }, [conversations]);
 
-  // Lọc và tìm kiếm cuộc trò chuyện dựa trên danh sách đã sắp xếp
   useEffect(() => {
     const filtered = sortedConversations
       .filter(conversation => {
@@ -43,13 +40,11 @@ function SidebarChat({ conversations = [], onSelectChat, newMessageItems }) {
     setFilteredConversations(filtered);
   }, [sortedConversations, searchTerm, filterType]);
 
-  // Cập nhật tin nhắn mới vào cuộc trò chuyện và sắp xếp lại
   useEffect(() => {
     if (newMessageItems) {
       setSortedConversations((prevConversations) => {
         const updatedConversations = prevConversations.map(conversation => {
           if (conversation._id === newMessageItems.conversationID) {
-            // Cập nhật tin nhắn và thời gian tin nhắn cuối cùng
             return {
               ...conversation,
               lastMessage: newMessageItems.content.text || "",
@@ -60,7 +55,6 @@ function SidebarChat({ conversations = [], onSelectChat, newMessageItems }) {
           return conversation;
         });
 
-        // Sắp xếp lại danh sách dựa trên tin nhắn mới nhất
         const sorted = updatedConversations.slice().sort((a, b) => {
           const lastMessageA = a.chats.length > 0 ? a.chats[a.chats.length - 1].updatedat : '0000-00-00T00:00:00Z';
           const lastMessageB = b.chats.length > 0 ? b.chats[b.chats.length - 1].updatedat : '0000-00-00T00:00:00Z';
@@ -90,7 +84,6 @@ function SidebarChat({ conversations = [], onSelectChat, newMessageItems }) {
             placeholder="Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            // Ẩn khi người dùng nhấn Enter, nhưng giữ hiển thị trong suốt quá trình tìm kiếm
             onKeyDown={(e) => e.key === 'Enter' && setSearchVisible(false)}
           />
         )}
@@ -113,6 +106,7 @@ function SidebarChat({ conversations = [], onSelectChat, newMessageItems }) {
               key={index}
               message={conversation}
               onClick={() => onSelectChat(conversation._id)}
+              isSelected={conversation._id === selectedChatId} // Check if this conversation is selected
             />
           ))
         ) : (
@@ -122,7 +116,6 @@ function SidebarChat({ conversations = [], onSelectChat, newMessageItems }) {
           </li>
         )}
       </ul>
-
     </div>
   );
 }

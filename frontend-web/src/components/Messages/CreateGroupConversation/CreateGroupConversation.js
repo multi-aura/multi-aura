@@ -2,19 +2,19 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import "./CreateGroupConversation.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { createGroupConversation } from "../../../services/chatservice";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 import { debounce } from "lodash"; // Giả sử lodash đã được cài đặt để sử dụng debouncing
 
-const CreateGroupConversation = ({ isVisible, onClose, dataFriend, onCreateGroup }) => {
+const CreateGroupConversation = ({ isVisible, onClose, dataFriend, onCreateGroup, UsercurrentChat, isGroup, onAddMenberGroup }) => {
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedImage, setSelectedImage] = useState(null);
     const [groupTitle, setGroupTitle] = useState("");
     const [groupData, setGroupData] = useState(null);
     const [imageUrl, setImageUrl] = useState("");
-    // Chọn hoặc bỏ chọn người dùng
+    const [isSuccess, setIsSuccess] = useState(false); 
     const handleSelectUser = (user) => {
         setSelectedUsers((prevUsers) =>
             prevUsers.some((u) => u.userID === user.userID)
@@ -23,7 +23,6 @@ const CreateGroupConversation = ({ isVisible, onClose, dataFriend, onCreateGroup
         );
     };
 
-    // Xử lý tải lên ảnh
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
         setImageUrl(file);
@@ -37,17 +36,28 @@ const CreateGroupConversation = ({ isVisible, onClose, dataFriend, onCreateGroup
             alert("Vui lòng chọn tệp ảnh hợp lệ.");
         }
     };
-    
+
 
 
 
     const hanleSubmit = () => {
         const groupData = {
             title: groupTitle,
-            image:imageUrl,
+            image: imageUrl,
             users: [...selectedUsers.map((user) => user.userID)],
         };
-        onCreateGroup(groupData); 
+        onCreateGroup(groupData);
+        setGroupTitle(""); // Nếu muốn reset trường nhập tên nhóm
+        setImageUrl(null); // Nếu muốn reset ảnh đại diện
+        setSelectedUsers([]); // Nếu muốn reset danh sách người dùng đã chọn
+        
+    }
+    const handleSubmit_add = () => {
+        const groupData_addMenber = {
+            users: [...selectedUsers.map((user) => user.userID)],
+        };
+        onAddMenberGroup(groupData_addMenber);
+
     }
 
     if (!isVisible) return null;
@@ -57,44 +67,47 @@ const CreateGroupConversation = ({ isVisible, onClose, dataFriend, onCreateGroup
             <div className="create-group-overlay">
                 <div className="create-group-container">
                     <div className="create-group-header">
-                        <h3>Tạo nhóm</h3>
+                        <h3>{isGroup ? 'Thêm thành viên' : 'Tạo nhóm'}</h3>
                         <button onClick={onClose} className="create-group-close-btn">
                             <FontAwesomeIcon icon={faTimes} />
                         </button>
                     </div>
                     <div className="create-group-body">
                         <div className="group-name-container">
-                            <div className="input-with-icon">
-                                {selectedImage ? (
-                                    <img
-                                        src={selectedImage}
-                                        alt="Group Avatar"
-                                        className="group-avatar-preview"
-                                        onClick={() => document.getElementById("group-avatar-input").click()}
+                            {!isGroup && (
+                                <div className="input-with-icon">
+                                    {selectedImage ? (
+                                        <img
+                                            src={selectedImage}
+                                            alt="Group Avatar"
+                                            className="group-avatar-preview"
+                                            onClick={() => document.getElementById("group-avatar-input").click()}
+                                        />
+                                    ) : (
+                                        <div
+                                            className="icon-wrapper"
+                                            onClick={() => document.getElementById("group-avatar-input").click()}
+                                        >
+                                            <i className="fas fa-camera"></i>
+                                        </div>
+                                    )}
+                                    <input
+                                        type="file"
+                                        id="group-avatar-input"
+                                        accept="image/*"
+                                        style={{ display: "none" }}
+                                        onChange={handleImageUpload}
                                     />
-                                ) : (
-                                    <div
-                                        className="icon-wrapper"
-                                        onClick={() => document.getElementById("group-avatar-input").click()}
-                                    >
-                                        <i className="fas fa-camera"></i>
-                                    </div>
-                                )}
-                                <input
-                                    type="file"
-                                    id="group-avatar-input"
-                                    accept="image/*"
-                                    style={{ display: "none" }}
-                                    onChange={handleImageUpload}
-                                />
-                                <input
-                                    type="text"
-                                    className="group-name-input"
-                                    placeholder="Nhập tên nhóm..."
-                                    value={groupTitle}
-                                    onChange={(e) => setGroupTitle(e.target.value)}
-                                />
-                            </div>
+                                    <input
+                                        type="text"
+                                        className="group-name-input"
+                                        placeholder="Nhập tên nhóm..."
+                                        value={groupTitle}
+                                        onChange={(e) => setGroupTitle(e.target.value)}
+                                    />
+                                </div>
+                            )}
+
                             <div className="input-search-wrapper">
                                 <i className="fas fa-search search-icon"></i>
                                 <input
@@ -110,7 +123,10 @@ const CreateGroupConversation = ({ isVisible, onClose, dataFriend, onCreateGroup
                             <div className="create-group-user-list">
                                 {Array.isArray(dataFriend) &&
                                     dataFriend
-                                        .filter((user) => user.fullname?.toLowerCase().includes(searchTerm.toLowerCase()))
+                                        .filter((user) =>
+                                            user.fullname?.toLowerCase().includes(searchTerm.toLowerCase()) &&
+                                            !UsercurrentChat.some((chatUser) => chatUser.userID === user.userID) // Kiểm tra userID đã tồn tại trong UsercurrentChat
+                                        )
                                         .map((user) => (
                                             <div key={user.userID} className="create-group-user-item">
                                                 <input
@@ -127,6 +143,7 @@ const CreateGroupConversation = ({ isVisible, onClose, dataFriend, onCreateGroup
                                             </div>
                                         ))}
                             </div>
+
                             <div className="create-group-selected-users">
                                 <p>Đã chọn {selectedUsers.length}/100</p>
                                 {selectedUsers.map((user) => (
@@ -157,13 +174,36 @@ const CreateGroupConversation = ({ isVisible, onClose, dataFriend, onCreateGroup
                         <button className="btn btn-outline-light" onClick={onClose}>
                             Hủy
                         </button>
-                        <button
-                            className="btn btn-success"
-                            disabled={selectedUsers.length === 0 || !groupTitle}
-                            onClick={hanleSubmit}
-                        >
-                            Tạo nhóm
-                        </button>
+                        {!isGroup ? (
+                            <button
+                                className="btn btn-success"
+                                disabled={selectedUsers.length === 0 || !groupTitle}
+                                onClick={() => {
+                                    hanleSubmit();
+                                    onClose();
+                                }}
+                                
+                                style={{width:"30%"}}
+                            >
+                                Tạo nhóm
+                            </button>
+                        ) : (
+                            <button
+                                className="btn btn-success"
+                                disabled={selectedUsers.length === 0 }
+                                onClick={() => {
+                                    handleSubmit_add();
+                                    onClose();
+                                }}
+                                
+                                style={{width:"40%"}}
+                            >
+                                Thêm thành viên
+                            </button>
+                        )}
+
+
+
                     </div>
                 </div>
             </div>
