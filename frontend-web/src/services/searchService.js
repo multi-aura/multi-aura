@@ -74,7 +74,7 @@ export const getForYouPosts = async (limit = 10, page = 1) => {
     }
   };
 
-  export const getNewsPosts = async (limit = 10, page = 1) => {
+  export const getNewsPosts = async (limit = 1, page ) => {
 
     try {
 

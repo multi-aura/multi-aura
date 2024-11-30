@@ -180,6 +180,18 @@ border: none !important;
 
   width: 70%;
 }
+/* CSS cho nút Like và số lượt thích */
+.likes-count {
+  color: #727070;
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 5px;
+  text-decoration: none !important; /* Loại bỏ gạch chân */
+  border: none !important; /* Đảm bảo không có viền */
+}
+.btn-link, .likes-count {
+  text-decoration: none !important;
+}
 
 .carousel-image-row {
   display: flex;

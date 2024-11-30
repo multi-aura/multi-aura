@@ -78,7 +78,7 @@ export const createPost = async (postContent) => {
 export const uploadImagePost = async (idPost, imagePost, postText) => {
   try {
     const token = Cookies.get('authToken');
-    const formData = new FormData(); 
+    const formData = new FormData();
 
     imagePost.forEach((image) => {
       formData.append("photos", image);
@@ -93,10 +93,71 @@ export const uploadImagePost = async (idPost, imagePost, postText) => {
       },
     });
 
-    return response.data; 
+    return response.data;
 
   } catch (error) {
     console.log("Error to upload image post", error);
     throw error;
   }
 }
+
+export const likePost = async (idPost) => {
+  try {
+    const token = Cookies.get('authToken');
+    const response = await axios.post(
+      `${Post_URL}/like/${idPost}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error to like post", error);
+    throw error;
+  }
+};
+
+export const unlikePost = async (idPost) => {
+  try {
+    const token = Cookies.get('authToken');
+    const response = await axios.delete(
+      `${Post_URL}/unlike/${idPost}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error to unlike post", error);
+    throw error;
+  }
+};
+
+export const CommentPost = async (idPost, commentText) => {
+  try {
+    const token = Cookies.get('authToken');
+    const response = await axios.post(
+      `${Post_URL}/add-comment/${idPost}`, 
+      {
+        "text": commentText, 
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data; 
+  } catch (error) {
+    console.error("Error to comment post", error); 
+    throw error;
+  }
+};
