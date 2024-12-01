@@ -7,8 +7,8 @@ import { Carousel } from 'react-bootstrap'; // Import Carousel từ Bootstrap
 import { CommentPost, likePost, unlikePost } from '../../services/exploreSevice';
 import PostDetail from '../PostDetail/PostDetail';
 
-function Post({ post, userData }) {
-  const userCurent = userData.userID || null;  // Lấy userID của người dùng hiện tại
+function Post({ post, userData, deletePost  }) {
+  const userCurent = userData?.userID || null;  // Lấy userID của người dùng hiện tại
   const [showAllImages, setShowAllImages] = useState(false);
   const [commentText, setCommentText] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
@@ -209,7 +209,7 @@ function Post({ post, userData }) {
 
       </div>
       {isDetailOpen && (
-        <PostDetail post={post} closeDetail={closeDetail} />
+        <PostDetail post={post} closeDetail={closeDetail} userCurent={userCurent} deletePost={deletePost} />
       )}
       <div className="d-flex justify-content-between align-items-center" style={{ width: "85%" }}>
         <div className="d-flex">

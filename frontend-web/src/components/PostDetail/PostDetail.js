@@ -6,8 +6,10 @@ import 'react-image-gallery/styles/css/image-gallery.css'; // Import style của
 import { format } from 'date-fns';
 import { FaHeart, FaReply } from 'react-icons/fa';
 import CommentsList from '../CommentsList/CommentsList';
+import { CommentPost, GetCommentByID, DeletePost } from '../../services/exploreSevice';
+
 // Component to display the post creator's information
-function PostCreator({ avatar, fullname, createdAt }) {
+function PostCreator({ avatar, fullname, createdAt, IsUserPost, onMenuToggle }) {
     return (
         <div className="post-detail-header">
             <div className='post-detail-header-title'>
@@ -21,23 +23,24 @@ function PostCreator({ avatar, fullname, createdAt }) {
                     </p>
                 </div>
             </div>
-            <div className="post-detail-header-actions">
-                <FaEllipsisV className="post-detail-ellipsis" />
-            </div>
+            {IsUserPost ? (
+                <div className="post-detail-header-actions">
+                    <FaEllipsisV className="post-detail-ellipsis" onClick={onMenuToggle} />
+                </div>
+            ) : null}
         </div>
     );
 }
 
-
-
-
-// Main component to display the post details
-function PostDetail({ post, closeDetail }) {
+function PostDetail({ post, closeDetail, userCurent,deletePost }) {
     const overlayRef = useRef(null);
     const audioRef = useRef(null);  // Audio ref
     const [commentText, setCommentText] = useState('');
     const [isPlaying, setIsPlaying] = useState(false); // Moved inside the component
     const [icon, setIcon] = useState(<FaPlayCircle size={30} />); // Moved inside the component
+    const [comments, setComments] = useState(post.comments || []);
+    const [showMenu, setShowMenu] = useState(false); // Trạng thái menu
+    const IsUserPost = post?.createdBy?.userID === userCurent;
 
     // Handle play/pause audio
     const handlePlayPause = () => {
@@ -70,14 +73,36 @@ function PostDetail({ post, closeDetail }) {
         };
     }, []);
 
-    // Handle comment submission
-    const handleCommentSubmit = () => {
+    const handleGetComment = async (postID) => {
+        try {
+            const response = await GetCommentByID(postID);
+            setComments(response.data);
+        } catch (error) {
+            console.error("Error posting comment:", error);
+        }
+        setCommentText('');
+    };
+
+    useEffect(() => {
+        if (post && post._id) {
+            handleGetComment(post._id);
+        }
+    }, [post._id]);
+
+    const handleCommentSubmit = async (postID) => {
         if (commentText.trim()) {
-            alert('Bình luận đã được gửi: ' + commentText);
+            try {
+                const response = await CommentPost(postID, commentText);
+                handleGetComment(postID);
+                setCommentText('');
+            } catch (error) {
+                console.error("Error posting comment:", error);
+            }
             setCommentText('');
         }
     };
 
+    // Render images
     const renderImages = (images) => {
         if (!images || images.length === 0) {
             return <p>Không có ảnh để hiển thị.</p>;
@@ -96,6 +121,17 @@ function PostDetail({ post, closeDetail }) {
         return <Gallery items={galleryImages} showThumbnails={false} />;
     };
 
+    // Toggle hiển thị menu
+    const handleMenuToggle = () => {
+        setShowMenu((prev) => !prev);
+    };
+
+    // Xóa bài viết
+    const handleDeletePost = async () => {
+        deletePost(post._id);
+        closeDetail();
+
+    };
 
     return (
         <div className="post-detail-overlay">
@@ -109,7 +145,17 @@ function PostDetail({ post, closeDetail }) {
                         avatar={post.createdBy.avatar}
                         fullname={post.createdBy.fullname}
                         createdAt={post.createdAt}
+                        IsUserPost={IsUserPost}
+                        onMenuToggle={handleMenuToggle}
                     />
+
+                    {showMenu && IsUserPost && (
+                        <div className="post-menu">
+                            <button onClick={handleDeletePost} className="delete-button btn btn-outline-light">
+                                Xóa bài
+                            </button>
+                        </div>
+                    )}
 
                     <div className="post-detail-description">
                         {post.voice && (
@@ -120,13 +166,11 @@ function PostDetail({ post, closeDetail }) {
                                 <audio ref={audioRef} src={post.voice} />
                             </div>
                         )}
-                        <p className="post-description">{post.description}</p>
+                        <p className="post-description-details ">{post.description}</p>
                     </div>
 
-                    {/* Comments Section */}
-                    <CommentsList comments={post.comments} />
+                    <CommentsList comments={comments} />
 
-                    {/* Add Comment Section */}
                     <div className="post-detail-add-comment">
                         <div className="comment-input-container">
                             <input
@@ -135,11 +179,16 @@ function PostDetail({ post, closeDetail }) {
                                 placeholder="Thêm bình luận..."
                                 value={commentText}
                                 onChange={(e) => setCommentText(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' && commentText.trim()) {
+                                        handleCommentSubmit(post._id);
+                                    }
+                                }}
                                 aria-label="Thêm bình luận"
                             />
                             <button
                                 className={`comment-submit-button ${commentText.trim() ? 'active' : ''}`}
-                                onClick={handleCommentSubmit}
+                                onClick={() => handleCommentSubmit(post._id)}
                                 aria-label="Gửi bình luận"
                                 disabled={!commentText.trim()}
                             >
@@ -147,7 +196,6 @@ function PostDetail({ post, closeDetail }) {
                             </button>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

@@ -161,3 +161,102 @@ export const CommentPost = async (idPost, commentText) => {
     throw error;
   }
 };
+export const GetCommentByID = async (idPost) => {
+  try {
+    const token = Cookies.get('authToken');
+    const response = await axios.post(
+      `${Post_URL}/comments/${idPost}`,  
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data; 
+  } catch (error) {
+    console.error("Error get comment by idpost", error); 
+    throw error;
+  }
+};
+
+export const LikeComment = async (idComent) => {
+  try {
+    const token = Cookies.get('authToken');
+    const response = await axios.post(
+      `${Post_URL}/comment/like/${idComent}`,  
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data; 
+  } catch (error) {
+    console.error("Error  like comment by idpost", error); 
+    throw error;
+  }
+};
+
+export const unLikeComment = async (idComment) => {
+  try {
+    const token = Cookies.get('authToken');
+
+    const response = await axios.delete(
+      `${Post_URL}/comment/unlike/${idComment}`,  
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to unlike the comment. Please try again later.'); 
+  }
+};
+
+
+export const addReplyComment = async (idComent, commentText) => {
+  try {
+    const token = Cookies.get('authToken');
+    const response = await axios.post(
+      `${Post_URL}/add-reply/${idComent}`, 
+      {
+        "text": commentText, 
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data; 
+  } catch (error) {
+    console.error("Error to comment post", error); 
+    throw error;
+  }
+};
+export const deletePostByid = async (idPost) => {
+  try {
+    const token = Cookies.get('authToken');
+
+    const response = await axios.delete(
+      `${Post_URL}/delete/${idPost}`,  
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to delete Post . Please try again later.'); 
+  }
+};

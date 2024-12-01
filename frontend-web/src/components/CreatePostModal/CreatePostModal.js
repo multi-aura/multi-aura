@@ -101,8 +101,7 @@ const CreatePostModal = ({ onClose, userCurent, onPostSubmit }) => {
     };
 
     const handleSubmit = () => {
-        console.log(selectedImages);
-        // onPostSubmit(postContent, selectedImages, postText );
+        onPostSubmit(postContent, selectedImages, postText );
     };
 
 
