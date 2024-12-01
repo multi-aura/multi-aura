@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Post from '../Post/Post';
 import './Feed.css';
 
-function Feed({ posts, userData }) {
+function Feed({ posts, userData, deletePost }) {
   const [loading, setLoading] = useState(false);  // Trạng thái loading nếu cần
 
   if (loading) {
@@ -12,7 +12,7 @@ function Feed({ posts, userData }) {
   return (
     <div className="feed">
       {posts && posts.map(post => (
-        <Post key={post._id} post={post} userData={userData} />
+        <Post key={post._id} post={post} userData={userData}deletePost={deletePost} />
         ))}
     </div>
   );

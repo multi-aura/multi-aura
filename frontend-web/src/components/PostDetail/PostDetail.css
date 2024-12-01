@@ -14,7 +14,6 @@
 }
 
 .post-detail-container {
-    border: 1px solid rgb(90, 86, 86);
     display: flex;
     background-color: black;
     border-radius: 12px;
@@ -39,7 +38,6 @@
     justify-content: center;
     align-items: center;
     background-color: black;
-    border-right: 1px solid #e0e0e0;
 }
 
 .post-detail-left img {
@@ -137,12 +135,13 @@
     background-color: #45a049;
 }
 
-.post-description {
+.post-description-details {
     color: white;
-    line-height: 1.6;
+    margin: 0px;
+    display: flex;
+    align-items: center;
     font-size: 16px;
     align-items: center;
-    margin-top: 20px;
 }
 
 .audio-btn svg {
@@ -177,7 +176,7 @@ audio {
 
     .post-detail-left,
     .post-detail-right {
-        width: 100%;
+        width: 80%;
     }
 
     .post-detail-description {
@@ -242,6 +241,11 @@ audio {
     align-items: center;
     gap: 15px;
     box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+    border-top: 1px solid white;
+}
+
+.comment-input-container {
+    width: 100%;
 }
 
 .comment-input {
@@ -255,6 +259,7 @@ audio {
     transition: border-color 0.3s ease;
     background-color: black;
     padding-right: 30px;
+    width: 100%;
 }
 
 .comment-submit-button {
@@ -300,10 +305,26 @@ audio {
     background-color: #f0f0f0;
 }
 
-.post-detail-header-title{
+.post-detail-header-title {
     display: flex;
 }
-.post-detail-header-left{
+
+.post-detail-header-left {
     display: flex;
     align-items: center;
 }
+.post-detail-header-actions {
+    position: relative;
+  }
+  
+  .post-detail-ellipsis {
+    cursor: pointer;
+  }
+  
+  .post-menu {
+    position: absolute;
+    top: 55px;
+    z-index: 2000;
+    left: 90%;
+  }
+  

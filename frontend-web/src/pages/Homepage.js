@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import CreatePostModal from '../components/CreatePostModal/CreatePostModal';
 import '../assets/css/HomePage.css';
 import SuccessModal from '../components/SuccessModal/SuccessModal';
-import { createPost, uploadImagePost } from '../services/exploreSevice';
+import { createPost, deletePostByid, uploadImagePost } from '../services/exploreSevice';
 import { getNewsPosts } from '../services/searchService';
 
 function Homepage() {
@@ -17,6 +17,8 @@ function Homepage() {
     const [startMousePos, setStartMousePos] = useState({ x: 0, y: 0 });
     const [distanceMoved, setDistanceMoved] = useState(0);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [showSuccessDeleteModal, setshowSuccessDeleteModal] = useState(false);
+
     const [posts, setPosts] = useState([]); // State to store posts
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
@@ -46,7 +48,7 @@ function Homepage() {
         try {
             setLoading(true);
             setErrorMessage('');
-    
+
             const response = await getNewsPosts(1, page);
             if (response?.data) {
                 if (response.data.length > 0) {
@@ -65,7 +67,7 @@ function Homepage() {
             setLoading(false);
         }
     };
-    
+
     useEffect(() => {
         fetchNewsPosts();
     }, [page]);
@@ -74,7 +76,7 @@ function Homepage() {
         if (!debounceLoadMore.current && hasMorePosts && !loading) {
             debounceLoadMore.current = true;
             setTimeout(() => (debounceLoadMore.current = false), 1000); // Delay 1s để tránh gọi nhiều lần
-    
+
             // Tăng page để tải thêm dữ liệu
             setPage((prevPage) => prevPage + 1);  // Tăng số trang lên
         }
@@ -150,10 +152,19 @@ function Homepage() {
             console.log('Failed to create post', err);
         }
     };
+    const deletePostByID = async (deletePost) => {
+            try {
+            const respone = await deletePostByid(deletePost);
+            window.location.reload();
+            setshowSuccessDeleteModal(true);
+        } catch (error) {
+            console.error("Error deleting post:", error);
+        }
+    }
 
     return (
         <Layout userData={userData}>
-            <Feed posts={posts} userData={userData} />
+            <Feed posts={posts} userData={userData} deletePost={deletePostByID} />
             {loading && <div>Đang tải...</div>}
             <div
                 className="floating-button"
@@ -179,6 +190,13 @@ function Homepage() {
                 <SuccessModal
                     title="Thành công!"
                     description="Cảm ơn bạn đã chia sẻ câu chuyện của mình với cộng đồng."
+                    onClose={() => setShowSuccessModal(false)}
+                />
+            )}
+                {showSuccessDeleteModal && (
+                <SuccessModal
+                    title="Thành công!"
+                    description="Bạn đã xóa bài viết thành công !"
                     onClose={() => setShowSuccessModal(false)}
                 />
             )}
