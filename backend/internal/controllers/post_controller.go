@@ -4,6 +4,7 @@ import (
 	"multiaura/internal/models"
 	"multiaura/internal/services"
 	APIResponse "multiaura/pkg/api_response"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -123,8 +124,16 @@ func (pc *PostController) DeletePost(c *fiber.Ctx) error {
 		})
 	}
 
-	if err := pc.service.DeletePost(postID, userID); err != nil {
+	isAdmin, ok := c.Locals("isAdmin").(bool)
+	if !ok {
+		return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusUnauthorized,
+			Message: "Unauthorized access",
+			Error:   "StatusUnauthorized",
+		})
+	}
 
+	if err := pc.service.DeletePost(postID, userID, isAdmin); err != nil {
 		if err.Error() == "unauthorized" {
 			return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
 				Status:  fiber.StatusUnauthorized,
@@ -704,5 +713,71 @@ func (pc *PostController) UnlikeReplyComment(c *fiber.Ctx) error {
 		Status:  fiber.StatusOK,
 		Message: "Reply comment unliked successfully",
 		Data:    nil,
+	})
+}
+
+func (pc *PostController) GetToxicPosts(c *fiber.Ctx) error {
+	isAdmin := c.Locals("isAdmin").(bool)
+	if !isAdmin {
+		return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusUnauthorized,
+			Message: "Unauthorized access",
+			Error:   "StatusUnauthorized",
+		})
+	}
+
+	toxicity := c.Params("toxicity")
+	if toxicity == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Toxicity threshold is required",
+			Error:   "StatusBadRequest",
+		})
+	}
+
+	toxicityValue, err := strconv.ParseFloat(toxicity, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Invalid toxicityThreshold value",
+			Error:   "StatusBadRequest",
+		})
+	}
+
+	if toxicityValue < 0 {
+		toxicityValue = 0
+	} else if toxicityValue > 1 {
+		toxicityValue = 1
+	}
+
+	var req models.PagingRequest
+	if err := c.BodyParser(&req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Invalid request body",
+			Error:   "StatusBadRequest",
+		})
+	}
+
+	if req.Limit <= 0 {
+		req.Limit = 10
+	}
+	if req.Page <= 0 {
+		req.Page = 1
+	}
+
+	posts, err := pc.service.GetToxicPosts(toxicityValue, req.Limit, req.Page)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusInternalServerError,
+			Message: err.Error(),
+			Error:   "StatusInternalServerError",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
+		Status:  fiber.StatusOK,
+		Message: "Posts retrieved successfully",
+		Data:    posts,
 	})
 }

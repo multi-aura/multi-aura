@@ -317,26 +317,51 @@ namespace CustomControl.Commons
         {
             if (currentPost.Author != null)
             {
-                if (!string.IsNullOrEmpty(currentPost.Author.Avatar))
+                if (appDataProvider.User != null
+                    && !string.IsNullOrEmpty(appDataProvider.User.UserID)
+                    && !string.IsNullOrEmpty(currentPost.Author.UserID)
+                    && appDataProvider.User.UserID == currentPost.Author.UserID
+                    && !string.IsNullOrEmpty(appDataProvider.User.Avatar)
+                    )
                 {
                     try
                     {
-                        var imageUrl = currentPost.Author.Avatar;
+                        var imageUrl = appDataProvider.User.Avatar;
                         userAvatar.Image = await NetworkLoader.LoadImageFromUrlAsync(imageUrl);
                     }
                     catch (Exception ex)
                     {
-                        userAvatar.Image = Properties.Resources.person; // ảnh mặc định trong Resources
+                        userAvatar.Image = Properties.Resources.person;
+                    }
+
+                    if (!string.IsNullOrEmpty(appDataProvider.User.FullName))
+                    {
+                        this.labelFullName.Text = appDataProvider.User.FullName;
                     }
                 }
                 else
                 {
-                    userAvatar.Image = Properties.Resources.person;
-                }
+                    if (!string.IsNullOrEmpty(currentPost.Author.Avatar))
+                    {
+                        try
+                        {
+                            var imageUrl = currentPost.Author.Avatar;
+                            userAvatar.Image = await NetworkLoader.LoadImageFromUrlAsync(imageUrl);
+                        }
+                        catch (Exception ex)
+                        {
+                            userAvatar.Image = Properties.Resources.person;
+                        }
+                    }
+                    else
+                    {
+                        userAvatar.Image = Properties.Resources.person;
+                    }
 
-                if (!string.IsNullOrEmpty(currentPost.Author.FullName))
-                {
-                    this.labelFullName.Text = currentPost.Author.FullName;
+                    if (!string.IsNullOrEmpty(currentPost.Author.FullName))
+                    {
+                        this.labelFullName.Text = currentPost.Author.FullName;
+                    }
                 }
             }
         }

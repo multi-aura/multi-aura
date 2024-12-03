@@ -1,15 +1,20 @@
 package routes
 
 import (
+	"log"
 	"multiaura/internal/databases"
+	toxicity "multiaura/plugins/proto"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"google.golang.org/grpc"
 )
 
 var neo4jDB *databases.Neo4jDB
 var mongoDB *databases.MongoDB
 var cloudinaryURL string
+var toxicityClient toxicity.ToxicityServiceClient
+var conn *grpc.ClientConn
 
 func SetupRoutes(app *fiber.App) {
 
@@ -23,6 +28,15 @@ func SetupRoutes(app *fiber.App) {
 	neo4jDB = databases.Neo4jInstance()
 	mongoDB = databases.MongoInstance()
 
+	// Tạo kết nối gRPC
+	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure(), grpc.WithBlock())
+	if err != nil {
+		log.Fatalf("could not connect to gRPC server: %v", err)
+	}
+
+	// Tạo gRPC client
+	toxicityClient = toxicity.NewToxicityServiceClient(conn)
+
 	SetupUserRoutes(app)
 	SetupRelationshipRoutes(app)
 	SetupPostRoutes(app)
@@ -30,4 +44,10 @@ func SetupRoutes(app *fiber.App) {
 	SetupUploadRoutes(app)
 	SetupConversationRoutes(app)
 
+}
+
+func ShutdownGRPC() {
+	if conn != nil {
+		conn.Close()
+	}
 }

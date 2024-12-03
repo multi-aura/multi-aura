@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/url"
 	"path"
+	"reflect"
 	"strings"
 	"time"
 
@@ -86,6 +87,27 @@ func GetTime(data map[string]interface{}, key string) time.Time {
 		}
 	}
 	return time.Time{}
+}
+
+func GetFloat64(data map[string]interface{}, key string) float64 {
+	if value, ok := data[key]; ok {
+		if floatVal, ok := value.(float64); ok {
+			return floatVal
+		}
+		if floatVal, ok := value.(float32); ok {
+			return float64(floatVal)
+		}
+		if intVal, ok := value.(int); ok {
+			return float64(intVal)
+		}
+		if int64Val, ok := value.(int64); ok {
+			return float64(int64Val)
+		}
+		if reflect.TypeOf(value).Kind() == reflect.Int64 {
+			return float64(value.(int64))
+		}
+	}
+	return 0
 }
 
 func GetStringArray(data map[string]interface{}, key string) []string {
