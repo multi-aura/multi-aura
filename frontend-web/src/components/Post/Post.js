@@ -2,12 +2,13 @@ import React, { useState, useRef } from 'react';
 import './Post.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faCommentDots, faShare, faHeart, faBookmark } from '@fortawesome/free-solid-svg-icons';
-import { FaVolumeUp, FaPauseCircle, FaPlayCircle } from 'react-icons/fa';
+import { FaVolumeUp, FaPauseCircle, FaPlayCircle, FaKeyboard } from 'react-icons/fa';
 import { Carousel } from 'react-bootstrap'; // Import Carousel từ Bootstrap
-import { CommentPost, likePost, unlikePost } from '../../services/exploreSevice';
+import { CommentPost, likePost, unlikePost, uploadVoiceComment } from '../../services/exploreSevice';
 import PostDetail from '../PostDetail/PostDetail';
+import soundWave from '../../assets/img/audio_wave.gif';
 
-function Post({ post, userData, deletePost  }) {
+function Post({ post, userData, deletePost }) {
   const userCurent = userData?.userID || null;  // Lấy userID của người dùng hiện tại
   const [showAllImages, setShowAllImages] = useState(false);
   const [commentText, setCommentText] = useState('');
@@ -15,15 +16,18 @@ function Post({ post, userData, deletePost  }) {
   const [icon, setIcon] = useState(<FaPlayCircle size={30} />);
   const [liked, setLiked] = useState(post.likedBy.some(user => user.userID === userCurent));
   const [bookmarked, setBookmarked] = useState(false);
-  const [commentOpen, setCommentOpen] = useState(false);
   const [likesCount, setLikesCount] = useState(post?.likedBy.length || 0);
   const [CommentCount, setCommentCount] = useState(post?.comments?.length || 0);
   const [ShareCount, setShareCount] = useState(post?.sharedBy?.length || 0);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-
+  const [showInput, setShowInput] = useState(false);
   const audioRef = useRef(null);
+  const [shareText, setShareText] = useState('');
   const openDetail = () => {
     setIsDetailOpen(true);
+  };
+  const handleInputtextClick = () => {
+    setShowInput(!showInput); // Chuyển đổi trạng thái hiển thị input
   };
 
   // Hàm để đóng chi tiết bài đăng
@@ -128,11 +132,19 @@ function Post({ post, userData, deletePost  }) {
 
     try {
       const response = await CommentPost(postID, commentText);
-      setCommentCount(CommentCount + 1);
-      setCommentText('');
+      const commentid = response?.data?._id;
+      if (response.status === 201) {
+        const uploadComemntVoid = await uploadVoiceComment(commentid, shareText);
+        setCommentCount(CommentCount + 1);
+        setCommentText('');
+        setShareText('');
+      }
+
     } catch (error) {
       console.error("Error posting comment:", error);
     }
+
+
   };
 
   const handleLike = async (postID) => {
@@ -185,19 +197,26 @@ function Post({ post, userData, deletePost  }) {
 
         {/* Đoạn ghi âm với biểu tượng play/pause */}
         <p className="content-post">
-          {post.voice && (
-            <div className="audio-controls">
-              <button onClick={handlePlayPause} className="btn audio-btn">
-                {icon}
-              </button>
-              <audio ref={audioRef} src={post.voice} />
-            </div>
-          )}
-
           <span className="post-description">{post.description}</span>
+
+
         </p>
 
+        {post.voice && (
+          <div className="post-audio-controls">
+            <button onClick={handlePlayPause} className="btn audio-btn audio-post-play">
+              <img
+                src={soundWave}
+                alt={isPlaying ? 'Pause' : 'Play'}
+                className="post-audio-icon"
+              />
+            </button>
+            <audio ref={audioRef} src={post.voice} />
+          </div>
+        )}
+
         {renderImages()}
+
 
         {showAllImages && (
           <div className="image-grid">
@@ -234,14 +253,25 @@ function Post({ post, userData, deletePost  }) {
             <span className="likes-count" style={{ border: "none" }}>{ShareCount}</span>
 
           </button>
+          <button className="btn btn-link text-white mr-3" onClick={handleInputtextClick}>
+            <FaKeyboard size={20} />
+            <span className="likes-count" style={{ border: "none" }}></span>
+          </button>
         </div>
         <button className="btn btn-link text-white" onClick={handleBookmark}>
           <FontAwesomeIcon icon={faBookmark} color={bookmarked ? 'yellow' : 'white'} />
         </button>
       </div>
-
-
-
+      {showInput && (
+        <input
+          type="text"
+          className="input-voice mt-2"
+          placeholder="Nhập chia sẻ..."
+          value={shareText}
+          onChange={(e) => setShareText(e.target.value)}
+          onKeyDown={(e) => handleKeyDown(e)}
+        />
+      )}
       <div className="d-flex mt-3">
         <input
           type="text"
@@ -252,7 +282,10 @@ function Post({ post, userData, deletePost  }) {
           onKeyDown={(event) => handleKeyDown(event, post._id)}
 
         />
-        <button className="btn btn-outline-light ml-2" onClick={() => handlePostComment(post._id)} disabled={!commentText.trim()}>
+        <button className="btn btn-outline-light ml-2"
+          onClick={() => handlePostComment(post._id)}
+          disabled={!commentText.trim()}
+        >
           Đăng
         </button>
       </div>
