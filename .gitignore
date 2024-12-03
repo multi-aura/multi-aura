@@ -15,6 +15,20 @@ frontend-desktop/CustomControl/obj/
 frontend-desktop/BLL/bin/
 frontend-desktop/BLL/obj/
 frontend-desktop/.vs/
+
+# Bỏ qua thư mục __pycache__ và các file .pyc, .pyo
+vietnamese-cyberbullying/__pycache__/
+vietnamese-cyberbullying/logs
+vietnamese-cyberbullying/output
+vietnamese-cyberbullying/data
+vietnamese-cyberbullying/config
+vietnamese-cyberbullying/train_vietnamese.py
+vietnamese-cyberbullying/detection_cyberbullying.py
+vietnamese-cyberbullying/test_vietnamese.py
+vietnamese-cyberbullying/test.py
+*.pyc
+*.pyo
+
 # Tệp cấu hình nhạy cảm
 *.user
 *.suo

@@ -12,7 +12,7 @@ import (
 func SetupPostRoutes(app *fiber.App) {
 	userRepository := repositories.NewUserRepository(neo4jDB)
 	postRepository := repositories.NewPostRepository(mongoDB)
-	service := services.NewPostService(&postRepository, &userRepository)
+	service := services.NewPostService(&postRepository, &userRepository, &toxicityClient)
 	controller := controllers.NewPostController(service)
 
 	posts := app.Group("/post")
@@ -38,6 +38,7 @@ func SetupPostRoutes(app *fiber.App) {
 	posts.Post("/add-reply/:commentID", middlewares.AuthMiddleware(), controller.AddReplyToComment)
 	posts.Delete("/delete-reply/:commentID/:replyID", middlewares.AuthMiddleware(), controller.DeleteReplyFromComment)
 
+	posts.Post("/toxic-posts/:toxicity", middlewares.AuthMiddleware(), controller.GetToxicPosts)
 	posts.Post("/recents", middlewares.AuthMiddleware(), controller.GetRecentPosts)
 	posts.Post("/create", middlewares.AuthMiddleware(), controller.CreatePost)
 	posts.Delete("/delete/:postID", middlewares.AuthMiddleware(), controller.DeletePost)

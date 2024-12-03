@@ -13,16 +13,17 @@ type Image struct {
 }
 
 type Post struct {
-	ID          primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" form:"_id,omitempty"`
-	Description string             `bson:"description" json:"description" form:"description"`
-	Voice       string             `bson:"voice,omitempty" json:"voice,omitempty" form:"voice,omitempty"`
-	Images      []Image            `bson:"images" json:"images" form:"images"`
-	CreatedAt   time.Time          `bson:"createdAt" json:"createdAt" form:"createdAt"`
-	CreatedBy   UserSummary        `bson:"createdBy" json:"createdBy" form:"createdBy"`
-	LikedBy     []UserSummary      `bson:"likedBy" json:"likedBy" form:"likedBy"`
-	SharedBy    []string           `bson:"sharedBy" json:"sharedBy" form:"sharedBy"`
-	UpdatedAt   time.Time          `bson:"updatedAt" json:"updatedAt" form:"updatedAt"`
-	Comments    []Comment          `bson:"comments,omitempty" json:"comments,omitempty" form:"comments,omitempty"`
+	ID            primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty" form:"_id,omitempty"`
+	Description   string             `bson:"description" json:"description" form:"description"`
+	Voice         string             `bson:"voice,omitempty" json:"voice,omitempty" form:"voice,omitempty"`
+	Images        []Image            `bson:"images" json:"images" form:"images"`
+	CreatedAt     time.Time          `bson:"createdAt" json:"createdAt" form:"createdAt"`
+	CreatedBy     UserSummary        `bson:"createdBy" json:"createdBy" form:"createdBy"`
+	LikedBy       []UserSummary      `bson:"likedBy" json:"likedBy" form:"likedBy"`
+	SharedBy      []string           `bson:"sharedBy" json:"sharedBy" form:"sharedBy"`
+	UpdatedAt     time.Time          `bson:"updatedAt" json:"updatedAt" form:"updatedAt"`
+	Comments      []Comment          `bson:"comments,omitempty" json:"comments,omitempty" form:"comments,omitempty"`
+	ToxicityScore float64            `bson:"toxicityScore,omitempty" json:"toxicityScore,omitempty" form:"toxicityScore,omitempty"`
 }
 
 type CreatePostRequest struct {
@@ -51,16 +52,17 @@ func (p *Post) ToMap() map[string]interface{} {
 	}
 
 	return map[string]interface{}{
-		"_id":         p.ID,
-		"description": p.Description,
-		"voice":       p.Voice,
-		"images":      images,
-		"createdAt":   p.CreatedAt,
-		"createdBy":   p.CreatedBy.ToMap(),
-		"likedBy":     likedBy,
-		"sharedBy":    p.SharedBy,
-		"updatedAt":   p.UpdatedAt,
-		"comments":    comments,
+		"_id":           p.ID,
+		"description":   p.Description,
+		"voice":         p.Voice,
+		"images":        images,
+		"createdAt":     p.CreatedAt,
+		"createdBy":     p.CreatedBy.ToMap(),
+		"likedBy":       likedBy,
+		"sharedBy":      p.SharedBy,
+		"updatedAt":     p.UpdatedAt,
+		"comments":      comments,
+		"toxicityScore": p.ToxicityScore,
 	}
 }
 
@@ -106,15 +108,16 @@ func (p *Post) FromMap(data map[string]interface{}) (*Post, error) {
 	}
 
 	return &Post{
-		ID:          utils.GetObjectID(data, "_id"),
-		Description: utils.GetString(data, "description"),
-		Voice:       utils.GetString(data, "voice"),
-		Images:      images,
-		CreatedAt:   utils.GetTime(data, "createdAt"),
-		CreatedBy:   *createdBy,
-		LikedBy:     likedBy,
-		SharedBy:    utils.GetStringArrayFromPrimitiveAMap(data, "sharedBy"),
-		UpdatedAt:   utils.GetTime(data, "updatedAt"),
-		Comments:    comments,
+		ID:            utils.GetObjectID(data, "_id"),
+		Description:   utils.GetString(data, "description"),
+		Voice:         utils.GetString(data, "voice"),
+		Images:        images,
+		CreatedAt:     utils.GetTime(data, "createdAt"),
+		CreatedBy:     *createdBy,
+		LikedBy:       likedBy,
+		SharedBy:      utils.GetStringArrayFromPrimitiveAMap(data, "sharedBy"),
+		UpdatedAt:     utils.GetTime(data, "updatedAt"),
+		Comments:      comments,
+		ToxicityScore: utils.GetFloat64(data, "toxicityScore"),
 	}, nil
 }

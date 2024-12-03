@@ -1,9 +1,11 @@
 package services
 
 import (
+	"context"
 	"errors"
 	"multiaura/internal/models"
 	"multiaura/internal/repositories"
+	toxicity "multiaura/plugins/proto"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -11,10 +13,11 @@ import (
 )
 
 type PostService interface {
+	AnalyzeContent(text string) (float64, error)
 	GetPostByID(id string) (*models.Post, error)
 	CreatePost(post *models.CreatePostRequest) (*models.Post, error)
 	UpdatePost(id string, updates *map[string]interface{}) error
-	DeletePost(id, userID string) error
+	DeletePost(id, userID string, isAdmin bool) error
 	GetRecentPosts(userID string, limit int64, page int64) ([]*models.Post, error)
 	GetPostsByUser(userID string) ([]*models.Post, error)
 	GetCommentsByPostID(postID string) ([]*models.Comment, error)
@@ -30,15 +33,35 @@ type PostService interface {
 	UnlikeComment(commentID string, userID string) error
 	LikeReplyComment(commentID, replyID string, userID string) error
 	UnlikeReplyComment(commentID, replyID string, userID string) error
+	GetToxicPosts(toxicityThreshold float64, limit, page int64) ([]*models.Post, error)
 }
 
 type postService struct {
-	repo     repositories.PostRepository
-	userRepo repositories.UserRepository
+	repo           repositories.PostRepository
+	userRepo       repositories.UserRepository
+	toxicityClient toxicity.ToxicityServiceClient
 }
 
-func NewPostService(repo *repositories.PostRepository, userRepo *repositories.UserRepository) PostService {
-	return &postService{repo: *repo, userRepo: *userRepo}
+func NewPostService(repo *repositories.PostRepository,
+	userRepo *repositories.UserRepository,
+	toxicityClient *toxicity.ToxicityServiceClient) PostService {
+	return &postService{
+		repo:           *repo,
+		userRepo:       *userRepo,
+		toxicityClient: *toxicityClient}
+}
+
+func (s *postService) AnalyzeContent(text string) (float64, error) {
+	request := &toxicity.AnalyzeRequest{
+		Text: text,
+	}
+
+	response, err := s.toxicityClient.AnalyzeText(context.Background(), request)
+	if err != nil {
+		return 0, err
+	}
+
+	return response.GetToxicityScore(), nil
 }
 
 func (s *postService) GetPostByID(id string) (*models.Post, error) {
@@ -55,26 +78,25 @@ func (s *postService) CreatePost(post *models.CreatePostRequest) (*models.Post, 
 		return nil, errors.New("failed to get user: " + err.Error())
 	}
 
-	// images := make([]models.Image, len(post.Images))
-	// for i, img := range post.Images {
-	// 	images[i] = models.Image{
-	// 		URL: img.URL,
-	// 		ID:  primitive.NewObjectID(),
-	// 	}
-	// }
+	toxicityScore, err := s.AnalyzeContent(post.Description)
+	if err != nil {
+		return nil, errors.New("failed to analyze content: " + err.Error())
+	}
 
 	newPost := &models.Post{
-		ID:          primitive.NewObjectID(),
-		Description: post.Description,
-		Voice:       "",
-		Images:      []models.Image{},
-		CreatedAt:   time.Now().UTC(),
-		CreatedBy:   *user,
-		LikedBy:     []models.UserSummary{},
-		SharedBy:    []string{},
-		Comments:    []models.Comment{},
-		UpdatedAt:   time.Now().UTC(),
+		ID:            primitive.NewObjectID(),
+		Description:   post.Description,
+		Voice:         "",
+		Images:        []models.Image{},
+		CreatedAt:     time.Now().UTC(),
+		CreatedBy:     *user,
+		LikedBy:       []models.UserSummary{},
+		SharedBy:      []string{},
+		Comments:      []models.Comment{},
+		UpdatedAt:     time.Now().UTC(),
+		ToxicityScore: toxicityScore,
 	}
+
 	err = s.repo.Create(*newPost)
 	if err != nil {
 		return nil, errors.New("failed to create post: " + err.Error())
@@ -92,7 +114,7 @@ func (s *postService) UpdatePost(id string, updates *map[string]interface{}) err
 	return nil
 }
 
-func (s *postService) DeletePost(id, userID string) error {
+func (s *postService) DeletePost(id, userID string, isAdmin bool) error {
 	post, err := s.repo.GetByID(id)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
@@ -102,7 +124,9 @@ func (s *postService) DeletePost(id, userID string) error {
 	}
 
 	if post.CreatedBy.ID != userID {
-		return errors.New("unauthorized")
+		if !isAdmin {
+			return errors.New("unauthorized")
+		}
 	}
 
 	err = s.repo.Delete(id)
@@ -185,18 +209,24 @@ func (s *postService) CreateComment(postID, userID string, request *models.Creat
 		return nil, errors.New("failed to get user: " + err.Error())
 	}
 
+	toxicityScore, err := s.AnalyzeContent(request.Text)
+	if err != nil {
+		return nil, errors.New("failed to analyze content: " + err.Error())
+	}
+
 	newComment := &models.Comment{
-		ID:        primitive.NewObjectID(),
-		ReplyFor:  request.ReplyFor,
-		Text:      request.Text,
-		Voice:     "",
-		Images:    []models.Image{},
-		CreatedAt: time.Now().UTC(),
-		UpdatedAt: time.Now().UTC(),
-		LikedBy:   []string{},
-		Replies:   []models.Comment{},
-		CreatedBy: *user,
-		Status:    "Active",
+		ID:            primitive.NewObjectID(),
+		ReplyFor:      request.ReplyFor,
+		Text:          request.Text,
+		Voice:         "",
+		Images:        []models.Image{},
+		CreatedAt:     time.Now().UTC(),
+		UpdatedAt:     time.Now().UTC(),
+		LikedBy:       []string{},
+		Replies:       []models.Comment{},
+		CreatedBy:     *user,
+		Status:        "Active",
+		ToxicityScore: toxicityScore,
 	}
 
 	err = s.repo.AddComment(postID, *newComment)
@@ -213,19 +243,25 @@ func (s *postService) AddReplyToComment(commentID string, userID string, request
 		return nil, err
 	}
 
+	toxicityScore, err := s.AnalyzeContent(request.Text)
+	if err != nil {
+		return nil, errors.New("failed to analyze content: " + err.Error())
+	}
+
 	// Create the new reply comment
 	reply := &models.Comment{
-		ID:        primitive.NewObjectID(),
-		ReplyFor:  request.ReplyFor,
-		Text:      request.Text,
-		Voice:     "",
-		Images:    []models.Image{},
-		CreatedAt: time.Now().UTC(),
-		UpdatedAt: time.Now().UTC(),
-		LikedBy:   []string{},
-		Replies:   []models.Comment{},
-		CreatedBy: *user,
-		Status:    "Active",
+		ID:            primitive.NewObjectID(),
+		ReplyFor:      request.ReplyFor,
+		Text:          request.Text,
+		Voice:         "",
+		Images:        []models.Image{},
+		CreatedAt:     time.Now().UTC(),
+		UpdatedAt:     time.Now().UTC(),
+		LikedBy:       []string{},
+		Replies:       []models.Comment{},
+		CreatedBy:     *user,
+		Status:        "Active",
+		ToxicityScore: toxicityScore,
 	}
 
 	err = s.repo.AddReplyToComment(commentID, *reply)
@@ -369,4 +405,12 @@ func (s *postService) UnlikeReplyComment(commentID, replyID string, userID strin
 	}
 
 	return nil
+}
+
+func (s *postService) GetToxicPosts(toxicityThreshold float64, limit, page int64) ([]*models.Post, error) {
+	posts, err := s.repo.GetToxicPosts(toxicityThreshold, limit, page)
+	if err != nil {
+		return nil, errors.New("failed to fetch toxic posts: " + err.Error())
+	}
+	return posts, nil
 }
