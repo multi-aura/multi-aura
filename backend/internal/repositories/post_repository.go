@@ -43,6 +43,7 @@ type PostRepository interface {
 	UnlikeComment(commentID, username string) error
 	LikeReplyComment(commentID, replyID, username string) error
 	UnlikeReplyComment(commentID, replyID, username string) error
+	GetToxicPosts(toxicityThreshold float64, limit, page int64) ([]*models.Post, error)
 }
 
 type postRepository struct {
@@ -1294,4 +1295,142 @@ func (repo *postRepository) UnlikeReplyComment(commentID, replyID, username stri
 	}
 
 	return nil
+}
+
+// func (repo *postRepository) GetToxicPosts(toxicityThreshold float64, limit, page int64) ([]*models.Post, error) {
+// 	var posts []*models.Post
+// 	sort := bson.D{{Key: "createdAt", Value: -1}}
+// 	skip := (page - 1) * limit
+
+// 	findOptions := options.Find()
+// 	findOptions.SetSort(sort)
+// 	findOptions.SetLimit(limit)
+// 	findOptions.SetSkip(skip)
+
+// 	filter := bson.M{
+// 		"toxicityScore": bson.M{"$gte": toxicityThreshold},
+// 	}
+
+// 	cursor, err := repo.collection.Find(context.Background(), filter, findOptions)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	defer cursor.Close(context.Background())
+
+// 	for cursor.Next(context.Background()) {
+// 		var data map[string]interface{}
+// 		if err := cursor.Decode(&data); err != nil {
+// 			return nil, err
+// 		}
+
+// 		post, err := new(models.Post).FromMap(data)
+// 		if err != nil {
+// 			return nil, err
+// 		}
+
+// 		posts = append(posts, post)
+// 	}
+
+// 	if err := cursor.Err(); err != nil {
+// 		return nil, err
+// 	}
+
+// 	return posts, nil
+// }
+
+func (repo *postRepository) GetToxicPosts(toxicityThreshold float64, limit, page int64) ([]*models.Post, error) {
+	var posts []*models.Post
+	sort := bson.D{{Key: "createdAt", Value: -1}}
+	skip := (page - 1) * limit
+
+	findOptions := options.Find()
+	findOptions.SetSort(sort)
+	findOptions.SetLimit(limit)
+	findOptions.SetSkip(skip)
+
+	// Lọc các bài viết có toxicityScore vượt ngưỡng hoặc có comment/reply có toxicityScore vượt ngưỡng
+	filter := bson.M{
+		"$or": []bson.M{
+			// Điều kiện 1: Bài viết có toxicityScore vượt ngưỡng
+			{"toxicityScore": bson.M{"$gte": toxicityThreshold}},
+			// Điều kiện 2: Có comment có toxicityScore vượt ngưỡng
+			{"comments.toxicityScore": bson.M{"$gte": toxicityThreshold}},
+			// Điều kiện 3: Có reply comment có toxicityScore vượt ngưỡng
+			{"comments.replies.toxicityScore": bson.M{"$gte": toxicityThreshold}},
+		},
+	}
+
+	cursor, err := repo.collection.Find(context.Background(), filter, findOptions)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(context.Background())
+
+	for cursor.Next(context.Background()) {
+		var data map[string]interface{}
+		if err := cursor.Decode(&data); err != nil {
+			return nil, err
+		}
+
+		post, err := new(models.Post).FromMap(data)
+		if err != nil {
+			return nil, err
+		}
+
+		// Lọc các comment và reply comment có toxicityScore vượt ngưỡng
+		for i, comment := range post.Comments {
+			var filteredReplies []models.Comment
+
+			// Nếu comment toxic, giữ lại tất cả reply toxic
+			if comment.ToxicityScore >= toxicityThreshold {
+				// Giữ lại tất cả reply toxic
+				for _, reply := range comment.Replies {
+					if reply.ToxicityScore >= toxicityThreshold {
+						filteredReplies = append(filteredReplies, reply)
+					}
+				}
+				// Cập nhật lại các reply đã lọc
+				post.Comments[i].Replies = filteredReplies
+
+			} else {
+				// Nếu comment không toxic, chỉ giữ lại reply toxic
+				for _, reply := range comment.Replies {
+					if reply.ToxicityScore >= toxicityThreshold {
+						filteredReplies = append(filteredReplies, reply)
+					}
+				}
+				// Cập nhật lại reply, chỉ giữ lại reply toxic
+				post.Comments[i].Replies = filteredReplies
+
+				// Nếu không có reply toxic, loại bỏ comment này
+				if len(filteredReplies) == 0 {
+					post.Comments[i] = models.Comment{} // Xóa comment nếu không có reply toxic
+				}
+			}
+		}
+
+		// Nếu bài viết hoặc comment nào không thỏa mãn thì loại bỏ
+		// Kiểm tra bài viết hoặc comment có toxicityScore vượt ngưỡng hoặc có comment/đã lọc với reply toxic
+		if post.ToxicityScore >= toxicityThreshold || len(post.Comments) > 0 {
+			// Lọc bỏ những comment không có reply thỏa mãn
+			var validComments []models.Comment
+			for _, comment := range post.Comments {
+				if comment.ToxicityScore >= toxicityThreshold || len(comment.Replies) > 0 {
+					validComments = append(validComments, comment)
+				}
+			}
+			post.Comments = validComments
+
+			// Nếu vẫn có comment hợp lệ, thêm bài viết vào kết quả
+			if len(post.Comments) > 0 || post.ToxicityScore >= toxicityThreshold {
+				posts = append(posts, post)
+			}
+		}
+	}
+
+	if err := cursor.Err(); err != nil {
+		return nil, err
+	}
+
+	return posts, nil
 }
