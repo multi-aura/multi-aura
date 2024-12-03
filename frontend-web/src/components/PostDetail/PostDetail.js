@@ -6,7 +6,8 @@ import 'react-image-gallery/styles/css/image-gallery.css'; // Import style của
 import { format } from 'date-fns';
 import { FaHeart, FaReply } from 'react-icons/fa';
 import CommentsList from '../CommentsList/CommentsList';
-import { CommentPost, GetCommentByID, DeletePost } from '../../services/exploreSevice';
+import { CommentPost, GetCommentByID, DeletePost, uploadVoiceComment } from '../../services/exploreSevice';
+import soundWave from '../../assets/img/audio_wave.gif';
 
 // Component to display the post creator's information
 function PostCreator({ avatar, fullname, createdAt, IsUserPost, onMenuToggle }) {
@@ -32,7 +33,7 @@ function PostCreator({ avatar, fullname, createdAt, IsUserPost, onMenuToggle }) 
     );
 }
 
-function PostDetail({ post, closeDetail, userCurent,deletePost }) {
+function PostDetail({ post, closeDetail, userCurent, deletePost }) {
     const overlayRef = useRef(null);
     const audioRef = useRef(null);  // Audio ref
     const [commentText, setCommentText] = useState('');
@@ -41,7 +42,8 @@ function PostDetail({ post, closeDetail, userCurent,deletePost }) {
     const [comments, setComments] = useState(post.comments || []);
     const [showMenu, setShowMenu] = useState(false); // Trạng thái menu
     const IsUserPost = post?.createdBy?.userID === userCurent;
-
+    const [showInput, setShowInput] = useState(false);
+    const [shareText, setShareText] = useState('');
     // Handle play/pause audio
     const handlePlayPause = () => {
         const audio = audioRef.current;
@@ -90,19 +92,27 @@ function PostDetail({ post, closeDetail, userCurent,deletePost }) {
     }, [post._id]);
 
     const handleCommentSubmit = async (postID) => {
+
         if (commentText.trim()) {
             try {
+
                 const response = await CommentPost(postID, commentText);
-                handleGetComment(postID);
-                setCommentText('');
+                const commentid = response?.data?._id;
+                if (response.status === 201) {
+                    const uploadComemntVoice = await uploadVoiceComment(commentid, shareText);
+                    console.log(uploadComemntVoice);
+                    handleGetComment(postID);
+                    setCommentText('');
+                    setShareText('');
+                }
+
             } catch (error) {
                 console.error("Error posting comment:", error);
             }
-            setCommentText('');
         }
     };
 
-    // Render images
+
     const renderImages = (images) => {
         if (!images || images.length === 0) {
             return <p>Không có ảnh để hiển thị.</p>;
@@ -121,12 +131,10 @@ function PostDetail({ post, closeDetail, userCurent,deletePost }) {
         return <Gallery items={galleryImages} showThumbnails={false} />;
     };
 
-    // Toggle hiển thị menu
     const handleMenuToggle = () => {
         setShowMenu((prev) => !prev);
     };
 
-    // Xóa bài viết
     const handleDeletePost = async () => {
         deletePost(post._id);
         closeDetail();
@@ -158,34 +166,59 @@ function PostDetail({ post, closeDetail, userCurent,deletePost }) {
                     )}
 
                     <div className="post-detail-description">
+                        <p className="post-description-details ">{post.description}</p>
+
                         {post.voice && (
                             <div className="audio-controls">
-                                <button onClick={handlePlayPause} className="btn audio-btn">
-                                    {icon}
+                                <button onClick={handlePlayPause} className="btn comment-audio-btn">
+                                    <img
+                                        src={soundWave}
+                                        alt={isPlaying ? 'Pause' : 'Play'}
+                                        className="comment-audio-icon"
+                                    />
                                 </button>
                                 <audio ref={audioRef} src={post.voice} />
                             </div>
                         )}
-                        <p className="post-description-details ">{post.description}</p>
                     </div>
 
                     <CommentsList comments={comments} />
 
                     <div className="post-detail-add-comment">
-                        <div className="comment-input-container">
-                            <input
-                                type="text"
-                                className="comment-input"
-                                placeholder="Thêm bình luận..."
-                                value={commentText}
-                                onChange={(e) => setCommentText(e.target.value)}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' && commentText.trim()) {
-                                        handleCommentSubmit(post._id);
-                                    }
-                                }}
-                                aria-label="Thêm bình luận"
-                            />
+                        <div className="input-container">
+                            {showInput && (
+                                <input
+                                    type="text"
+                                    className="share-input"
+                                    placeholder="Chia sẻ nội dung..."
+                                    value={shareText}
+                                    onChange={(e) => setShareText(e.target.value)}
+                                    aria-label="Chia sẻ nội dung"
+                                />
+
+                            )}
+                            <div className="comment-input-container">
+                                <input
+                                    type="text"
+                                    className="comment-input"
+                                    placeholder="Thêm bình luận..."
+                                    value={commentText}
+                                    onChange={(e) => setCommentText(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' && commentText.trim()) {
+                                            handleCommentSubmit(post._id);
+                                        }
+                                    }}
+                                    aria-label="Thêm bình luận"
+                                />
+                            </div>
+                            <button
+                                className="show-Input-Comment"
+                                onClick={() => setShowInput(!showInput)}
+                            >
+                                <i className="fas fa-keyboard ml-2"></i>
+                            </button>
+
                             <button
                                 className={`comment-submit-button ${commentText.trim() ? 'active' : ''}`}
                                 onClick={() => handleCommentSubmit(post._id)}

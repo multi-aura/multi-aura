@@ -221,13 +221,15 @@ export const unLikeComment = async (idComment) => {
 };
 
 
-export const addReplyComment = async (idComent, commentText) => {
+export const addReplyComment = async (idComent, commentText,replyingTo ) => {
   try {
     const token = Cookies.get('authToken');
     const response = await axios.post(
       `${Post_URL}/add-reply/${idComent}`, 
       {
-        "text": commentText, 
+        "text": commentText,
+        "ReplyFor": replyingTo, 
+
       },
       {
         headers: {
@@ -260,3 +262,50 @@ export const deletePostByid = async (idPost) => {
     throw new Error('Failed to delete Post . Please try again later.'); 
   }
 };
+
+
+export const uploadVoiceComment= async (icComment, commentText) => {
+  try {
+    const token = Cookies.get('authToken');
+    const formData = new FormData();
+
+    if (commentText) {
+      formData.append("text", commentText);
+    }
+    const response = await axios.post(`${UploadImage_URL}/comment/medias/${icComment}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data;
+
+  } catch (error) {
+    console.log("Error to upload voice  comment", error);
+    throw error;
+  }
+}
+
+export const uploadVoiceReply= async (commentid,idReply, commentText) => {
+  try {
+    const token = Cookies.get('authToken');
+    const formData = new FormData();
+
+    if (commentText) {
+      formData.append("text", commentText);
+    }
+    const response = await axios.post(`${UploadImage_URL}/reply/medias/${commentid}/${idReply}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data;
+
+  } catch (error) {
+    console.log("Error to upload voice  comment", error);
+    throw error;
+  }
+}
