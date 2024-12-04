@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../layouts/AdminLayout/AdminLayout';
 import PostCard from '../../components/Admin/PostCard/PostCard'; 
-import { Row, Spinner } from 'react-bootstrap'; 
+import { Row, Spinner,Form  } from 'react-bootstrap'; 
 import { getToxicPosts } from '../../services/toxicService';
 import { deletePostByid } from '../../services/exploreSevice';
-
+import ToxicPostStatsChart from '../../components/Admin/ManageToxic/ToxicPostStatsChart/ToxicPostStatsChart';
 import '../../assets/css/PostManagementPage.css';
 
 const PostManagementPage = () => {
@@ -43,15 +43,18 @@ const PostManagementPage = () => {
     return (
         <AdminLayout>
             <div className="container">
-                <h1>Post Management</h1>
-
-                {/* Filter */}
-                <div className="mb-4">
-                    <select value={timePeriod} onChange={handleTimePeriodChange} className="form-select">
-                        <option value="week">This Week</option>
-                        <option value="month">This Month</option>
-                    </select>
-                </div>
+                <h1 className='text-black'>Post Management</h1>
+                <ToxicPostStatsChart posts={posts} /> 
+                <Form>
+                    <Form.Group controlId="timePeriod">
+                        <Form.Label>Chọn thời gian</Form.Label>
+                        <Form.Control as="select" value={timePeriod} onChange={handleTimePeriodChange}>
+                            <option value="week">Tuần</option>
+                            <option value="month">Tháng</option>
+                            <option value="year">Năm</option>
+                        </Form.Control>
+                    </Form.Group>
+                </Form>
 
                 {/* Loading Spinner */}
                 {loading ? (
