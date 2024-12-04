@@ -27,37 +27,22 @@ const AdminSidebar = ({ toggleSidebar, isOpen }) => {
             )}
             <nav className="nav flex-column flex-grow-1">
                 <Link
-                    to="/admin/Emhun"
+                    to="/admin/"
                     className={`custom-nav-link d-flex align-items-center ${selectedItem === '/admin/Emhun' ? 'custom-selected' : ''}`}
-                    onClick={() => handleItemClick('/admin/Emhun')}
+                    onClick={() => handleItemClick('/admin/')}
                 >
                     <div className="icon"><FontAwesomeIcon icon={faFileAlt} /> </div>
-                    <span> Quản lý Emhun</span>
+                    <span>Dashboard</span>
                 </Link>
                 <Link
-                    to="/admin/ProductManagement"
+                    to="/admin/PostManagement"
                     className={`custom-nav-link d-flex align-items-center ${selectedItem === '/admin/ProductManagement' ? 'custom-selected' : ''}`}
-                    onClick={() => handleItemClick('/admin/ProductManagement')}
+                    onClick={() => handleItemClick('/admin/PostManagement')}
                 >
                     <div className="icon"><FontAwesomeIcon icon={faCube} /> </div>
-                    <span> Quản lý Sản phẩm</span>
+                    <span>Toxic Post Management</span>
                 </Link>
-                <Link
-                    to="/admin/OrderManagement"
-                    className={`custom-nav-link d-flex align-items-center ${selectedItem === '/admin/OrderManagement' ? 'custom-selected' : ''}`}
-                    onClick={() => handleItemClick('/admin/OrderManagement')}
-                >
-                    <div className="icon"><FontAwesomeIcon icon={faFileAlt} /> </div>
-                    <span> Quản lý Đơn hàng</span>
-                </Link>
-                <Link
-                    to="/admin/SaleManagement"
-                    className={`custom-nav-link d-flex align-items-center ${selectedItem === '/admin/SaleManagement' ? 'custom-selected' : ''}`}
-                    onClick={() => handleItemClick('/admin/SaleManagement')}
-                >
-                    <div className="icon"><FontAwesomeIcon icon={faFileAlt} /> </div>
-                    <span> Quản lý Khuyến Mãi</span>
-                </Link>
+               
             </nav>
             {isOpen && (
                 <div className="sidebar-footer p-3">
