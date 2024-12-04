@@ -87,7 +87,7 @@ input.comment-text {
 
 input.comment-text:focus,
 input.comment-text:active,
-input.comment-text:focus  {
+input.comment-text:focus {
   border-color: #444;
   border-bottom: 1px solid white !important;
   background-color: black;
@@ -119,14 +119,41 @@ button.btn-primary:hover {
   padding-top: 5px;
 }
 
-/* Ensure the content of the post is aligned in a single row */
-.content-post {
+
+
+/* Cập nhật lớp CSS cho phần âm thanh */
+.post-audio-controls {
+  width: 100px;
+  margin-bottom: 20px;
   display: flex;
-  align-items: center;
-  /* Vertically center align both elements */
-  margin-bottom: 15px;
-  font-size: 14px;
+  flex-direction: row; /* Đảm bảo các phần tử con nằm theo chiều ngang */
+  justify-content: flex-start; /* Đặt các phần tử con ở phía bên trái (không căn giữa) */
 }
+
+
+.audio-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.audio-btn.audio-post-play .post-audio-icon {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+/* Thêm phần CSS cho hình ảnh */
+
+/* Các lớp hình ảnh sẽ được hiển thị tại đây */
+img.post-audio-icon {
+
+  cursor: pointer;
+}
+
+/* Các quy tắc khác để điều chỉnh giao diện cho các phần khác nếu cần */
+
 
 /* Style for the audio controls button */
 .audio-controls {
@@ -146,26 +173,30 @@ button.btn-primary:hover {
   color: white;
   font-size: 30px;
   margin: 0px !important;
-  width: 40px !important; 
+  width: 40px !important;
   height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-shrink: 0; /* Prevent shrinking */
+  flex-shrink: 0;
+  /* Prevent shrinking */
 }
 
 .audio-controls {
   display: flex;
   align-items: center;
   margin-right: 10px;
-  
+
 }
+
 .audio-controls:hover {
-outline: none !important;
-border: none !important;
-  
+  outline: none !important;
+  border: none !important;
+
 }
-.audio-btn:active, :focus{
+
+.audio-btn:active,
+:focus {
   border: none !important;
 }
 
@@ -175,22 +206,29 @@ border: none !important;
   color: white;
   line-height: 1.5;
   flex-grow: 1;
+  padding-left: 30px;
 }
+
 /* Container cho hàng hình ảnh */
 .image-row {
 
   width: 70%;
 }
+
 /* CSS cho nút Like và số lượt thích */
 .likes-count {
   color: #727070;
   font-size: 18px;
   font-weight: bold;
   margin-left: 5px;
-  text-decoration: none !important; /* Loại bỏ gạch chân */
-  border: none !important; /* Đảm bảo không có viền */
+  text-decoration: none !important;
+  /* Loại bỏ gạch chân */
+  border: none !important;
+  /* Đảm bảo không có viền */
 }
-.btn-link, .likes-count {
+
+.btn-link,
+.likes-count {
   text-decoration: none !important;
 }
 
@@ -201,3 +239,22 @@ border: none !important;
   overflow: hidden;
 }
 
+.input-voice {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #555;
+  padding: 8px;
+  border-radius: 5px;
+  width: 500px !important;
+  margin-top: 10px;
+  transition: border 0.3s ease;
+}
+
+.input-voice:focus {
+  outline: none;
+  border: 1px solid #fff;
+}
+
+.input-voice::placeholder {
+  color: #bbb;
+}

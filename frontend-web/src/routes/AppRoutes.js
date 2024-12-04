@@ -10,6 +10,8 @@ import Explore from '../pages/Explore';
 import Chat from '../pages/ChatPage';
 import UserViewProfile from '../pages/UserViewProfile';
 import NotificationsPage from '../pages/notificationPage';
+import AdminRoutes from './AdminRoutes';
+
 function AppRoutes() {
   return (
     <Routes>
@@ -28,6 +30,8 @@ function AppRoutes() {
         <Route path="/notifications" element={<NotificationsPage />} />
 
         <Route path="/profile/:username" element={<UserViewProfile />} />
+        <Route path="/admin/*" element={<AdminRoutes />} /> 
+
     </Routes>
   
   );
