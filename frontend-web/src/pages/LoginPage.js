@@ -12,8 +12,17 @@ function LoginPage() {
     try {
       const response = await login(credentials.username, credentials.password); 
       console.log('Đăng nhập thành công:', response);
+      const isRole = response?.data?.isAdmin;
+
       try {
-        navigate('/Home', { state: { userData: response.data } });
+        if (isRole) {
+
+          navigate('/admin/PostManagement', { state: { userData: response.data } });
+        }
+        else {
+          navigate('/Home', { state: { userData: response.data } });
+
+        }
       } catch (error) {
         console.error('Lỗi điều hướng:', error);
       }
