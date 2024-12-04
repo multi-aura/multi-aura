@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import '../assets/css/MyProfile.css';
 import ProfileHeader from '../components/Profile/ProfileHeader/ProfileHeader';
 import ProfileNav from '../components/Profile/ProfileNav/ProfileNav';
-import Posts from '../components/Profile/SubProfile/MyPost'; 
+import Posts from '../components/Profile/SubProfile/MyPost';
 import Introduce from '../components/Profile/SubProfile/Introduce';
 import Friends from '../components/Profile/SubProfile/Friends';
 import Layout from '../layouts/Layout';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getFriends,getFollowers,getFollowings } from '../services/RelationshipService'
-
+import { getFriends, getFollowers, getFollowings } from '../services/RelationshipService';
 import Cookies from 'js-cookie';
+import ImageGallery from '../components/ImageGallery/ImageGallery';
+import { getPostsById } from '../services/searchService';
 
 function MyProfile() {
   const [userData, setUserData] = useState(null);
@@ -20,6 +21,7 @@ function MyProfile() {
   const navigate = useNavigate();
   const location = useLocation();
   const authToken = Cookies.get('authToken');
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     if (!authToken) {
@@ -33,6 +35,9 @@ function MyProfile() {
         setUserData(JSON.parse(storedUser));
       }
     }
+  }, [authToken, location, navigate]);
+
+  useEffect(() => {
     const fetchRelationships = async () => {
       try {
         const friendsData = await getFriends();
@@ -51,27 +56,42 @@ function MyProfile() {
     if (storedTab) {
       setActiveTab(storedTab);
     }
-  }, [authToken, location, navigate]);
+  }, []);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     localStorage.setItem('activeTab', tab);
   };
 
+  useEffect(() => {
+    if (userData) {
+      const fetchNewsPosts = async () => {
+        try {
+          const response = await getPostsById(userData?.userID);
+          setPosts(response.data);
+        } catch (error) {
+          console.error('Lỗi khi lấy bài viết:', error);
+        }
+      };
+
+      fetchNewsPosts();
+    }
+  }, [userData]);
+
   const renderContent = () => {
     switch (activeTab) {
       case 'posts':
-        return <Posts />;
+        return <Posts posts={posts}  userData={userData}/>;
       case 'introduce':
         return <Introduce userData={userData} />;
       case 'friends':
-        return <Friends />;
+        return <Friends friends={friends} />;
       case 'images':
-        return 1;
+        return <ImageGallery posts={posts} userData={userData} />;
       case 'more':
-        return 2;
+        return <div>Additional content here.</div>;
       default:
-        return <Posts />;
+        return <Posts posts={posts} />;
     }
   };
 
@@ -87,7 +107,7 @@ function MyProfile() {
         <ProfileNav activeTab={activeTab} onTabChange={handleTabChange} />
         <div className="row mt-4">
           <div className="col-md-12">
-          {renderContent()}
+            {renderContent()}
           </div>
         </div>
       </div>
