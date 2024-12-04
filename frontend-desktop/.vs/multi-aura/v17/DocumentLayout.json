@@ -7,7 +7,7 @@
       "RelativeMoniker": "D:0:0:{3A436ED1-2E03-461C-84A5-82F523C1518C}|BLL\\BLL.csproj|solutionrelative:bll\\services\\postservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|c:\\livonir\\learning\\multi aura\\frontend-desktop\\gui\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\gui\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{850FDC98-487F-4B67-8B56-6628281CCB23}|GUI\\GUI.csproj|solutionrelative:gui\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -28,7 +28,7 @@
               "RelativeDocumentMoniker": "BLL\\Services\\PostService.cs",
               "ToolTip": "C:\\Livonir\\Learning\\Multi Aura\\frontend-desktop\\BLL\\Services\\PostService.cs",
               "RelativeToolTip": "BLL\\Services\\PostService.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAAwCkAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAAwBgAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-03T08:21:06.108Z",
               "EditorCaption": ""
@@ -43,8 +43,7 @@
               "RelativeToolTip": "GUI\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-29T05:16:59.18Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-29T05:16:59.18Z"
             }
           ]
         },

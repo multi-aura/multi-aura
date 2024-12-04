@@ -44,6 +44,7 @@ type PostRepository interface {
 	LikeReplyComment(commentID, replyID, username string) error
 	UnlikeReplyComment(commentID, replyID, username string) error
 	GetToxicPosts(toxicityThreshold float64, limit, page int64) ([]*models.Post, error)
+	GetToxicPostsByDate(toxicityThreshold float64, day, month, year int) ([]*models.Post, error)
 }
 
 type postRepository struct {
@@ -1297,47 +1298,6 @@ func (repo *postRepository) UnlikeReplyComment(commentID, replyID, username stri
 	return nil
 }
 
-// func (repo *postRepository) GetToxicPosts(toxicityThreshold float64, limit, page int64) ([]*models.Post, error) {
-// 	var posts []*models.Post
-// 	sort := bson.D{{Key: "createdAt", Value: -1}}
-// 	skip := (page - 1) * limit
-
-// 	findOptions := options.Find()
-// 	findOptions.SetSort(sort)
-// 	findOptions.SetLimit(limit)
-// 	findOptions.SetSkip(skip)
-
-// 	filter := bson.M{
-// 		"toxicityScore": bson.M{"$gte": toxicityThreshold},
-// 	}
-
-// 	cursor, err := repo.collection.Find(context.Background(), filter, findOptions)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	defer cursor.Close(context.Background())
-
-// 	for cursor.Next(context.Background()) {
-// 		var data map[string]interface{}
-// 		if err := cursor.Decode(&data); err != nil {
-// 			return nil, err
-// 		}
-
-// 		post, err := new(models.Post).FromMap(data)
-// 		if err != nil {
-// 			return nil, err
-// 		}
-
-// 		posts = append(posts, post)
-// 	}
-
-// 	if err := cursor.Err(); err != nil {
-// 		return nil, err
-// 	}
-
-// 	return posts, nil
-// }
-
 func (repo *postRepository) GetToxicPosts(toxicityThreshold float64, limit, page int64) ([]*models.Post, error) {
 	var posts []*models.Post
 	sort := bson.D{{Key: "createdAt", Value: -1}}
@@ -1425,6 +1385,108 @@ func (repo *postRepository) GetToxicPosts(toxicityThreshold float64, limit, page
 			if len(post.Comments) > 0 || post.ToxicityScore >= toxicityThreshold {
 				posts = append(posts, post)
 			}
+		}
+	}
+
+	if err := cursor.Err(); err != nil {
+		return nil, err
+	}
+
+	return posts, nil
+}
+
+func (repo *postRepository) GetToxicPostsByDate(toxicityThreshold float64, day, month, year int) ([]*models.Post, error) {
+	var posts []*models.Post
+	sort := bson.D{{Key: "createdAt", Value: -1}}
+
+	findOptions := options.Find()
+	findOptions.SetSort(sort)
+
+	dateFilter := bson.M{}
+
+	if day != 0 && month != 0 && year != 0 {
+		// Tìm theo ngày, tháng, năm cụ thể
+		startDate := time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)
+		endDate := startDate.AddDate(0, 0, 1)
+		dateFilter["createdAt"] = bson.M{"$gte": startDate, "$lt": endDate}
+	} else if day == 0 && month != 0 && year != 0 {
+		// Tìm theo tháng, năm
+		startDate := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
+		endDate := startDate.AddDate(0, 1, 0)
+		dateFilter["createdAt"] = bson.M{"$gte": startDate, "$lt": endDate}
+	} else if day == 0 && month == 0 && year != 0 {
+		// Tìm theo năm
+		startDate := time.Date(year, 1, 1, 0, 0, 0, 0, time.UTC)
+		endDate := startDate.AddDate(1, 0, 0)
+		dateFilter["createdAt"] = bson.M{"$gte": startDate, "$lt": endDate}
+	} else {
+		// Điều kiện không hợp lệ
+		return nil, fmt.Errorf("invalid date parameters: at least year must be specified")
+	}
+
+	// Tạo bộ lọc chính
+	filter := bson.M{
+		"$and": []bson.M{
+			{"$or": []bson.M{
+				{"toxicityScore": bson.M{"$gte": toxicityThreshold}},
+				{"comments.toxicityScore": bson.M{"$gte": toxicityThreshold}},
+				{"comments.replies.toxicityScore": bson.M{"$gte": toxicityThreshold}},
+			}},
+			dateFilter,
+		},
+	}
+
+	cursor, err := repo.collection.Find(context.Background(), filter, findOptions)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(context.Background())
+
+	for cursor.Next(context.Background()) {
+		var data map[string]interface{}
+		if err := cursor.Decode(&data); err != nil {
+			return nil, err
+		}
+
+		post, err := new(models.Post).FromMap(data)
+		if err != nil {
+			return nil, err
+		}
+
+		// Lọc các comment và reply comment có toxicityScore vượt ngưỡng
+		for i, comment := range post.Comments {
+			var filteredReplies []models.Comment
+
+			if comment.ToxicityScore >= toxicityThreshold {
+				for _, reply := range comment.Replies {
+					if reply.ToxicityScore >= toxicityThreshold {
+						filteredReplies = append(filteredReplies, reply)
+					}
+				}
+				post.Comments[i].Replies = filteredReplies
+			} else {
+				for _, reply := range comment.Replies {
+					if reply.ToxicityScore >= toxicityThreshold {
+						filteredReplies = append(filteredReplies, reply)
+					}
+				}
+				post.Comments[i].Replies = filteredReplies
+				if len(filteredReplies) == 0 {
+					post.Comments[i] = models.Comment{}
+				}
+			}
+		}
+
+		var validComments []models.Comment
+		for _, comment := range post.Comments {
+			if comment.ToxicityScore >= toxicityThreshold || len(comment.Replies) > 0 {
+				validComments = append(validComments, comment)
+			}
+		}
+		post.Comments = validComments
+
+		if len(post.Comments) > 0 || post.ToxicityScore >= toxicityThreshold {
+			posts = append(posts, post)
 		}
 	}
 
