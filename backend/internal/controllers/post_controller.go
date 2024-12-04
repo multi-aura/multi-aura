@@ -781,3 +781,84 @@ func (pc *PostController) GetToxicPosts(c *fiber.Ctx) error {
 		Data:    posts,
 	})
 }
+
+func (pc *PostController) GetToxicPostsByDate(c *fiber.Ctx) error {
+	isAdmin := c.Locals("isAdmin").(bool)
+	if !isAdmin {
+		return c.Status(fiber.StatusUnauthorized).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusUnauthorized,
+			Message: "Unauthorized access",
+			Error:   "StatusUnauthorized",
+		})
+	}
+
+	toxicity := c.Params("toxicity")
+	if toxicity == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Toxicity threshold is required",
+			Error:   "StatusBadRequest",
+		})
+	}
+
+	toxicityValue, err := strconv.ParseFloat(toxicity, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Invalid toxicityThreshold value",
+			Error:   "StatusBadRequest",
+		})
+	}
+
+	if toxicityValue < 0 {
+		toxicityValue = 0
+	} else if toxicityValue > 1 {
+		toxicityValue = 1
+	}
+
+	dayStr := c.Query("day", "0")
+	monthStr := c.Query("month", "0")
+	yearStr := c.Query("year", "0")
+
+	day, err := strconv.Atoi(dayStr)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Invalid day value",
+			Error:   "StatusBadRequest",
+		})
+	}
+
+	month, err := strconv.Atoi(monthStr)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Invalid month value",
+			Error:   "StatusBadRequest",
+		})
+	}
+
+	year, err := strconv.Atoi(yearStr)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusBadRequest,
+			Message: "Invalid year value",
+			Error:   "StatusBadRequest",
+		})
+	}
+
+	posts, err := pc.service.GetToxicPostsByDate(toxicityValue, day, month, year)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(APIResponse.ErrorResponse{
+			Status:  fiber.StatusInternalServerError,
+			Message: err.Error(),
+			Error:   "StatusInternalServerError",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(APIResponse.SuccessResponse{
+		Status:  fiber.StatusOK,
+		Message: "Posts retrieved successfully",
+		Data:    posts,
+	})
+}
