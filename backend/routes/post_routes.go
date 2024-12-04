@@ -39,6 +39,7 @@ func SetupPostRoutes(app *fiber.App) {
 	posts.Delete("/delete-reply/:commentID/:replyID", middlewares.AuthMiddleware(), controller.DeleteReplyFromComment)
 
 	posts.Post("/toxic-posts/:toxicity", middlewares.AuthMiddleware(), controller.GetToxicPosts)
+	posts.Get("/toxic-posts/:toxicity/date", middlewares.AuthMiddleware(), controller.GetToxicPostsByDate)
 	posts.Post("/recents", middlewares.AuthMiddleware(), controller.GetRecentPosts)
 	posts.Post("/create", middlewares.AuthMiddleware(), controller.CreatePost)
 	posts.Delete("/delete/:postID", middlewares.AuthMiddleware(), controller.DeletePost)
