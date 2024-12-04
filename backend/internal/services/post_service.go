@@ -34,6 +34,7 @@ type PostService interface {
 	LikeReplyComment(commentID, replyID string, userID string) error
 	UnlikeReplyComment(commentID, replyID string, userID string) error
 	GetToxicPosts(toxicityThreshold float64, limit, page int64) ([]*models.Post, error)
+	GetToxicPostsByDate(toxicityThreshold float64, day, month, year int) ([]*models.Post, error)
 }
 
 type postService struct {
@@ -411,6 +412,30 @@ func (s *postService) GetToxicPosts(toxicityThreshold float64, limit, page int64
 	posts, err := s.repo.GetToxicPosts(toxicityThreshold, limit, page)
 	if err != nil {
 		return nil, errors.New("failed to fetch toxic posts: " + err.Error())
+	}
+	return posts, nil
+}
+
+func (s *postService) GetToxicPostsByDate(toxicityThreshold float64, day, month, year int) ([]*models.Post, error) {
+	if month < 0 {
+		month = 0
+	} else if month > 12 {
+		month = 12
+	}
+
+	if day < 0 {
+		day = 0
+	} else if day > 31 {
+		day = 31
+	}
+
+	if year < 0 {
+		year = 0
+	}
+
+	posts, err := s.repo.GetToxicPostsByDate(toxicityThreshold, day, month, year)
+	if err != nil {
+		return nil, errors.New("failed to fetch toxic posts by date: " + err.Error())
 	}
 	return posts, nil
 }
