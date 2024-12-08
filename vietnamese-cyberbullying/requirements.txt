@@ -3,3 +3,7 @@ datasets
 torch
 detoxify
 pandas
+
+//em thắng
+pip install grpcio-tools
+pip install protobuf

@@ -40,7 +40,6 @@ function MultiStepRegisterForm() {
   
 
   const handleRegister = async () => {
-    debugger;
     try {
 
       const { fullname, username, email, password, phone, birthday, nation, province, gender } = formData;

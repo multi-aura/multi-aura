@@ -213,7 +213,11 @@ function ChatPage() {
     <Layout userData={userData}>
       <div className={`container-fluid chat-page ${isSidebarOpen ? 'with-sidebar' : ''}`}>
         <div className="row">
-          <div className="col-lg-3 col-md-3 col-sm-12 sidebar-wrapper">
+          <div className="col-lg-3 col-md-3 col-sm-12 sidebar-wrapper"
+          style={{
+
+            background:"black"
+          }}>
             <Sidebar
               conversations={conversations}
               onSelectChat={handleSelectChatMessage}
@@ -227,6 +231,7 @@ function ChatPage() {
               display: 'flex',
               height: '90vh',
               padding: '0',
+              background:"black"
             }}
           >
 

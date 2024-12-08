@@ -168,10 +168,10 @@ const SettingSidebarChat = ({ isOpen, currentChat, userCurent, dataFriend, onCre
           <FontAwesomeIcon icon={faImage} /> Ảnh/Video
         </h4>
         <div className="media-grid">
-          <img src="image1.jpg" alt="Media 1" />
+          {/* <img src="image1.jpg" alt="Media 1" />
           <img src="image2.jpg" alt="Media 2" />
           <img src="image3.jpg" alt="Media 3" />
-          <img src="image4.jpg" alt="Media 4" />
+          <img src="image4.jpg" alt="Media 4" /> */}
         </div>
         <div className="view-all-btn">Xem tất cả</div>
       </div>
@@ -182,7 +182,7 @@ const SettingSidebarChat = ({ isOpen, currentChat, userCurent, dataFriend, onCre
           <FontAwesomeIcon icon={faFile} /> File
         </h4>
         <ul className="file-list">
-          <li>
+          {/* <li>
             <div className="file-name">
               <FontAwesomeIcon icon={faFile} />
               <span>2001216069_File1.xlsx</span>
@@ -195,7 +195,7 @@ const SettingSidebarChat = ({ isOpen, currentChat, userCurent, dataFriend, onCre
               <span>Nhom10_BaoCaoCuoiKi.zip</span>
             </div>
             <div className="file-date">11/11/2024</div>
-          </li>
+          </li> */}
           {/* Thêm các file khác nếu cần */}
         </ul>
       </div>
