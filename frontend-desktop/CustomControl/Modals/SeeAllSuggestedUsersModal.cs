@@ -30,7 +30,7 @@ namespace CustomControl.Modals
         {
             try
             {
-                var (list, lastestErrorMesage) = await relationshipDataProvider.FetchSuggestedUsers(1, 30);
+                var (list, lastestErrorMesage) = await relationshipDataProvider.FetchSuggestedUsers(1, 20);
 
                 if (list == null || !list.Any())
                 {

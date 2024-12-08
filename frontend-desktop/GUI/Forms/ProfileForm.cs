@@ -28,6 +28,7 @@ namespace GUI.Forms
         public void Reload()
         {
             relationshipDataProvider.RefetchUserProfile();
+            postDataProvider.FetchCurrentUserPosts();
             LoadProfile();
         }
 
