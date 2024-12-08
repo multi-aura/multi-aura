@@ -89,29 +89,3 @@ func main() {
 
 	fmt.Println("Server shutdown and databases disconnected successfully")
 }
-
-// func connectPython() {
-// 	// Connect to the gRPC server (assume it's running locally)
-// 	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure(), grpc.WithBlock())
-// 	if err != nil {
-// 		log.Fatalf("did not connect: %v", err)
-// 	}
-// 	defer conn.Close()
-
-// 	// Create a new gRPC client
-// 	client := toxicity.NewToxicityServiceClient(conn)
-
-// 	// Call the AnalyzeText method
-// 	request := &toxicity.AnalyzeRequest{
-// 		Text: "mày ngu quá đi á",
-// 	}
-
-// 	// Send request and get response
-// 	response, err := client.AnalyzeText(context.Background(), request)
-// 	if err != nil {
-// 		log.Fatalf("could not get toxicity score: %v", err)
-// 	}
-
-// 	// Print the result
-// 	fmt.Printf("Toxicity Score: %.2f\n", response.GetToxicityScore())
-// }
