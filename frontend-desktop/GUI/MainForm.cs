@@ -50,6 +50,7 @@ namespace GUI
             appDataProvider.ShowModalRequested += ShowModalRequest;
 
             this.taskBarNotifications.Visible = false;
+            this.taskBarMessages.Visible = false;
             this.KeyPreview = true;
 
             if (!appDataProvider.HasUser())

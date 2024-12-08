@@ -129,7 +129,7 @@ namespace BLL.DataProviders
             });
         }
 
-        private async void FetchCurrentUserPosts()
+        public async void FetchCurrentUserPosts()
         {
             if (appDataProvider.User != null && !string.IsNullOrEmpty(appDataProvider.User.Token)
                 && !string.IsNullOrEmpty(appDataProvider.User.UserID)
