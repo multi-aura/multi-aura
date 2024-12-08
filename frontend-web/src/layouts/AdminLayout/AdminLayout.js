@@ -19,9 +19,7 @@ function AdminLayout({ children }) {
                 <Container fluid className="mt-4">
                     <Row>
                         <Col>
-                            <div className="content-area">
                                 {children}
-                            </div>
                         </Col>
                     </Row>
                 </Container>

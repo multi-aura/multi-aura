@@ -82,7 +82,7 @@ export const getNewsPosts = async (limit = 1, page) => {
 
     const token = Cookies.get('authToken');
 
-    const response = await axios.post(`${SEARCH_URL}/news`,
+    const response = await axios.post(`${POST_URL}/recents`,
       {
         limit,
         page

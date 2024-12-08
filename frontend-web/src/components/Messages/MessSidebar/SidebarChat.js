@@ -4,7 +4,7 @@ import './SidebarChat.css';
 import { FaSearch } from 'react-icons/fa';
 
 function SidebarChat({ conversations = [], onSelectChat, newMessageItems, selectedChatId }) {
-
+  console.log(conversations);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('All'); // All, Group, Single
   const [isSearchVisible, setSearchVisible] = useState(false);
@@ -23,22 +23,22 @@ function SidebarChat({ conversations = [], onSelectChat, newMessageItems, select
   }, [conversations]);
 
   useEffect(() => {
+    // Lọc theo filterType mà không cần kiểm tra tên cuộc trò chuyện
     const filtered = sortedConversations
-      .filter(conversation => {
-        return conversation && conversation.name_conversation &&
-          conversation.name_conversation.toLowerCase().includes(searchTerm.toLowerCase());
-      })
       .filter(conversation => {
         if (filterType === 'Group') {
           return conversation.conversation_type === 'Group';
-        } else if (filterType === 'Single') {
-          return conversation.conversation_type === 'Single';
+        } else if (filterType === 'Private') {
+          return conversation.conversation_type === 'Private';
         }
-        return true;
+        return true; // Nếu filterType là 'All', trả về tất cả
       });
 
+    console.log("Filtered Conversations:", filtered);
     setFilteredConversations(filtered);
-  }, [sortedConversations, searchTerm, filterType]);
+  }, [sortedConversations, filterType]);
+
+
 
   useEffect(() => {
     if (newMessageItems) {
@@ -95,7 +95,7 @@ function SidebarChat({ conversations = [], onSelectChat, newMessageItems, select
         >
           <option value="All">All</option>
           <option value="Group">Group</option>
-          <option value="Single">Single</option>
+          <option value="Private">Single</option>
         </select>
       </div>
 

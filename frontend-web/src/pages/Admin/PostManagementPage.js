@@ -44,7 +44,6 @@ const PostManagementPage = () => {
         <AdminLayout>
             <div className="container">
                 <h1 className='text-black'>Post Management</h1>
-                <ToxicPostStatsChart posts={posts} /> 
                 <Form>
                     <Form.Group controlId="timePeriod">
                         <Form.Label>Chọn thời gian</Form.Label>
