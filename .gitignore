@@ -21,7 +21,6 @@ vietnamese-cyberbullying/__pycache__/
 vietnamese-cyberbullying/logs
 vietnamese-cyberbullying/output
 vietnamese-cyberbullying/data
-vietnamese-cyberbullying/config
 vietnamese-cyberbullying/train_vietnamese.py
 vietnamese-cyberbullying/detection_cyberbullying.py
 vietnamese-cyberbullying/test_vietnamese.py

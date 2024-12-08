@@ -29,10 +29,18 @@ func SetupRoutes(app *fiber.App) {
 	mongoDB = databases.MongoInstance()
 
 	// Tạo kết nối gRPC
-	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure(), grpc.WithBlock())
+	// conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure(), grpc.WithBlock())
+	// if err != nil {
+	// 	log.Fatalf("could not connect to gRPC server: %v", err)
+	// }
+
+	// Tạo kết nối gRPC
+	conn, err := grpc.Dial("vietnamese-cyberbullying:50051", grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
-		log.Fatalf("could not connect to gRPC server: %v", err)
+		log.Fatalf("could not connect to vietnamese-cyberbullying:50051: %v", err)
 	}
+
+	log.Printf("connect to gRPC server successfully: %v", conn)
 
 	// Tạo gRPC client
 	toxicityClient = toxicity.NewToxicityServiceClient(conn)
