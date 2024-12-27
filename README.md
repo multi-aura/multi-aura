@@ -1,3 +1,229 @@
+<h2>Team Name: Workajolibee</h2>
+<h3 style="text-align:center">Social Network</h3>
+
+-----------------------------------------------
+-----------------------------------------------
+
+<h3>Team Members</h3>
+
+| No. | Student ID  | Full Name          | Role         |
+|:---:|:-----------:|:-------------------|:------------:|
+| 1   | 2001215790  | Nguyen Huy Hoang   | Team Leader  |
+| 2   | 2001216199  | Nguyen Minh Thu     | Member        |
+| 3   | 2001216158  | Ha Trong Thang      | Member        |
+
+-----------------------------------------------
+### Technologies Used
+- .NET Framework version 4.7.2
+- Visual Studio 2019
+- Python 3.10.2
+- Go 1.23.1
+-----------------------------------------------
+-----------------------------------------------
+<h1>Project Introduction</h1>
+# Project
+## <h2>Multi Aura Social Network</h2>
+
+<h3>Project Description:</h3>
+<p>Multi Aura is a multi-platform social networking application system that allows users to post articles, comment using text, and utilize an API to convert text into sound. This enables users to understand content without reading text, interact, send messages, make friends, and more.</p>
+
+<p>When using the application, users will experience the 4.0 digital space where everyone can share wonderful moments and chat together. We have noticed that some users, especially those new to technology, may face communication challenges, such as not being able to read text or visually impaired individuals who want to read news or communicate with their loved ones. Understanding this need, our small team aims to realize our idea by providing a space where everyone can communicate without any restrictions. This is the purpose and mission of Multi Aura.</p>
+
+<h3>Project Scope:</h3>
+<p>The "Multi Aura Social Network" project will focus on developing a social networking system that supports:</p>
+
+- Converting text to sound via API to help users easily access content without reading.
+- Enabling users to interact, send messages, make friends, and share moments through posts and comments.
+- Developing the application across multiple platforms (web, mobile) to ensure users can experience it on various devices.
+- Providing strong support for users with visual impairments or those who prefer listening to content instead of reading.
+
+<h3>Objectives and Necessity of the Topic:</h3>
+
+<p>Objectives:</p>
+- Develop a user-friendly social network for all users, especially those with visual impairments or those who prefer experiencing content through sound.
+- Create a connected space for everyone without language barriers or reading capabilities by converting text to sound.
+
+<p>Necessity:</p>
+- Currently, social networks primarily focus on providing content through text, images, and videos, without adequately supporting users who prefer accessing information through sound. This creates difficulties for users, especially visually impaired individuals or the elderly.
+- Multi Aura is created to address this issue by providing a text-to-sound conversion solution. This allows everyone, regardless of their reading ability, to participate and share content easily, seamlessly integrating into an environment without language barriers.
+
+-----------------------------------------------
+
+### Requirements
+<p>AI: Text-to-Sound API</p>
+<p>Web</p>
+<p>Languages: Go, JavaScript</p>
+<p>Frameworks: Bootstrap, Golang, ReactJS</p>
+-----------------------------------------------
+
+| No. | Feature               | Assignment | Progress |
+|:---:|:---------------------:|:----------:|:--------:|
+| 1   | Login/Logout          |            |          |
+| 2   | Register              |            |          |
+| 3   | CRUD Post             |            |          |
+| 4   | Share Post            |            |          |
+| 5   | Save Post             |            |          |
+| 6   | Comment Post          |            |          |
+| 7   | Post Reaction         |            |          |
+| 8   | Chat (CRUD Message)   |            |          |
+| 9   | Chat (Message Reaction)|           |          |
+| 10  | Add/Delete Friend     |            |          |
+| 11  | Manage Profile        |            |          |
+| 12  | Search                |            |          |
+
+-----------------------------------------------
+<p>Winform</p>
+<p>Languages: C#, JavaScript</p>
+<p>Framework: ADO.NET</p>
+
+| No. | Feature               | Assignment | Progress |
+|:---:|:---------------------:|:----------:|:--------:|
+| 1   | Login/Logout          |            |          |
+| 2   | Register              |            |          |
+| 3   | CRUD Post             |            |          |
+| 4   | Share Post            |            |          |
+| 5   | Save Post             |            |          |
+| 6   | Comment Post          |            |          |
+| 7   | Post Reaction         |            |          |
+| 8   | Chat (CRUD Message)   |            |          |
+| 9   | Chat (Message Reaction)|           |          |
+| 10  | Add/Delete Friend     |            |          |
+| 11  | Manage Profile        |            |          |
+| 12  | Search                |            |          |
+
+-------------------------------------------------
+
+<h2>Business Processes</h2>
+
+<h3>User Registration and Verification Process:</h3>
+
+- **Description:** New users must register an account using their email or social media information. The system will then send a verification email to activate the account.
+- **Process:**
+  1. User enters registration information.
+  2. System verifies the entered user information.
+  3. System sends a verification email.
+  4. After verification, the user can log in to the system.
+
+<h3>Login Process:</h3>
+
+- **Description:** Users can log in after registering an account.
+- **Process:**
+  1. User enters login information.
+  2. System verifies the entered user information.
+  3. After verification:
+     - **Success:** User is redirected to the homepage.
+     - **Failure:** User receives a notification to check their information.
+
+<h3>Profile Management Process:</h3>
+- **Description:** Users can update their personal information and manage the privacy settings of their profiles.
+
+- **Process:**
+  1. User accesses the profile management page:
+     - User selects the "Profile" section in the application to view and edit personal information.
+  2. User updates personal information:
+     - User can change their name, avatar, gender, birthdate, address, or other information.
+  3. System saves the updated information:
+     - After editing, the system records and updates the personal information in the database.
+  4. Manage privacy settings:
+     - User can set privacy levels for their profile (Public, Friends, Private) to determine who can view their information.
+
+<h3>Friend Search:</h3>
+- **Description:** Users can search for friends by name, email, or username.
+
+- **Process:**
+  1. User enters a search keyword:
+     - User inputs name, email, or username into the search bar.
+  2. System searches and displays results:
+     - System queries the database and returns a list of users matching the keyword.
+  3. User can follow the selected user:
+     - User selects from the search results and follows them.
+
+<h3>Post Creation Process:</h3>
+- **Description:** Users can create, read, update, and delete their own posts.
+
+- **Process:**
+  1. User logs into their account:
+     - User completes the login process.
+     - After logging in, the system redirects the user to the homepage.
+  2. User selects the create post function:
+     - On the homepage, there is a function to create a new post.
+     - Clicking it will display all the features for creating a new post.
+  3. Enter post content and options (images, tags, etc.):
+     - User can input the post information.
+     - Attaching images is optional.
+  4. Click to confirm post submission.
+  5. System saves the post to the database.
+  6. After posting, the post is displayed on the news feed.
+  7. User can edit or delete their created post:
+     - User can review their post information on their profile page.
+     - Select the post to edit its content or delete it.
+
+<h3>Commenting Process:</h3>
+- **Description:** Users can comment on posts.
+
+- **Process:**
+  1. User logs into their account:
+     - User completes the login process.
+     - After logging in, the system redirects the user to the homepage.
+  2. User selects the post they want to comment on:
+     - While viewing the list of new or friends' posts.
+     - To leave a comment on a post.
+     - Select the desired post.
+     - Choose the comment function on the right side of the post.
+  3. Enter comment content:
+     - User can input their comment on the post.
+     - Attaching images is optional.
+  4. System saves the comment and displays it under the post.
+  5. User can edit or delete their own comment:
+     - User can review their comment information by selecting the post.
+     - Or view commented posts in the activity management function.
+     - Can edit or delete their own comments.
+
+<h3>Post Sharing Process</h3>
+- **Description:** Users can share their own or others' posts to their personal timeline.
+
+- **Process:**
+  1. User logs into their account:
+     - User completes the login process.
+     - After logging in, the system redirects the user to the homepage.
+  2. User selects the post they want to share:
+     - While viewing the list of new or friends' posts.
+     - To share the post so friends can see it.
+     - Select the desired post.
+     - Choose the share function on the right side of the post.
+  3. Enter status content when sharing:
+     - User can input introductory content about the post.
+  4. Choose the sharing method:
+     - Share to their personal profile.
+     - Or send to friends via messaging.
+  5. System saves the shared post status.
+  6. System displays the shared post on the platform:
+     - User can review the posts they have shared on their personal profile.
+     - Or view shared posts in the activity management function.
+  7. User can modify the post status or delete it.
+
+<h3>Following Process</h3>
+- **Description:** Users can follow other users to receive notifications about their activities.
+
+- **Process:**
+  1. User logs into their account:
+     - User completes the login process.
+     - After logging in, the system redirects the user to the homepage.
+  2. User searches for other users:
+     - User can search by name, email, or username.
+     - When the system returns results, user can select the desired user.
+  3. Select the user to follow:
+     - Upon selection, the user is redirected to the selected user's profile page.
+     - Displays user information (full name, number of followers, following), list of mutual friends, etc.
+  4. Click the "Follow" button.
+  5. System records the follow action in the database.
+  6. System updates the following list and notifies the user.
+  7. Transition to Friend:
+     - When a user follows another user.
+     - If the followed user is also following back, the system updates both statuses to friends.
+     - When a user clicks "Follow Back," the system updates the status of both users to friends.
+
+
 <h2>Tên nhóm: Workajolibee</h2>
 <h3 style="text-align:center">Social Network</h3>
 
